@@ -1,0 +1,171 @@
+<qai-page-header
+  [title]="view === 'list' ? 'Workflows' : 'Workflow Designer'"
+  [subtitle]="view === 'list' ? 'Create, review and manage every automated business process.' : 'Build a complete business process in clear steps, review it and launch with control.'"
+>
+  <button *ngIf="view === 'designer'" (click)="view = 'list'">← All workflows</button>
+  <select *ngIf="view === 'designer'" [(ngModel)]="activeId" (change)="loadDesigner()">
+    <option value="" disabled>Select workflow</option>
+    <option *ngFor="let flow of flows" [value]="flow.id">{{ flow.name }}</option>
+  </select>
+  <button *ngIf="view === 'list'" (click)="templateOpen = true">Use template</button>
+  <button *ngIf="view === 'list'" class="primary" (click)="newOpen = true">+ New workflow</button>
+  <button *ngIf="view === 'designer'" class="primary" [disabled]="saving || !activeId" (click)="save()">
+    {{ saving ? 'Saving…' : 'Save workflow' }}
+  </button>
+</qai-page-header>
+
+<ng-template #workflowList>
+  <section class="directory-card workflow-workspace">
+    <header><div><span class="eyebrow">Process automation</span><h2>Workflow directory</h2><p>Create, review and launch every automated business process.</p></div><div class="directory-summary"><span><b>{{flows.length}}</b>Total</span><span><b>{{activeWorkflowCount}}</b>Active</span><span><b>{{draftWorkflowCount}}</b>Draft</span></div></header>
+    <div class="directory-toolbar"><label><span>⌕</span><input [(ngModel)]="workflowQuery" placeholder="Search workflows" /></label><select [(ngModel)]="workflowStatus"><option value="">All statuses</option><option value="active">Active</option><option value="draft">Draft</option></select><strong>{{visibleFlows.length}} shown</strong></div>
+    <div class="table-wrap" *ngIf="visibleFlows.length; else noWorkflows"><table><thead><tr><th>Workflow</th><th>Business outcome</th><th>Status</th><th>Created</th><th>Action</th></tr></thead><tbody><tr *ngFor="let flow of visibleFlows" (click)="openFlow(flow)"><td><div class="directory-identity"><i>⌁</i><span><b>{{flow.name}}</b><small>Configurable rules, actions and approvals</small></span></div></td><td>{{flowSummary(flow)}}</td><td><span class="pill" [class.success]="flow.active !== false" [class.status-pending]="flow.active === false">{{flow.active === false ? 'Draft' : 'Active'}}</span></td><td>{{flow.createdAtUtc ? (flow.createdAtUtc | date:'mediumDate') : 'Ready to configure'}}</td><td><div class="directory-actions"><button class="primary" type="button" (click)="$event.stopPropagation(); openFlow(flow)">Open designer →</button></div></td></tr></tbody></table></div>
+    <ng-template #noWorkflows><div class="directory-empty"><i>⌁</i><strong>No workflows found</strong><span>Adjust the filter or start from a proven process.</span><div><button (click)="templateOpen = true">Browse templates</button><button class="primary" (click)="newOpen = true">Create workflow</button></div></div></ng-template>
+  </section>
+</ng-template>
+
+<ng-container *ngIf="view === 'designer'; else workflowList">
+
+<section class="summary">
+  <div>
+    <span class="eyebrow">Active process</span>
+    <h2>{{ activeName }}</h2>
+    <p>{{ nodes.length }} steps · {{ edges.length }} transitions · approval-controlled execution</p>
+  </div>
+  <div class="readiness">
+    <div>
+      <span>Launch readiness</span><strong>{{ readiness }}%</strong>
+    </div>
+    <div class="progress"><i [style.width.%]="readiness"></i></div>
+  </div>
+</section>
+<p class="notice success" *ngIf="message">{{ message }}</p>
+<p class="notice error" *ngIf="error">{{ error }}</p>
+<nav class="journey">
+  <div class="active">
+    <b>1</b><span><strong>Goal</strong><small>Choose outcome</small></span>
+  </div>
+  <div [class.active]="nodes.length">
+    <b>2</b><span><strong>Audience</strong><small>Define entry</small></span>
+  </div>
+  <div [class.active]="nodes.length > 2">
+    <b>3</b><span><strong>Qualification</strong><small>Rules and score</small></span>
+  </div>
+  <div [class.active]="nodes.length > 3">
+    <b>4</b><span><strong>Actions</strong><small>Automate work</small></span>
+  </div>
+  <div [class.active]="readiness === 100">
+    <b>5</b><span><strong>Review</strong><small>Approve & launch</small></span>
+  </div>
+</nav>
+
+<div class="designer">
+  <aside class="library">
+    <header>
+      <span class="eyebrow">Step library</span>
+      <h3>Add the next step</h3>
+    </header>
+    <button *ngFor="let item of library" (click)="add(item.type)">
+      <i>+</i
+      ><span
+        ><strong>{{ item.label }}</strong
+        ><small>{{ item.detail }}</small></span
+      >
+    </button>
+  </aside>
+  <main class="process">
+    <header>
+      <div>
+        <span class="eyebrow">Process map</span>
+        <h3>What happens, in order</h3>
+      </div>
+      <span class="draft">Draft</span>
+    </header>
+    <div class="empty" *ngIf="!nodes.length">
+      <span>↳</span>
+      <h3>Start with a proven template</h3>
+      <p>Select a use case and adjust each step to your operation.</p>
+      <button class="primary" (click)="templateOpen = true">Browse templates</button>
+    </div>
+    <ol *ngIf="nodes.length">
+      <li
+        *ngFor="let node of nodes; let i = index; trackBy: track"
+        [class.selected]="selected === node"
+        (click)="selected = node"
+      >
+        <b class="number">{{ i + 1 }}</b>
+        <div>
+          <span>{{ node.type }}</span
+          ><strong>{{ title(node) }}</strong>
+          <p>{{ detail(node) }}</p>
+        </div>
+        <aside>
+          <button [disabled]="i === 0" (click)="$event.stopPropagation(); move(node, -1)">↑</button
+          ><button [disabled]="i === nodes.length - 1" (click)="$event.stopPropagation(); move(node, 1)">
+            ↓
+          </button>
+        </aside>
+      </li>
+    </ol>
+  </main>
+  <aside class="inspector" *ngIf="selected; else placeholder">
+    <header>
+      <span class="eyebrow">Step settings</span>
+      <h3>{{ title(selected) }}</h3>
+    </header>
+    <label>Step name<input [ngModel]="title(selected)" (ngModelChange)="updateTitle($event)" /></label
+    ><label
+      >Business instruction<textarea
+        rows="7"
+        [ngModel]="detail(selected)"
+        (ngModelChange)="updateDetail($event)"
+      ></textarea>
+    </label>
+    <div class="guardrail">
+      <strong>Execution guardrail</strong>
+      <p>External messages require sender verification, suppression check and approval.</p>
+    </div>
+    <section class="instruction-map">
+      <span class="eyebrow">EXECUTION MAP</span>
+      <div><small>Input</small><b>{{instructionGuide(selected).input}}</b></div>
+      <div><small>Produces</small><b>{{instructionGuide(selected).outcome}}</b></div>
+      <div><small>Controls</small><b>{{instructionGuide(selected).controls}}</b></div>
+      <div><small>Then</small><b>{{instructionGuide(selected).next}}</b></div>
+    </section>
+    <button class="danger" [disabled]="selected.type === 'start'" (click)="remove(selected)">
+      Remove step
+    </button>
+  </aside>
+  <ng-template #placeholder
+    ><aside class="inspector placeholder">← Select a step to configure it.</aside></ng-template
+  >
+</div>
+</ng-container>
+
+<qai-modal [open]="templateOpen" title="Choose a business workflow" (close)="templateOpen = false"
+  ><div class="templates">
+    <article *ngFor="let template of templates">
+      <span class="eyebrow">{{ template.segment }}</span>
+      <h3>{{ template.name }}</h3>
+      <p>{{ template.summary }}</p>
+      <footer>
+        <small>{{ template.steps.length }} steps · {{ template.outcome }}</small
+        ><button class="primary" (click)="install(template)">Use template</button>
+      </footer>
+    </article>
+  </div></qai-modal
+>
+<qai-modal [open]="newOpen" title="New workflow" (close)="newOpen = false"
+  ><form class="form" (ngSubmit)="createFlow()">
+    <label
+      >Workflow name<input
+        [(ngModel)]="newName"
+        name="name"
+        placeholder="Balkan logistics acquisition"
+        required
+    /></label>
+    <footer>
+      <button type="button" (click)="newOpen = false">Cancel</button
+      ><button class="primary" type="submit">Create workflow</button>
+    </footer>
+  </form></qai-modal
+>

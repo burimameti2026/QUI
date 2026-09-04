@@ -1,0 +1,511 @@
+/* Canonical application surface system. Operating Leverage is the visual reference. */
+:root {
+  --ops-card: #f4f6f9;
+  --ops-card-soft: #f7f9fb;
+  --ops-row: #f8fafc;
+  --ops-row-end: #edf1f5;
+  --ops-row-alt: #eef2f6;
+  --ops-row-hover: #e9eff7;
+  --ops-header: #f5f7fa;
+  --ops-header-end: #eef2f6;
+  --ops-table-head: #e5eaf1;
+  --ops-border: #d9e0e9;
+  --ops-border-strong: #c9d3e0;
+  --ops-title: #172033;
+  --ops-muted: #68758a;
+  --ops-blue: #2563eb;
+  --ops-shadow: 0 6px 18px #17203309;
+}
+
+/* Outer surfaces */
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) {
+  border: 1px solid var(--ops-border) !important;
+  border-radius: 14px !important;
+  background: var(--ops-card) !important;
+  box-shadow: var(--ops-shadow) !important;
+  overflow: hidden;
+}
+
+.page .panel {
+  padding: 14px;
+}
+
+/* Full-width card headers */
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) > header {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: -14px -14px 14px !important;
+  padding: 15px 18px !important;
+  border-bottom: 1px solid var(--ops-border) !important;
+  background: linear-gradient(180deg, var(--ops-header), var(--ops-header-end)) !important;
+  color: var(--ops-title) !important;
+}
+
+.page :is(.directory-card, .campaigns, .safety, .contacts-card) > header {
+  margin: 0 !important;
+}
+
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) > header > div {
+  min-width: 0;
+}
+
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) > header :is(h2, h3, b) {
+  margin: 4px 0 2px !important;
+  color: var(--ops-title) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.1px;
+}
+
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) > header :is(p, span, small) {
+  margin: 0;
+  color: var(--ops-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.45;
+}
+
+.page :is(.panel, .directory-card, .data-card, .campaigns, .safety, .contacts-card) > header .eyebrow {
+  color: #557094 !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.page .panel > header > strong,
+.page .directory-summary > span,
+.page .campaign-count {
+  border: 1px solid var(--ops-border-strong) !important;
+  border-radius: 9px !important;
+  background: linear-gradient(180deg, #f8fafc, #edf1f5) !important;
+  color: #385a89 !important;
+  box-shadow: none !important;
+}
+
+/* Panels whose title is not wrapped in a header */
+.page .panel > h3:first-child {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  margin: -14px -14px 14px !important;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--ops-border);
+  background: linear-gradient(180deg, var(--ops-header), var(--ops-header-end));
+  color: var(--ops-title);
+  font-size: 15px;
+}
+
+/* Directory pages */
+.page .directory-card > header {
+  min-height: 82px;
+  padding: 17px 19px !important;
+}
+
+.page .directory-card > header h2 {
+  font-size: 17px !important;
+}
+
+.page .directory-summary {
+  display: flex;
+  gap: 8px;
+}
+
+.page .directory-summary > span {
+  min-width: 74px;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  font-size: 9px !important;
+}
+
+.page .directory-summary b {
+  color: #243754;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.page .directory-toolbar {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 14px 10px;
+  padding: 7px 10px;
+  border: 1px solid var(--ops-border);
+  border-radius: 10px;
+  background: linear-gradient(100deg, var(--ops-row), var(--ops-row-end));
+}
+
+.page .directory-toolbar label {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.page .directory-toolbar label:focus-within {
+  border-color: var(--ops-blue);
+  box-shadow: 0 0 0 3px #2563eb16;
+}
+
+.page .directory-toolbar label > span {
+  color: var(--ops-blue);
+  font-size: 15px;
+}
+
+.page .directory-toolbar input {
+  min-width: 0;
+  height: 40px;
+  flex: 1;
+  padding: 0 8px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 12px;
+}
+
+.page .directory-toolbar select {
+  height: 40px;
+  min-width: 165px;
+  padding: 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: #fff;
+  color: #334155;
+  font-size: 12px;
+}
+
+.page .directory-toolbar > strong {
+  margin-left: auto;
+  color: var(--ops-muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Every grid is inset inside its outer surface */
+.page .directory-card > .table-wrap,
+.page .approval-table-shell {
+  margin: 0 14px 14px;
+  overflow: auto;
+  border: 1px solid var(--ops-border);
+  border-radius: 10px;
+  background: var(--ops-row-end);
+}
+
+.page .panel.table-wrap {
+  padding: 0 14px 14px !important;
+  background: var(--ops-card) !important;
+}
+
+.page .panel.table-wrap > header {
+  margin: 0 -14px 14px !important;
+}
+
+.page .panel.table-wrap:not(:has(> header)) {
+  padding-top: 14px !important;
+}
+
+.page .panel.table-wrap > table {
+  overflow: hidden;
+  border: 1px solid var(--ops-border);
+  border-radius: 10px;
+}
+
+.page :is(.table-wrap, .panel) table {
+  width: 100%;
+  min-width: 760px;
+  margin: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.page table thead th {
+  height: 40px;
+  padding: 0 13px !important;
+  border-top: 0 !important;
+  border-bottom: 1px solid #d2dbe7 !important;
+  background: var(--ops-table-head) !important;
+  color: #627086 !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+  letter-spacing: .055em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.page table tbody td {
+  height: 61px;
+  padding: 10px 13px !important;
+  border-bottom: 1px solid #dfe5ed !important;
+  background: var(--ops-card-soft) !important;
+  color: #46546a;
+  font-size: 11px !important;
+  vertical-align: middle;
+}
+
+.page table tbody tr:nth-child(even) td {
+  background: var(--ops-row-alt) !important;
+}
+
+.page table tbody tr:hover td {
+  background: var(--ops-row-hover) !important;
+}
+
+.page table tbody tr:hover td:first-child {
+  box-shadow: inset 3px 0 var(--ops-blue);
+}
+
+.page table tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.page table td b {
+  color: #1f2b40;
+  font-weight: 750;
+}
+
+.page table td small {
+  display: block;
+  margin-top: 3px;
+  color: #8793a4 !important;
+  font-size: 9px !important;
+}
+
+/* Identity and row actions */
+.page .directory-identity,
+.page .company-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page .directory-identity > i,
+.page .company-cell > span {
+  width: 35px;
+  height: 35px;
+  min-width: 35px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #c7d7ef;
+  border-radius: 9px;
+  background: #e5edfa;
+  color: #2859b0;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.page .directory-identity > span,
+.page .company-cell > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page .directory-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.page .directory-card th:last-child,
+.page .directory-card td:last-child {
+  text-align: right;
+}
+
+/* Inset operational rows */
+.page :is(.panel, .data-card) > .gap,
+.page .impact > div,
+.page .economics > div,
+.page .activity-list > article {
+  margin: 0 0 9px;
+  padding: 12px 13px;
+  border: 1px solid var(--ops-border) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(100deg, var(--ops-row), var(--ops-row-end)) !important;
+  box-shadow: none !important;
+}
+
+.page :is(.panel, .data-card) > .gap:last-child,
+.page .impact > div:last-child,
+.page .activity-list > article:last-child {
+  margin-bottom: 0;
+}
+
+.page .impact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+/* Standalone card collections */
+.page :is(
+  .integration-grid > article,
+  .pack-grid > article,
+  .gap-cards > article,
+  .module-card,
+  .automation-list > article,
+  .tools > article,
+  .calendar-strip > article,
+  .pipeline-summary > div,
+  .knowledge-metrics > article,
+  .company-card
+) {
+  border: 1px solid var(--ops-border) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(100deg, var(--ops-row), var(--ops-row-end)) !important;
+  box-shadow: none !important;
+  transition: border-color .16s, background .16s, transform .16s;
+}
+
+.page :is(
+  .integration-grid > article,
+  .pack-grid > article,
+  .gap-cards > article,
+  .module-card,
+  .automation-list > article,
+  .tools > article,
+  .calendar-strip > article,
+  .company-card
+):hover {
+  border-color: #bcc9da !important;
+  background: linear-gradient(100deg, #f4f7fb, #e8eef6) !important;
+}
+
+.page .settings-grid > .panel,
+.page .grid2 > .panel {
+  background: var(--ops-card) !important;
+}
+
+.page .pipeline-summary,
+.page .knowledge-metrics {
+  overflow: hidden;
+  border: 1px solid var(--ops-border) !important;
+  border-radius: 14px !important;
+  background: var(--ops-card) !important;
+  box-shadow: var(--ops-shadow);
+}
+
+.page .kanban > section {
+  border: 1px solid var(--ops-border);
+  background: var(--ops-card);
+}
+
+.page .kanban article {
+  border: 1px solid var(--ops-border) !important;
+  background: linear-gradient(100deg, var(--ops-row), var(--ops-row-end)) !important;
+  box-shadow: none !important;
+}
+
+/* Statuses */
+.page .pill,
+.page .lifecycle,
+.page .status-pill {
+  display: inline-flex;
+  padding: 5px 8px;
+  border: 1px solid #d3dbe5;
+  border-radius: 999px;
+  background: #edf1f5;
+  color: #536174;
+  font-size: 9px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.page :is(.pill, .status-pill).status-pending,
+.page :is(.pill, .status-pill).status-queued,
+.page .lifecycle.lead {
+  border-color: #efcb83;
+  background: #fff0cf;
+  color: #9b5a08;
+}
+
+.page :is(.pill, .status-pill).success,
+.page :is(.pill, .status-pill).status-success,
+.page :is(.pill, .status-pill).status-sent,
+.page :is(.pill, .status-pill).status-delivered,
+.page .lifecycle.customer {
+  border-color: #b8e5c6;
+  background: #dcf4e4;
+  color: #17653a;
+}
+
+.page :is(.pill, .status-pill).hot,
+.page :is(.pill, .status-pill).status-failed {
+  border-color: #efc2ca;
+  background: #ffe8ec;
+  color: #af2849;
+}
+
+/* Empty and loading states remain inset too. */
+.page :is(.directory-empty, .empty, .no-records, .data-state, .queue-empty, .contact-empty) {
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 14px;
+  padding: 26px;
+  border: 1px dashed #bdcbe0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(100deg, #f7f9fc, #edf3f9) !important;
+  color: var(--ops-muted);
+  text-align: center;
+}
+
+.page :is(.directory-empty, .empty, .no-records, .data-state, .queue-empty, .contact-empty) > :is(b, strong) {
+  color: #334155;
+}
+
+/* Footer bars */
+.page :is(.panel, .data-card, .campaigns, .safety, .contacts-card) > footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  margin: 14px -14px -14px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--ops-border);
+  background: #eceff4;
+}
+
+@media (max-width: 900px) {
+  .page .directory-card > header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .page .directory-summary > span {
+    min-width: 66px;
+  }
+}
+
+@media (max-width: 760px) {
+  .page .panel { padding: 10px; }
+  .page .panel > header { margin: -10px -10px 10px !important; }
+  .page .directory-card > header { flex-direction: column; }
+  .page .directory-summary { width: 100%; }
+  .page .directory-summary > span { flex: 1; }
+  .page .directory-toolbar { align-items: stretch; flex-direction: column; margin: 10px; }
+  .page .directory-toolbar label { max-width: none; }
+  .page .directory-toolbar select { width: 100%; }
+  .page .directory-toolbar > strong { margin-left: 0; }
+  .page .directory-card > .table-wrap { margin: 0 10px 10px; }
+  .page .panel.table-wrap { padding: 0 10px 10px !important; }
+  .page .panel.table-wrap > header { margin: 0 -10px 10px !important; }
+  .page table thead th,
+  .page table tbody td { padding: 9px 10px !important; }
+}

@@ -15,13 +15,18 @@
             "outputPath": "dist/qualifyai-admin",
             "browser": "src/main.ts",
             "index": "src/index.html",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/product-design.css",
+              "src/app-header.css",
+              "src/shared-surfaces.css",
+              "src/shared-kpis.css",
+              "src/shared-forms.css",
+              "src/shared-actions.css",
+              "src/modal-viewport.css"
             ]
           },
           "configurations": {
