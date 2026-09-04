@@ -14,6 +14,7 @@ export const routes: Routes = [
   {path:'crm/leads',loadComponent:()=>import('./features/crm/leads.page').then(m=>m.LeadsPage)},
   {path:'crm/opportunities',loadComponent:()=>import('./features/crm/opportunities.page').then(m=>m.OpportunitiesPage)},
   {path:'pipeline',loadComponent:()=>import('./features/pipeline/pipeline.page').then(m=>m.PipelinePage)},
+  {path:'golden-pipeline',loadComponent:()=>import('./features/pipeline/golden-pipeline.page').then(m=>m.GoldenPipelinePage)},
   {path:'meetings',loadComponent:()=>import('./features/meetings/meetings.page').then(m=>m.MeetingsPage)},
   {path:'ai/agents',loadComponent:()=>import('./features/ai-agents/ai-agents.page').then(m=>m.AiAgentsPage)},
   {path:'knowledge',loadComponent:()=>import('./features/knowledge/knowledge.page').then(m=>m.KnowledgePage)},
