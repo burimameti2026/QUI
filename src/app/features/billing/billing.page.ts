@@ -1,45 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Callout, Empty, PageHeader } from '../../shared/ui';
+import { Empty, PageHeader } from '../../shared/ui';
 import { AuthService } from '../../core/auth.service';
-import { BillingService } from './billing.service';
-
-@Component({
-  standalone: true,
-  imports: [CommonModule, PageHeader, Callout, Empty],
-  template: `<qai-page-header title="Billing & subscription" subtitle="Current subscription, invoices and provider activity for this workspace."><button (click)="load()">↻ Refresh</button></qai-page-header>
-  <section class="subscription-hero"><div><span class="section-kicker">Current subscription</span><h2>{{ currentPlanName }}</h2><p>{{ statusLabel }} · {{ renewalLabel }}</p></div><div class="subscription-price"><strong>{{ subscription?.provider || '—' }}</strong><span>billing provider</span></div></section>
-  <div class="grid2"><section class="panel"><header><div><b>Subscription details</b><span>Provider-managed access and renewal</span></div></header>
-  <div class="gap"><div><b>Status</b><span>Current subscription state</span></div><span class="pill success">{{ statusLabel }}</span></div>
-  <div class="gap"><div><b>Plan</b><span>Active billing plan</span></div><b>{{ currentPlanName }}</b></div>
-  <div class="gap"><div><b>Next renewal</b><span>Current billing period end</span></div><b>{{ renewalDate | date:'mediumDate' }}</b></div>
-  <div class="gap"><div><b>Subscription ID</b><span>External provider reference</span></div><b>{{ subscription?.externalSubscriptionId || '—' }}</b></div></section>
-  <section class="panel"><header><div><b>Billing activity</b><span>Recent provider events</span></div></header>
-  <div class="gap" *ngFor="let event of events.slice(0,5)"><div><b>{{ event.type }}</b><span>{{ event.occurredAtUtc | date:'medium' }}</span></div><span class="pill">{{ event.status }}</span></div>
-  <qai-empty *ngIf="!events.length" title="No billing events yet" text="Provider webhook activity will appear here."/></section></div>
-  <section class="panel table-wrap"><header><div><b>Invoices & payments</b><span>Persistent payment history from your billing provider</span></div></header>
-  <table *ngIf="invoices.length"><thead><tr><th>Invoice</th><th>Amount due</th><th>Paid</th><th>Status</th><th>Due date</th></tr></thead><tbody><tr *ngFor="let invoice of invoices"><td><b>{{ invoice.externalInvoiceId || invoice.number }}</b></td><td>{{ money(invoice.amountDue ?? invoice.amount, invoice.currency) }}</td><td>{{ money(invoice.amountPaid, invoice.currency) }}</td><td><span class="pill">{{ invoice.status }}</span></td><td>{{ invoice.dueAtUtc | date:'mediumDate' }}</td></tr></tbody></table>
-  <qai-empty *ngIf="!invoices.length" title="No invoices yet" text="Issued invoices and payments will appear here."/></section>
-  <section class="panel table-wrap"><header><div><b>All billing events</b><span>Auditable billing lifecycle history</span></div></header>
-  <table *ngIf="events.length"><thead><tr><th>Type</th><th>Status</th><th>Provider</th><th>Occurred</th></tr></thead><tbody><tr *ngFor="let event of events"><td>{{ event.type }}</td><td><span class="pill">{{ event.status }}</span></td><td>{{ event.provider }}</td><td>{{ event.occurredAtUtc | date:'medium' }}</td></tr></tbody></table>
-  <qai-empty *ngIf="!events.length" title="No billing history yet" text="Billing lifecycle events will appear after provider activity."/></section>`
-})
-export class BillingPage implements OnInit {
-  subscription: any; invoices: any[] = []; events: any[] = [];
-  constructor(private data: BillingService, private auth: AuthService) {}
-  ngOnInit() { this.load(); }
-  load() {
-    const tenantId = this.auth.session()?.tenantId;
-    if (!tenantId) { this.subscription = null; this.invoices = []; this.events = []; return; }
-    this.data.snapshot(tenantId).subscribe(snapshot => {
-      this.subscription = snapshot.subscription || null;
-      this.invoices = snapshot.invoices || [];
-      this.events = snapshot.events || [];
-    });
-  }
-  get currentPlanName() { return this.subscription?.planName || this.subscription?.plan || this.subscription?.planCode || 'Workspace plan'; }
-  get statusLabel() { const v=this.subscription?.status; return v===1 || String(v).toLowerCase()==='active' ? 'Active' : v || 'Not activated'; }
-  get renewalDate() { return this.subscription?.currentPeriodEndsAtUtc || this.subscription?.currentPeriodEndUtc || null; }
-  get renewalLabel() { return this.renewalDate ? `Renews ${new Date(this.renewalDate).toLocaleDateString()}` : 'Renewal date not set'; }
-  money(v: number, currency?: string) { return new Intl.NumberFormat('en-IE',{style:'currency',currency:currency || 'EUR',maximumFractionDigits:2}).format(v || 0); }
-}
+import { BillingLifecycle, BillingService } from './billing.service';
+@Component({standalone:true,imports:[CommonModule,PageHeader,Empty],template:`<qai-page-header title="Billing & subscription" subtitle="Subscription, lifecycle, usage and provider activity."><button (click)="load()">↻ Refresh</button></qai-page-header><section class="subscription-hero"><div><span class="section-kicker">Current subscription</span><h2>{{currentPlanName}}</h2><p>{{statusLabel}} · {{renewalLabel}}</p></div><div class="subscription-price"><strong>{{subscription?.provider||'—'}}</strong><span>billing provider</span></div></section><div class="grid2"><section class="panel"><header><div><b>Billing lifecycle</b><span>Automated enterprise billing state</span></div></header><div class="gap"><div><b>State</b><span>Current lifecycle state</span></div><span class="pill">{{lifecycle?.state||'Active'}}</span></div><div class="gap"><div><b>Trial ends</b></div><b>{{lifecycle?.trialEndsAtUtc|date:'medium'}}</b></div><div class="gap"><div><b>Grace ends</b></div><b>{{lifecycle?.graceEndsAtUtc|date:'medium'}}</b></div><div class="gap"><div><b>Retry attempt</b></div><b>{{lifecycle?.retryAttempt||0}}</b></div><div class="gap"><div><b>Next retry</b></div><b>{{lifecycle?.nextRetryAtUtc|date:'medium'}}</b></div></section><section class="panel"><header><div><b>Usage & quota</b><span>Real-time usage metering</span></div></header><div class="gap" *ngFor="let item of usage"><div><b>{{item.metric}}</b><span>Current usage</span></div><b>{{item.value}}</b></div><qai-empty *ngIf="!usage.length" title="No usage metrics yet" text="Usage appears when metered features are consumed."/></section></div><section class="panel table-wrap"><header><div><b>Invoices & payments</b></div></header><table *ngIf="invoices.length"><thead><tr><th>Invoice</th><th>Amount due</th><th>Paid</th><th>Status</th><th>Due</th></tr></thead><tbody><tr *ngFor="let invoice of invoices"><td><b>{{invoice.externalInvoiceId||invoice.number}}</b></td><td>{{money(invoice.amountDue??invoice.amount,invoice.currency)}}</td><td>{{money(invoice.amountPaid,invoice.currency)}}</td><td><span class="pill">{{invoice.status}}</span></td><td>{{invoice.dueAtUtc|date:'mediumDate'}}</td></tr></tbody></table><qai-empty *ngIf="!invoices.length" title="No invoices yet" text="Issued invoices and payments will appear here."/></section><section class="panel table-wrap"><header><div><b>Billing events</b></div></header><table *ngIf="events.length"><thead><tr><th>Type</th><th>Status</th><th>Provider</th><th>Occurred</th></tr></thead><tbody><tr *ngFor="let event of events"><td>{{event.type}}</td><td><span class="pill">{{event.status}}</span></td><td>{{event.provider}}</td><td>{{event.occurredAtUtc|date:'medium'}}</td></tr></tbody></table><qai-empty *ngIf="!events.length" title="No billing history yet" text="Billing lifecycle events will appear after provider activity."/></section>`})
+export class BillingPage implements OnInit{subscription:any;invoices:any[]=[];events:any[]=[];lifecycle:BillingLifecycle|null=null;usage:any[]=[];constructor(private data:BillingService,private auth:AuthService){}ngOnInit(){this.load();}load(){const tenantId=this.auth.session()?.tenantId;if(!tenantId){this.subscription=null;this.invoices=[];this.events=[];this.lifecycle=null;this.usage=[];return;}this.data.snapshot(tenantId).subscribe(s=>{this.subscription=s.subscription||null;this.invoices=s.invoices||[];this.events=s.events||[];});this.data.lifecycle(tenantId).subscribe(v=>this.lifecycle=v);['api_requests','ai_tokens','storage_mb'].forEach(metric=>this.data.usageMetric(tenantId,metric).subscribe(v=>{this.usage=this.usage.filter(x=>x.metric!==metric).concat(v);}));}get currentPlanName(){return this.subscription?.planName||this.subscription?.plan||this.subscription?.planCode||'Workspace plan';}get statusLabel(){const v=this.subscription?.status;return v===1||String(v).toLowerCase()==='active'?'Active':v||'Not activated';}get renewalDate(){return this.subscription?.currentPeriodEndsAtUtc||this.subscription?.currentPeriodEndUtc||null;}get renewalLabel(){return this.renewalDate?`Renews ${new Date(this.renewalDate).toLocaleDateString()}`:'Renewal date not set';}money(v:number,currency?:string){return new Intl.NumberFormat('en-IE',{style:'currency',currency:currency||'EUR',maximumFractionDigits:2}).format(v||0);}}
