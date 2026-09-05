@@ -1,3 +1,95 @@
-import { CommonModule } from '@angular/common';import { Component } from '@angular/core';import { FormsModule } from '@angular/forms';import { PageHeader } from '../../shared/ui';
-@Component({standalone:true,imports:[CommonModule,FormsModule,PageHeader],template:`<app-page-header title="Autonomous Acquisition" subtitle="API-aligned autonomous discovery, qualification and outreach operations."></app-page-header><div class="toolbar"><input [(ngModel)]="tenantId" placeholder="Tenant ID"><button (click)="load()" [disabled]="loading">{{loading?'Loading…':'Load'}}</button><button (click)="create()">New agent</button><button (click)="verify()">Verify system</button><button (click)="e2e()">Run E2E check</button><label><input type="checkbox" [(ngModel)]="autoRefresh" (change)="toggleRefresh()"> Live refresh</label></div><section class="cards"><div><b>{{agents.length}}</b><span>Agents</span></div><div><b>{{active}}</b><span>Active</span></div><div><b>{{runs.length}}</b><span>Runs</span></div><div><b>{{completed}}</b><span>Completed</span></div><div><b>{{discovered}}</b><span>Discovered</span></div><div><b>{{qualified}}</b><span>Qualified</span></div><div><b>{{emails}}</b><span>Emails sent</span></div></section><section *ngIf="editing" class="panel"><h2>{{editing.id?'Edit':'Create'}} agent</h2><div class="grid"><input [(ngModel)]="editing.name" placeholder="Name"><input [(ngModel)]="editing.templateCode" placeholder="Template code"><input [(ngModel)]="editing.industry" placeholder="Industry"><input [(ngModel)]="editing.region" placeholder="Region"><input [(ngModel)]="editing.minimumScore" type="number" placeholder="Minimum score"><input [(ngModel)]="editing.dailyDiscoveryLimit" type="number" placeholder="Daily discovery limit"><input [(ngModel)]="editing.dailyEmailLimit" type="number" placeholder="Daily email limit"><input [(ngModel)]="editing.runTimeUtc" placeholder="Run time UTC"></div><textarea [(ngModel)]="editing.icpNotes" placeholder="ICP and qualification instructions"></textarea><button (click)="save()">Save</button><button (click)="editing=null">Cancel</button></section><section class="panel"><h2>Agent lifecycle</h2><div *ngIf="!agents.length" class="empty">No agents found for this tenant.</div><table *ngIf="agents.length"><tr><th>Name</th><th>Template</th><th>Status</th><th>Score threshold</th><th>Schedule</th><th>Actions</th></tr><tr *ngFor="let a of agents"><td>{{a.name}}</td><td>{{a.templateCode}}</td><td>{{a.status}}</td><td>{{a.minimumScore}}</td><td>{{a.runTimeUtc||'-'}}</td><td><button (click)="edit(a)">Edit</button><button (click)="action(a,'activate')">Activate</button><button (click)="action(a,'pause')">Pause</button><button (click)="action(a,'stop')">Stop</button><button (click)="action(a,'run')">Run now</button></td></tr></table></section><section class="panel"><h2>Run history & real metrics</h2><div *ngIf="!runs.length" class="empty">No runs yet.</div><table *ngIf="runs.length"><tr><th>Scheduled</th><th>Status</th><th>Manual</th><th>Discovered</th><th>Qualified</th><th>High score</th><th>Emails sent</th></tr><tr *ngFor="let r of runs"><td>{{r.scheduledAtUtc||'-'}}</td><td>{{r.status}}</td><td>{{r.isManual?'Yes':'No'}}</td><td>{{r.discoveredCount||0}}</td><td>{{r.qualifiedCount||0}}</td><td>{{r.highScoreCount||0}}</td><td>{{r.emailsSentCount||0}}</td></tr></table></section><section class="panel"><h2>System verification</h2><div *ngIf="verification;else verifyEmpty"><b>Status: {{verification.status}}</b><div class="metrics"><span>Database: {{verification.database}}</span><span>Orchestrator: {{verification.orchestrator}}</span><span>Templates: {{verification.templates}}</span><span>Agents: {{verification.agents}}</span><span>Runs: {{verification.runs}}</span><span>Memory: {{verification.memory}}</span></div><pre>{{verification | json}}</pre></div><ng-template #verifyEmpty><div class="empty">Run verification to inspect database, orchestrator, templates, agents, runs and memory.</div></ng-template></section><section class="panel"><h2>End-to-end readiness</h2><div *ngIf="e2eResult;else e2eEmpty"><b>Status: {{e2eResult.status}}</b><table><tr><th>Check</th><th>Result</th></tr><tr *ngFor="let c of e2eResult.checks"><td>{{c.name}}</td><td>{{c.ok?'PASS':'PENDING'}}</td></tr></table><h3>Summary</h3><div class="metrics"><span>Active: {{e2eResult.summary?.active}}</span><span>Completed: {{e2eResult.summary?.completed}}</span><span>Failed: {{e2eResult.summary?.failed}}</span><span>Queued: {{e2eResult.summary?.queued}}</span><span>Memory: {{e2eResult.summary?.memory}}</span><span>High score: {{e2eResult.summary?.highScore}}</span></div><pre>{{e2eResult | json}}</pre></div><ng-template #e2eEmpty><div class="empty">Run the E2E check to validate configured agent → active agent → run → memory → discovery → qualification → outreach pipeline.</div></ng-template></section><div *ngIf="error" class="error">{{error}}</div>`,styles:[`.toolbar,.grid,.metrics{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.toolbar input,.grid input,textarea{padding:10px;flex:1;min-width:180px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}.cards div,.panel{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin:16px 0}.cards b{display:block;font-size:28px}.cards span{color:#64748b}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #e5e7eb;text-align:left}.error{color:#b91c1c}.empty{color:#64748b;padding:12px 0}pre{max-height:260px;overflow:auto;background:#f8fafc;padding:12px}`]})
-export class AutonomousAcquisitionPage {tenantId='';agents:any[]=[];runs:any[]=[];verification:any=null;e2eResult:any=null;editing:any=null;error='';loading=false;autoRefresh=false;timer:any;get active(){return this.agents.filter(x=>String(x.status).toLowerCase().includes('active')||x.status===1).length}get completed(){return this.runs.filter(x=>String(x.status).toLowerCase().includes('completed')||x.status===2).length}get discovered(){return this.runs.reduce((n,x)=>n+(x.discoveredCount||0),0)}get qualified(){return this.runs.reduce((n,x)=>n+(x.qualifiedCount||0),0)}get emails(){return this.runs.reduce((n,x)=>n+(x.emailsSentCount||0),0)}async json(url:string){const r=await fetch(url);if(!r.ok)throw new Error(String(r.status));return r.json()}async load(){if(!this.tenantId){this.error='Tenant ID is required.';return}this.loading=true;this.error='';try{const b=`/api/autonomous-acquisition/tenants/${this.tenantId}`;const [a,r]=await Promise.all([this.json(b+'/agents'),this.json(b+'/runs')]);this.agents=a||[];this.runs=r||[]}catch{this.error='Could not load agents or runs from the API.'}finally{this.loading=false}}toggleRefresh(){clearInterval(this.timer);if(this.autoRefresh&&this.tenantId)this.timer=setInterval(()=>this.load(),10000)}async verify(){this.error='';try{this.verification=await this.json('/api/autonomous-acquisition/verification')}catch{this.error='System verification failed.'}}async e2e(){if(!this.tenantId){this.error='Tenant ID is required for E2E.';return}this.error='';try{this.e2eResult=await this.json(`/api/autonomous-acquisition/tenants/${this.tenantId}/e2e`)}catch{this.error='E2E verification failed.'}}create(){this.editing={name:'',templateCode:'fleet',industry:'Fleet',region:'Europe',minimumScore:90,dailyDiscoveryLimit:50,dailyEmailLimit:20,runTimeUtc:'08:00',icpNotes:''}}edit(a:any){this.editing={...a}}async save(){try{const edit=!!this.editing.id;const u=`/api/autonomous-acquisition/tenants/${this.tenantId}/agents${edit?'/'+this.editing.id:''}`;await this.jsonFetch(u,edit?'PUT':'POST',this.editing);this.editing=null;await this.load()}catch{this.error='Could not save agent.'}}async action(a:any,action:string){try{await this.jsonFetch(`/api/autonomous-acquisition/tenants/${this.tenantId}/agents/${a.id}/${action}`,'POST');await this.load()}catch{this.error='Agent action failed.'}}async jsonFetch(url:string,method:string,body?:any){const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});if(!r.ok)throw new Error(String(r.status));return r.json().catch(()=>null)}}
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { PageHeader } from '../../shared/ui';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule, PageHeader],
+  templateUrl: './autonomous-acquisition.page.html',
+  styleUrl: './autonomous-acquisition.page.css'
+})
+export class AutonomousAcquisitionPage {
+  tenantId = '';
+  agents: any[] = [];
+  runs: any[] = [];
+  verification: any = null;
+  e2eResult: any = null;
+  editing: any = null;
+  error = '';
+  loading = false;
+  autoRefresh = false;
+  timer: any;
+
+  get active() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
+  get completed() { return this.runs.filter(x => String(x.status).toLowerCase().includes('completed') || x.status === 2).length; }
+  get discovered() { return this.runs.reduce((n, x) => n + (x.discoveredCount || 0), 0); }
+  get qualified() { return this.runs.reduce((n, x) => n + (x.qualifiedCount || 0), 0); }
+  get emails() { return this.runs.reduce((n, x) => n + (x.emailsSentCount || 0), 0); }
+
+  async json(url: string) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(String(response.status));
+    return response.json();
+  }
+
+  async load() {
+    if (!this.tenantId) { this.error = 'Tenant ID is required.'; return; }
+    this.loading = true;
+    this.error = '';
+    try {
+      const base = `/api/autonomous-acquisition/tenants/${this.tenantId}`;
+      const [agents, runs] = await Promise.all([this.json(`${base}/agents`), this.json(`${base}/runs`)]);
+      this.agents = agents || [];
+      this.runs = runs || [];
+    } catch { this.error = 'Could not load agents or runs from the API.'; }
+    finally { this.loading = false; }
+  }
+
+  toggleRefresh() {
+    clearInterval(this.timer);
+    if (this.autoRefresh && this.tenantId) this.timer = setInterval(() => this.load(), 10000);
+  }
+
+  async verify() {
+    this.error = '';
+    try { this.verification = await this.json('/api/autonomous-acquisition/verification'); }
+    catch { this.error = 'System verification failed.'; }
+  }
+
+  async e2e() {
+    if (!this.tenantId) { this.error = 'Tenant ID is required for E2E.'; return; }
+    this.error = '';
+    try { this.e2eResult = await this.json(`/api/autonomous-acquisition/tenants/${this.tenantId}/e2e`); }
+    catch { this.error = 'E2E verification failed.'; }
+  }
+
+  create() {
+    this.editing = { name: '', templateCode: 'fleet', industry: 'Fleet', region: 'Europe', minimumScore: 90, dailyDiscoveryLimit: 50, dailyEmailLimit: 20, runTimeUtc: '08:00', icpNotes: '' };
+  }
+
+  edit(agent: any) { this.editing = { ...agent }; }
+
+  async save() {
+    try {
+      const isEdit = !!this.editing.id;
+      const url = `/api/autonomous-acquisition/tenants/${this.tenantId}/agents${isEdit ? `/${this.editing.id}` : ''}`;
+      await this.jsonFetch(url, isEdit ? 'PUT' : 'POST', this.editing);
+      this.editing = null;
+      await this.load();
+    } catch { this.error = 'Could not save agent.'; }
+  }
+
+  async action(agent: any, action: string) {
+    try {
+      await this.jsonFetch(`/api/autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/${action}`, 'POST');
+      await this.load();
+    } catch { this.error = 'Agent action failed.'; }
+  }
+
+  async jsonFetch(url: string, method: string, body?: any) {
+    const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    if (!response.ok) throw new Error(String(response.status));
+    return response.json().catch(() => null);
+  }
+}
