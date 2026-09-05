@@ -28,6 +28,7 @@ export const routes: Routes = [
   {path:'billing',loadComponent:()=>import('./features/billing/billing.page').then(m=>m.BillingPage)},
   {path:'admin/modules',loadComponent:()=>import('./features/module-admin/module-admin.page').then(m=>m.ModuleAdminPage)},
   {path:'admin/tenants/:tenantId/provisioning',loadComponent:()=>import('./features/module-admin/provisioning.page').then(m=>m.ProvisioningPage)},
+  {path:'admin/tenants/:tenantId/lifecycle',loadComponent:()=>import('./features/module-admin/tenant-lifecycle.page').then(m=>m.TenantLifecyclePage)},
   {path:'users',loadComponent:()=>import('./features/users/users.page').then(m=>m.UsersPage)},
   {path:'security',loadComponent:()=>import('./features/security/security.page').then(m=>m.SecurityPage)},
   {path:'white-label',loadComponent:()=>import('./features/white-label/white-label.page').then(m=>m.WhiteLabelPage)},
