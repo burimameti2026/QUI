@@ -8,6 +8,7 @@ export interface TenantEntitlements { tenantId:string; plan:string; licenseStatu
 export interface TenantSummary { id:string; name:string; slug:string; contactEmail:string; status:string; createdAtUtc:string; updatedAtUtc:string }
 export interface ProvisioningModule { moduleCode:string; status:string; attemptCount:number; lastError:string|null; lastAttemptAtUtc:string|null; completedAtUtc:string|null; nextRetryAtUtc:string|null; updatedAtUtc:string }
 export interface ProvisioningStatus { tenantId:string; modules:ProvisioningModule[] }
+export interface TenantLifecycleEvent { tenantId:string; type:string; status:string; message:string; occurredAtUtc:string; data:Record<string,string>|null }
 
 @Injectable({providedIn:'root'})
 export class ModuleAdminService {
@@ -23,6 +24,7 @@ export class ModuleAdminService {
   activateTenant(tenantId:string){return this.http.post<void>(`${this.identity}/tenants/${tenantId}/activate`,{})} suspendTenant(tenantId:string){return this.http.post<void>(`${this.identity}/tenants/${tenantId}/suspend`,{})}
   loadPresentationDemo(tenantId:string){return this.api.post<any>(`demo-scenarios/tenant/${tenantId}/reset-and-install`,{})}
   provisioning(tenantId:string){return this.api.get<ProvisioningStatus>(`admin/tenants/${tenantId}/provisioning`)}
+  lifecycle(tenantId:string){return this.api.get<TenantLifecycleEvent[]>(`tenant-lifecycle/${tenantId}?take=100`)}
   retryModule(tenantId:string,moduleCode:string){return this.api.post<any>(`admin/tenants/${tenantId}/provisioning/${encodeURIComponent(moduleCode)}/retry`,{})}
   retryFailed(tenantId:string){return this.api.post<any>(`admin/tenants/${tenantId}/provisioning/retry-failed`,{})}
 }
