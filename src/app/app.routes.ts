@@ -8,6 +8,7 @@ export const routes: Routes = [
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
+  {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
   {path:'inbox',loadComponent:()=>import('./features/inbox/inbox.page').then(m=>m.InboxPage)},
   {path:'tickets',loadComponent:()=>import('./features/tickets/tickets.page').then(m=>m.TicketsPage)},
   {path:'crm/contacts',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/crm/contacts.page').then(m=>m.ContactsPage)},
