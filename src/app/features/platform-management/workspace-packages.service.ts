@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 
 export type WorkspacePackageId = 'fusionfleet-promotion' | 'qualifyai-acquisition' | 'blank';
 export interface WorkspacePackage { id: WorkspacePackageId; name: string; description: string; requiredModules: string[]; }
 export interface PackageInstallRequest { tenantId?: string; packageId: WorkspacePackageId; }
 export interface PackageInstallResult { packageId: string; scenario: string; prospects: number; campaigns: number; opportunities: number; meetings: number; tickets: number; automations: number; }
+interface ApiPackageInstallResult { packageId:string; result:PackageInstallResult; }
 
 @Injectable({ providedIn: 'root' })
 export class WorkspacePackagesService {
@@ -18,6 +19,6 @@ export class WorkspacePackagesService {
   install(request: PackageInstallRequest): Observable<PackageInstallResult> {
     const body={packageId:request.packageId};
     const path=request.tenantId?`workspace-packages/tenant/${request.tenantId}/install`:'workspace-packages/install';
-    return this.api.post<PackageInstallResult>(path, body);
+    return this.api.post<ApiPackageInstallResult>(path, body).pipe(map(response=>response.result));
   }
 }
