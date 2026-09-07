@@ -11,8 +11,8 @@ interface ApiPackageInstallResult { packageId:string; result:PackageInstallResul
 @Injectable({ providedIn: 'root' })
 export class WorkspacePackagesService {
   readonly packages: WorkspacePackage[] = [
-    { id: 'fusionfleet-promotion', name: 'FusionFleet Promotion', description: 'Logistics ICP, campaign, pipeline journey, daily acquisition automation and agent.', requiredModules: ['crm','ai_agents','automations'] },
-    { id: 'qualifyai-acquisition', name: 'QualifyAI Acquisition', description: 'Revenue operations ICP, acquisition campaign, qualified opportunity journey, automation and agent.', requiredModules: ['crm','ai_agents','automations'] },
+    { id: 'fusionfleet-promotion', name: 'FusionFleet Promotion', description: 'Logistics ICP, campaign, pipeline journey, daily acquisition automation and agent.', requiredModules: ['crm','golden_pipeline','automation'] },
+    { id: 'qualifyai-acquisition', name: 'QualifyAI Acquisition', description: 'Revenue operations ICP, acquisition campaign, qualified opportunity journey, automation and agent.', requiredModules: ['crm','golden_pipeline','automation'] },
     { id: 'blank', name: 'Blank Workspace', description: 'No package data; configure modules manually.', requiredModules: [] }
   ];
   constructor(private readonly api: ApiService) {}
