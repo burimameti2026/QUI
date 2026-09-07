@@ -28,6 +28,7 @@ export const routes: Routes = [
   {path:'analytics',canActivate:[requireModule('analytics')],loadComponent:()=>import('./features/analytics/analytics.page').then(m=>m.AnalyticsPage)},
   {path:'billing',loadComponent:()=>import('./features/billing/billing.page').then(m=>m.BillingPage)},
   {path:'platform',loadComponent:()=>import('./features/platform-management/platform-management.page').then(m=>m.PlatformManagementPage)},
+  {path:'platform/packages',loadComponent:()=>import('./features/platform-management/workspace-packages.page').then(m=>m.WorkspacePackagesPage)},
   {path:'admin/modules',loadComponent:()=>import('./features/module-admin/module-admin.page').then(m=>m.ModuleAdminPage)},
   {path:'admin/tenants/:tenantId/provisioning',loadComponent:()=>import('./features/module-admin/provisioning.page').then(m=>m.ProvisioningPage)},
   {path:'admin/tenants/:tenantId/lifecycle',loadComponent:()=>import('./features/module-admin/tenant-lifecycle.page').then(m=>m.TenantLifecyclePage)},
