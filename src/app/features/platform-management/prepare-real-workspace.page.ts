@@ -18,9 +18,10 @@ export class PrepareRealWorkspacePage {
  private readonly service=inject(RealWorkspaceService); options:RealWorkspaceOptions|null=null; result:RealWorkspaceResult|null=null; step=1; useCase=''; templateKey=''; industry=''; region=''; countries=''; name=''; dailyDiscoveryLimit=25; minimumScore=70; saving=false; status=''; error=false;
  ngOnInit(){this.service.options().subscribe({next:x=>this.options=x,error:()=>this.fail('Could not load workspace options.')});}
  get templates(){return (this.options?.templates||[]).filter(x=>!this.useCase||x.useCaseId===this.useCase);}
- get ready(){return !!this.useCase&&!!this.templateKey&&!!this.industry&&!!this.region;}
+ get ready(){return !!this.useCase&&!!this.templateKey&&!!this.industry&&!!this.region&&!!this.tenantId();}
  selectArea(id:string){this.useCase=id;this.templateKey='';this.step=2;}
  start(){if(!this.ready)return;this.saving=true;this.status='';this.error=false;this.service.activate(this.request()).subscribe({next:x=>{this.result=x;this.step=3;this.saving=false;this.status='Workspace automation started successfully.'},error:e=>{this.saving=false;this.fail(e?.error?.detail||e?.error?.error||'Could not start workspace automation.')}});}
  private request():RealWorkspaceRequest{return {tenantId:this.tenantId(),name:this.name||null,useCase:this.useCase,templateKey:this.templateKey,industry:this.industry,region:this.region,countriesJson:JSON.stringify(this.countries.split(',').map(x=>x.trim()).filter(Boolean)),dailyDiscoveryLimit:this.dailyDiscoveryLimit,minimumScore:this.minimumScore};}
- private tenantId(){return localStorage.getItem('tenantId')||localStorage.getItem('qai_tenant_id')||'';} private fail(message:string){this.status=message;this.error=true;}
+ private tenantId(){const keys=['tenantId','qai_tenant_id','tenant_id','currentTenantId'];for(const key of keys){const value=localStorage.getItem(key);if(value&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value))return value;}return '';}
+ private fail(message:string){this.status=message;this.error=true;}
 }
