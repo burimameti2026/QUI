@@ -9,7 +9,7 @@ import { AuthService } from '../../core/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './landing.page.html',
-  styleUrls: ['./landing.page.css', './landing.scale.css']
+  styleUrls: ['./landing.page.css', './landing.scale.css', './landing.polish.css']
 })
 export class LandingPage {
   readonly year = new Date().getFullYear();
