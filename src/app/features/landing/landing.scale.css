@@ -1,0 +1,38 @@
+/* Landing-only visual zoom and RaiseLead AI brand polish. */
+
+@media (min-width: 1024px) {
+  :host .landing-shell {
+    zoom: 0.9;
+    width: 111.111%;
+  }
+}
+
+.landing-nav .brand > span {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.landing-nav .brand b {
+  letter-spacing: -0.35px;
+}
+
+.landing-nav .brand strong {
+  display: inline-block;
+  margin-left: 1px;
+  font-size: 1.28em;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  transform: translateY(0.5px);
+}
+
+@media (max-width: 1023px) {
+  .landing-nav .brand > span {
+    gap: 7px;
+  }
+
+  .landing-nav .brand strong {
+    font-size: 1.22em;
+  }
+}
