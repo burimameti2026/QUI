@@ -1,0 +1,122 @@
+/* Landing-only visual polish: typography, icon hierarchy and brand treatment. */
+.landing-nav > nav a,
+.landing-nav .text-link {
+  font-size: 14px;
+  letter-spacing: .01em;
+  font-weight: 700;
+}
+
+.landing-nav > nav { gap: 30px; }
+
+.brand > span {
+  gap: 9px;
+  align-items: baseline;
+}
+
+.brand b {
+  letter-spacing: -.045em;
+  font-size: 20px;
+}
+
+.brand strong {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 25px;
+  line-height: 1;
+  letter-spacing: -.05em;
+  font-weight: 850;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border-radius: 10px;
+  box-shadow: 0 7px 18px rgba(40, 95, 202, .22);
+}
+
+.section-label { font-size: 11px; }
+
+.hero-copy > p,
+.section-intro p,
+.pricing-intro p,
+.operations-copy > p,
+.security-section > div:first-child > p,
+.contact-copy p {
+  font-size: 16px;
+  line-height: 1.68;
+}
+
+.hero-proof span { font-size: 12px; }
+
+.audience-strip b { font-size: 13px; }
+
+.capability-grid article > small,
+.module-price-grid article > span,
+.pricing-eyebrow,
+.contact-card > div:first-child > span {
+  font-size: 11px;
+  letter-spacing: .08em;
+  font-weight: 800;
+}
+
+.capability-grid h3 { font-size: 21px; }
+.capability-grid p { font-size: 14px; }
+.module-price-grid h3 { font-size: 18px; }
+.module-price-grid p { font-size: 13px; }
+
+.capability-icon,
+.price-icon {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 21px;
+  box-shadow: 0 8px 22px rgba(32, 58, 101, .10);
+}
+
+.capability-grid article {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.capability-grid article:hover {
+  transform: translateY(-3px);
+  border-color: #b8c9e2;
+  box-shadow: 0 16px 34px rgba(20, 42, 78, .08);
+}
+
+.primary-cta,
+.nav-cta,
+.secondary-cta {
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.product-window {
+  box-shadow: 0 28px 72px rgba(23, 49, 92, .18);
+}
+
+.floating-card > i {
+  font-size: 15px;
+}
+
+.floating-card small { font-size: 8px; }
+.floating-card b { font-size: 10px; }
+
+@media (max-width: 900px) {
+  .landing-nav > nav a,
+  .landing-nav .text-link { font-size: 13px; }
+}
+
+@media (max-width: 620px) {
+  .brand b { font-size: 18px; }
+  .brand strong { font-size: 22px; }
+  .brand-mark { width: 31px; height: 31px; }
+  .hero-copy > p,
+  .section-intro p,
+  .pricing-intro p,
+  .operations-copy > p,
+  .security-section > div:first-child > p,
+  .contact-copy p { font-size: 15px; }
+}
