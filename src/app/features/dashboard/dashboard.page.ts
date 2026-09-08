@@ -17,6 +17,7 @@ export class DashboardPage implements OnInit {
   summary: Partial<DashboardSummary> = {};
   loaded = false;
   installing = false;
+  resetting = false;
   error = '';
   readonly tenantLabel = localStorage.getItem('qai-tenant') || 'current tenant';
 
@@ -61,6 +62,7 @@ export class DashboardPage implements OnInit {
   }
 
   prepareRealWorkspace(): void {
+    this.resetting = true;
     void this.router.navigateByUrl('/platform/prepare-workspace');
   }
 
