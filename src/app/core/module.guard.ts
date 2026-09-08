@@ -11,8 +11,8 @@ export function requireModule(code: string): CanActivateFn {
     return runtime.load().pipe(
       map(() => runtime.isActive() && runtime.hasModule(code)
         ? true
-        : router.createUrlTree(['/billing'], { queryParams: { reason: 'module-unavailable', module: code } })),
-      catchError(() => of(router.createUrlTree(['/billing'], { queryParams: { reason: 'tenant-runtime-unavailable' } })))
+        : router.createUrlTree(['/dashboard'], { queryParams: { reason: 'module-unavailable', module: code } })),
+      catchError(() => of(router.createUrlTree(['/dashboard'], { queryParams: { reason: 'tenant-runtime-unavailable', module: code } })))
     );
   };
 }
