@@ -5,14 +5,14 @@
       <h1>Product Catalog</h1>
       <p>Manage product information, markets, languages and publication from one workspace.</p>
     </div>
-    <button class="primary">+ Add Product</button>
+    <a class="primary" routerLink="/catalog/new">+ Add Product</a>
   </header>
 
   <div class="metrics">
-    <article><strong>3</strong><span>Total products</span></article>
-    <article><strong>2</strong><span>Published</span></article>
-    <article><strong>1</strong><span>Draft</span></article>
-    <article><strong>4</strong><span>Languages</span></article>
+    <article><strong>{{ products.length }}</strong><span>Total products</span></article>
+    <article><strong>{{ publishedCount }}</strong><span>Published</span></article>
+    <article><strong>{{ draftCount }}</strong><span>Draft / review</span></article>
+    <article><strong>{{ languageCount }}</strong><span>Languages in use</span></article>
   </div>
 
   <div class="toolbar">
@@ -23,13 +23,16 @@
   </div>
 
   <div class="table-card">
-    <div class="row header"><span>PRODUCT</span><span>CATEGORY</span><span>MARKETS</span><span>STATUS</span><span></span></div>
+    <div class="row header"><span>PRODUCT</span><span>CODE</span><span>LANGUAGES</span><span>STATUS</span><span></span></div>
     <div class="row" *ngFor="let product of products">
-      <strong>{{ product.name }}</strong>
-      <span>{{ product.category }}</span>
-      <span>{{ product.markets }}</span>
-      <span class="status" [class.draft]="product.status === 'Draft'">{{ product.status }}</span>
-      <button class="manage">Manage →</button>
+      <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'Renova product' }}</small></div>
+      <span>{{ product.code }}</span>
+      <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
+      <span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span>
+      <a class="manage" [routerLink]="['/catalog', product.id]">Manage →</a>
     </div>
+    <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first Renova product to start the promotion workflow.</div>
+    <div class="empty" *ngIf="loading">Loading catalog…</div>
+    <div class="empty error" *ngIf="!loading && error">{{ error }}</div>
   </div>
 </section>
