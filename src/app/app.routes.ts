@@ -14,6 +14,7 @@ export const routes: Routes = [
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
   {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
+  {path:'acquisition/approval-queue',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/approval-queue.page').then(m=>m.ApprovalQueuePage)},
   {path:'inbox',canActivate:[requireModule('inbox')],loadComponent:()=>import('./features/inbox/inbox.page').then(m=>m.InboxPage)},
   {path:'tickets',canActivate:[requireModule('ticketing')],loadComponent:()=>import('./features/tickets/tickets.page').then(m=>m.TicketsPage)},
   {path:'crm/contacts',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/crm/contacts.page').then(m=>m.ContactsPage)},
