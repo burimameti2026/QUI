@@ -19,6 +19,7 @@ export class ShellComponent {
  {group:'01 — PREPARE',label:'Public Renova Portal',url:'/renova/portal',icon:'↗',module:'core',permission:''},
  {group:'02 — FIND & REACH',label:'Prospect Discovery',url:'/discover',icon:'⌕',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Autonomous Acquisition',url:'/acquisition/autonomous',icon:'✦',module:'crm',permission:'crm.read'},
+ {group:'02 — FIND & REACH',label:'Acquisition Approval Queue',url:'/acquisition/approval-queue',icon:'✓',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Campaigns',url:'/campaigns',icon:'↗',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Replies & Inbox',url:'/inbox',icon:'▱',module:'inbox',permission:'conversations.read'},
  {group:'03 — CONVERT',label:'Qualified Leads',url:'/crm/leads',icon:'◆',module:'crm',permission:'crm.read'},
