@@ -1,74 +1,53 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
-import { DashboardService } from './dashboard.service';
-
-interface DashboardOpportunity { company: string; country: string; intent: string; score: number; value: number; }
-interface DashboardGap { topic: string; count: number; impact: string; }
-interface DashboardSummary {
-  contacts: number; leads: number; hotLeads: number; pipeline: number; openConversations: number; openTickets: number;
-  influencedRevenue: number; wonRevenue: number; automationActions: number; meetingsBooked: number; completedRuns: number;
-  estimatedHoursSaved: number; opportunities: DashboardOpportunity[]; knowledgeGaps: DashboardGap[];
-}
 
 @Component({ standalone: true, imports: [CommonModule, PageHeader], templateUrl: './dashboard.page.html', styleUrl: './dashboard.page.css' })
 export class DashboardPage implements OnInit {
-  summary: Partial<DashboardSummary> = {};
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
   loaded = false;
-  installing = false;
-  resetting = false;
   error = '';
-  readonly tenantLabel = localStorage.getItem('qai-tenant') || 'current tenant';
+  products: any[] = [];
+  plans: any[] = [];
+  agents: any[] = [];
+  runs: any[] = [];
+  acquisition: any = {};
+  campaigns: any[] = [];
 
-  constructor(private readonly dashboard: DashboardService, private readonly router: Router) {}
+  get tenantId() { return this.auth.session()?.tenantId || ''; }
+  get activeAgentCount() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
+  get publishedProducts() { return this.products.filter(x => String(x.publication?.status || '').toLowerCase() === 'published').length; }
+  get activePlans() { return this.plans.filter(x => String(x.status).toLowerCase() === 'active').length; }
+  get recentRun() { return this.runs[0]; }
+  get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
+  get qualifiedProspects() { return Number(this.acquisition.hot || 0); }
 
-  ngOnInit(): void { this.refresh(); }
+  ngOnInit(): void { void this.refresh(); }
 
-  get hasData(): boolean {
-    const d = this.summary;
-    return Number(d.contacts || 0) + Number(d.leads || 0) + Number(d.openConversations || 0) + Number(d.openTickets || 0) + Number(d.pipeline || 0) > 0;
+  async refresh() {
+    this.loaded = false; this.error = '';
+    try {
+      const requests = await Promise.all([
+        firstValueFrom(this.api.get<any[]>('renova/catalog/products')),
+        firstValueFrom(this.api.get<any[]>('renova/catalog/promotion-plans')),
+        firstValueFrom(this.api.get<any[]>('acquisition/campaigns')),
+        firstValueFrom(this.api.get<any>('acquisition/overview')),
+        this.tenantId ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`)) : Promise.resolve([]),
+        this.tenantId ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/runs`)) : Promise.resolve([])
+      ]);
+      [this.products, this.plans, this.campaigns, this.acquisition, this.agents, this.runs] = requests;
+    } catch (error: any) {
+      this.error = error?.error?.detail || 'Renova command center could not load live workspace data.';
+    } finally { this.loaded = true; }
   }
 
-  get revenueConversion(): number {
-    const influenced = Number(this.summary.influencedRevenue || 0);
-    const won = Number(this.summary.wonRevenue || 0);
-    if (influenced <= 0 || won <= 0) return 0;
-    return Math.min(100, Math.round((won / influenced) * 100));
-  }
-
-  refresh(): void {
-    this.error = '';
-    this.dashboard.summary<DashboardSummary>().subscribe({
-      next: response => { this.summary = response; this.loaded = true; },
-      error: response => {
-        this.loaded = true;
-        this.error = response?.error?.detail || response?.error?.title || `Dashboard request failed (${response.status || 'network error'}).`;
-      }
-    });
-  }
-
-  loadPresentationDemo(): void {
-    if (!confirm('Load the presentation demo for this tenant? This clears current business data, then adds only [PRESENTATION] .example prospects, a sample campaign, demo meeting, workflows and support records. It never sends real email.')) return;
-    this.installing = true;
-    this.error = '';
-    this.dashboard.resetAndInstallDemo().subscribe({
-      next: () => { this.installing = false; this.refresh(); },
-      error: response => {
-        this.installing = false;
-        this.error = response?.error?.detail || response?.error?.title || 'Presentation demo could not be loaded.';
-      }
-    });
-  }
-
-  prepareRealWorkspace(): void {
-    this.resetting = true;
-    void this.router.navigateByUrl('/platform/prepare-workspace');
-  }
-
-  go(path: string): void { void this.router.navigateByUrl(path); }
-
-  money(value: number | undefined): string {
-    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value || 0);
-  }
+  go(path: string) { void this.router.navigateByUrl(path); }
+  money(value: number) { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value || 0); }
 }
