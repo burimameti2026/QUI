@@ -1,0 +1,35 @@
+<section class="catalog-shell">
+  <header class="catalog-hero">
+    <div>
+      <span class="eyebrow">RENOVA PRODUCT HUB</span>
+      <h1>Product Catalog</h1>
+      <p>Manage product information, markets, languages and publication from one workspace.</p>
+    </div>
+    <button class="primary">+ Add Product</button>
+  </header>
+
+  <div class="metrics">
+    <article><strong>3</strong><span>Total products</span></article>
+    <article><strong>2</strong><span>Published</span></article>
+    <article><strong>1</strong><span>Draft</span></article>
+    <article><strong>4</strong><span>Languages</span></article>
+  </div>
+
+  <div class="toolbar">
+    <input placeholder="Search products" />
+    <button>Categories</button>
+    <button>Markets</button>
+    <button>Publication status</button>
+  </div>
+
+  <div class="table-card">
+    <div class="row header"><span>PRODUCT</span><span>CATEGORY</span><span>MARKETS</span><span>STATUS</span><span></span></div>
+    <div class="row" *ngFor="let product of products">
+      <strong>{{ product.name }}</strong>
+      <span>{{ product.category }}</span>
+      <span>{{ product.markets }}</span>
+      <span class="status" [class.draft]="product.status === 'Draft'">{{ product.status }}</span>
+      <button class="manage">Manage →</button>
+    </div>
+  </div>
+</section>
