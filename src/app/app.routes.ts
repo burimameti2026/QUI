@@ -6,6 +6,7 @@ export const routes: Routes = [
  { path: 'login', loadComponent:()=>import('./features/auth/login.page').then(m=>m.LoginPage) },
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
+  {path:'catalog',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/catalog.page').then(m=>m.CatalogPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
   {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
