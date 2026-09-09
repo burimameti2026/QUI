@@ -1,0 +1,39 @@
+<main class="renova-abb">
+  <div class="brand-line"></div>
+  <div class="topbar"><span>{{ t.footer }}</span><div><a href="#locations">{{ t.locations }}</a><a href="#contact">{{ t.contact }}</a><span>+389 44 487 300</span></div></div>
+  <header class="nav">
+    <a class="brand" href="/renova"><img src="https://renova.com.mk/wp-content/uploads/2022/11/Renova640x105.png" alt="RENOVA PUTZ"></a>
+    <nav><a href="#products">{{ t.products }}</a><a href="#solutions">{{ t.solutions }}</a><a href="#projects">{{ t.projects }}</a><a href="#company">{{ t.company }}</a><a href="#news">{{ t.news }}</a><a href="#locations">{{ t.locations }}</a><a href="#contact">{{ t.contact }}</a></nav>
+    <a class="nav-cta" href="#distributor">{{ t.distributor }} →</a>
+    <div class="langs"><button *ngFor="let lang of languages" [class.active]="language===lang" (click)="setLanguage(lang)">{{ lang.toUpperCase() }}</button></div>
+  </header>
+
+  <section class="hero" (mouseenter)="pauseHeroV2()" (mouseleave)="resumeHeroV2()">
+    <div class="hero-copy"><span class="eyebrow">{{ heroKicker }}</span><div class="rule">—</div><h1>{{ heroTitle }}</h1><p>{{ heroText }}</p><div class="actions"><a class="button red" [href]="hero.primaryUrl">{{ heroPrimaryLabel }} <span>→</span></a><a class="text-link" [href]="hero.secondaryUrl">{{ heroSecondaryLabel }} <span>↗</span></a></div></div>
+    <div class="hero-image" [style.background-image]="'url(' + hero.imageUrl + ')'" aria-hidden="true"><div class="image-label">{{ heroKicker }}</div></div>
+    <div class="hero-controls"><button (click)="prevHeroV2()">←</button><button *ngFor="let item of heroesV2;let i=index" class="dot" [class.active]="i===heroIndex" (click)="heroIndex=i"></button><button (click)="nextHeroV2()">→</button></div>
+  </section>
+
+  <section class="intro" id="company"><div><span class="eyebrow">RENOVA / 1992—</span><div class="rule">—</div><h2>{{ t.company }}.</h2></div><div><p class="lead">{{ companyIntro || t.heroText }}</p><a class="text-link" href="#locations">{{ t.facilities }} <span>↓</span></a></div></section>
+
+  <section class="solutions" id="solutions"><header><span class="eyebrow">RENOVA / {{ t.solutions }}</span><div class="rule">—</div><h2>{{ t.industries }}</h2></header><div class="grid four"><article *ngFor="let s of solutions"><b class="number">{{ s[0] }}</b><h3>{{ s[1] }}</h3><p>{{ s[2] }}</p><a href="#products">{{ t.explore }} →</a></article></div></section>
+
+  <section class="catalog" id="products"><header class="row"><div><span class="eyebrow">{{ t.catalog }}</span><div class="rule">—</div><h2>{{ t.featured }}</h2></div><span>{{ products.length }} {{ t.products }}</span></header><div *ngIf="loading" class="state">{{ t.catalog }}</div><div *ngIf="error" class="state error">{{ error }}</div><div class="product-grid" *ngIf="!loading && !error"><button *ngFor="let p of products;let i=index" class="product" (click)="selected=p"><div class="photo" [style.background-image]="'url(' + getProductImage(p) + ')' "><span>0{{i+1}}</span></div><div><small>{{ p.code || 'RENOVA' }}</small><h3>{{ p.name }}</h3><p>{{ p.shortDescription }}</p><b>{{ t.view }} →</b></div></button></div></section>
+
+  <section class="numbers"><header><span class="eyebrow">RENOVA / FACTS</span><div class="rule">—</div><h2>{{ t.numbers }}</h2></header><div class="grid four"><article *ngFor="let k of kpis"><strong>{{ k[0] }}</strong><h3>{{ k[1] }}</h3><p>{{ k[2] }}</p></article></div></section>
+
+  <section class="detail" *ngIf="selected"><div class="detail-copy"><span class="eyebrow">{{ t.detail }}</span><div class="rule">—</div><h2>{{ selected.name }}</h2><p class="lead">{{ selected.shortDescription }}</p><p>{{ selected.description }}</p><a class="button red" href="#contact">{{ t.request }} →</a></div><div class="detail-image" [style.background-image]="'url(' + getProductImage(selected) + ')' "></div></section>
+
+  <section class="stories" id="projects"><header><span class="eyebrow">RENOVA / {{ t.projects }}</span><div class="rule">—</div><h2>{{ t.stories }}</h2></header><div class="story-grid"><article *ngFor="let s of stories"><div class="story-image" [style.background-image]="s[4] ? 'url(' + s[4] + ')' : 'url(https://renova.com.mk/wp-content/uploads/2024/07/OBJEKTET-ENArtboard-1.jpg)'"><span>{{ s[2] }}</span></div><div><h3>{{ s[0] }}</h3><p>{{ s[1] }}</p><small>{{ s[3] }}</small></div></article></div></section>
+
+  <section class="news" id="news"><header><span class="eyebrow">RENOVA / NEWS & EVENTS</span><div class="rule">—</div><h2>{{ t.latest }}</h2></header><div class="news-grid"><article *ngFor="let e of events;let i=index"><div class="news-image"><span>0{{i+1}}</span></div><div><h3>{{ e[0] }}</h3><p>{{ e[1] }}</p><a class="text-link" [href]="e[2] || 'https://renova.com.mk/'" target="_blank">{{ t.readMore }} ↗</a></div></article></div></section>
+
+  <section class="social"><div><span class="eyebrow">RENOVA / SOCIAL</span><div class="rule">—</div><h2>RENOVA in the network.</h2><p>{{ t.contactText }}</p></div><div class="social-grid"><a href="https://www.linkedin.com/company/renova-putz/" target="_blank"><span>01</span><strong>LinkedIn</strong><b>↗</b></a><a href="#contact"><span>02</span><strong>{{ t.contact }}</strong><b>→</b></a></div></section>
+
+  <section class="locations" id="locations"><header><span class="eyebrow">RENOVA / NETWORK</span><div class="rule">—</div><h2>{{ t.locationsTitle }}</h2></header><div class="location-grid"><div class="map"><span>RENOVA / BALKANS</span></div><div class="location-list"><article *ngFor="let l of locations"><small>{{ l[1] }}</small><h3>{{ l[0] }}</h3><p>{{ l[2] }}</p><a [href]="l[3]" target="_blank">{{ t.map }} ↗</a></article></div></div></section>
+
+  <section class="partner" id="distributor"><div><span class="eyebrow">{{ t.partnerKicker }}</span><div class="rule">—</div><h2>{{ t.partnerTitle }}</h2><p>{{ t.partnerText }}</p></div><a class="button light" href="#contact">{{ t.distributor }} →</a></section>
+
+  <section class="contact" id="contact"><div><span class="eyebrow">{{ t.contactKicker }}</span><div class="rule">—</div><h2>{{ t.contactTitle }}</h2><p>{{ t.contactText }}</p><p>+389 44 487 300<br>info&#64;renova.mk</p></div><form (ngSubmit)="submitInquiry()"><label>{{ t.name }}<input [(ngModel)]="inquiry.name" name="name" required></label><label>{{ t.companyName }}<input [(ngModel)]="inquiry.company" name="company"></label><label>{{ t.email }}<input [(ngModel)]="inquiry.email" name="email" type="email" required></label><label>{{ t.phone }}<input [(ngModel)]="inquiry.phone" name="phone"></label><label>{{ t.message }}<textarea [(ngModel)]="inquiry.message" name="message" rows="5"></textarea></label><button class="button red" type="submit" [disabled]="inquiryBusy || !inquiry.name || !inquiry.email">{{ inquiryBusy ? t.sending : t.send }} →</button></form></section>
+  <footer><span>{{ t.footer }}</span><span>RENOVA · 1992—</span></footer>
+</main>
