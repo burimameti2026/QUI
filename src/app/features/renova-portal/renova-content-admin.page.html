@@ -1,0 +1,15 @@
+<section class="content-admin">
+  <header><div><span>RENOVA / CONTENT</span><h1>Portal carousel</h1><p>Manage the public Renova hero carousel. Content is tenant-scoped and saved through the portal content API.</p></div><div class="actions"><button (click)="reload()">Reload</button><button class="primary" (click)="add()">+ Add slide</button><button class="publish" (click)="save()" [disabled]="saving">{{ saving ? 'Saving…' : 'Save & publish' }}</button></div></header>
+  <p class="success" *ngIf="message">{{ message }}</p><p class="error" *ngIf="error">{{ error }}</p>
+  <div *ngIf="loading" class="empty">Loading portal content…</div>
+  <div *ngIf="!loading" class="workspace">
+    <aside><button *ngFor="let h of heroes;let i=index" [class.selected]="i===selected" (click)="selected=i"><b>0{{i+1}}</b><span>{{ h.title.en || 'Untitled slide' }}</span><em>{{ h.published===false ? 'Draft' : 'Published' }}</em></button><div *ngIf="!heroes.length" class="empty">No slides yet.</div></aside>
+    <main *ngIf="heroes.length && heroes[selected] as h">
+      <div class="toolbar"><button (click)="move(selected,-1)">↑ Move</button><button (click)="move(selected,1)">↓ Move</button><button class="danger" (click)="remove(selected)">Delete</button></div>
+      <label>Image URL<input [(ngModel)]="h.imageUrl"></label>
+      <label class="toggle"><input type="checkbox" [(ngModel)]="h.active"> Active <input type="checkbox" [(ngModel)]="h.published"> Published</label>
+      <div class="language" *ngFor="let lang of languages"><h2>{{ lang.toUpperCase() }}</h2><div class="fields"><label>Kicker<input [(ngModel)]="h.kicker[lang]"></label><label>Headline<input [(ngModel)]="h.title[lang]"></label><label>Text<textarea rows="3" [(ngModel)]="h.text[lang]"></textarea></label><label>Primary CTA<input [(ngModel)]="h.primaryLabel[lang]"></label><label>Secondary CTA<input [(ngModel)]="h.secondaryLabel[lang]"></label></div></div>
+      <div class="fields"><label>Primary URL<input [(ngModel)]="h.primaryUrl"></label><label>Secondary URL<input [(ngModel)]="h.secondaryUrl"></label></div>
+    </main>
+  </div>
+</section>
