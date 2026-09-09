@@ -14,14 +14,42 @@ const TR: Record<Lang, Record<string,string>> = {
   de:{'Facade & insulation':'Fassaden & Dämmung','Plasters & mortars':'Putze & Mörtel','Adhesives & primers':'Kleber & Grundierungen','Liquid solutions':'Flüssige Lösungen','Durable exterior surfaces, insulation and professional facade work.':'Langlebige Außenflächen, Dämmung und professionelle Fassadensysteme.','Dry construction materials for interior and exterior preparation and finishing.':'Trockene Baustoffe für Innen- und Außenflächen, Vorbereitung und Finish.','Preparation, bonding and reinforcement solutions for demanding projects.':'Lösungen für Vorbereitung, Verklebung und Bewehrung anspruchsvoller Projekte.','Decorative coatings, primers and finishing products for complete systems.':'Dekorative Beschichtungen, Grundierungen und Finish-Produkte für komplette Systeme.','Years of development':'Jahre Entwicklung','Factories':'Werke','Production plants':'Produktionsanlagen','Distribution centers':'Vertriebszentren','Renova began its journey in 1992.':'Renova begann ihre Entwicklung im Jahr 1992.','Renova presents five factories in its company facilities overview.':'Renova weist in der Übersicht fünf Werke aus.','The Renova product catalog describes six production plants.':'Der Renova-Produktkatalog beschreibt sechs Produktionsanlagen.','The Renova catalog describes a regional distribution network.':'Der Renova-Katalog beschreibt ein regionales Vertriebsnetz.','Shopping & Apartments':'Einkaufszentrum & Wohnungen','Hospitality project':'Hospitality-Projekt','Production & industrial facilities':'Produktions- & Industrieanlagen','North Macedonia / Balkans':'Nordmazedonien / Balkan','Presentation at DENA KOMPANI':'Präsentation bei DENA KOMPANI','Presentation at EUROFIX – Kicevo':'Präsentation bei EUROFIX – Kičevo','Presentation at HAMI-STAM':'Präsentation bei HAMI-STAM','Renova product presentation at a new partner.':'Produktpräsentation von Renova bei einem neuen Partner.','A Renova presentation for a regional partner.':'Renova-Präsentation für einen regionalen Partner.','A further Renova product and partner presentation.':'Weitere Produkt- und Partnerpräsentation von Renova.','Factory / headquarters':'Werk / Hauptsitz','Facility':'Standort','Facility / project':'Standort / Projekt','Company facility':'Unternehmensstandort','Tetovo, North Macedonia':'Tetovo, Nordmazedonien','Ferizaj, Kosovo':'Ferizaj, Kosovo','Tirana, Albania':'Tirana, Albanien','Bitola, North Macedonia':'Bitola, Nordmazedonien'}
 };
 
+const HERO_TR: Record<Lang, Array<{kicker:string,title:string,text:string}>> = {
+  en:[
+    {kicker:'RENOVA / 1992—',title:'Building better. Together.',text:'Professional construction materials for projects, distributors and builders across the Balkans.'},
+    {kicker:'RENOVA / FACILITIES',title:'Production built around quality.',text:'Explore Renova facilities and the production capabilities behind the portfolio.'},
+    {kicker:'RENOVA / PROJECTS',title:'Built for real projects.',text:'From construction materials to hospitality and commercial projects, discover Renova in the real world.'}
+  ],
+  mk:[
+    {kicker:'РЕНОВА / 1992—',title:'Градиме подобро. Заедно.',text:'Професионални градежни материјали за проекти, дистрибутери и изведувачи низ Балканот.'},
+    {kicker:'РЕНОВА / ФАБРИКИ',title:'Производство посветено на квалитет.',text:'Запознајте ги објектите на Ренова и производните капацитети зад портфолиото.'},
+    {kicker:'РЕНОВА / ПРОЕКТИ',title:'Создадено за реални проекти.',text:'Од градежни материјали до хотелски и комерцијални проекти, запознајте ја Ренова во реална примена.'}
+  ],
+  sq:[
+    {kicker:'RENOVA / 1992—',title:'Ndërtojmë më mirë. Së bashku.',text:'Materiale profesionale ndërtimi për projekte, distributorë dhe ndërtues në Ballkan.'},
+    {kicker:'RENOVA / FABRIKAT',title:'Prodhim i ndërtuar mbi cilësi.',text:'Eksploroni objektet e Renova dhe kapacitetet prodhuese pas portofolit.'},
+    {kicker:'RENOVA / PROJEKTET',title:'Ndërtuar për projekte reale.',text:'Nga materialet e ndërtimit te projektet hoteliere dhe komerciale, zbuloni Renova në praktikë.'}
+  ],
+  de:[
+    {kicker:'RENOVA / 1992—',title:'Besser bauen. Gemeinsam.',text:'Professionelle Baustoffe für Projekte, Vertriebspartner und Bauunternehmen auf dem Balkan.'},
+    {kicker:'RENOVA / WERKE',title:'Produktion mit Fokus auf Qualität.',text:'Entdecken Sie die Renova-Standorte und Produktionskapazitäten hinter dem Portfolio.'},
+    {kicker:'RENOVA / PROJEKTE',title:'Für reale Projekte gebaut.',text:'Von Baustoffen bis zu Hotel- und Gewerbeprojekten: Renova in der praktischen Anwendung.'}
+  ]
+};
+
 @Component({standalone:true,imports:[CommonModule,FormsModule],templateUrl:'./renova-portal.page.html',styleUrl:'./renova-portal.page.css'})
 export class RenovaPortalDataPage extends BaseRenovaPortalPage implements OnInit,OnDestroy {
   private readonly apiClient:ApiService; private readonly routeClient:ActivatedRoute;
+  companyIntro='';
   constructor(api:ApiService,route:ActivatedRoute){super(api,route);this.apiClient=api;this.routeClient=route;}
+  get currentHeroKicker():string{return HERO_TR[this.language][this.heroIndex]?.kicker||this.t.heroKicker;}
+  get currentHeroTitle():string{return HERO_TR[this.language][this.heroIndex]?.title||this.t.heroTitle;}
+  get currentHeroText():string{return HERO_TR[this.language][this.heroIndex]?.text||this.t.heroText;}
   override ngOnInit():void{const requested=this.routeClient.snapshot.queryParamMap.get('language') as Lang|null;if(requested&&this.languages.includes(requested as any))this.language=requested as any;this.startHero();this.loadSiteContent();this.loadProducts();}
   override ngOnDestroy():void{super.ngOnDestroy();}
   private tr(value:string):string{return TR[this.language][value]||value;}
-  private loadSiteContent():void{this.apiClient.get<SiteContent>(`public/portal/${this.tenantId}/site-content?tenant=renova`).subscribe({next:c=>{if(!c)return;Object.assign(this as any,{solutions:c.solutions.map(x=>[x.number,this.tr(x.title),this.tr(x.description)]),kpis:c.kpis.map(x=>[x.value,this.tr(x.title),this.tr(x.description)]),stories:c.stories.map(x=>[this.tr(x.title),this.tr(x.description),this.tr(x.location),'',x.imageUrl]),events:c.events.map(x=>[this.tr(x.title),this.tr(x.description),'']),locations:c.locations.map(x=>[this.tr(x.name),this.tr(x.type),this.tr(x.address),x.url])});},error:err=>this.error=err?.error?.detail||'Unable to load Renova site content.'});}
+  private storyType(title:string):string{const x=title.toUpperCase();if(x.includes('HOTEL')||x.includes('MERCURE'))return this.tr('Hospitality project');if(x.includes('REMALL'))return this.tr('Shopping & Apartments');if(x.includes('FACILIT')||x.includes('FACTORY'))return this.tr('Production & industrial facilities');return this.tr('Project');}
+  private loadSiteContent():void{this.apiClient.get<SiteContent>(`public/portal/${this.tenantId}/site-content?tenant=renova`).subscribe({next:c=>{if(!c)return;this.companyIntro=this.tr(c.companyIntro);Object.assign(this as any,{solutions:c.solutions.map(x=>[x.number,this.tr(x.title),this.tr(x.description)]),kpis:c.kpis.map(x=>[x.value,this.tr(x.title),this.tr(x.description)]),stories:c.stories.map(x=>[this.tr(x.title),this.tr(x.description),this.storyType(x.title),this.tr(x.location),x.imageUrl]),events:c.events.map(x=>[this.tr(x.title),this.tr(x.description),'']),locations:c.locations.map(x=>[this.tr(x.name),this.tr(x.type),this.tr(x.address),x.url])});},error:err=>this.error=err?.error?.detail||'Unable to load Renova site content.'});}
   private loadProducts():void{this.loading=true;this.error='';const language=encodeURIComponent(this.language.toUpperCase());this.apiClient.get<any[]>(`public/portal/${this.tenantId}/products?tenant=renova&language=${language}`).subscribe({next:products=>{this.products=products||[];const slug=this.routeClient.snapshot.queryParamMap.get('product');this.selected=slug?this.products.find(x=>x.slug===slug)||this.products[0]:this.products[0];this.loading=false;if(this.selected)this.loadDetailWithTenant(this.selected.slug);},error:err=>{this.loading=false;this.error=err?.error?.detail||'Unable to load the Renova catalog.';}});}
   private loadDetailWithTenant(slug:string):void{const language=encodeURIComponent(this.language.toUpperCase());this.apiClient.get<any>(`public/portal/${this.tenantId}/products/${encodeURIComponent(slug)}?tenant=renova&language=${language}`).subscribe({next:product=>this.selected=product,error:err=>this.error=err?.error?.detail||'Unable to load product details.'});}
   override setLanguage(language:any):void{this.language=language as Lang;this.inquirySent=false;this.updateUrl();this.loadSiteContent();this.loadProducts();}
