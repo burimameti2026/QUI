@@ -1,34 +1,62 @@
 <main class="portal">
+  <div class="topbar"><span>{{ t.footer }}</span><div class="top-links"><a href="#contact">{{ t.contact }}</a><span>+389 44 487 300</span></div></div>
+
   <header class="nav">
-    <a class="brand" href="/renova/portal"><span class="mark">R</span><span>RENOVA</span></a>
-    <nav><a href="#products">Products</a><a href="#solutions">Solutions</a><a href="#contact">Contact</a><a href="#distributor">Become a Distributor</a></nav>
-    <div class="languages"><button [class.active]="language==='en'" (click)="setLanguage('en')">EN</button><button [class.active]="language==='mk'" (click)="setLanguage('mk')">MK</button><button [class.active]="language==='sq'" (click)="setLanguage('sq')">SQ</button><button [class.active]="language==='de'" (click)="setLanguage('de')">DE</button></div>
+    <a class="brand" href="/renova"><span class="brand-mark">R</span><span class="brand-name">RENOVA</span><small>PUTZ</small></a>
+    <nav class="main-nav">
+      <a href="#products">{{ t.products }}</a><a href="#solutions">{{ t.solutions }}</a><a href="#company">{{ t.company }}</a><a href="#contact">{{ t.contact }}</a>
+      <a class="nav-cta" href="#distributor">{{ t.distributor }}</a>
+    </nav>
+    <div class="languages"><button *ngFor="let lang of languages" [class.active]="language===lang" (click)="setLanguage(lang)">{{ lang.toUpperCase() }}</button></div>
   </header>
 
   <section class="hero">
-    <div class="hero-copy"><span class="eyebrow">RENOVA CONSTRUCTION MATERIALS</span><h1>Materials built for <em>better surfaces.</em></h1><p>Professional finishing systems for renovation, new construction and facade applications.</p><div class="hero-actions"><a href="#products" class="primary">Explore products →</a><a href="#distributor" class="secondary">Become a distributor</a></div><div class="trust"><span>✓ Professional applications</span><span>✓ Technical support</span><span>✓ Regional expansion</span></div></div>
-    <div class="hero-card"><div class="glow"></div><div class="card-label">FEATURED SOLUTION</div><h2>Exterior finishing systems</h2><p>Discover the Renova range for durable facade workflows and professional contractors.</p><div class="mini-grid"><span><b>25 kg</b>Packaging</span><span><b>3</b>Target markets</span><span><b>4</b>Languages</span></div></div>
+    <div class="hero-image"><div class="hero-overlay"></div><div class="hero-image-label">RENOVA / CONSTRUCTION MATERIALS</div></div>
+    <div class="hero-copy">
+      <span class="eyebrow">{{ t.heroKicker }}</span>
+      <h1>{{ t.heroTitle }}</h1>
+      <p>{{ t.heroText }}</p>
+      <div class="actions"><a class="button primary" href="#products">{{ t.explore }} <span>→</span></a><a class="text-link" href="#contact">{{ t.talk }} <span>↗</span></a></div>
+    </div>
   </section>
 
-  <section id="products" class="section">
-    <div class="section-head"><div><span class="eyebrow">PRODUCT CATALOG</span><h2>Professional products for every project</h2></div><span>{{ products.length }} products</span></div>
-    <div *ngIf="loading" class="state">Loading Renova products…</div><div *ngIf="error" class="state error">{{ error }}</div>
-    <div class="catalog" *ngIf="!loading && !error"><button class="product-card" *ngFor="let product of products" (click)="select(product)" [class.selected]="selected?.id===product.id"><div class="product-visual"><span>{{ product.name.charAt(0) }}</span></div><div class="product-body"><span class="code">{{ product.id ? product.id.slice(0,8).toUpperCase() : 'RENOVA' }}</span><h3>{{ product.name }}</h3><p>{{ product.shortDescription }}</p><span class="link">View product →</span></div></button></div>
+  <section class="intro" id="company">
+    <div><span class="eyebrow">RENOVA</span><h2>Professional materials.<br><strong>Proven performance.</strong></h2></div>
+    <div class="intro-copy"><p>{{ t.heroText }}</p><p>RENOVA began in 1992 and has grown into a regional producer serving professional construction markets across the Balkans.</p><a class="text-link" href="#solutions">{{ t.solutions }} <span>→</span></a></div>
   </section>
 
-  <section id="solutions" class="detail" *ngIf="selected">
-    <div class="detail-image"><div class="product-symbol">{{ selected.name.charAt(0) }}</div><span>RENOVA</span></div>
-    <div class="detail-copy"><span class="eyebrow">PRODUCT DETAIL</span><h2>{{ selected.name }}</h2><p class="lead">{{ selected.shortDescription }}</p><p>{{ selected.description }}</p><div class="benefits"><div><b>Benefits</b><span>{{ selected.keyBenefits }}</span></div><div><b>Applications</b><span>{{ selected.applications }}</span></div></div><div class="chips"><span *ngFor="let variant of selected.variants || []">{{ variant.name }}</span></div><a class="primary" href="#contact">Request information →</a></div>
+  <section class="solutions" id="solutions">
+    <div class="section-heading"><span class="eyebrow">RENOVA</span><h2>{{ t.industries }}</h2></div>
+    <div class="solution-grid">
+      <article><div class="solution-number">01</div><h3>Facade & insulation</h3><p>Systems for durable exterior surfaces, insulation and professional facade work.</p><a href="#products">Explore <span>→</span></a></article>
+      <article><div class="solution-number">02</div><h3>Plasters & mortars</h3><p>Dry construction materials for interior and exterior preparation and finishing.</p><a href="#products">Explore <span>→</span></a></article>
+      <article><div class="solution-number">03</div><h3>Adhesives & primers</h3><p>Professional preparation, bonding and reinforcement solutions for demanding projects.</p><a href="#products">Explore <span>→</span></a></article>
+      <article><div class="solution-number">04</div><h3>Liquid solutions</h3><p>Decorative coatings, primers and finishing products for complete building systems.</p><a href="#products">Explore <span>→</span></a></article>
+    </div>
   </section>
 
-  <section id="distributor" class="cta">
-    <div><span class="eyebrow">PARTNER WITH RENOVA</span><h2>Looking for a regional distribution opportunity?</h2><p>Tell us about your company and market. Our commercial team can follow up with product information and next steps.</p></div><a class="primary" href="#contact">Start a conversation →</a>
+  <section class="catalog-section" id="products">
+    <div class="section-heading row"><div><span class="eyebrow">{{ t.catalog }}</span><h2>{{ t.featured }}</h2></div><span class="count">{{ products.length }} products</span></div>
+    <div *ngIf="loading" class="state">Loading…</div><div *ngIf="error" class="state error">{{ error }}</div>
+    <div class="catalog" *ngIf="!loading && !error">
+      <button class="product-card" *ngFor="let product of products; let i = index" (click)="select(product)" [class.selected]="selected?.id===product.id">
+        <div class="product-photo"><span>{{ ('0' + (i + 1)).slice(-2) }}</span></div>
+        <div class="product-body"><span class="code">{{ product.code || 'RENOVA' }}</span><h3>{{ product.name }}</h3><p>{{ product.shortDescription }}</p><span class="view">{{ t.view }} <b>→</b></span></div>
+      </button>
+    </div>
   </section>
 
-  <section id="contact" class="contact">
-    <div class="contact-copy"><span class="eyebrow">REQUEST INFORMATION</span><h2>Talk to Renova</h2><p>Ask about a product, technical documentation or distributor opportunities.</p><div class="contact-points"><span>✓ Product information</span><span>✓ Technical documentation</span><span>✓ Distributor enquiries</span></div></div>
-    <form (ngSubmit)="submitInquiry()"><label>Your name<input [(ngModel)]="inquiry.name" name="name" required /></label><label>Company<input [(ngModel)]="inquiry.company" name="company" /></label><label>Email<input [(ngModel)]="inquiry.email" name="email" type="email" required /></label><label>Phone<input [(ngModel)]="inquiry.phone" name="phone" /></label><label>Message<textarea [(ngModel)]="inquiry.message" name="message" rows="4" placeholder="How can we help?"></textarea></label><button class="primary" type="submit" [disabled]="inquiryBusy || !inquiry.name || !inquiry.email">{{ inquiryBusy ? 'Sending…' : 'Send request →' }}</button><p class="sent" *ngIf="inquirySent">✓ Request received. The Renova team can follow up with you.</p></form>
+  <section class="detail" id="product-detail" *ngIf="selected">
+    <div class="detail-photo"><span>RENOVA</span><strong>{{ selected.name.charAt(0) }}</strong></div>
+    <div class="detail-copy"><span class="eyebrow">{{ t.detail }}</span><h2>{{ selected.name }}</h2><p class="lead">{{ selected.shortDescription }}</p><p>{{ selected.description }}</p><div class="facts"><div><b>Benefits</b><span>{{ selected.keyBenefits || 'Professional quality and reliable application.' }}</span></div><div><b>Applications</b><span>{{ selected.applications || 'Professional construction and finishing.' }}</span></div></div><div class="chips"><span *ngFor="let variant of selected.variants || []">{{ variant.name }}</span></div><a class="button primary" href="#contact">{{ t.request }} <span>→</span></a></div>
   </section>
 
-  <footer><span>© Renova · Marketing product portal</span><span>Powered by the Renova catalog</span></footer>
+  <section class="partner" id="distributor"><div><span class="eyebrow">{{ t.partnerKicker }}</span><h2>{{ t.partnerTitle }}</h2><p>{{ t.partnerText }}</p></div><a class="button light" href="#contact">{{ t.talk }} <span>→</span></a></section>
+
+  <section class="contact" id="contact">
+    <div class="contact-copy"><span class="eyebrow">{{ t.contactKicker }}</span><h2>{{ t.contactTitle }}</h2><p>{{ t.contactText }}</p><div class="contact-meta"><span>Dzepchishte · Tetovo</span><span>+389 44 487 300</span><span>info@renova.mk</span></div></div>
+    <form (ngSubmit)="submitInquiry()"><label>{{ t.name }}<input [(ngModel)]="inquiry.name" name="name" required></label><label>{{ t.companyName }}<input [(ngModel)]="inquiry.company" name="company"></label><label>{{ t.email }}<input [(ngModel)]="inquiry.email" name="email" type="email" required></label><label>{{ t.phone }}<input [(ngModel)]="inquiry.phone" name="phone"></label><label>{{ t.message }}<textarea [(ngModel)]="inquiry.message" name="message" rows="5"></textarea></label><button class="button primary" type="submit" [disabled]="inquiryBusy || !inquiry.name || !inquiry.email">{{ inquiryBusy ? t.sending : t.send }} <span>→</span></button><p class="sent" *ngIf="inquirySent">✓ {{ t.sent }}</p></form>
+  </section>
+
+  <footer><div class="footer-brand"><span class="brand-mark">R</span><strong>RENOVA PUTZ</strong></div><div><span>{{ t.footer }}</span><span>© {{ 2026 }} RENOVA</span></div></footer>
 </main>
