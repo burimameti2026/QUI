@@ -4,7 +4,7 @@ import { requireModule, requirePermission } from './core/module.guard';
 export const routes: Routes = [
  { path: '', pathMatch:'full', loadComponent:()=>import('./features/landing/landing.page').then(m=>m.LandingPage) },
  { path: 'login', loadComponent:()=>import('./features/auth/login.page').then(m=>m.LoginPage) },
- { path: 'renova', loadComponent:()=>import('./features/renova-portal/renova-portal-data.page').then(m=>m.RenovaPortalDataPage) },
+ { path: 'renova', loadComponent:()=>import('./features/renova-portal/renova-portal-v2.page').then(m=>m.RenovaPortalV2Page) },
  { path: 'renova/portal', redirectTo:'renova', pathMatch:'full' },
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
@@ -12,6 +12,7 @@ export const routes: Routes = [
   {path:'catalog/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'renova/promotion',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/renova-promotion/renova-promotion.page').then(m=>m.RenovaPromotionPage)},
+  {path:'renova/content',canActivate:[requirePermission('settings.manage')],loadComponent:()=>import('./features/renova-portal/renova-content-admin.page').then(m=>m.RenovaContentAdminPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
   {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
