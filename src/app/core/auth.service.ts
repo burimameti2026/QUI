@@ -25,6 +25,8 @@ export class AuthService {
   private readonly accessTokenKey = 'qai-token';
   private readonly refreshTokenKey = 'qai-refresh-token';
   private readonly tenantKey = 'qai-tenant';
+  private readonly renovaTenant = 'renova';
+  private readonly renovaAdminDomain = '@renova.local';
   private refreshRequest?: Observable<string>;
 
   readonly loggedIn = signal(this.hasValidAccessToken());
@@ -34,7 +36,8 @@ export class AuthService {
 
   login(tenant:string,email:string,password:string,mfaCode:string=''){
     const normalizedTenant = tenant.trim().toLowerCase();
-    let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',email.trim()).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
+    const normalizedEmail = this.normalizeLoginEmail(normalizedTenant, email);
+    let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
     if(mfaCode) body=body.set('mfa_code',mfaCode.trim());
     return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}})
       .pipe(tap(response => this.storeSession(response, normalizedTenant)));
@@ -103,6 +106,12 @@ export class AuthService {
     localStorage.removeItem(this.tenantKey);
     this.loggedIn.set(false);
     this.session.set(null);
+  }
+
+  private normalizeLoginEmail(tenant:string,email:string):string {
+    const value = email.trim().toLowerCase();
+    if (tenant === this.renovaTenant && value === 'renovaadmin') return `renovaadmin${this.renovaAdminDomain}`;
+    return value;
   }
 
   private storeSession(response:TokenResponse, tenant?:string):void {
