@@ -2,9 +2,10 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
 import { requireModule, requirePermission } from './core/module.guard';
 export const routes: Routes = [
- { path: '', pathMatch:'full', redirectTo:'renova/portal' },
+ { path: '', pathMatch:'full', loadComponent:()=>import('./features/landing/landing.page').then(m=>m.LandingPage) },
  { path: 'login', loadComponent:()=>import('./features/auth/login.page').then(m=>m.LoginPage) },
- { path: 'renova/portal', loadComponent:()=>import('./features/renova-portal/renova-portal.page').then(m=>m.RenovaPortalPage) },
+ { path: 'renova', loadComponent:()=>import('./features/renova-portal/renova-portal.page').then(m=>m.RenovaPortalPage) },
+ { path: 'renova/portal', redirectTo:'renova', pathMatch:'full' },
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
   {path:'catalog',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/catalog.page').then(m=>m.CatalogPage)},
@@ -47,5 +48,5 @@ export const routes: Routes = [
   {path:'audit',canActivate:[requirePermission('audit.read')],loadComponent:()=>import('./features/audit/audit.page').then(m=>m.AuditPage)},
   {path:'',pathMatch:'full',redirectTo:'dashboard'}
  ]},
- { path: '**', redirectTo: 'renova/portal' }
+ { path: '**', redirectTo: '' }
 ];
