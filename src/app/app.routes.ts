@@ -8,6 +8,7 @@ export const routes: Routes = [
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
   {path:'catalog',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/catalog.page').then(m=>m.CatalogPage)},
   {path:'catalog/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
+  {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'renova/promotion',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/renova-promotion/renova-promotion.page').then(m=>m.RenovaPromotionPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
