@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 
 interface Category { id: string; name: string; code?: string | null; }
@@ -47,7 +48,7 @@ export class ProductEditorPage implements OnInit {
     this.saved = false;
     this.error = '';
 
-    const body = {
+    this.api.post<any>('renova/catalog/products', {
       productCategoryId: this.product.categoryId,
       name: this.product.name.trim(),
       code: this.product.code.trim(),
@@ -57,11 +58,9 @@ export class ProductEditorPage implements OnInit {
       keyBenefits: this.product.benefits?.trim() || null,
       applications: this.product.applications?.trim() || null,
       technicalSpecifications: this.product.technicalSpecifications?.trim() || null
-    };
-
-    this.api.post<any>('renova/catalog/products', body).subscribe({
+    }).subscribe({
       next: product => {
-        const productId = product?.body?.product?.id || product?.product?.id || product?.id;
+        const productId = product?.id;
         if (!productId) {
           this.error = 'The API did not return a product id.';
           this.saving = false;
@@ -77,54 +76,51 @@ export class ProductEditorPage implements OnInit {
   }
 
   private persistDetails(productId: string): void {
-    const languages = Object.entries(this.product.languages).filter(([, enabled]) => enabled).map(([language]) => language);
-    const requests = languages.map(language => this.api.put<any>(
-      `renova/catalog/products/${productId}/localizations/${language}`,
-      {
+    const requests: Observable<unknown>[] = Object.entries(this.product.languages)
+      .filter(([, enabled]) => enabled)
+      .map(([language]) => this.api.put(`renova/catalog/products/${productId}/localizations/${language}`, {
         name: this.product.name,
-        shortDescription: this.product.shortDescription,
-        description: this.product.description,
-        keyBenefits: this.product.benefits,
-        applications: this.product.applications
-      }
-    ));
-
-    requests.forEach(request => request.subscribe({ error: err => this.error = this.message(err) }));
+        shortDescription: this.product.shortDescription || null,
+        description: this.product.description || null,
+        keyBenefits: this.product.benefits || null,
+        applications: this.product.applications || null
+      }));
 
     const weight = Number(this.product.weight);
     if (this.product.packaging || this.product.sku || this.product.weight) {
-      this.api.post(`renova/catalog/products/${productId}/variants`, {
+      requests.push(this.api.post(`renova/catalog/products/${productId}/variants`, {
         name: this.product.packaging || 'Default',
         sku: this.product.sku || this.product.code,
         packaging: this.product.packaging || null,
         netWeight: Number.isFinite(weight) && weight > 0 ? weight : null,
         weightUnit: 'kg'
-      }).subscribe({
-        error: err => this.error = this.message(err)
-      });
+      }));
     }
 
-    const finish = () => {
-      if (this.product.publish) {
-        this.api.post(`renova/catalog/products/${productId}/publish`, { slug: null }).subscribe({
-          next: () => this.complete(productId),
-          error: err => { this.error = this.message(err); this.saving = false; }
-        });
-      } else {
-        this.complete(productId);
-      }
-    };
+    forkJoin(requests.length ? requests : [this.api.get(`renova/catalog/products/${productId}`)]).subscribe({
+      next: () => this.finishProduct(productId),
+      error: err => { this.error = this.message(err); this.saving = false; }
+    });
+  }
 
-    window.setTimeout(finish, 250);
+  private finishProduct(productId: string): void {
+    if (this.product.publish) {
+      this.api.post(`renova/catalog/products/${productId}/publish`, { slug: null }).subscribe({
+        next: () => this.complete(productId),
+        error: err => { this.error = this.message(err); this.saving = false; }
+      });
+    } else {
+      this.complete(productId);
+    }
   }
 
   private complete(productId: string): void {
     this.saved = true;
     this.saving = false;
     if (this.product.promote) {
-      window.setTimeout(() => this.router.navigate(['/renova/promotion'], { queryParams: { productId } }), 300);
+      setTimeout(() => this.router.navigate(['/renova/promotion'], { queryParams: { productId } }), 300);
     } else {
-      window.setTimeout(() => this.router.navigate(['/catalog']), 500);
+      setTimeout(() => this.router.navigate(['/catalog']), 500);
     }
   }
 
