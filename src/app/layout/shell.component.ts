@@ -14,6 +14,8 @@ export class ShellComponent {
  readonly nav:NavigationItem[]=[
  {group:'COMMAND CENTER',label:'Dashboard',url:'/dashboard',icon:'⌂',module:'core',permission:''},
  {group:'01 — PREPARE',label:'Connections & Senders',url:'/integrations',icon:'↗',module:'integrations',permission:'integrations.read'},
+ {group:'01 — PREPARE',label:'Renova Product Catalog',url:'/catalog',icon:'▦',module:'crm',permission:'crm.read'},
+ {group:'01 — PREPARE',label:'Renova Promotion Automation',url:'/renova/promotion',icon:'✦',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Prospect Discovery',url:'/discover',icon:'⌕',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Campaigns',url:'/campaigns',icon:'↗',module:'crm',permission:'crm.read'},
  {group:'02 — FIND & REACH',label:'Replies & Inbox',url:'/inbox',icon:'▱',module:'inbox',permission:'conversations.read'},
