@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
 import { requireModule, requirePermission } from './core/module.guard';
 export const routes: Routes = [
- { path: '', pathMatch:'full', loadComponent:()=>import('./features/landing/landing.page').then(m=>m.LandingPage) },
+ { path: '', pathMatch:'full', redirectTo:'renova/portal' },
  { path: 'login', loadComponent:()=>import('./features/auth/login.page').then(m=>m.LoginPage) },
  { path: 'renova/portal', loadComponent:()=>import('./features/renova-portal/renova-portal.page').then(m=>m.RenovaPortalPage) },
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
@@ -47,5 +47,5 @@ export const routes: Routes = [
   {path:'audit',canActivate:[requirePermission('audit.read')],loadComponent:()=>import('./features/audit/audit.page').then(m=>m.AuditPage)},
   {path:'',pathMatch:'full',redirectTo:'dashboard'}
  ]},
- { path: '**', redirectTo: '' }
+ { path: '**', redirectTo: 'renova/portal' }
 ];
