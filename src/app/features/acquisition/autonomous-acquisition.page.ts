@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { PageHeader } from '../../shared/ui';
 
 @Component({
@@ -9,7 +12,9 @@ import { PageHeader } from '../../shared/ui';
   templateUrl: './autonomous-acquisition.page.html',
   styleUrl: './autonomous-acquisition.page.css'
 })
-export class AutonomousAcquisitionPage {
+export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   tenantId = '';
   agents: any[] = [];
   runs: any[] = [];
@@ -19,77 +24,95 @@ export class AutonomousAcquisitionPage {
   error = '';
   loading = false;
   autoRefresh = false;
-  timer: any;
+  timer?: ReturnType<typeof setInterval>;
 
   get active() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
   get completed() { return this.runs.filter(x => String(x.status).toLowerCase().includes('completed') || x.status === 2).length; }
-  get discovered() { return this.runs.reduce((n, x) => n + (x.discoveredCount || 0), 0); }
-  get qualified() { return this.runs.reduce((n, x) => n + (x.qualifiedCount || 0), 0); }
-  get emails() { return this.runs.reduce((n, x) => n + (x.emailsSentCount || 0), 0); }
+  get discovered() { return this.runs.reduce((n, x) => n + Number(x.discoveredCount || 0), 0); }
+  get qualified() { return this.runs.reduce((n, x) => n + Number(x.qualifiedCount || 0), 0); }
+  get emails() { return this.runs.reduce((n, x) => n + Number(x.emailsSentCount || 0), 0); }
 
-  async json(url: string) {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(String(response.status));
-    return response.json();
+  ngOnInit(): void {
+    this.tenantId = this.auth.session()?.tenantId || '';
+    void this.load();
   }
 
+  ngOnDestroy(): void { this.stopRefresh(); }
+
   async load() {
-    if (!this.tenantId) { this.error = 'Tenant ID is required.'; return; }
+    if (!this.tenantId) { this.error = 'No authenticated tenant is available.'; return; }
     this.loading = true;
     this.error = '';
     try {
-      const base = `/api/autonomous-acquisition/tenants/${this.tenantId}`;
-      const [agents, runs] = await Promise.all([this.json(`${base}/agents`), this.json(`${base}/runs`)]);
+      const base = `autonomous-acquisition/tenants/${this.tenantId}`;
+      const [agents, runs] = await Promise.all([
+        firstValueFrom(this.api.get<any[]>(`${base}/agents`)),
+        firstValueFrom(this.api.get<any[]>(`${base}/runs`))
+      ]);
       this.agents = agents || [];
       this.runs = runs || [];
-    } catch { this.error = 'Could not load agents or runs from the API.'; }
-    finally { this.loading = false; }
+    } catch (error: any) {
+      this.error = error?.error?.detail || 'Could not load autonomous acquisition data.';
+    } finally { this.loading = false; }
   }
 
   toggleRefresh() {
-    clearInterval(this.timer);
-    if (this.autoRefresh && this.tenantId) this.timer = setInterval(() => this.load(), 10000);
+    this.stopRefresh();
+    if (this.autoRefresh && this.tenantId) this.timer = setInterval(() => void this.load(), 10000);
+  }
+
+  private stopRefresh() {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = undefined;
   }
 
   async verify() {
     this.error = '';
-    try { this.verification = await this.json('/api/autonomous-acquisition/verification'); }
-    catch { this.error = 'System verification failed.'; }
+    try { this.verification = await firstValueFrom(this.api.get<any>('autonomous-acquisition/verification')); }
+    catch (error: any) { this.error = error?.error?.detail || 'System verification failed.'; }
   }
 
   async e2e() {
-    if (!this.tenantId) { this.error = 'Tenant ID is required for E2E.'; return; }
+    if (!this.tenantId) { this.error = 'No authenticated tenant is available for E2E.'; return; }
     this.error = '';
-    try { this.e2eResult = await this.json(`/api/autonomous-acquisition/tenants/${this.tenantId}/e2e`); }
-    catch { this.error = 'E2E verification failed.'; }
+    try { this.e2eResult = await firstValueFrom(this.api.get<any>(`autonomous-acquisition/tenants/${this.tenantId}/e2e`)); }
+    catch (error: any) { this.error = error?.error?.detail || 'E2E verification failed.'; }
   }
 
   create() {
-    this.editing = { name: '', templateCode: 'fleet', industry: 'Fleet', region: 'Europe', minimumScore: 90, dailyDiscoveryLimit: 50, dailyEmailLimit: 20, runTimeUtc: '08:00', icpNotes: '' };
+    this.editing = {
+      name: 'Renova Balkan Distributor Acquisition Agent',
+      templateCode: 'construction-materials',
+      industry: 'Construction Materials',
+      region: 'Balkans',
+      minimumScore: 75,
+      dailyDiscoveryLimit: 25,
+      dailyEmailLimit: 10,
+      runTimeUtc: '08:00',
+      countries: ['AL', 'MK', 'XK'],
+      icpNotes: 'Building-material distributors, wholesalers, construction companies and professional contractors; evidence of market presence and commercial contact required.'
+    };
   }
 
   edit(agent: any) { this.editing = { ...agent }; }
 
   async save() {
+    if (!this.tenantId || !this.editing) return;
     try {
       const isEdit = !!this.editing.id;
-      const url = `/api/autonomous-acquisition/tenants/${this.tenantId}/agents${isEdit ? `/${this.editing.id}` : ''}`;
-      await this.jsonFetch(url, isEdit ? 'PUT' : 'POST', this.editing);
+      const path = `autonomous-acquisition/tenants/${this.tenantId}/agents${isEdit ? `/${this.editing.id}` : ''}`;
+      const request = isEdit ? this.api.put(path, this.editing) : this.api.post(path, this.editing);
+      await firstValueFrom(request);
       this.editing = null;
       await this.load();
-    } catch { this.error = 'Could not save agent.'; }
+    } catch (error: any) { this.error = error?.error?.detail || 'Could not save agent.'; }
   }
 
   async action(agent: any, action: string) {
+    if (!this.tenantId) return;
     try {
-      await this.jsonFetch(`/api/autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/${action}`, 'POST');
+      await firstValueFrom(this.api.post(`autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/${action}`, {}));
       await this.load();
-    } catch { this.error = 'Agent action failed.'; }
-  }
-
-  async jsonFetch(url: string, method: string, body?: any) {
-    const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
-    if (!response.ok) throw new Error(String(response.status));
-    return response.json().catch(() => null);
+    } catch (error: any) { this.error = error?.error?.detail || 'Agent action failed.'; }
   }
 }
