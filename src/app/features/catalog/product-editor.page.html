@@ -1,0 +1,25 @@
+<main class="editor-shell">
+  <header class="topbar">
+    <div><a routerLink="/catalog" class="back">← Product Catalog</a><h1>Add Renova Product</h1><p>Prepare one product for the portal and AI promotion workflow.</p></div>
+    <div class="actions"><button class="secondary" routerLink="/catalog">Cancel</button><button class="primary" (click)="save()">Save Product</button></div>
+  </header>
+
+  <div class="layout">
+    <section class="main">
+      <article class="card"><h2>Product information</h2><div class="grid two">
+        <label>Product name<input [(ngModel)]="product.name" placeholder="Renova Interior Putz" /></label>
+        <label>Product code / SKU<input [(ngModel)]="product.code" placeholder="REN-INT-001" /></label>
+        <label>Category<select [(ngModel)]="product.category"><option>Plasters / Putz</option><option>Exterior Solutions</option><option>Primers</option><option>Adhesives</option></select></label>
+        <label>Brand<input [(ngModel)]="product.brand" /></label>
+      </div><label>Short description<textarea rows="3" [(ngModel)]="product.shortDescription" placeholder="A concise customer-facing description..."></textarea></label><label>Description<textarea rows="6" [(ngModel)]="product.description" placeholder="Detailed product description..."></textarea></label></article>
+
+      <article class="card"><h2>Benefits & applications</h2><div class="grid two"><label>Key benefits<textarea rows="5" [(ngModel)]="product.benefits" placeholder="Durable finish&#10;Easy application&#10;Suitable for professional use"></textarea></label><label>Applications<textarea rows="5" [(ngModel)]="product.applications" placeholder="Interior walls&#10;Residential construction&#10;Commercial projects"></textarea></label></div><label>Technical specifications<textarea rows="5" [(ngModel)]="product.technicalSpecifications" placeholder="Technical parameters, standards and usage information..."></textarea></label></article>
+
+      <article class="card"><h2>Variants & packaging</h2><div class="grid three"><label>Variant / packaging<input [(ngModel)]="product.packaging" placeholder="25 kg bag" /></label><label>Weight<input [(ngModel)]="product.weight" placeholder="25" /></label><label>SKU<input [(ngModel)]="product.sku" placeholder="REN-INT-001-25" /></label></div></article>
+
+      <article class="card"><h2>Languages</h2><p class="muted">Choose the languages in which this product should be published and promoted.</p><div class="languages"><label><input type="checkbox" [(ngModel)]="product.languages.en" /> English</label><label><input type="checkbox" [(ngModel)]="product.languages.mk" /> Македонски</label><label><input type="checkbox" [(ngModel)]="product.languages.sq" /> Shqip</label><label><input type="checkbox" [(ngModel)]="product.languages.de" /> Deutsch</label></div></article>
+    </section>
+
+    <aside class="side"><article class="card workflow"><span class="eyebrow">AUTOMATION</span><h2>After saving</h2><div class="step"><b>Catalog</b><small>Product becomes available to campaign planning.</small></div><div class="step"><b>Portal</b><small>Publish approved content immediately.</small></div><div class="step"><b>Promotion</b><small>Use the product in Renova acquisition campaigns.</small></div><div class="step"><b>Qualification</b><small>Route interested prospects into the existing CRM workflow.</small></div></article><article class="card"><h2>Publishing</h2><label class="toggle"><input type="checkbox" [(ngModel)]="product.publish" /><span>Publish to Renova portal</span></label><label class="toggle"><input type="checkbox" [(ngModel)]="product.promote" /><span>Make available for AI promotion</span></label><p class="muted">Publishing and promotion are independent controls. A product can be visible on the portal without starting outbound outreach.</p></article><p class="saved" *ngIf="saved">✓ Product saved locally — API persistence will be connected next.</p></aside>
+  </div>
+</main>
