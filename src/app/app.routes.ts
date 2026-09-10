@@ -7,6 +7,13 @@ export const routes: Routes = [
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
   {path:'enterprise',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/facilities',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/orders',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/inventory',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/warehousing',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/distribution',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/logistics',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
+  {path:'enterprise/payments',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
   {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
