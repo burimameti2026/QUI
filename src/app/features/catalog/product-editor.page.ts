@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiService } from '../../core/api.service';
+import { AdminI18nService } from '../../core/admin-i18n.service';
 
 interface Category { id: string; name: string; code?: string | null; }
 interface ProductDetails { product: any; variants: any[]; localizations: any[]; publication?: any; }
 
 @Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink],templateUrl:'./product-editor.page.html',styleUrl:'./product-editor.page.css'})
 export class ProductEditorPage implements OnInit {
+  readonly i18n = inject(AdminI18nService);
   categories: Category[] = [];
   editingId = '';
   wasPublished = false;
@@ -50,7 +52,7 @@ export class ProductEditorPage implements OnInit {
   }
 
   save(): void {
-    if (!this.product.name.trim() || !this.product.code.trim() || !this.product.categoryId) { this.error = 'Product name, product code and category are required.'; return; }
+    if (!this.product.name.trim() || !this.product.code.trim() || !this.product.categoryId) { this.error = this.i18n.t('Product name, product code and category are required.'); return; }
     this.saving = true; this.saved = false; this.error = '';
     const body = {
       productCategoryId: this.product.categoryId, name: this.product.name.trim(), code: this.product.code.trim(), brand: this.product.brand?.trim() || null,
@@ -59,7 +61,7 @@ export class ProductEditorPage implements OnInit {
     };
     const request = this.editingId ? this.api.put<any>(`renova/catalog/products/${this.editingId}`, body) : this.api.post<any>('renova/catalog/products', body);
     request.subscribe({
-      next: product => { const productId = this.editingId || product?.id; if (!productId) { this.error = 'The API did not return a product id.'; this.saving = false; return; } this.editingId = productId; this.persistDetails(productId); },
+      next: product => { const productId = this.editingId || product?.id; if (!productId) { this.error = this.i18n.t('The API did not return a product id.'); this.saving = false; return; } this.editingId = productId; this.persistDetails(productId); },
       error: err => { this.error = this.message(err); this.saving = false; }
     });
   }
@@ -94,5 +96,5 @@ export class ProductEditorPage implements OnInit {
     setTimeout(() => this.router.navigate(this.product.promote ? ['/renova/promotion'] : ['/catalog'], this.product.promote ? {queryParams:{productId}} : undefined), 300);
   }
 
-  private message(err: any): string { return err?.error?.detail || err?.error?.title || err?.message || 'Unable to save the product.'; }
+  private message(err: any): string { return err?.error?.detail || err?.error?.title || err?.message || this.i18n.t('Unable to save the product.'); }
 }
