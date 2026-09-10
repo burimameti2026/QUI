@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnDestroy, inject } from '@angular/core';
+import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
 import { AdminI18nService } from './admin-i18n.service';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
@@ -7,15 +7,9 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly i18n = inject(AdminI18nService);
   private readonly originals = new WeakMap<Text, string>();
   private readonly observer = new MutationObserver(() => this.translate());
+  private readonly languageEffect = effect(() => { this.i18n.language(); this.translate(); });
 
-  constructor() {
-    this.observer.observe(this.host, { childList: true, subtree: true });
-    this.translate();
-    // Reading the signal makes Angular re-run this directive's reactive effect through the template host.
-    const tick = () => { this.i18n.language(); this.translate(); };
-    queueMicrotask(tick);
-    setInterval(tick, 250);
-  }
+  constructor() { this.observer.observe(this.host, { childList: true, subtree: true }); }
 
   private translate(): void {
     const walker = document.createTreeWalker(this.host, NodeFilter.SHOW_TEXT);
@@ -40,5 +34,5 @@ export class AdminStaticI18nDirective implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void { this.observer.disconnect(); }
+  ngOnDestroy(): void { this.observer.disconnect(); this.languageEffect.destroy(); }
 }
