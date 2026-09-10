@@ -2,55 +2,47 @@ import { Injectable, signal } from '@angular/core';
 
 export type AdminLanguage = 'en' | 'mk' | 'sq' | 'de';
 
-const DICTIONARY: Record<AdminLanguage, Record<string, string>> = {
-  en: {},
-  mk: {
-    'Dashboard': 'Контролна табла', 'Connections & Senders': 'Конекции и испраќачи', 'Renova Product Catalog': 'Каталог на производи на Renova',
-    'Renova Promotion Automation': 'Renova автоматизација на промоции', 'Public Renova Portal': 'Јавен Renova портал', 'Prospect Discovery': 'Откривање потенцијални клиенти',
-    'Autonomous Acquisition': 'Автономна аквизиција', 'Acquisition Approval Queue': 'Ред за одобрување на аквизиции', 'Campaigns': 'Кампањи', 'Replies & Inbox': 'Одговори и сандаче',
-    'Qualified Leads': 'Квалификувани лидови', 'Opportunities': 'Можности', 'Sales Pipelines': 'Продажни цевководи', 'Golden Pipeline': 'Golden Pipeline', 'Demos & Meetings': 'Демо и состаноци',
-    'Companies': 'Компании', 'Contacts': 'Контакти', 'Issues & Tickets': 'Прашања и тикети', 'Business Assistants': 'Бизнис асистенти', 'Knowledge': 'Знаење',
-    'Workflows': 'Работни текови', 'Automations': 'Автоматизации', 'Analytics & ROI': 'Аналитика и ROI', 'Platform Overview': 'Преглед на платформата',
-    'Search pages and modules': 'Пребарај страници и модули', 'Public Renova portal': 'Јавен Renova портал', 'Licensed': 'Лиценциран простор',
-    'COMMAND CENTER': 'КОМАНДЕН ЦЕНТАР', '01 — PREPARE': '01 — ПОДГОТОВКА', '02 — FIND & REACH': '02 — НАЈДИ И КОНТАКТИРАЈ', '03 — CONVERT': '03 — КОНВЕРЗИЈА',
-    '04 — CUSTOMER OPERATIONS': '04 — ОПЕРАЦИИ СО КЛИЕНТИ', '05 — AUTOMATE & IMPROVE': '05 — АВТОМАТИЗИРАЈ И ПОДОБРИ', 'PLATFORM MANAGEMENT': 'УПРАВУВАЊЕ СО ПЛАТФОРМАТА'
-  },
-  sq: {
-    'Dashboard': 'Paneli kryesor', 'Connections & Senders': 'Lidhjet dhe dërguesit', 'Renova Product Catalog': 'Katalogu i produkteve Renova',
-    'Renova Promotion Automation': 'Automatizimi i promovimit Renova', 'Public Renova Portal': 'Portali publik Renova', 'Prospect Discovery': 'Zbulimi i prospekteve',
-    'Autonomous Acquisition': 'Akvizimi autonom', 'Acquisition Approval Queue': 'Radha e miratimit të akvizimit', 'Campaigns': 'Fushatat', 'Replies & Inbox': 'Përgjigjet dhe inbox-i',
-    'Qualified Leads': 'Leads të kualifikuara', 'Opportunities': 'Mundësitë', 'Sales Pipelines': 'Pipeline-t e shitjeve', 'Golden Pipeline': 'Golden Pipeline', 'Demos & Meetings': 'Demo dhe takime',
-    'Companies': 'Kompanitë', 'Contacts': 'Kontaktet', 'Issues & Tickets': 'Çështjet dhe ticket-at', 'Business Assistants': 'Asistentët e biznesit', 'Knowledge': 'Njohuritë',
-    'Workflows': 'Rrjedhat e punës', 'Automations': 'Automatizimet', 'Analytics & ROI': 'Analitika dhe ROI', 'Platform Overview': 'Përmbledhja e platformës',
-    'Search pages and modules': 'Kërko faqe dhe module', 'Public Renova portal': 'Portali publik Renova', 'Licensed': 'Workspace i licencuar',
-    'COMMAND CENTER': 'QENDRA E KOMANDËS', '01 — PREPARE': '01 — PËRGATIT', '02 — FIND & REACH': '02 — GJEJ DHE KONTAKTO', '03 — CONVERT': '03 — KONVERTO',
-    '04 — CUSTOMER OPERATIONS': '04 — OPERACIONET E KLIENTËVE', '05 — AUTOMATE & IMPROVE': '05 — AUTOMATIZO DHE PËRMIRËSO', 'PLATFORM MANAGEMENT': 'MENAXHIMI I PLATFORMËS'
-  },
-  de: {
-    'Dashboard': 'Dashboard', 'Connections & Senders': 'Verbindungen & Absender', 'Renova Product Catalog': 'Renova Produktkatalog',
-    'Renova Promotion Automation': 'Renova Promotionsautomatisierung', 'Public Renova Portal': 'Öffentliches Renova-Portal', 'Prospect Discovery': 'Interessenten finden',
-    'Autonomous Acquisition': 'Autonome Akquise', 'Acquisition Approval Queue': 'Akquise-Freigabe', 'Campaigns': 'Kampagnen', 'Replies & Inbox': 'Antworten & Posteingang',
-    'Qualified Leads': 'Qualifizierte Leads', 'Opportunities': 'Chancen', 'Sales Pipelines': 'Vertriebspipelines', 'Golden Pipeline': 'Golden Pipeline', 'Demos & Meetings': 'Demos & Meetings',
-    'Companies': 'Unternehmen', 'Contacts': 'Kontakte', 'Issues & Tickets': 'Anfragen & Tickets', 'Business Assistants': 'Business-Assistenten', 'Knowledge': 'Wissen',
-    'Workflows': 'Workflows', 'Automations': 'Automatisierungen', 'Analytics & ROI': 'Analysen & ROI', 'Platform Overview': 'Plattformübersicht',
-    'Search pages and modules': 'Seiten und Module suchen', 'Public Renova portal': 'Öffentliches Renova-Portal', 'Licensed': 'Lizenzierter Workspace',
-    'COMMAND CENTER': 'KOMMANDOZENTRALE', '01 — PREPARE': '01 — VORBEREITEN', '02 — FIND & REACH': '02 — FINDEN & ERREICHEN', '03 — CONVERT': '03 — KONVERTIEREN',
-    '04 — CUSTOMER OPERATIONS': '04 — KUNDENBETRIEB', '05 — AUTOMATE & IMPROVE': '05 — AUTOMATISIEREN & VERBESSERN', 'PLATFORM MANAGEMENT': 'PLATTFORMVERWALTUNG'
-  }
+const COMMON: Record<string, Record<AdminLanguage, string>> = {
+  'Dashboard': {en:'Dashboard',mk:'Контролна табла',sq:'Paneli kryesor',de:'Dashboard'},
+  'Connections & Senders': {en:'Connections & Senders',mk:'Конекции и испраќачи',sq:'Lidhjet dhe dërguesit',de:'Verbindungen & Absender'},
+  'Renova Product Catalog': {en:'Renova Product Catalog',mk:'Каталог на производи на Renova',sq:'Katalogu i produkteve Renova',de:'Renova Produktkatalog'},
+  'Renova Promotion Automation': {en:'Renova Promotion Automation',mk:'Renova автоматизација на промоции',sq:'Automatizimi i promovimit Renova',de:'Renova Promotionsautomatisierung'},
+  'Public Renova Portal': {en:'Public Renova Portal',mk:'Јавен Renova портал',sq:'Portali publik Renova',de:'Öffentliches Renova-Portal'},
+  'Prospect Discovery': {en:'Prospect Discovery',mk:'Откривање потенцијални клиенти',sq:'Zbulimi i prospekteve',de:'Interessenten finden'},
+  'Autonomous Acquisition': {en:'Autonomous Acquisition',mk:'Автономна аквизција',sq:'Akvizimi autonom',de:'Autonome Akquise'},
+  'Acquisition Approval Queue': {en:'Acquisition Approval Queue',mk:'Ред за одобрување на аквизиции',sq:'Radha e miratimit të akvizimit',de:'Akquise-Freigabe'},
+  'Campaigns': {en:'Campaigns',mk:'Кампањи',sq:'Fushatat',de:'Kampagnen'}, 'Replies & Inbox': {en:'Replies & Inbox',mk:'Одговори и сандаче',sq:'Përgjigjet dhe inbox-i',de:'Antworten & Posteingang'},
+  'Qualified Leads': {en:'Qualified Leads',mk:'Квалификувани лидови',sq:'Leads të kualifikuara',de:'Qualifizierte Leads'}, 'Opportunities': {en:'Opportunities',mk:'Можности',sq:'Mundësitë',de:'Chancen'},
+  'Sales Pipelines': {en:'Sales Pipelines',mk:'Продажни цевководи',sq:'Pipeline-t e shitjeve',de:'Vertriebspipelines'}, 'Golden Pipeline': {en:'Golden Pipeline',mk:'Golden Pipeline',sq:'Golden Pipeline',de:'Golden Pipeline'},
+  'Demos & Meetings': {en:'Demos & Meetings',mk:'Демо и состаноци',sq:'Demo dhe takime',de:'Demos & Meetings'}, 'Companies': {en:'Companies',mk:'Компании',sq:'Kompanitë',de:'Unternehmen'},
+  'Contacts': {en:'Contacts',mk:'Контакти',sq:'Kontaktet',de:'Kontakte'}, 'Issues & Tickets': {en:'Issues & Tickets',mk:'Прашања и тикети',sq:'Çështjet dhe ticket-at',de:'Anfragen & Tickets'},
+  'Business Assistants': {en:'Business Assistants',mk:'Бизнис асистенти',sq:'Asistentët e biznesit',de:'Business-Assistenten'}, 'Knowledge': {en:'Knowledge',mk:'Знаење',sq:'Njohuritë',de:'Wissen'},
+  'Workflows': {en:'Workflows',mk:'Работни текови',sq:'Rrjedhat e punës',de:'Workflows'}, 'Automations': {en:'Automations',mk:'Автоматизации',sq:'Automatizimet',de:'Automatisierungen'},
+  'Analytics & ROI': {en:'Analytics & ROI',mk:'Аналитика и ROI',sq:'Analitika dhe ROI',de:'Analysen & ROI'}, 'Platform Overview': {en:'Platform Overview',mk:'Преглед на платформата',sq:'Përmbledhja e platformës',de:'Plattformübersicht'},
+  'Search pages and modules': {en:'Search pages and modules',mk:'Пребарај страници и модули',sq:'Kërko faqe dhe module',de:'Seiten und Module suchen'}, 'Public Renova portal': {en:'Public Renova portal',mk:'Јавен Renova портал',sq:'Portali publik Renova',de:'Öffentliches Renova-Portal'}, 'Licensed': {en:'Licensed',mk:'Лиценциран',sq:'I licencuar',de:'Lizenziert'},
+  'COMMAND CENTER': {en:'COMMAND CENTER',mk:'КОМАНДЕН ЦЕНТАР',sq:'QENDRA E KOMANDËS',de:'KOMMANDOZENTRALE'}, '01 — PREPARE': {en:'01 — PREPARE',mk:'01 — ПОДГОТОВКА',sq:'01 — PËRGATIT',de:'01 — VORBEREITEN'},
+  '02 — FIND & REACH': {en:'02 — FIND & REACH',mk:'02 — НАЈДИ И КОНТАКТИРАЈ',sq:'02 — GJEJ DHE KONTAKTO',de:'02 — FINDEN & ERREICHEN'}, '03 — CONVERT': {en:'03 — CONVERT',mk:'03 — КОНВЕРЗИЈА',sq:'03 — KONVERTO',de:'03 — KONVERTIEREN'},
+  '04 — CUSTOMER OPERATIONS': {en:'04 — CUSTOMER OPERATIONS',mk:'04 — ОПЕРАЦИИ СО КЛИЕНТИ',sq:'04 — OPERACIONET E KLIENTËVE',de:'04 — KUNDENBETRIEB'}, '05 — AUTOMATE & IMPROVE': {en:'05 — AUTOMATE & IMPROVE',mk:'05 — АВТОМАТИЗИРАЈ И ПОДОБРИ',sq:'05 — AUTOMATIZO DHE PËRMIRËSO',de:'05 — AUTOMATISIEREN & VERBESSERN'}, 'PLATFORM MANAGEMENT': {en:'PLATFORM MANAGEMENT',mk:'УПРАВУВАЊЕ СО ПЛАТФОРМАТА',sq:'MENAXHIMI I PLATFORMËS',de:'PLATTFORMVERWALTUNG'},
+  'Product Catalog': {en:'Product Catalog',mk:'Каталог на производи',sq:'Katalogu i produkteve',de:'Produktkatalog'}, 'Edit Product': {en:'Edit Product',mk:'Уреди производ',sq:'Ndrysho produktin',de:'Produkt bearbeiten'}, 'Add Renova Product': {en:'Add Renova Product',mk:'Додај Renova производ',sq:'Shto produkt Renova',de:'Renova-Produkt hinzufügen'},
+  'Prepare one product for the portal and AI promotion workflow.': {en:'Prepare one product for the portal and AI promotion workflow.',mk:'Подгответе производ за порталот и AI промоција.',sq:'Përgatitni një produkt për portalin dhe promovimin me AI.',de:'Produkt für Portal und KI-Promotion vorbereiten.'},
+  'Cancel': {en:'Cancel',mk:'Откажи',sq:'Anulo',de:'Abbrechen'}, 'Save Product': {en:'Save Product',mk:'Зачувај производ',sq:'Ruaj produktin',de:'Produkt speichern'}, 'Saving…': {en:'Saving…',mk:'Се зачувува…',sq:'Duke ruajtur…',de:'Speichern…'},
+  'Content language': {en:'Content language',mk:'Јазик на содржината',sq:'Gjuha e përmbajtjes',de:'Inhaltssprache'}, 'The selected languages are stored as product localizations in the Renova tenant database.': {en:'The selected languages are stored as product localizations in the Renova tenant database.',mk:'Избраните јазици се зачувуваат како локализации во базата на Renova.',sq:'Gjuhët e zgjedhura ruhen si lokalizime të produktit në bazën e Renova.',de:'Die ausgewählten Sprachen werden als Produktlokalisierungen in der Renova-Datenbank gespeichert.'},
+  'Product information': {en:'Product information',mk:'Информации за производот',sq:'Informacionet e produktit',de:'Produktinformationen'}, 'Core catalog identity and customer-facing content.': {en:'Core catalog identity and customer-facing content.',mk:'Основен идентитет на каталогот и содржина за клиентите.',sq:'Identiteti i katalogut dhe përmbajtja për klientët.',de:'Katalogidentität und kundenbezogene Inhalte.'},
+  'Product name': {en:'Product name',mk:'Име на производ',sq:'Emri i produktit',de:'Produktname'}, 'Product code / SKU': {en:'Product code / SKU',mk:'Код на производ / SKU',sq:'Kodi i produktit / SKU',de:'Produktcode / SKU'}, 'Category': {en:'Category',mk:'Категорија',sq:'Kategoria',de:'Kategorie'}, 'Select category': {en:'Select category',mk:'Изберете категорија',sq:'Zgjidhni kategorinë',de:'Kategorie auswählen'}, 'Brand': {en:'Brand',mk:'Бренд',sq:'Marka',de:'Marke'},
+  'Short description': {en:'Short description',mk:'Краток опис',sq:'Përshkrim i shkurtër',de:'Kurzbeschreibung'}, 'Description': {en:'Description',mk:'Опис',sq:'Përshkrimi',de:'Beschreibung'}, 'Benefits & applications': {en:'Benefits & applications',mk:'Предности и примена',sq:'Përfitimet dhe aplikimet',de:'Vorteile & Anwendungen'}, 'Explain why the product matters and where it is used.': {en:'Explain why the product matters and where it is used.',mk:'Објаснете ги предностите и примената на производот.',sq:'Shpjegoni përfitimet dhe përdorimin e produktit.',de:'Vorteile und Einsatzbereiche des Produkts erklären.'},
+  'Key benefits': {en:'Key benefits',mk:'Главни предности',sq:'Përfitimet kryesore',de:'Hauptvorteile'}, 'Applications': {en:'Applications',mk:'Примена',sq:'Aplikimet',de:'Anwendungen'}, 'Technical specifications': {en:'Technical specifications',mk:'Технички спецификации',sq:'Specifikimet teknike',de:'Technische Spezifikationen'},
+  'Variants & packaging': {en:'Variants & packaging',mk:'Варијанти и пакување',sq:'Variantet dhe paketimi',de:'Varianten & Verpackung'}, 'Define the commercial unit that appears in the catalog.': {en:'Define the commercial unit that appears in the catalog.',mk:'Дефинирајте ја комерцијалната единица во каталогот.',sq:'Përcaktoni njësinë komerciale që shfaqet në katalog.',de:'Kommerzielle Einheit für den Katalog definieren.'}, 'Variant / packaging': {en:'Variant / packaging',mk:'Варијанта / пакување',sq:'Varianti / paketimi',de:'Variante / Verpackung'}, 'Weight': {en:'Weight',mk:'Тежина',sq:'Pesha',de:'Gewicht'}, 'SKU': {en:'SKU',mk:'SKU',sq:'SKU',de:'SKU'},
+  'Languages': {en:'Languages',mk:'Јазици',sq:'Gjuhët',de:'Sprachen'}, 'Enable the languages for which localized catalog content should be saved.': {en:'Enable the languages for which localized catalog content should be saved.',mk:'Изберете ги јазиците за кои ќе се зачува локализирана содржина.',sq:'Aktivizoni gjuhët për të cilat duhet të ruhet përmbajtje e lokalizuar.',de:'Sprachen für lokalisierte Kataloginhalte auswählen.'},
+  'WORKFLOW': {en:'WORKFLOW',mk:'РАБОТЕН ТЕК',sq:'RRJEDHA E PUNËS',de:'WORKFLOW'}, 'Product lifecycle': {en:'Product lifecycle',mk:'Животен циклус на производот',sq:'Cikli jetësor i produktit',de:'Produktlebenszyklus'}, 'Catalog': {en:'Catalog',mk:'Каталог',sq:'Katalog',de:'Katalog'}, 'Create the product and define its commercial identity.': {en:'Create the product and define its commercial identity.',mk:'Креирајте го производот и дефинирајте го неговиот идентитет.',sq:'Krijoni produktin dhe përcaktoni identitetin e tij komercial.',de:'Produkt erstellen und seine kommerzielle Identität definieren.'},
+  'Translations': {en:'Translations',mk:'Преводи',sq:'Përkthime',de:'Übersetzungen'}, 'Persist localized product content for EN, MK, SQ and DE.': {en:'Persist localized product content for EN, MK, SQ and DE.',mk:'Зачувајте локализирана содржина за EN, MK, SQ и DE.',sq:'Ruani përmbajtjen e lokalizuar për EN, MK, SQ dhe DE.',de:'Lokalisierte Inhalte für EN, MK, SQ und DE speichern.'}, 'Portal': {en:'Portal',mk:'Портал',sq:'Portal',de:'Portal'}, 'Publish approved product content to the Renova portal.': {en:'Publish approved product content to the Renova portal.',mk:'Објавете одобрена содржина на Renova порталот.',sq:'Publikoni përmbajtjen e aprovuar në portalin Renova.',de:'Freigegebene Produktinhalte im Renova-Portal veröffentlichen.'}, 'Promotion': {en:'Promotion',mk:'Промоција',sq:'Promovimi',de:'Promotion'}, 'Make the product available to promotion planning and acquisition.': {en:'Make the product available to promotion planning and acquisition.',mk:'Ставете го производот на располагање за промоција и аквизиција.',sq:'Bëjeni produktin të disponueshëm për promovim dhe akvizim.',de:'Produkt für Promotionsplanung und Akquise verfügbar machen.'},
+  'Publishing': {en:'Publishing',mk:'Објавување',sq:'Publikimi',de:'Veröffentlichung'}, 'Website visibility and AI promotion are separate controls.': {en:'Website visibility and AI promotion are separate controls.',mk:'Видливоста на веб-страницата и AI промоцијата се одделни контроли.',sq:'Dukshmëria në faqe dhe promovimi me AI janë kontrolle të ndara.',de:'Website-Sichtbarkeit und KI-Promotion sind getrennte Einstellungen.'}, 'Publish to Renova portal': {en:'Publish to Renova portal',mk:'Објави на Renova портал',sq:'Publiko në portalin Renova',de:'Im Renova-Portal veröffentlichen'}, 'Make available for AI promotion': {en:'Make available for AI promotion',mk:'Достапно за AI промоција',sq:'Bëje të disponueshëm për promovim me AI',de:'Für KI-Promotion verfügbar machen'}, 'Product saved to the Renova catalog.': {en:'Product saved to the Renova catalog.',mk:'Производот е зачуван во Renova каталогот.',sq:'Produkti u ruajt në katalogun Renova.',de:'Produkt wurde im Renova-Katalog gespeichert.'},
+  'Product name, product code and category are required.': {en:'Product name, product code and category are required.',mk:'Името, кодот и категоријата на производот се задолжителни.',sq:'Emri, kodi dhe kategoria e produktit janë të detyrueshme.',de:'Produktname, Produktcode und Kategorie sind erforderlich.'}, 'The API did not return a product id.': {en:'The API did not return a product id.',mk:'API не врати ID на производот.',sq:'API nuk ktheu ID-në e produktit.',de:'Die API hat keine Produkt-ID zurückgegeben.'}, 'Unable to save the product.': {en:'Unable to save the product.',mk:'Производот не може да се зачува.',sq:'Produkti nuk mund të ruhet.',de:'Produkt konnte nicht gespeichert werden.'}, 'Workspace action': {en:'Workspace action',mk:'Акција во workspace',sq:'Veprim në workspace',de:'Workspace-Aktion'}, 'Close': {en:'Close',mk:'Затвори',sq:'Mbyll',de:'Schließen'}, 'No data': {en:'No data',mk:'Нема податоци',sq:'Nuk ka të dhëna',de:'Keine Daten'}, 'Setup progress': {en:'Setup progress',mk:'Напредок на поставувањето',sq:'Progresi i konfigurimit',de:'Einrichtungsfortschritt'}
 };
 
 @Injectable({ providedIn: 'root' })
 export class AdminI18nService {
   readonly language = signal<AdminLanguage>((localStorage.getItem('qai.admin.language') as AdminLanguage) || 'en');
-  readonly languages: Array<{code: AdminLanguage; label: string}> = [
-    {code: 'en', label: 'EN'}, {code: 'mk', label: 'MK'}, {code: 'sq', label: 'SQ'}, {code: 'de', label: 'DE'}
-  ];
-
-  setLanguage(language: AdminLanguage): void {
-    this.language.set(language);
-    localStorage.setItem('qai.admin.language', language);
-    document.documentElement.lang = language;
-  }
-
-  t(value: string): string { return DICTIONARY[this.language()][value] || value; }
+  readonly languages: Array<{code: AdminLanguage; label: string}> = [{code:'en',label:'EN'},{code:'mk',label:'MK'},{code:'sq',label:'SQ'},{code:'de',label:'DE'}];
+  setLanguage(language: AdminLanguage): void { this.language.set(language); localStorage.setItem('qai.admin.language', language); document.documentElement.lang = language; }
+  t(value: string): string { return COMMON[value]?.[this.language()] || value; }
 }
