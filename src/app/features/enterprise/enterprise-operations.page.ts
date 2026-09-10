@@ -1,0 +1,149 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ApiService } from '../../core/api.service';
+import { PageHeader } from '../../shared/ui';
+
+interface Tab { key: string; label: string; endpoint: string; create?: string; status?: string[]; }
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink, PageHeader],
+  template: `
+    <qai-page-header [title]="title" [subtitle]="subtitle">
+      <a routerLink="/enterprise" class="back">← Renova Operations</a>
+      <button class="secondary" (click)="load()">↻ Refresh</button>
+      <button class="primary" *ngIf="canCreate" (click)="openCreate()">+ New</button>
+    </qai-page-header>
+
+    <nav class="tabs">
+      <a *ngFor="let t of tabs" [routerLink]="'/enterprise/'+t.key" [class.active]="section===t.key">{{t.label}}</a>
+    </nav>
+
+    <section class="meta">
+      <div><small>WORKSPACE</small><b>RENOVA</b></div>
+      <div><small>DATA SOURCE</small><b>Renova Enterprise API</b></div>
+      <div><small>RECORDS</small><b>{{rows.length}}</b></div>
+    </section>
+
+    <section class="toolbar" *ngIf="section==='warehousing'||section==='distribution'">
+      <b>{{section==='warehousing'?'Warehouse operations':'Distribution operations'}}</b>
+      <span>Facilities are filtered by type. Warehouse and distribution records remain part of the same tenant facility model.</span>
+    </section>
+
+    <section class="panel">
+      <div class="loading" *ngIf="loading">Loading Renova data…</div>
+      <div class="error" *ngIf="error">{{error}}</div>
+      <div class="table" *ngIf="!loading && !error && rows.length">
+        <table><thead><tr><th *ngFor="let c of columns">{{c}}</th><th *ngIf="hasStatus">Workflow</th><th *ngIf="section==='facilities'">Manage</th></tr></thead>
+          <tbody><tr *ngFor="let row of rows">
+            <td *ngFor="let k of keys">{{display(row,k)}}</td>
+            <td *ngIf="hasStatus"><button class="link" (click)="openStatus(row)">Update status</button></td>
+            <td *ngIf="section==='facilities'"><button class="link" (click)="openEditFacility(row)">Edit</button> <button class="link" (click)="openCapabilities(row)">Capabilities</button></td>
+          </tr></tbody>
+        </table>
+      </div>
+      <div class="empty" *ngIf="!loading && !error && !rows.length"><b>No Renova records yet</b><span>This tenant API returned no records for this module.</span></div>
+    </section>
+
+    <div class="overlay" *ngIf="modal">
+      <section class="drawer">
+        <header><div><small>RENOVA / ENTERPRISE</small><h2>{{modalTitle}}</h2></div><button class="icon" (click)="close()">×</button></header>
+
+        <div class="form" *ngIf="formType==='facility'">
+          <label>Code<input [(ngModel)]="form.code"></label><label>Name<input [(ngModel)]="form.name"></label>
+          <label>Type<select [(ngModel)]="form.type"><option>Factory</option><option>Warehouse</option><option>DistributionPoint</option><option>Office</option><option>Other</option></select></label>
+          <label>Country<input [(ngModel)]="form.countryCode"></label><label>City<input [(ngModel)]="form.city"></label><label>Address<input [(ngModel)]="form.address"></label>
+          <label>Latitude<input type="number" [(ngModel)]="form.latitude"></label><label>Longitude<input type="number" [(ngModel)]="form.longitude"></label>
+          <label>Contact<input [(ngModel)]="form.contactName"></label><label>Phone<input [(ngModel)]="form.contactPhone"></label><label>Email<input [(ngModel)]="form.contactEmail"></label>
+          <label>Capacity<input type="number" [(ngModel)]="form.capacity"></label><label>Capacity unit<input [(ngModel)]="form.capacityUnit"></label>
+          <label class="check"><input type="checkbox" [(ngModel)]="form.isActive"> Active</label>
+        </div>
+
+        <div class="form" *ngIf="formType==='customer'"><label>Company ID<input [(ngModel)]="form.companyId" placeholder="GUID"></label><label>Credit limit<input type="number" [(ngModel)]="form.creditLimit"></label><label>Payment terms days<input type="number" [(ngModel)]="form.paymentTermsDays"></label></div>
+
+        <div class="form" *ngIf="formType==='priceList'"><label>Code<input [(ngModel)]="form.code"></label><label>Name<input [(ngModel)]="form.name"></label><label>Currency<input [(ngModel)]="form.currency"></label><label class="check"><input type="checkbox" [(ngModel)]="form.isActive"> Active</label></div>
+
+        <div class="form" *ngIf="formType==='priceItem'"><label>Product ID<input [(ngModel)]="form.catalogProductId"></label><label>Variant ID<input [(ngModel)]="form.productVariantId"></label><label>Unit price<input type="number" [(ngModel)]="form.unitPrice"></label><label>Currency<input [(ngModel)]="form.currency"></label></div>
+
+        <div class="form" *ngIf="formType==='order'">
+          <label>Channel<select [(ngModel)]="form.channel"><option>B2C</option><option>B2B</option><option>Distributor</option><option>Partner</option></select></label>
+          <label>Currency<input [(ngModel)]="form.currency"></label><label>Company ID<input [(ngModel)]="form.companyId"></label><label>Customer account ID<input [(ngModel)]="form.customerAccountId"></label>
+          <label>Contact ID<input [(ngModel)]="form.contactId"></label><label>Requested delivery<input type="datetime-local" [(ngModel)]="form.requestedDeliveryAtUtc"></label>
+          <label>Product ID<input [(ngModel)]="item.catalogProductId"></label><label>Variant ID<input [(ngModel)]="item.productVariantId"></label><label>SKU<input [(ngModel)]="item.sku"></label><label>Description<input [(ngModel)]="item.description"></label>
+          <label>Quantity<input type="number" [(ngModel)]="item.quantity"></label><label>Unit<input [(ngModel)]="item.unit"></label><label>Unit price<input type="number" [(ngModel)]="item.unitPrice"></label><label>Discount<input type="number" [(ngModel)]="item.discount"></label><label>Tax<input type="number" [(ngModel)]="item.tax"></label>
+        </div>
+
+        <div class="form" *ngIf="formType==='fulfillment'"><label>Sales order ID<input [(ngModel)]="form.salesOrderId"></label><label>Type<select [(ngModel)]="form.type"><option>Pickup</option><option>Delivery</option></select></label><label>Pickup facility ID<input [(ngModel)]="form.pickupFacilityId"></label><label>Delivery method<select [(ngModel)]="form.deliveryMethod"><option>CompanyLogistics</option><option>ExternalCarrier</option></select></label></div>
+
+        <div class="form" *ngIf="formType==='reservation'"><label>Stock balance ID<input [(ngModel)]="form.stockBalanceId"></label><label>Quantity<input type="number" [(ngModel)]="form.quantity"></label><label>Reference<input [(ngModel)]="form.reference"></label></div>
+
+        <div class="form" *ngIf="formType==='movement'"><label>Product ID<input [(ngModel)]="form.catalogProductId"></label><label>Quantity<input type="number" [(ngModel)]="form.quantity"></label><label>From facility ID<input [(ngModel)]="form.fromFacilityId"></label><label>To facility ID<input [(ngModel)]="form.toFacilityId"></label></div>
+
+        <div class="form" *ngIf="formType==='shipment'"><label>Fulfillment ID<input [(ngModel)]="form.fulfillmentId"></label><label>Carrier<input [(ngModel)]="form.carrierName"></label><label>Tracking number<input [(ngModel)]="form.trackingNumber"></label><label>ETA<input type="datetime-local" [(ngModel)]="form.estimatedDeliveryAtUtc"></label></div>
+
+        <div class="form" *ngIf="formType==='payment'"><label>Amount<input type="number" [(ngModel)]="form.amount"></label><label>Currency<input [(ngModel)]="form.currency"></label><label>Method<select [(ngModel)]="form.method"><option>Cash</option><option>BankTransfer</option><option>Card</option><option>Online</option><option>Other</option></select></label><label>Order ID<input [(ngModel)]="form.salesOrderId"></label></div>
+
+        <div class="form" *ngIf="formType==='capability'"><label>Capability<input [(ngModel)]="form.name"></label><label>Description<input [(ngModel)]="form.description"></label><label class="check"><input type="checkbox" [(ngModel)]="form.isActive"> Active</label></div>
+
+        <div class="capabilities" *ngIf="formType==='capabilities'"><article *ngFor="let c of capabilities"><b>{{c.name}}</b><span>{{c.description||'Facility capability'}}</span></article><div class="empty small" *ngIf="!capabilities.length">No capabilities configured.</div></div>
+
+        <div class="modal-actions"><button class="secondary" (click)="close()">Cancel</button><button class="primary" *ngIf="formType!=='capabilities'" (click)="save()" [disabled]="saving">{{saving?'Saving…':'Save'}}</button><button class="primary" *ngIf="formType==='capabilities'" (click)="formType='capability';modalTitle='Add capability';form={}">+ Add capability</button></div>
+      </section>
+    </div>
+
+    <div class="overlay" *ngIf="statusModal"><section class="drawer compact"><header><div><small>WORKFLOW</small><h2>Update {{statusKind}}</h2></div><button class="icon" (click)="statusModal=false">×</button></header><label>Status<select [(ngModel)]="nextStatus"><option *ngFor="let s of statusOptions">{{s}}</option></select></label><div class="modal-actions"><button class="secondary" (click)="statusModal=false">Cancel</button><button class="primary" (click)="saveStatus()">Update</button></div></section></div>
+  `,
+  styles: [`:host{display:block;color:#172033}.back,.secondary,.primary,.link,.icon{padding:8px 11px;border:1px solid #dfe5ed;border-radius:8px;background:#fff;color:#315fbd;text-decoration:none;font-size:9px;cursor:pointer}.primary{background:#c62828;border-color:#c62828;color:#fff;font-weight:800}.tabs{display:flex;gap:6px;overflow:auto;padding:2px 0 13px}.tabs a{white-space:nowrap;padding:8px 11px;border:1px solid #dfe5ed;border-radius:8px;color:#66748b;background:#fff;text-decoration:none;font-size:9px}.tabs a.active{color:#c62828;border-color:#efb8b8;background:#fff7f7;font-weight:800}.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}.meta div,.toolbar{padding:13px;border:1px solid #dfe5ed;border-radius:11px;background:#fff}.meta small,.drawer small{display:block;font-size:8px;color:#7b8798;letter-spacing:.8px}.meta b{display:block;margin-top:6px;font-size:12px}.toolbar{margin-bottom:14px;display:grid;gap:4px}.toolbar span{font-size:9px;color:#7b8798}.panel{border:1px solid #dfe5ed;border-radius:13px;overflow:hidden;background:#fff;min-height:260px}.table{overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;background:#f5f7f9;border-bottom:1px solid #dfe5ed;color:#66748b;font-size:8px;white-space:nowrap}td{padding:11px 10px;border-bottom:1px solid #edf0f4;font-size:9px;white-space:nowrap}.link{border:0;background:transparent;color:#c62828;padding:4px}.loading,.empty,.error{padding:30px;font-size:10px}.empty{text-align:center;display:grid;gap:5px}.empty span{color:#7b8798}.empty.small{padding:18px}.error{background:#fff1f2;color:#9f1239}.overlay{position:fixed;inset:0;background:#17203355;display:flex;justify-content:flex-end;z-index:50}.drawer{width:min(600px,100%);height:100%;background:#fff;padding:24px;box-shadow:-10px 0 30px #0002;overflow:auto}.drawer.compact{height:auto;align-self:center;border-radius:14px;margin:20px}.drawer header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}.drawer h2{margin:5px 0;font-size:20px}.icon{font-size:18px;padding:4px 9px}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form label,.drawer>label{display:grid;gap:5px;font-size:9px;color:#66748b;font-weight:700}.form input,.form select,.drawer>label select{width:100%;box-sizing:border-box;border:1px solid #dfe5ed;border-radius:8px;padding:9px;font:inherit}.check{display:flex!important;align-items:center;gap:7px!important}.check input{width:auto}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}.capabilities{display:grid;gap:8px}.capabilities article{padding:12px;border:1px solid #e5e9ef;border-radius:10px;display:grid;gap:4px}.capabilities span{font-size:9px;color:#7b8798}@media(max-width:700px){.meta{grid-template-columns:1fr}.form{grid-template-columns:1fr}.drawer{padding:18px}}`]
+})
+export class EnterpriseOperationsPage implements OnInit {
+  private readonly api=inject(ApiService); private readonly route=inject(ActivatedRoute);
+  section='facilities'; rows:any[]=[]; keys:string[]=[]; columns:string[]=[]; loading=false; error=''; modal=false; statusModal=false; saving=false;
+  formType=''; modalTitle=''; form:any={}; item:any={}; capabilities:any[]=[]; selectedFacilityId=''; statusKind=''; nextStatus=''; statusOptions:string[]=[];
+  readonly tenant=localStorage.getItem('qai-tenant')||'renova';
+  readonly tabs:Tab[]=[
+    {key:'facilities',label:'Facilities',endpoint:'enterprise/facilities',create:'facility'},
+    {key:'customers',label:'Customers',endpoint:'enterprise/customers',create:'customer'},
+    {key:'price-lists',label:'Price Lists',endpoint:'enterprise/price-lists',create:'priceList'},
+    {key:'orders',label:'Ordering',endpoint:'enterprise/orders',create:'order',status:['Draft','Submitted','Confirmed','PartiallyFulfilled','Fulfilled','Cancelled']},
+    {key:'fulfillments',label:'Fulfillment',endpoint:'enterprise/fulfillments',create:'fulfillment',status:['pending','ready','picked-up','delivered','completed','cancelled']},
+    {key:'inventory',label:'Inventory',endpoint:'enterprise/stock'},
+    {key:'reservations',label:'Reservations',endpoint:'enterprise/reservations',create:'reservation'},
+    {key:'movements',label:'Stock Movements',endpoint:'enterprise/movements',create:'movement',status:['Requested','Approved','Prepared','Dispatched','InTransit','Received','Completed','Cancelled']},
+    {key:'warehousing',label:'Warehousing',endpoint:'enterprise/facilities'},
+    {key:'distribution',label:'Distribution',endpoint:'enterprise/facilities'},
+    {key:'logistics',label:'Logistics',endpoint:'enterprise/shipments',create:'shipment',status:['Planned','Prepared','Dispatched','InTransit','Delivered','Cancelled']},
+    {key:'routes',label:'Routes',endpoint:'enterprise/routes'},
+    {key:'documents',label:'Documents',endpoint:'enterprise/documents'},
+    {key:'payments',label:'Payments',endpoint:'enterprise/payments',create:'payment',status:['Pending','Requested','PartiallyPaid','Paid','Failed','Refunded','Cancelled']}
+  ];
+  readonly labels:any={facilities:['Facilities','Factories, warehouses and distribution points.'],customers:['Customers','Renova customer and commercial accounts.'],'price-lists':['Price Lists','Commercial pricing and price-list items.'],orders:['Ordering','B2C, B2B, distributor and partner orders.'],fulfillments:['Fulfillment','Pickup and delivery execution.'],inventory:['Inventory','Stock balances and availability.'],reservations:['Reservations','Reserved stock against commercial demand.'],movements:['Stock Movements','Controlled facility-to-facility stock lifecycle.'],warehousing:['Warehousing','Warehouse operations using the facility network.'],distribution:['Distribution','Distribution points and local fulfillment.'],logistics:['Logistics','Shipment and delivery execution.'],routes:['Routes','Route plans from the enterprise API.'],documents:['Documents','Proforma, invoice, receipt and credit-note records.'],payments:['Payments','Payment requests and financial status.']};
+  ngOnInit(){this.route.paramMap.subscribe(p=>{this.section=p.get('section')||'facilities';this.load()})}
+  get title(){return this.labels[this.section]?.[0]||this.section} get subtitle(){return this.labels[this.section]?.[1]||''}
+  get tab(){return this.tabs.find(x=>x.key===this.section)||this.tabs[0]} get canCreate(){return !!this.tab.create} get hasStatus(){return !!this.tab.status}
+  load(){this.loading=true;this.error='';this.api.get<any[]>(this.tab.endpoint).subscribe({next:r=>{this.rows=Array.isArray(r)?r:[];if(this.section==='warehousing')this.rows=this.rows.filter(x=>x.type==='Warehouse');if(this.section==='distribution')this.rows=this.rows.filter(x=>x.type==='DistributionPoint');this.configure();this.loading=false},error:e=>{this.rows=[];this.error=e?.error?.detail||e?.error?.title||'Renova Enterprise API is unavailable.';this.loading=false}})}
+  configure(){const preferred:any={facilities:['name','code','type','countryCode','city','capacity','isActive'],customers:['companyId','creditLimit','paymentTermsDays','isActive'],'price-lists':['code','name','currency','isActive'],orders:['number','channel','currency','status','grandTotal','requestedDeliveryAtUtc'],fulfillments:['salesOrderId','type','status','deliveryMethod','pickupFacilityId','completedAtUtc'],inventory:['facilityId','catalogProductId','productVariantId','onHand','reserved','available'],reservations:['stockBalanceId','quantity','status','reference'],movements:['number','fromFacilityId','toFacilityId','quantity','status','dispatchedAtUtc','receivedAtUtc'],warehousing:['name','code','type','countryCode','city','capacity','isActive'],distribution:['name','code','type','countryCode','city','capacity','isActive'],logistics:['number','fulfillmentId','status','estimatedDeliveryAtUtc','deliveredAtUtc'],routes:['number','status','plannedStartAtUtc','plannedEndAtUtc'],documents:['number','type','salesOrderId','currency','total','status'],payments:['amount','currency','method','status','requestedAtUtc','paidAtUtc']};const sample=this.rows[0]||{};this.keys=(preferred[this.section]||Object.keys(sample)).filter((k:string)=>Object.prototype.hasOwnProperty.call(sample,k)).slice(0,8);if(!this.keys.length)this.keys=Object.keys(sample).slice(0,8);this.columns=this.keys.map(x=>x.replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toUpperCase()))}
+  display(row:any,key:string){const v=row?.[key];if(v===null||v===undefined||v==='')return '—';if(typeof v==='boolean')return v?'Yes':'No';if(String(v).includes('T')&&/AtUtc$/i.test(key))return new Date(v).toLocaleString();return String(v)}
+  openCreate(){this.modal=true;this.formType=this.tab.create||'';this.modalTitle='Create '+this.title;this.form={currency:'EUR',countryCode:'MK',type:'Factory',channel:'B2C',method:'Cash',deliveryMethod:'CompanyLogistics',isActive:true};this.item={quantity:1,unit:'unit',unitPrice:0,discount:0,tax:0}}
+  openEditFacility(row:any){this.modal=true;this.formType='facility';this.modalTitle='Edit facility';this.form={...row}}
+  openCapabilities(row:any){this.modal=true;this.formType='capabilities';this.modalTitle='Facility capabilities';this.selectedFacilityId=row.id;this.api.get<any[]>(`enterprise/facilities/${row.id}/capabilities`).subscribe({next:r=>this.capabilities=Array.isArray(r)?r:[],error:()=>this.capabilities=[]})}
+  close(){this.modal=false}
+  save(){this.saving=true;let request:any=this.form;let call:any;
+    if(this.formType==='facility'){call=this.form.id?this.api.put(`enterprise/facilities/${this.form.id}`,request):this.api.post('enterprise/facilities',request)}
+    else if(this.formType==='customer')call=this.api.post('enterprise/customers',request);
+    else if(this.formType==='priceList')call=this.api.post('enterprise/price-lists',request);
+    else if(this.formType==='priceItem')call=this.api.post(`enterprise/price-lists/${this.form.priceListId}/items`,request);
+    else if(this.formType==='order')call=this.api.post('enterprise/orders',{...this.form,items:[this.item]});
+    else if(this.formType==='fulfillment')call=this.api.post('enterprise/fulfillments',request);
+    else if(this.formType==='reservation')call=this.api.post('enterprise/reservations',request);
+    else if(this.formType==='movement')call=this.api.post('enterprise/movements',request);
+    else if(this.formType==='shipment')call=this.api.post('enterprise/shipments',request);
+    else if(this.formType==='payment')call=this.api.post('enterprise/payments',request);
+    else if(this.formType==='capability')call=this.api.post(`enterprise/facilities/${this.selectedFacilityId}/capabilities`,request);
+    else {this.saving=false;return}
+    call.subscribe({next:()=>{this.saving=false;this.modal=false;this.load()},error:e=>{this.saving=false;this.error=e?.error?.detail||'Save failed.'}})
+  }
+  openStatus(row:any){this.selectedFacilityId=row.id;this.statusKind=this.section==='orders'?'order':this.section==='fulfillments'?'fulfillment':this.section==='movements'?'movement':this.section==='logistics'?'shipment':'payment';this.statusOptions=this.tab.status||[];this.nextStatus=String(row.status);this.statusModal=true}
+  saveStatus(){const base:any={orders:'enterprise/orders',fulfillments:'enterprise/fulfillments',movements:'enterprise/movements',logistics:'enterprise/shipments',payments:'enterprise/payments'};const endpoint=base[this.section];if(!endpoint)return;this.api.post(`${endpoint}/${this.selectedFacilityId}/status`,this.nextStatus).subscribe({next:()=>{this.statusModal=false;this.load()},error:e=>this.error=e?.error?.detail||'Status update failed.'})}
+}
