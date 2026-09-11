@@ -12,6 +12,7 @@ interface SiteContent { version:number; status:string; companyIntro:string; hero
 export class RenovaContentAdminPage implements OnInit {
   tenantId='2f0c6e75-4df1-4bd5-bb49-6ef8ea0e3f1a';
   languages:Lang[]=['en','mk','sq','de'];
+  sections:CmsSection[]=['hero','intro','solutions','kpis','stories','events','locations'];
   heroes:Hero[]=[];
   selected=0; loading=true; saving=false; message=''; error=''; section:CmsSection='hero';
   content:SiteContent={version:1,status:'Published',companyIntro:'',solutions:[],kpis:[],stories:[],events:[],locations:[]};
@@ -24,13 +25,7 @@ export class RenovaContentAdminPage implements OnInit {
   remove(index:number):void{this.heroes.splice(index,1);this.selected=Math.max(0,Math.min(this.selected,this.heroes.length-1));}
   move(index:number,delta:number):void{const target=index+delta;if(target<0||target>=this.heroes.length)return;[this.heroes[index],this.heroes[target]]=[this.heroes[target],this.heroes[index]];this.heroes.forEach((h,i)=>h.order=i+1);this.selected=target;}
   addItem(type:'solutions'|'kpis'|'stories'|'events'|'locations'):void{
-    const defaults:any={
-      solutions:{number:(this.content.solutions?.length||0)+1,title:'',description:''},
-      kpis:{value:'',title:'',description:''},
-      stories:{title:'',description:'',location:'',imageUrl:''},
-      events:{title:'',description:''},
-      locations:{name:'',type:'',address:'',url:''}
-    };
+    const defaults:any={solutions:{number:(this.content.solutions?.length||0)+1,title:'',description:''},kpis:{value:'',title:'',description:''},stories:{title:'',description:'',location:'',imageUrl:''},events:{title:'',description:''},locations:{name:'',type:'',address:'',url:''}};
     if(!Array.isArray(this.content[type]))this.content[type]=[];
     this.content[type].push(defaults[type]);
   }
