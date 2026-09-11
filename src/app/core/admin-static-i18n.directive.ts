@@ -41,7 +41,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       text.nodeValue = leading + translated + trailing;
     }
 
-    const elements = this.host.querySelectorAll('*') as NodeListOf<HTMLElement>;
+    const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
     for (const element of elements) {
       for (const attribute of this.uiAttributes) {
         const value = element.getAttribute(attribute);
