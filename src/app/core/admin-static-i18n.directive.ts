@@ -8,11 +8,13 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly host = inject(ElementRef<HTMLElement>).nativeElement;
   private readonly i18n = inject(AdminI18nService);
   private readonly originals = new WeakMap<Text, string>();
+  private readonly attributeOriginals = new WeakMap<HTMLElement, Map<string, string>>();
   private readonly observer = new MutationObserver(() => this.translate());
   private readonly languageEffect = effect(() => { this.i18n.language(); this.translate(); });
+  private readonly uiAttributes = ['placeholder', 'title', 'aria-label'] as const;
 
   constructor() {
-    this.observer.observe(this.host, { childList: true, subtree: true });
+    this.observer.observe(this.host, { childList: true, subtree: true, attributes: true, attributeFilter: [...this.uiAttributes] });
     queueMicrotask(() => this.translate());
   }
 
@@ -26,6 +28,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
       nodes.push(text);
     }
+
     for (const text of nodes) {
       const original = this.originals.get(text) ?? text.nodeValue ?? '';
       if (!this.originals.has(text)) this.originals.set(text, original);
@@ -36,6 +39,27 @@ export class AdminStaticI18nDirective implements OnDestroy {
       const leading = original.match(/^\s*/)?.[0] ?? '';
       const trailing = original.match(/\s*$/)?.[0] ?? '';
       text.nodeValue = leading + translated + trailing;
+    }
+
+    const elements = this.host.querySelectorAll<HTMLElement>('*');
+    for (const element of elements) {
+      for (const attribute of this.uiAttributes) {
+        const value = element.getAttribute(attribute);
+        if (value === null || value.trim().length === 0 || value.trim().length > 400) continue;
+        let originals = this.attributeOriginals.get(element);
+        if (!originals) {
+          originals = new Map<string, string>();
+          this.attributeOriginals.set(element, originals);
+        }
+        const original = originals.get(attribute) ?? value;
+        if (!originals.has(attribute)) originals.set(attribute, original);
+        const trimmed = original.trim();
+        const translated = adminExtraText(adminText(this.i18n, trimmed), this.i18n.language());
+        if (translated === trimmed) continue;
+        const leading = original.match(/^\s*/)?.[0] ?? '';
+        const trailing = original.match(/\s*$/)?.[0] ?? '';
+        element.setAttribute(attribute, leading + translated + trailing);
+      }
     }
   }
 
