@@ -5,7 +5,7 @@ import { adminExtraText } from './admin-extra-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
-  private readonly host = inject(ElementRef<HTMLElement>).nativeElement;
+  private readonly host = inject(ElementRef).nativeElement as HTMLElement;
   private readonly i18n = inject(AdminI18nService);
   private readonly originals = new WeakMap<Text, string>();
   private readonly attributeOriginals = new WeakMap<HTMLElement, Map<string, string>>();
@@ -41,7 +41,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       text.nodeValue = leading + translated + trailing;
     }
 
-    const elements = this.host.querySelectorAll<HTMLElement>('*');
+    const elements = this.host.querySelectorAll('*') as NodeListOf<HTMLElement>;
     for (const element of elements) {
       for (const attribute of this.uiAttributes) {
         const value = element.getAttribute(attribute);
