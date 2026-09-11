@@ -32,11 +32,12 @@
   </div>
 
   <div class="table-card">
-    <div class="row header"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>STATUS</span><span></span></div>
+    <div class="row header"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>LANGUAGES</span><span>STATUS</span><span></span></div>
     <div class="row" *ngFor="let product of filteredProducts">
       <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'Renova product' }}</small></div>
       <span>{{ product.code }}</span>
       <span>{{ categoryName(product.productCategoryId) }}</span>
+      <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
       <span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span>
       <a class="manage" [routerLink]="['/catalog', product.id]">Manage →</a>
     </div>
