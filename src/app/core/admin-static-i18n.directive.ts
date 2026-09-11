@@ -3,6 +3,7 @@ import { AdminI18nService } from './admin-i18n.service';
 import { adminText } from './admin-page-translations';
 import { adminExtraText } from './admin-extra-translations';
 import { adminCrmText } from './admin-crm-translations';
+import { ADMIN_CMS_TRANSLATIONS } from './admin-cms-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -48,15 +49,11 @@ export class AdminStaticI18nDirective implements OnDestroy {
         const value = element.getAttribute(attribute);
         if (value === null || value.trim().length === 0 || value.trim().length > 400) continue;
         let originals = this.attributeOriginals.get(element);
-        if (!originals) {
-          originals = new Map<string, string>();
-          this.attributeOriginals.set(element, originals);
-        }
+        if (!originals) { originals = new Map<string, string>(); this.attributeOriginals.set(element, originals); }
         const original = originals.get(attribute) ?? value;
         if (!originals.has(attribute)) originals.set(attribute, original);
-        const trimmed = original.trim();
-        const translated = this.translateValue(trimmed);
-        if (translated === trimmed) continue;
+        const translated = this.translateValue(original.trim());
+        if (translated === original.trim()) continue;
         const leading = original.match(/^\s*/)?.[0] ?? '';
         const trailing = original.match(/\s*$/)?.[0] ?? '';
         const nextValue = leading + translated + trailing;
@@ -67,11 +64,10 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const cms = ADMIN_CMS_TRANSLATIONS[value]?.[language];
+    if (cms) return cms;
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
   }
 
-  ngOnDestroy(): void {
-    this.observer.disconnect();
-    this.languageEffect.destroy();
-  }
+  ngOnDestroy(): void { this.observer.disconnect(); this.languageEffect.destroy(); }
 }
