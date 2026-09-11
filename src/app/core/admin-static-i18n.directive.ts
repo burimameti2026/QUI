@@ -58,7 +58,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
         if (translated === trimmed) continue;
         const leading = original.match(/^\s*/)?.[0] ?? '';
         const trailing = original.match(/\s*$/)?.[0] ?? '';
-        element.setAttribute(attribute, leading + translated + trailing);
+        const nextValue = leading + translated + trailing;
+        if (value !== nextValue) element.setAttribute(attribute, nextValue);
       }
     }
   }
