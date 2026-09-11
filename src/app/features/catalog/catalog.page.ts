@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 
+interface Category { id: string; name: string; code?: string | null; }
 interface ProductRow {
   id: string;
   name: string;
@@ -19,6 +20,7 @@ interface ProductRow {
 @Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink],templateUrl:'./catalog.page.html',styleUrl:'./catalog.page.css'})
 export class CatalogPage implements OnInit {
   products: ProductRow[] = [];
+  categoriesList: Category[] = [];
   loading = true;
   error = '';
   search = '';
@@ -32,13 +34,19 @@ export class CatalogPage implements OnInit {
   load(): void {
     this.loading = true;
     this.error = '';
+    this.api.get<Category[]>('renova/catalog/categories').subscribe({
+      next: categories => this.categoriesList = categories || [],
+      error: () => this.categoriesList = []
+    });
     this.api.get<ProductRow[]>('renova/catalog/products').subscribe({
       next: rows => { this.products = rows || []; this.loading = false; },
       error: err => { this.error = err?.error?.detail || err?.error?.title || 'Unable to load the Renova catalog.'; this.loading = false; }
     });
   }
 
-  get categories(): string[] { return [...new Set(this.products.map(p => p.productCategoryId).filter(Boolean))]; }
+  get categories(): Category[] { return this.categoriesList.length ? this.categoriesList : [...new Set(this.products.map(p => p.productCategoryId).filter(Boolean))].map(id => ({ id, name: id })); }
+
+  categoryName(id: string): string { return this.categoriesList.find(c => c.id === id)?.name || id; }
 
   get filteredProducts(): ProductRow[] {
     const q = this.search.trim().toLowerCase();
