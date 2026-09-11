@@ -21,6 +21,9 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   verification: any = null;
   e2eResult: any = null;
   editing: any = null;
+  settings = { serpApiApiKey: '', monthlySafetyLimit: 200, timeZoneId: 'UTC' };
+  hasSerpApiKey = false;
+  savingSettings = false;
   error = '';
   loading = false;
   autoRefresh = false;
@@ -45,12 +48,16 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
     this.error = '';
     try {
       const base = `autonomous-acquisition/tenants/${this.tenantId}`;
-      const [agents, runs] = await Promise.all([
+      const [agents, runs, settings] = await Promise.all([
         firstValueFrom(this.api.get<any[]>(`${base}/agents`)),
-        firstValueFrom(this.api.get<any[]>(`${base}/runs`))
+        firstValueFrom(this.api.get<any[]>(`${base}/runs`)),
+        firstValueFrom(this.api.get<any>('autonomous-acquisition/settings'))
       ]);
       this.agents = agents || [];
       this.runs = runs || [];
+      this.hasSerpApiKey = !!settings?.hasSerpApiKey;
+      this.settings.monthlySafetyLimit = Number(settings?.monthlySafetyLimit || 200);
+      this.settings.timeZoneId = settings?.timeZoneId || 'UTC';
     } catch (error: any) {
       this.error = error?.error?.detail || 'Could not load autonomous acquisition data.';
     } finally { this.loading = false; }
@@ -64,6 +71,23 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   private stopRefresh() {
     if (this.timer) clearInterval(this.timer);
     this.timer = undefined;
+  }
+
+  async saveSettings() {
+    this.savingSettings = true;
+    this.error = '';
+    try {
+      const result = await firstValueFrom(this.api.put<any>('autonomous-acquisition/settings', {
+        serpApiApiKey: this.settings.serpApiApiKey || null,
+        monthlySafetyLimit: Number(this.settings.monthlySafetyLimit) || 200,
+        timeZoneId: this.settings.timeZoneId || 'UTC'
+      }));
+      this.hasSerpApiKey = !!result?.hasSerpApiKey;
+      this.settings.serpApiApiKey = '';
+      this.settings.monthlySafetyLimit = Number(result?.monthlySafetyLimit || this.settings.monthlySafetyLimit);
+      this.settings.timeZoneId = result?.timeZoneId || this.settings.timeZoneId;
+    } catch (error: any) { this.error = error?.error?.detail || 'Could not save tenant acquisition settings.'; }
+    finally { this.savingSettings = false; }
   }
 
   async verify() {
