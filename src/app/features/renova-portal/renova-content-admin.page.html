@@ -6,57 +6,16 @@
   <p class="success" *ngIf="message">{{ message }}</p><p class="error" *ngIf="error">{{ error }}</p>
   <div *ngIf="loading" class="empty">Loading Renova content…</div>
   <ng-container *ngIf="!loading">
-    <nav class="sections" aria-label="CMS sections">
-      <button *ngFor="let item of (['hero','intro','solutions','kpis','stories','events','locations'] as CmsSection[])" [class.active]="section===item" (click)="selectSection(item)">{{ sectionLabels[item] }}</button>
-    </nav>
-
+    <nav class="sections" aria-label="CMS sections"><button *ngFor="let item of sections" [class.active]="section===item" (click)="selectSection(item)">{{ sectionLabels[item] }}</button></nav>
     <div class="section-panel" *ngIf="section==='hero'">
       <div class="panel-head"><div><span>PUBLIC HOMEPAGE</span><h2>Hero carousel</h2><p>Multilingual hero slides with ordering, publication and CTA controls.</p></div></div>
-      <div class="workspace">
-        <aside><button *ngFor="let h of heroes;let i=index" [class.selected]="i===selected" (click)="selected=i"><b>0{{i+1}}</b><span>{{ h.title.en || 'Untitled slide' }}</span><em>{{ h.published===false ? 'Draft' : 'Published' }}</em></button><div *ngIf="!heroes.length" class="empty">No slides yet.</div></aside>
-        <main *ngIf="heroes.length && heroes[selected] as h">
-          <div class="toolbar"><button (click)="move(selected,-1)">↑ Move</button><button (click)="move(selected,1)">↓ Move</button><button class="danger" (click)="remove(selected)">Delete</button></div>
-          <label>Image URL<input [(ngModel)]="h.imageUrl"></label>
-          <label class="toggle"><input type="checkbox" [(ngModel)]="h.active"> Active <input type="checkbox" [(ngModel)]="h.published"> Published</label>
-          <div class="language" *ngFor="let lang of languages"><h3>{{ lang.toUpperCase() }}</h3><div class="fields"><label>Kicker<input [(ngModel)]="h.kicker[lang]"></label><label>Headline<input [(ngModel)]="h.title[lang]"></label><label>Text<textarea rows="3" [(ngModel)]="h.text[lang]"></textarea></label><label>Primary CTA<input [(ngModel)]="h.primaryLabel[lang]"></label><label>Secondary CTA<input [(ngModel)]="h.secondaryLabel[lang]"></label></div></div>
-          <div class="fields"><label>Primary URL<input [(ngModel)]="h.primaryUrl"></label><label>Secondary URL<input [(ngModel)]="h.secondaryUrl"></label></div>
-        </main>
-      </div>
+      <div class="workspace"><aside><button *ngFor="let h of heroes;let i=index" [class.selected]="i===selected" (click)="selected=i"><b>0{{i+1}}</b><span>{{ h.title.en || 'Untitled slide' }}</span><em>{{ h.published===false ? 'Draft' : 'Published' }}</em></button><div *ngIf="!heroes.length" class="empty">No slides yet.</div></aside><main *ngIf="heroes.length && heroes[selected] as h"><div class="toolbar"><button (click)="move(selected,-1)">↑ Move</button><button (click)="move(selected,1)">↓ Move</button><button class="danger" (click)="remove(selected)">Delete</button></div><label>Image URL<input [(ngModel)]="h.imageUrl"></label><label class="toggle"><input type="checkbox" [(ngModel)]="h.active"> Active <input type="checkbox" [(ngModel)]="h.published"> Published</label><div class="language" *ngFor="let lang of languages"><h3>{{ lang.toUpperCase() }}</h3><div class="fields"><label>Kicker<input [(ngModel)]="h.kicker[lang]"></label><label>Headline<input [(ngModel)]="h.title[lang]"></label><label>Text<textarea rows="3" [(ngModel)]="h.text[lang]"></textarea></label><label>Primary CTA<input [(ngModel)]="h.primaryLabel[lang]"></label><label>Secondary CTA<input [(ngModel)]="h.secondaryLabel[lang]"></label></div></div><div class="fields"><label>Primary URL<input [(ngModel)]="h.primaryUrl"></label><label>Secondary URL<input [(ngModel)]="h.secondaryUrl"></label></div></main></div>
     </div>
-
-    <div class="section-panel" *ngIf="section==='intro'">
-      <div class="panel-head"><div><span>COMPANY STORY</span><h2>Company introduction</h2><p>Control the introduction copy displayed on the public Renova website.</p></div></div>
-      <label class="wide-field">Company introduction<textarea rows="8" [(ngModel)]="content.companyIntro"></textarea></label>
-    </div>
-
-    <div class="section-panel" *ngIf="section==='solutions'">
-      <div class="panel-head"><div><span>OFFERING</span><h2>Solutions</h2><p>Manage the solution cards shown on the public portal.</p></div><button class="primary" (click)="addItem('solutions')">+ Add solution</button></div>
-      <article class="cms-card" *ngFor="let item of content.solutions;let i=index;trackBy:trackByIndex"><div class="card-index">0{{i+1}}</div><div class="fields"><label>Number<input type="number" [(ngModel)]="item.number"></label><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('solutions',i)">Delete</button></article>
-      <div *ngIf="!content.solutions?.length" class="empty">No solutions configured.</div>
-    </div>
-
-    <div class="section-panel" *ngIf="section==='kpis'">
-      <div class="panel-head"><div><span>COMPANY SCALE</span><h2>Key figures</h2><p>Manage the headline metrics displayed in the company section.</p></div><button class="primary" (click)="addItem('kpis')">+ Add figure</button></div>
-      <article class="cms-card" *ngFor="let item of content.kpis;let i=index;trackBy:trackByIndex"><div class="fields"><label>Value<input [(ngModel)]="item.value"></label><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('kpis',i)">Delete</button></article>
-      <div *ngIf="!content.kpis?.length" class="empty">No key figures configured.</div>
-    </div>
-
-    <div class="section-panel" *ngIf="section==='stories'">
-      <div class="panel-head"><div><span>PROJECTS</span><h2>Projects & stories</h2><p>Manage project stories, locations and imagery used on the public portal.</p></div><button class="primary" (click)="addItem('stories')">+ Add story</button></div>
-      <article class="cms-card" *ngFor="let item of content.stories;let i=index;trackBy:trackByIndex"><div class="fields"><label>Title<input [(ngModel)]="item.title"></label><label>Location<input [(ngModel)]="item.location"></label><label>Image URL<input [(ngModel)]="item.imageUrl"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('stories',i)">Delete</button></article>
-      <div *ngIf="!content.stories?.length" class="empty">No stories configured.</div>
-    </div>
-
-    <div class="section-panel" *ngIf="section==='events'">
-      <div class="panel-head"><div><span>NEWS & EVENTS</span><h2>Events</h2><p>Manage public event and presentation entries.</p></div><button class="primary" (click)="addItem('events')">+ Add event</button></div>
-      <article class="cms-card" *ngFor="let item of content.events;let i=index;trackBy:trackByIndex"><div class="fields"><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('events',i)">Delete</button></article>
-      <div *ngIf="!content.events?.length" class="empty">No events configured.</div>
-    </div>
-
-    <div class="section-panel" *ngIf="section==='locations'">
-      <div class="panel-head"><div><span>NETWORK</span><h2>Locations</h2><p>Manage factories, offices and project locations shown on the public portal.</p></div><button class="primary" (click)="addItem('locations')">+ Add location</button></div>
-      <article class="cms-card" *ngFor="let item of content.locations;let i=index;trackBy:trackByIndex"><div class="fields"><label>Name<input [(ngModel)]="item.name"></label><label>Type<input [(ngModel)]="item.type"></label><label>Address<input [(ngModel)]="item.address"></label><label>URL<input [(ngModel)]="item.url"></label></div><button class="danger small" (click)="removeItem('locations',i)">Delete</button></article>
-      <div *ngIf="!content.locations?.length" class="empty">No locations configured.</div>
-    </div>
+    <div class="section-panel" *ngIf="section==='intro'"><div class="panel-head"><div><span>COMPANY STORY</span><h2>Company introduction</h2><p>Control the introduction copy displayed on the public Renova website.</p></div></div><label class="wide-field">Company introduction<textarea rows="8" [(ngModel)]="content.companyIntro"></textarea></label></div>
+    <div class="section-panel" *ngIf="section==='solutions'"><div class="panel-head"><div><span>OFFERING</span><h2>Solutions</h2><p>Manage the solution cards shown on the public portal.</p></div><button class="primary" (click)="addItem('solutions')">+ Add solution</button></div><article class="cms-card" *ngFor="let item of content.solutions;let i=index;trackBy:trackByIndex"><div class="card-index">0{{i+1}}</div><div class="fields"><label>Number<input type="number" [(ngModel)]="item.number"></label><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('solutions',i)">Delete</button></article><div *ngIf="!content.solutions?.length" class="empty">No solutions configured.</div></div>
+    <div class="section-panel" *ngIf="section==='kpis'"><div class="panel-head"><div><span>COMPANY SCALE</span><h2>Key figures</h2><p>Manage the headline metrics displayed in the company section.</p></div><button class="primary" (click)="addItem('kpis')">+ Add figure</button></div><article class="cms-card" *ngFor="let item of content.kpis;let i=index;trackBy:trackByIndex"><div class="fields"><label>Value<input [(ngModel)]="item.value"></label><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('kpis',i)">Delete</button></article><div *ngIf="!content.kpis?.length" class="empty">No key figures configured.</div></div>
+    <div class="section-panel" *ngIf="section==='stories'"><div class="panel-head"><div><span>PROJECTS</span><h2>Projects & stories</h2><p>Manage project stories, locations and imagery used on the public portal.</p></div><button class="primary" (click)="addItem('stories')">+ Add story</button></div><article class="cms-card" *ngFor="let item of content.stories;let i=index;trackBy:trackByIndex"><div class="fields"><label>Title<input [(ngModel)]="item.title"></label><label>Location<input [(ngModel)]="item.location"></label><label>Image URL<input [(ngModel)]="item.imageUrl"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('stories',i)">Delete</button></article><div *ngIf="!content.stories?.length" class="empty">No stories configured.</div></div>
+    <div class="section-panel" *ngIf="section==='events'"><div class="panel-head"><div><span>NEWS & EVENTS</span><h2>Events</h2><p>Manage public event and presentation entries.</p></div><button class="primary" (click)="addItem('events')">+ Add event</button></div><article class="cms-card" *ngFor="let item of content.events;let i=index;trackBy:trackByIndex"><div class="fields"><label>Title<input [(ngModel)]="item.title"></label><label class="full">Description<textarea rows="3" [(ngModel)]="item.description"></textarea></label></div><button class="danger small" (click)="removeItem('events',i)">Delete</button></article><div *ngIf="!content.events?.length" class="empty">No events configured.</div></div>
+    <div class="section-panel" *ngIf="section==='locations'"><div class="panel-head"><div><span>NETWORK</span><h2>Locations</h2><p>Manage factories, offices and project locations shown on the public portal.</p></div><button class="primary" (click)="addItem('locations')">+ Add location</button></div><article class="cms-card" *ngFor="let item of content.locations;let i=index;trackBy:trackByIndex"><div class="fields"><label>Name<input [(ngModel)]="item.name"></label><label>Type<input [(ngModel)]="item.type"></label><label>Address<input [(ngModel)]="item.address"></label><label>URL<input [(ngModel)]="item.url"></label></div><button class="danger small" (click)="removeItem('locations',i)">Delete</button></article><div *ngIf="!content.locations?.length" class="empty">No locations configured.</div></div>
   </ng-container>
 </section>
