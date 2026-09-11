@@ -2,6 +2,7 @@ import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core'
 import { AdminI18nService } from './admin-i18n.service';
 import { adminText } from './admin-page-translations';
 import { adminExtraText } from './admin-extra-translations';
+import { adminCrmText } from './admin-crm-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -34,7 +35,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!this.originals.has(text)) this.originals.set(text, original);
       const trimmed = original.trim();
       if (!trimmed || trimmed.length > 400) continue;
-      const translated = adminExtraText(adminText(this.i18n, trimmed), this.i18n.language());
+      const translated = this.translateValue(trimmed);
       if (translated === trimmed) continue;
       const leading = original.match(/^\s*/)?.[0] ?? '';
       const trailing = original.match(/\s*$/)?.[0] ?? '';
@@ -54,7 +55,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
         const original = originals.get(attribute) ?? value;
         if (!originals.has(attribute)) originals.set(attribute, original);
         const trimmed = original.trim();
-        const translated = adminExtraText(adminText(this.i18n, trimmed), this.i18n.language());
+        const translated = this.translateValue(trimmed);
         if (translated === trimmed) continue;
         const leading = original.match(/^\s*/)?.[0] ?? '';
         const trailing = original.match(/\s*$/)?.[0] ?? '';
@@ -62,6 +63,11 @@ export class AdminStaticI18nDirective implements OnDestroy {
         if (value !== nextValue) element.setAttribute(attribute, nextValue);
       }
     }
+  }
+
+  private translateValue(value: string): string {
+    const language = this.i18n.language();
+    return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
   }
 
   ngOnDestroy(): void {
