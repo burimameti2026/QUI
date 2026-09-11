@@ -5,7 +5,10 @@
       <h1>Product Catalog</h1>
       <p>Manage product information, markets, languages and publication from one workspace.</p>
     </div>
-    <a class="primary" routerLink="/catalog/new">+ Add Product</a>
+    <div class="hero-actions">
+      <button class="secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
+      <a class="primary" routerLink="/catalog/new">+ Add Product</a>
+    </div>
   </header>
 
   <div class="metrics">
@@ -19,7 +22,7 @@
     <input [(ngModel)]="search" placeholder="Search products" aria-label="Search products" />
     <select [(ngModel)]="categoryFilter" aria-label="Filter by category">
       <option value="all">All categories</option>
-      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
     </select>
     <select [(ngModel)]="statusFilter" aria-label="Filter by publication status">
       <option value="all">All statuses</option>
@@ -29,11 +32,11 @@
   </div>
 
   <div class="table-card">
-    <div class="row header"><span>PRODUCT</span><span>CODE</span><span>LANGUAGES</span><span>STATUS</span><span></span></div>
+    <div class="row header"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>STATUS</span><span></span></div>
     <div class="row" *ngFor="let product of filteredProducts">
       <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'Renova product' }}</small></div>
       <span>{{ product.code }}</span>
-      <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
+      <span>{{ categoryName(product.productCategoryId) }}</span>
       <span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span>
       <a class="manage" [routerLink]="['/catalog', product.id]">Manage →</a>
     </div>
