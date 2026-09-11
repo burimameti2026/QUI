@@ -41,5 +41,5 @@ export const ADMIN_CMS_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   'Published portal content saved.': { en: 'Published portal content saved.', mk: 'Објавената содржина на порталот е зачувана.', sq: 'Përmbajtja e publikuar e portalit u ruajt.', de: 'Veröffentlichte Portalinhalte wurden gespeichert.' },
   'Loading Renova content…': { en: 'Loading Renova content…', mk: 'Се вчитува содржината на Renova…', sq: 'Përmbajtja e Renova po ngarkohet…', de: 'Renova-Inhalte werden geladen…' },
   'Unable to load Renova portal content.': { en: 'Unable to load Renova portal content.', mk: 'Содржината на Renova порталот не може да се вчита.', sq: 'Përmbajtja e portalit Renova nuk mund të ngarkohet.', de: 'Renova-Portalinhalte konnten nicht geladen werden.' },
-  'Unable to save portal content.': { en: 'Unable to save portal content.', mk: 'Содржината на порталот не може да се зачува.', sq: 'Përmbajtja e portalit nuk може të ruhet.', de: 'Portalinhalt konnte nicht gespeichert werden.' }
+  'Unable to save portal content.': { en: 'Unable to save portal content.', mk: 'Содржината на порталот не може да се зачува.', sq: 'Përmbajtja e portalit nuk mundе të ruhet.', de: 'Portalinhalt konnte nicht gespeichert werden.' }
 };
