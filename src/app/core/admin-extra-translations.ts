@@ -11,7 +11,7 @@ export const ADMIN_EXTRA_TRANSLATIONS: Record<string, Record<AdminLanguage, stri
   'Draft / review': { en: 'Draft / review', mk: 'Нацрт / преглед', sq: 'Draft / rishikim', de: 'Entwurf / Prüfung' },
   'Languages in use': { en: 'Languages in use', mk: 'Јазици во употреба', sq: 'Gjuhët në përdorim', de: 'Verwendete Sprachen' },
   'Search products': { en: 'Search products', mk: 'Пребарај производи', sq: 'Kërko produkte', de: 'Produkte suchen' },
-  'Categories': { en: 'Категории', mk: 'Категории', sq: 'Kategoritë', de: 'Kategorien' },
+  'Categories': { en: 'Categories', mk: 'Категории', sq: 'Kategoritë', de: 'Kategorien' },
   'Markets': { en: 'Markets', mk: 'Пазари', sq: 'Tregjet', de: 'Märkte' },
   'Publication status': { en: 'Publication status', mk: 'Статус на објавување', sq: 'Statusi i publikimit', de: 'Veröffentlichungsstatus' },
   'PRODUCT': { en: 'PRODUCT', mk: 'ПРОИЗВОД', sq: 'PRODUKT', de: 'PRODUKT' },
@@ -25,7 +25,6 @@ export const ADMIN_EXTRA_TRANSLATIONS: Record<string, Record<AdminLanguage, stri
   'Unable to load the Renova catalog.': { en: 'Unable to load the Renova catalog.', mk: 'Renova каталогот не може да се вчита.', sq: 'Katalogu Renova nuk mund të ngarkohet.', de: 'Der Renova-Katalog konnte nicht geladen werden.' },
   'RENOVA / CONTENT': { en: 'RENOVA / CONTENT', mk: 'RENOVA / СОДРЖИНА', sq: 'RENOVA / PËRMBAJTJE', de: 'RENOVA / INHALT' },
   'Portal carousel': { en: 'Portal carousel', mk: 'Вртелешка на порталот', sq: 'Karuseli i portalit', de: 'Portal-Karussell' },
-  'Manage the public Renova hero carousel. Content is tenant-scoped and saved through the portal content API.': { en: 'Manage the public Renova hero carousel. Content is tenant-scoped and saved through the portal content API.', mk: 'Управувајте со јавната hero вртелешка на Renova. Содржината е поврзана со tenant и се зачувува преку API-то за содржина на порталот.', sq: 'Menaxhoni karuselin hero publik të Renova. Përmbajtja është e kufizuar sipas tenant-it dhe ruhet përmes API-së së përmbajtjes së portalit.', de: 'Verwalten Sie das öffentliche Renova-hero-Karussell. Inhalte sind mandantenbezogen und werden über die Portal-Content-API gespeichert.' },
   'Reload': { en: 'Reload', mk: 'Освежи', sq: 'Ringarko', de: 'Neu laden' },
   '+ Add slide': { en: '+ Add slide', mk: '+ Додај слајд', sq: '+ Shto slajd', de: '+ Folie hinzufügen' },
   'Saving…': { en: 'Saving…', mk: 'Се зачувува…', sq: 'Po ruhet…', de: 'Wird gespeichert…' },
@@ -46,7 +45,6 @@ export const ADMIN_EXTRA_TRANSLATIONS: Record<string, Record<AdminLanguage, stri
   'Secondary CTA': { en: 'Secondary CTA', mk: 'Секундарна CTA', sq: 'CTA dytësore', de: 'Sekundärer CTA' },
   'Primary URL': { en: 'Primary URL', mk: 'Примарен URL', sq: 'URL primare', de: 'Primäre URL' },
   'Secondary URL': { en: 'Secondary URL', mk: 'Секундарен URL', sq: 'URL dytësore', de: 'Sekundäre URL' },
-
   'Autonomous Acquisition': { en: 'Autonomous Acquisition', mk: 'Автономна аквизиција', sq: 'Akvizicion autonom', de: 'Autonome Akquise' },
   'API-aligned autonomous discovery, qualification and outreach operations.': { en: 'API-aligned autonomous discovery, qualification and outreach operations.', mk: 'Автономни операции за откривање, квалификација и пристап усогласени со API.', sq: 'Operacione autonome për zbulim, kualifikim dhe kontakt të përafruara me API-në.', de: 'API-konforme autonome Abläufe für Recherche, Qualifizierung und Outreach.' },
   'Tenant ID': { en: 'Tenant ID', mk: 'ID на tenant', sq: 'ID e tenant-it', de: 'Mandanten-ID' },
@@ -111,7 +109,6 @@ export const ADMIN_EXTRA_TRANSLATIONS: Record<string, Record<AdminLanguage, stri
   'E2E verification failed.': { en: 'E2E verification failed.', mk: 'E2E проверката не успеа.', sq: 'Verifikimi E2E dështoi.', de: 'E2E-Prüfung fehlgeschlagen.' },
   'Could not save agent.': { en: 'Could not save agent.', mk: 'Агентот не може да се зачува.', sq: 'Agjenti nuk mund të ruhet.', de: 'Agent konnte nicht gespeichert werden.' },
   'Agent action failed.': { en: 'Agent action failed.', mk: 'Дејството на агентот не успеа.', sq: 'Veprimi i agjentit dështoi.', de: 'Agentenaktion fehlgeschlagen.' },
-
   'Acquisition Approval Queue': { en: 'Acquisition Approval Queue', mk: 'Ред за одобрување на аквизиција', sq: 'Radha e miratimit të akvizicionit', de: 'Freigabewarteschlange der Akquise' },
   'Review AI-prepared outreach before any external delivery is attempted.': { en: 'Review AI-prepared outreach before any external delivery is attempted.', mk: 'Прегледајте го AI-подготвениот пристап пред да се обиде какво било надворешно испраќање.', sq: 'Rishikoni kontaktin e përgatitur nga AI para çdo dërgimi të jashtëm.', de: 'KI-vorbereiteten Outreach prüfen, bevor eine externe Zustellung versucht wird.' },
   'Refresh': { en: 'Refresh', mk: 'Освежи', sq: 'Rifresko', de: 'Aktualisieren' },
