@@ -1,5 +1,6 @@
 import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
 import { AdminI18nService } from './admin-i18n.service';
+import { adminText } from './admin-page-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -9,7 +10,10 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly observer = new MutationObserver(() => this.translate());
   private readonly languageEffect = effect(() => { this.i18n.language(); this.translate(); });
 
-  constructor() { this.observer.observe(this.host, { childList: true, subtree: true }); }
+  constructor() {
+    this.observer.observe(this.host, { childList: true, subtree: true });
+    queueMicrotask(() => this.translate());
+  }
 
   private translate(): void {
     const walker = document.createTreeWalker(this.host, NodeFilter.SHOW_TEXT);
@@ -25,8 +29,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
       const original = this.originals.get(text) ?? text.nodeValue ?? '';
       if (!this.originals.has(text)) this.originals.set(text, original);
       const trimmed = original.trim();
-      if (!trimmed || trimmed.length > 220) continue;
-      const translated = this.i18n.t(trimmed);
+      if (!trimmed || trimmed.length > 400) continue;
+      const translated = adminText(this.i18n, trimmed);
       if (translated === trimmed) continue;
       const leading = original.match(/^\s*/)?.[0] ?? '';
       const trailing = original.match(/\s*$/)?.[0] ?? '';
@@ -34,5 +38,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void { this.observer.disconnect(); this.languageEffect.destroy(); }
+  ngOnDestroy(): void {
+    this.observer.disconnect();
+    this.languageEffect.destroy();
+  }
 }
