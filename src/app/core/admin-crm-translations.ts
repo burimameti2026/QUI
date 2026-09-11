@@ -90,7 +90,6 @@ export const ADMIN_CRM_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   'Create a pipeline first, then assign this deal.': { en: 'Create a pipeline first, then assign this deal.', mk: 'Прво креирајте продажен тек, потоа доделете ја оваа зделка.', sq: 'Krijoni fillimisht një pipeline, pastaj caktoni këtë marrëveshje.', de: 'Erstellen Sie zuerst eine Pipeline und weisen Sie dann diesen Deal zu.' },
   'This opportunity will remain unassigned...': { en: 'This opportunity will remain unassigned until a sales pipeline is available.', mk: 'Оваа можност ќе остане недоделена додека не биде достапен продажен тек.', sq: 'Kjo mundësi do të mbetet e pacaktuar derisa të jetë i disponueshëm një pipeline shitjesh.', de: 'Diese Verkaufschance bleibt unzugewiesen, bis eine Vertriebspipeline verfügbar ist.' },
   'Cancel and save': { en: 'Cancel and save', mk: 'Откажи и зачувај', sq: 'Anulo dhe ruaj', de: 'Abbrechen und speichern' },
-  'Leads': { en: 'Leads', mk: 'Лидови', sq: 'Leada', de: 'Leads' },
   'Automatically qualified demand ranked by intent, fit and buying readiness.': { en: 'Automatically qualified demand ranked by intent, fit and buying readiness.', mk: 'Автоматски квалификувана побарувачка рангирана според намера, усогласеност и подготвеност за купување.', sq: 'Kërkesë e kualifikuar automatikisht sipas qëllimit, përshtatjes dhe gatishmërisë për blerje.', de: 'Automatisch qualifizierte Nachfrage, bewertet nach Absicht, Fit und Kaufbereitschaft.' },
   '⚡ Run sales automation': { en: '⚡ Run sales automation', mk: '⚡ Изврши продажна автоматизација', sq: '⚡ Ekzekuto automatizimin e shitjeve', de: '⚡ Vertriebsautomatisierung ausführen' },
   '+ Create lead': { en: '+ Create lead', mk: '+ Креирај лид', sq: '+ Krijo lead', de: '+ Lead erstellen' },
@@ -99,7 +98,6 @@ export const ADMIN_CRM_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   'Qualified lead workspace': { en: 'Qualified lead workspace', mk: 'Работен простор за квалификувани лидови', sq: 'Hapësira e lead-eve të kualifikuara', de: 'Bereich für qualifizierte Leads' },
   'Review intent, value and qualification state from one structured list.': { en: 'Review intent, value and qualification state from one structured list.', mk: 'Прегледајте ја намерата, вредноста и состојбата на квалификацијата од една структурирана листа.', sq: 'Rishikoni qëllimin, vlerën dhe gjendjen e kualifikimit nga një listë e strukturuar.', de: 'Absicht, Wert und Qualifizierungsstatus in einer strukturierten Liste prüfen.' },
   'Hot': { en: 'Hot', mk: 'Жешко', sq: 'E nxehtë', de: 'Heiß' },
-  'Value': { en: 'Value', mk: 'Вредност', sq: 'Vlera', de: 'Wert' },
   'Search intent or source': { en: 'Search intent or source', mk: 'Пребарај намера или извор', sq: 'Kërko qëllim ose burim', de: 'Absicht oder Quelle suchen' },
   'All temperatures': { en: 'All temperatures', mk: 'Сите температури', sq: 'Të gjitha temperaturat', de: 'Alle Temperaturen' },
   'Warm': { en: 'Warm', mk: 'Топло', sq: 'E vakët', de: 'Warm' },
@@ -114,13 +112,11 @@ export const ADMIN_CRM_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   'Temperature': { en: 'Temperature', mk: 'Температура', sq: 'Temperatura', de: 'Temperatur' },
   'Est. value': { en: 'Est. value', mk: 'Проценета вредност', sq: 'Vlera e vlerësuar', de: 'Geschätzter Wert' },
   'Qualify': { en: 'Qualify', mk: 'Квалификувај', sq: 'Kualifiko', de: 'Qualifizieren' },
-  'Create opportunity': { en: 'Create opportunity', mk: 'Креирај можност', sq: 'Krijo mundësi', de: 'Verkaufschance erstellen' },
   'Create lead': { en: 'Create lead', mk: 'Креирај лид', sq: 'Krijo lead', de: 'Lead erstellen' },
   'Select contact': { en: 'Select contact', mk: 'Избери контакт', sq: 'Zgjidh kontaktin', de: 'Kontakt auswählen' },
   'Intent summary': { en: 'Intent summary', mk: 'Резиме на намера', sq: 'Përmbledhje e qëllimit', de: 'Zusammenfassung der Kaufabsicht' },
   'Estimated value': { en: 'Estimated value', mk: 'Проценета вредност', sq: 'Vlera e vlerësuar', de: 'Geschätzter Wert' },
   'CRM API is unavailable.': { en: 'CRM API is unavailable.', mk: 'CRM API не е достапен.', sq: 'CRM API nuk është i disponueshëm.', de: 'Die CRM-API ist nicht verfügbar.' },
-  'Opportunities could not be loaded': { en: 'Opportunities could not be loaded', mk: 'Можностите не можеа да се вчитаат', sq: 'Mundësitë nuk mund të ngarkoheshin', de: 'Verkaufschancen konnten nicht geladen werden' },
 };
 
 export function adminCrmText(value: string, language: AdminLanguage): string {
