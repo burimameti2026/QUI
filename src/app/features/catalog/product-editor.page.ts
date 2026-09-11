@@ -14,6 +14,7 @@ export class ProductEditorPage implements OnInit {
   readonly i18n = inject(AdminI18nService);
   categories: Category[] = [];
   editingId = '';
+  variantId = '';
   wasPublished = false;
   saving = false;
   saved = false;
@@ -42,6 +43,7 @@ export class ProductEditorPage implements OnInit {
           description: p.description || '', benefits: p.keyBenefits || '', applications: p.applications || '', technicalSpecifications: p.technicalSpecifications || ''
         });
         const variant = details.variants?.[0];
+        this.variantId = variant?.id || '';
         this.product.packaging = variant?.packaging || ''; this.product.weight = variant?.netWeight?.toString() || ''; this.product.sku = variant?.sku || '';
         for (const language of ['en','mk','sq','de'] as const) this.product.languages[language] = !!details.localizations?.some(l => l.language === language);
         this.product.languages.en = true;
@@ -71,9 +73,15 @@ export class ProductEditorPage implements OnInit {
       name: this.product.name, shortDescription: this.product.shortDescription || null, description: this.product.description || null, keyBenefits: this.product.benefits || null, applications: this.product.applications || null
     }));
     const weight = Number(this.product.weight);
-    if (this.product.packaging || this.product.sku || this.product.weight) requests.push(this.api.post(`renova/catalog/products/${productId}/variants`, {
-      name: this.product.packaging || 'Default', sku: this.product.sku || this.product.code, packaging: this.product.packaging || null, netWeight: Number.isFinite(weight) && weight > 0 ? weight : null, weightUnit: 'kg'
-    }));
+    if (this.product.packaging || this.product.sku || this.product.weight) {
+      const variantBody = {
+        name: this.product.packaging || 'Default', sku: this.product.sku || this.product.code, packaging: this.product.packaging || null,
+        netWeight: Number.isFinite(weight) && weight > 0 ? weight : null, weightUnit: 'kg'
+      };
+      requests.push(this.variantId
+        ? this.api.put(`renova/catalog/products/${productId}/variants/${this.variantId}`, variantBody)
+        : this.api.post(`renova/catalog/products/${productId}/variants`, variantBody));
+    }
     forkJoin(requests.length ? requests : [this.api.get(`renova/catalog/products/${productId}`)]).subscribe({
       next: () => this.finishProduct(productId), error: err => { this.error = this.message(err); this.saving = false; }
     });
