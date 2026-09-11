@@ -13,5 +13,5 @@ export class RealWorkspaceService {
  constructor(private readonly api:ApiService){}
  options():Observable<RealWorkspaceOptions>{return this.api.get<RealWorkspaceOptions>('real-workspace/options');}
  prepare(request:RealWorkspaceRequest):Observable<RealWorkspaceResult>{return this.api.post<RealWorkspaceResult>('real-workspace/prepare',request);}
- activate(request:RealWorkspaceRequest):Observable<RealWorkspaceResult>{return this.api.post<RealWorkspaceResult>('real-workspace/activate',request);}
+ activate(request:RealWorkspaceRequest):Observable<RealWorkspaceResult>{return this.prepare(request);}
 }
