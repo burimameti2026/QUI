@@ -1,6 +1,7 @@
 import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
 import { AdminI18nService } from './admin-i18n.service';
 import { adminText } from './admin-page-translations';
+import { adminExtraText } from './admin-extra-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -30,7 +31,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!this.originals.has(text)) this.originals.set(text, original);
       const trimmed = original.trim();
       if (!trimmed || trimmed.length > 400) continue;
-      const translated = adminText(this.i18n, trimmed);
+      const translated = adminExtraText(adminText(this.i18n, trimmed), this.i18n.language());
       if (translated === trimmed) continue;
       const leading = original.match(/^\s*/)?.[0] ?? '';
       const trailing = original.match(/\s*$/)?.[0] ?? '';
