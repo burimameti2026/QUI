@@ -1,8 +1,8 @@
-<qai-page-header title="Autonomous Acquisition" subtitle="API-aligned autonomous discovery, qualification and outreach operations."></qai-page-header>
+<qai-page-header title="Autonomous Acquisition" subtitle="Monitor autonomous discovery, qualification and approval-controlled outreach for the current tenant."></qai-page-header>
 
 <div class="toolbar">
-  <input [(ngModel)]="tenantId" placeholder="Tenant ID" />
-  <button (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : 'Load' }}</button>
+  <input [value]="tenantId" readonly aria-label="Current tenant" />
+  <button (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : 'Refresh data' }}</button>
   <button (click)="create()">New agent</button>
   <button (click)="verify()">Verify system</button>
   <button (click)="e2e()">Run E2E check</button>
