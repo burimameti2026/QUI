@@ -19,17 +19,7 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [],
             "styles": [
-              "src/styles.css",
-              "src/product-design.css",
-              "src/app-header.css",
-              "src/shared-surfaces.css",
-              "src/shared-kpis.css",
-              "src/shared-forms.css",
-              "src/shared-actions.css",
-              "src/modal-viewport.css",
-              "src/pro-saas.css",
-              "src/renova-shell-overrides.css",
-              "src/renova-design-system.css"
+              "src/styles.css"
             ]
           },
           "configurations": {
