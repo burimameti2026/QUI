@@ -1,5 +1,6 @@
 import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
 import { AdminI18nService, AdminLanguage } from './admin-i18n.service';
+import { moduleTranslate } from './module-i18n-loader';
 import { adminText } from './admin-page-translations';
 import { adminExtraText } from './admin-extra-translations';
 import { adminCrmText } from './admin-crm-translations';
@@ -39,7 +40,6 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
       nodes.push(text);
     }
-
     for (const text of nodes) {
       const current = text.nodeValue ?? '';
       const original = this.originals.get(text) ?? current;
@@ -50,7 +50,6 @@ export class AdminStaticI18nDirective implements OnDestroy {
       const trailing = original.match(/\s*$/)?.[0] ?? '';
       if (current !== leading + translated + trailing) text.nodeValue = leading + translated + trailing;
     }
-
     const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
     for (const element of elements) {
       for (const attribute of this.uiAttributes) {
@@ -68,7 +67,6 @@ export class AdminStaticI18nDirective implements OnDestroy {
         if (value !== nextValue) element.setAttribute(attribute, nextValue);
       }
     }
-
     this.translateComponentInputs(elements);
   }
 
@@ -76,25 +74,20 @@ export class AdminStaticI18nDirective implements OnDestroy {
     const language = this.i18n.language();
     const scalarProps = ['title', 'subtitle', 'text', 'label'] as const;
     const arrayProps = ['steps', 'descriptions'] as const;
-
     for (const element of elements) {
       const tag = element.tagName.toLowerCase();
       if (!['qai-page-header', 'qai-modal', 'qai-callout', 'qai-wizard-steps'].includes(tag)) continue;
       let originals = this.propertyOriginals.get(element);
       if (!originals) { originals = new Map<string, string | string[]>(); this.propertyOriginals.set(element, originals); }
-
       for (const prop of scalarProps) {
         const value = (element as any)[prop];
         if (typeof value !== 'string' || !value.trim() || value.length > 400) continue;
         const original = originals.get(prop);
         if (!originals.has(prop)) originals.set(prop, value);
         const source = typeof original === 'string' ? original : value;
-        const translated = adminKnowledgeDiscoveryInteriorText(source, language);
-        const acquisition = translated === source ? adminAcquisitionInteriorText(source, language) : translated;
-        const resolved = acquisition === source ? this.translateValue(source) : acquisition;
+        const resolved = this.translateValue(source);
         if (resolved !== source && (element as any)[prop] !== resolved) (element as any)[prop] = resolved;
       }
-
       for (const prop of arrayProps) {
         const value = (element as any)[prop];
         if (!Array.isArray(value) || !value.length) continue;
@@ -109,6 +102,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const module = moduleTranslate(value, language);
+    if (module !== value) return module;
     const knowledgeDiscovery = adminKnowledgeDiscoveryInteriorText(value, language);
     if (knowledgeDiscovery !== value) return knowledgeDiscovery;
     const acquisition = adminAcquisitionInteriorText(value, language);
@@ -127,73 +122,44 @@ export class AdminStaticI18nDirective implements OnDestroy {
     if (gap !== value) return gap;
     const cms = ADMIN_CMS_TRANSLATIONS[value]?.[language];
     if (cms) return cms;
-
     const dynamicKpi = value.match(/^(\d+)\s+(selected|high priority|verified accounts|hot prospects|active campaigns|replies|demo ready)$/i);
     if (dynamicKpi) {
       const count = dynamicKpi[1];
       const suffix = dynamicKpi[2].toLowerCase();
-      const suffixKeys: Record<string,string> = {
-        selected: '0 selected',
-        'high priority': '0 high priority',
-        'verified accounts': 'Verified accounts',
-        'hot prospects': 'Hot prospects',
-        'active campaigns': 'Active campaigns',
-        replies: 'Replies',
-        'demo ready': 'Demo ready'
-      };
+      const suffixKeys: Record<string,string> = { selected: '0 selected', 'high priority': '0 high priority', 'verified accounts': 'Verified accounts', 'hot prospects': 'Hot prospects', 'active campaigns': 'Active campaigns', replies: 'Replies', 'demo ready': 'Demo ready' };
       const key = suffixKeys[suffix];
       const translatedSuffix = key ? this.translateValue(key).replace(/^0\s*/, '') : suffix;
       if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
     }
-
     const compound = this.translateCompound(value, language);
     if (compound !== value) return compound;
-
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
   }
 
   private translateCompound(value: string, language: AdminLanguage): string {
     let match = value.match(/^(\d+)\s+campaigns\s+·\s+(\d+)\s+running$/i);
-    if (match) {
-      const campaigns = adminPageInteriorDynamicText('Campaigns', language);
-      const active = adminPageInteriorDynamicText('Active', language);
-      return `${match[1]} ${campaigns} · ${match[2]} ${active.toLowerCase()}`;
-    }
-
+    if (match) return `${match[1]} ${adminPageInteriorDynamicText('Campaigns', language)} · ${match[2]} ${adminPageInteriorDynamicText('Active', language).toLowerCase()}`;
     match = value.match(/^(\d+)\s+(total|pending)$/i);
     if (match) {
       const key = match[2].toLowerCase() === 'total' ? 'Total' : 'Pending';
       const translated = adminPageInteriorDynamicText(key, language);
       if (translated !== key) return `${match[1]} ${translated}`;
     }
-
     match = value.match(/^Showing\s+(\d+)\s*[–-]\s*(\d+)\s+of\s+(\d+)$/i);
-    if (match) {
-      const showing = adminPageInteriorDynamicText('Showing', language);
-      const of = adminPageInteriorDynamicText('of', language);
-      return `${showing} ${match[1]}–${match[2]} ${of} ${match[3]}`;
-    }
-
+    if (match) return `${adminPageInteriorDynamicText('Showing', language)} ${match[1]}–${match[2]} ${adminPageInteriorDynamicText('of', language)} ${match[3]}`;
     match = value.match(/^Page\s+(\d+)\s+of\s+(\d+)$/i);
-    if (match) {
-      const page = adminPageInteriorDynamicText('Page', language);
-      const of = adminPageInteriorDynamicText('of', language);
-      return `${page} ${match[1]} ${of} ${match[2]}`;
-    }
-
+    if (match) return `${adminPageInteriorDynamicText('Page', language)} ${match[1]} ${adminPageInteriorDynamicText('of', language)} ${match[2]}`;
     match = value.match(/^Indexed\s+(\d+)\s+chunks\.?$/i);
     if (match) {
       const indexed = { en: 'Indexed', mk: 'Индексирани', sq: 'Të indeksuara', de: 'Indiziert' }[language];
       const chunks = { en: 'chunks', mk: 'делови', sq: 'pjesë', de: 'Abschnitte' }[language];
       return `${indexed} ${match[1]} ${chunks}.`;
     }
-
     match = value.match(/^Delete\s+(.+)\?$/i);
     if (match) {
       const deleteLabel = adminPageInteriorGlobalText('Delete', language);
       if (deleteLabel !== 'Delete') return `${deleteLabel} ${match[1]}?`;
     }
-
     return value;
   }
 
