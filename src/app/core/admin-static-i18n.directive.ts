@@ -181,6 +181,19 @@ export class AdminStaticI18nDirective implements OnDestroy {
       return `${page} ${match[1]} ${of} ${match[2]}`;
     }
 
+    match = value.match(/^Indexed\s+(\d+)\s+chunks\.?$/i);
+    if (match) {
+      const indexed = { en: 'Indexed', mk: 'Индексирани', sq: 'Të indeksuara', de: 'Indiziert' }[language];
+      const chunks = { en: 'chunks', mk: 'делови', sq: 'pjesë', de: 'Abschnitte' }[language];
+      return `${indexed} ${match[1]} ${chunks}.`;
+    }
+
+    match = value.match(/^Delete\s+(.+)\?$/i);
+    if (match) {
+      const deleteLabel = adminPageInteriorGlobalText('Delete', language);
+      if (deleteLabel !== 'Delete') return `${deleteLabel} ${match[1]}?`;
+    }
+
     return value;
   }
 
