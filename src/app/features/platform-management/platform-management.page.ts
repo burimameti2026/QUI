@@ -5,51 +5,40 @@ import { PageHeader } from '../../shared/ui';
 import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, RouterLink, PageHeader, AdminStaticI18nDirective],
-  template: `
-    <div qaiAdminStaticI18n>
-      <qai-page-header title="Platform Management" subtitle="Master administration for tenants, licensing, billing and autonomous operations."></qai-page-header>
-
-      <section class="hero">
-        <div>
-          <span class="eyebrow">MASTER CONTROL</span>
-          <h2>Operate the platform through clear management domains.</h2>
-          <p>Create and govern tenants, assign users and roles, control licensed modules, and monitor autonomous operations.</p>
-        </div>
-        <a routerLink="/platform/prepare-workspace" class="primary">Prepare a workspace →</a>
-      </section>
-
-      <section class="section">
-        <div class="section-heading"><span class="eyebrow">TENANT OPERATIONS</span><h3>Tenant lifecycle</h3><p>Control the commercial and access foundations of every workspace.</p></div>
-        <div class="grid">
-          <a routerLink="/admin/modules" class="card blue"><span class="card-number">01</span><h3>Tenants & Licensing</h3><p>Assign tenants, plans, modules and entitlements.</p><strong>Open management →</strong></a>
-          <a routerLink="/users" class="card violet"><span class="card-number">02</span><h3>Users & Roles</h3><p>Create users and verify which modules each role can access.</p><strong>Manage access →</strong></a>
-          <a routerLink="/billing" class="card green"><span class="card-number">03</span><h3>Billing & Invoices</h3><p>Manage subscriptions, usage and recurring monthly invoicing.</p><strong>Open billing →</strong></a>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-heading"><span class="eyebrow">AUTONOMOUS OPERATIONS</span><h3>AI & automation control</h3><p>Monitor the systems that execute work for each tenant.</p></div>
-        <div class="grid">
-          <a routerLink="/ai/agents" class="card violet"><span class="card-number">04</span><h3>Agents</h3><p>Define agents and assign them to tenant use cases.</p><strong>Manage agents →</strong></a>
-          <a routerLink="/automations" class="card green"><span class="card-number">05</span><h3>Automations</h3><p>Monitor schedules, executions and daily autonomous runs.</p><strong>View automations →</strong></a>
-          <a routerLink="/audit" class="card amber"><span class="card-number">06</span><h3>Audit & Governance</h3><p>Review administrative and operational changes.</p><strong>Review audit →</strong></a>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-heading"><span class="eyebrow">WORKSPACE CONTROL</span><h3>Workspace templates</h3><p>Prepare tenant-owned operating environments from controlled templates.</p></div>
-        <div class="grid">
-          <a routerLink="/platform/prepare-workspace" class="card featured blue"><span class="card-number">07</span><h3>Prepare Real Workspace</h3><p>Choose the use case and target market, provision the acquisition agent, queue the first discovery run and enable the tenant's daily automation.</p><strong>Open workspace builder →</strong></a>
-          <a routerLink="/platform/packages" class="card violet"><span class="card-number">08</span><h3>Workspace Packages</h3><p>Install a complete operating package when you intentionally want the provisioned package scenario.</p><strong>View packages →</strong></a>
-          <a routerLink="/acquisition/autonomous" class="card green"><span class="card-number">09</span><h3>Daily Acquisition</h3><p>Run and monitor discovery → scoring → approval → promotion automation.</p><strong>Open acquisition →</strong></a>
-        </div>
-      </section>
-    </div>
-  `,
-  styles: [
-    `:host{display:block;--dash-border:#dfe5ed;--dash-ink:#172033;--dash-muted:#68758a;--dash-surface:#f6f8fb}.eyebrow{display:block;color:#66748b;font-size:10px;font-weight:800;letter-spacing:1.15px}.hero{display:flex;justify-content:space-between;gap:28px;align-items:center;padding:28px;margin-bottom:14px;overflow:hidden;border:1px solid #d9e0ea;border-radius:16px;background:radial-gradient(circle at 88% 10%,#dbeafe 0,transparent 30%),linear-gradient(120deg,#f8fafc 0%,#eef2f7 58%,#f2effc 100%);box-shadow:0 7px 20px #17203309}.hero h2{margin:7px 0 8px;color:#172033;font-size:22px;letter-spacing:-.4px}.hero p{max-width:720px;margin:0;color:#68758a;font-size:11px;line-height:1.65}.primary{padding:11px 16px;border-radius:8px;text-decoration:none;font-size:10px;font-weight:700;background:#2563eb;color:#fff;white-space:nowrap;box-shadow:0 5px 12px #2563eb25}.primary:hover{background:#1d4ed8}.section{margin:0 0 14px;padding:18px;border:1px solid #dfe5ed;border-radius:14px;background:#f4f6f9;box-shadow:0 6px 18px #17203309}.section-heading{margin-bottom:13px}.section-heading h3{margin:5px 0 4px;color:#172033;font-size:14px;letter-spacing:-.1px}.section-heading p{margin:0;color:#7b8798;font-size:10px;line-height:1.5}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{--accent:#2563eb;--accent-soft:#dbeafe;position:relative;display:block;min-height:145px;box-sizing:border-box;padding:16px;overflow:hidden;text-decoration:none;color:inherit;border:1px solid #dfe5ed;border-radius:13px;background:linear-gradient(145deg,#fff 0%,#f4f6f9 100%);box-shadow:0 5px 16px #1720330a;transition:transform 160ms ease,border-color 160ms ease,box-shadow 160ms ease}.card::before{content:'';position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}.card::after{content:'';position:absolute;width:90px;height:90px;top:-52px;right:-38px;border-radius:50%;background:var(--accent-soft);opacity:.65}.card:hover{transform:translateY(-2px);border-color:#c5d0df;background:linear-gradient(145deg,#fff 0%,#f1f4f8 100%);box-shadow:0 12px 26px #17203314}.card.blue{--accent:#2563eb;--accent-soft:#dbeafe}.card.violet{--accent:#7c3aed;--accent-soft:#ede9fe}.card.green{--accent:#059669;--accent-soft:#d1fae5}.card.amber{--accent:#d97706;--accent-soft:#fef3c7}.card-number{position:relative;z-index:1;display:grid;width:31px;height:31px;place-items:center;margin-bottom:13px;border-radius:9px;color:var(--accent);background:var(--accent-soft);font-size:10px;font-weight:800}.card h3{position:relative;z-index:1;margin:0 0 6px;color:#172033;font-size:13px}.card p{position:relative;z-index:1;margin:0;min-height:32px;color:#68758a;font-size:9px;line-height:1.55}.card strong{position:relative;z-index:1;display:block;margin-top:12px;color:var(--accent);font-size:9px}.featured{min-height:165px}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.hero{flex-direction:column;align-items:flex-start}.grid{grid-template-columns:1fr}}`
-  ]
+ standalone:true,imports:[CommonModule,RouterLink,PageHeader,AdminStaticI18nDirective],
+ template:`
+ <div class="platform" qaiAdminStaticI18n>
+  <qai-page-header title="Platform Management" subtitle="Control tenants, access, automation and workspace provisioning from one place.">
+   <a class="primary" routerLink="/platform/prepare-workspace">＋ Prepare Real Workspace</a>
+  </qai-page-header>
+  <section class="overview">
+   <div class="overview-copy"><span class="eyebrow">RENOVA CONTROL CENTER</span><h2>One administration surface for the whole platform.</h2><p>Manage the workspace foundation, users, billing, autonomous acquisition and governance without leaving the enterprise shell.</p></div>
+   <div class="overview-status"><span class="status-dot"></span><div><b>Platform ready</b><small>Renova workspace controls available</small></div></div>
+  </section>
+  <section class="section"><header><div><span class="eyebrow">WORKSPACE</span><h3>Workspace management</h3><p>Provision and govern tenant-owned environments.</p></div></header>
+   <div class="cards">
+    <a routerLink="/platform/prepare-workspace" class="card featured"><span class="card-icon orange">✦</span><div><b>Prepare Real Workspace</b><p>Configure the use case, market and autonomous acquisition agent, then queue the first discovery run.</p></div><strong>Open →</strong></a>
+    <a routerLink="/platform/packages" class="card"><span class="card-icon violet">▦</span><div><b>Workspace Packages</b><p>Review reusable operating packages and controlled provisioning options.</p></div><strong>Open →</strong></a>
+    <a routerLink="/admin/modules" class="card"><span class="card-icon blue">◈</span><div><b>Tenants & Licensing</b><p>Control tenants, plans, modules and platform entitlements.</p></div><strong>Open →</strong></a>
+   </div>
+  </section>
+  <section class="section"><header><div><span class="eyebrow">ACCESS & COMMERCE</span><h3>Administration</h3><p>Keep access, subscriptions and accountability consistent.</p></div></header>
+   <div class="cards">
+    <a routerLink="/users" class="card"><span class="card-icon blue">◎</span><div><b>Users & Roles</b><p>Manage users and role-based access across enabled modules.</p></div><strong>Open →</strong></a>
+    <a routerLink="/billing" class="card"><span class="card-icon green">€</span><div><b>Billing & Subscription</b><p>Review subscriptions, usage and recurring billing controls.</p></div><strong>Open →</strong></a>
+    <a routerLink="/audit" class="card"><span class="card-icon amber">✓</span><div><b>Audit & Governance</b><p>Review administrative changes, permissions and lifecycle events.</p></div><strong>Open →</strong></a>
+   </div>
+  </section>
+  <section class="section"><header><div><span class="eyebrow">AUTONOMOUS OPERATIONS</span><h3>Acquisition & automation</h3><p>Monitor the engine that turns discovery into qualified demand.</p></div></header>
+   <div class="cards">
+    <a routerLink="/ai/agents" class="card"><span class="card-icon violet">✦</span><div><b>Acquisition Agents</b><p>Configure autonomous agents and their tenant use cases.</p></div><strong>Open →</strong></a>
+    <a routerLink="/automations" class="card"><span class="card-icon green">⚡</span><div><b>Automations</b><p>Monitor schedules, queued runs and daily autonomous execution.</p></div><strong>Open →</strong></a>
+    <a routerLink="/acquisition/autonomous" class="card"><span class="card-icon orange">⌕</span><div><b>Daily Acquisition</b><p>Follow discovery → scoring → approval → promotion.</p></div><strong>Open →</strong></a>
+   </div>
+  </section>
+ </div>`,
+ styles:[`
+ :host{display:block;color:#172033}.platform{--ink:#172033;--muted:#6d7a8e;--border:#e1e3e6}.eyebrow{display:block;color:#7b8491;font-size:9px;font-weight:850;letter-spacing:1.2px}.primary{display:inline-flex;align-items:center;height:38px;padding:0 14px;border-radius:9px;background:#e86b1f;color:#fff;text-decoration:none;font-size:10px;font-weight:800;box-shadow:0 6px 14px rgba(232,107,31,.18)}.primary:hover{background:#d95f17}.overview{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 16px;padding:22px 24px;border:1px solid #e1e3e6;border-radius:14px;background:linear-gradient(110deg,#fff 0%,#faf8f5 62%,#fff4ec 100%);box-shadow:0 8px 22px rgba(23,32,51,.05)}.overview-copy h2{margin:6px 0 7px;font-size:22px;letter-spacing:-.4px}.overview-copy p{max-width:760px;margin:0;color:var(--muted);font-size:10px;line-height:1.65}.overview-status{display:flex;align-items:center;gap:9px;min-width:205px;padding:10px 12px;border:1px solid #e5e7e8;border-radius:10px;background:#fff}.status-dot{width:9px;height:9px;border-radius:50%;background:#18a66a;box-shadow:0 0 0 4px #e6f7ef}.overview-status div{display:flex;flex-direction:column}.overview-status b{font-size:10px}.overview-status small{margin-top:3px;color:#7b8491;font-size:8px}.section{margin-bottom:14px;padding:18px;border:1px solid var(--border);border-radius:14px;background:#fff;box-shadow:0 6px 18px rgba(23,32,51,.035)}.section header{margin-bottom:13px}.section h3{margin:5px 0 3px;font-size:15px}.section header p{margin:0;color:var(--muted);font-size:9px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{position:relative;display:grid;grid-template-columns:38px 1fr auto;align-items:start;gap:11px;min-height:106px;padding:14px;border:1px solid #e2e4e7;border-radius:11px;background:#fff;text-decoration:none;color:inherit;box-shadow:0 4px 12px rgba(23,32,51,.035);transition:.16s}.card:hover{transform:translateY(-2px);border-color:#efc0a2;box-shadow:0 10px 22px rgba(23,32,51,.08)}.card.featured{border-color:#efc6ac;background:#fffaf6}.card-icon{display:grid;width:38px;height:38px;place-items:center;border-radius:10px;font-size:15px;font-weight:850}.card-icon.orange{background:#fff0e7;color:#e86b1f}.card-icon.blue{background:#edf4ff;color:#2563eb}.card-icon.green{background:#e6f7ef;color:#07905a}.card-icon.violet{background:#f0ebff;color:#7041dc}.card-icon.amber{background:#fff6df;color:#b7791f}.card div b{display:block;margin-top:1px;font-size:11px}.card div p{margin:5px 0 0;color:#6d7a8e;font-size:8.5px;line-height:1.55}.card>strong{align-self:center;color:#e86b1f;font-size:9px;white-space:nowrap}.section:last-child{margin-bottom:0}@media(max-width:950px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.overview{align-items:flex-start;flex-direction:column}.overview-status{min-width:0}}@media(max-width:650px){.cards{grid-template-columns:1fr}.primary{margin-top:6px}.overview{padding:18px}.section{padding:14px}}
+ `]
 })
 export class PlatformManagementPage {}
