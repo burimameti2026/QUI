@@ -27,7 +27,8 @@
               "src/shared-forms.css",
               "src/shared-actions.css",
               "src/modal-viewport.css",
-              "src/pro-saas.css"
+              "src/pro-saas.css",
+              "src/renova-shell-overrides.css"
             ]
           },
           "configurations": {
