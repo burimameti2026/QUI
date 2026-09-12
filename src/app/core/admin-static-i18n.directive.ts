@@ -6,6 +6,7 @@ import { adminCrmText } from './admin-crm-translations';
 import { ADMIN_CMS_TRANSLATIONS } from './admin-cms-translations';
 import { adminUiGapText } from './admin-ui-gap-translations';
 import { adminPageCopyText } from './admin-page-copy-translations';
+import { adminNavigationText } from './admin-navigation-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -66,6 +67,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const navigation = adminNavigationText(value, language);
+    if (navigation !== value) return navigation;
     const pageCopy = adminPageCopyText(value, language);
     if (pageCopy !== value) return pageCopy;
     const gap = adminUiGapText(value, language);
