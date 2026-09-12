@@ -142,7 +142,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
         'demo ready': 'Demo ready'
       };
       const key = suffixKeys[suffix];
-      const translatedSuffix = key ? adminNavigationText(key, language).replace(/^0\s*/, '') : suffix;
+      const translatedSuffix = key ? this.translateValue(key).replace(/^0\s*/, '') : suffix;
       if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
     }
 
