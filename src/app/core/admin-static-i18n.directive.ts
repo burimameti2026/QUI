@@ -9,6 +9,7 @@ import { adminPageCopyText } from './admin-page-copy-translations';
 import { adminNavigationText } from './admin-navigation-translations';
 import { adminPageInteriorText } from './admin-page-interior-translations';
 import { adminPageInteriorDynamicText } from './admin-page-interior-dynamic-translations';
+import { adminPageInteriorGlobalText } from './admin-page-interior-global-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -68,6 +69,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const global = adminPageInteriorGlobalText(value, language);
+    if (global !== value) return global;
     const interior = adminPageInteriorText(value, language);
     if (interior !== value) return interior;
     const dynamicInterior = adminPageInteriorDynamicText(value, language);
