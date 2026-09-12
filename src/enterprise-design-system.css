@@ -1,0 +1,88 @@
+/* Qualify AI — unified enterprise design layer. Loaded last so every page inherits the same visual language. */
+:root {
+  --q-primary: #2563eb;
+  --q-primary-dark: #1d4ed8;
+  --q-sidebar: #0b1220;
+  --q-sidebar-2: #111b2e;
+  --q-sidebar-line: #22304a;
+  --q-sidebar-text: #b8c4d8;
+  --q-sidebar-muted: #71819b;
+  --q-bg: #f5f7fb;
+  --q-surface: #ffffff;
+  --q-border: #e2e7ef;
+  --q-text: #172033;
+  --q-muted: #667085;
+  --q-radius: 14px;
+  --q-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.04);
+}
+html, body { background: var(--q-bg); color: var(--q-text); }
+body { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+.shell { grid-template-columns: 276px 1fr; min-height: 100vh; }
+.shell > aside { width: 276px; padding: 18px 14px 16px; background: linear-gradient(180deg, var(--q-sidebar) 0%, #0d1627 55%, #0a111f 100%); border-right: 1px solid #18243a; box-shadow: 10px 0 30px rgba(2,8,23,.08); overflow-y: auto; scrollbar-width: thin; scrollbar-color: #2b3952 transparent; }
+.brand { min-height: 48px; padding: 0 8px 15px; gap: 9px; border-bottom: 1px solid rgba(148,163,184,.10); font-size: 20px; letter-spacing: -.35px; }
+.brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: linear-gradient(145deg, #3b82f6, #1d4ed8); color: #fff; font-style: normal; font-size: 16px; box-shadow: 0 7px 18px rgba(37,99,235,.28); }
+.brand small { margin-left: auto; color: #64748b; font-size: 9px; letter-spacing: .14em; }
+.brand strong { color: #60a5fa; }
+.workspace { margin: 14px 2px 16px; min-height: 58px; padding: 10px; gap: 10px; border: 1px solid var(--q-sidebar-line); border-radius: 12px; background: linear-gradient(135deg, rgba(30,46,73,.92), rgba(17,29,49,.92)); box-shadow: inset 0 1px 0 rgba(255,255,255,.035); }
+.workspace i { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 9px; background: #2563eb; color: #fff; font-size: 11px; font-weight: 800; box-shadow: 0 5px 14px rgba(37,99,235,.24); }
+.workspace b { font-size: 12px; color: #f8fafc; font-weight: 700; }
+.workspace span { margin-top: 2px; font-size: 10px; color: var(--q-sidebar-muted); }
+.shell nav { padding: 0 1px; }
+.shell nav label { margin: 19px 9px 7px; color: #64748b; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
+.shell nav a { position: relative; min-height: 42px; margin: 2px 0; padding: 6px 9px; gap: 10px; border: 1px solid transparent; border-radius: 10px; color: var(--q-sidebar-text); font-size: 12px; font-weight: 600; letter-spacing: -.05px; transition: background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease; }
+.shell nav a:hover { background: rgba(51,65,85,.46); border-color: rgba(100,116,139,.18); color: #fff; transform: translateX(1px); }
+.shell nav a.active { background: linear-gradient(90deg, rgba(37,99,235,.28), rgba(30,64,175,.16)); border-color: rgba(96,165,250,.46); color: #fff; box-shadow: inset 3px 0 0 #3b82f6, 0 7px 18px rgba(2,8,23,.16); }
+.shell nav a > span { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center; border: 1px solid #293850; border-radius: 8px; background: #162237; color: #8fb4ff; font-size: 13px; line-height: 1; }
+.shell nav a:hover > span { border-color: #3d5577; background: #1b2b44; color: #bfdbfe; }
+.shell nav a.active > span { border-color: #60a5fa; background: #2563eb; color: #fff; }
+.shell nav em { padding: 3px 6px; border: 1px solid rgba(96,165,250,.16); border-radius: 999px; background: #182942; color: #93c5fd; font-size: 8px; font-weight: 800; letter-spacing: .05em; }
+.shell > main { min-width: 0; background: var(--q-bg); }
+.shell main > header { height: 68px; padding: 0 28px; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--q-border); box-shadow: 0 1px 4px rgba(16,24,40,.025); backdrop-filter: blur(10px); }
+.global-search { width: min(560px, 62vw); height: 40px; border: 1px solid #d7dde7; border-radius: 10px; background: #f9fafc; transition: border-color .16s ease, box-shadow .16s ease, background .16s ease; }
+.global-search:focus-within { border-color: #8bb3ff; background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.global-search input { font-size: 13px; color: var(--q-text); }
+.global-search kbd { color: #667085; font-size: 9px; border-radius: 5px; }
+.language-select { min-width: 62px; height: 36px; padding: 0 10px; border: 1px solid var(--q-border); border-radius: 9px; background: #fff; color: #344054; font-size: 11px; font-weight: 700; }
+.page { max-width: 1720px; padding: 26px 28px 56px; }
+.page-header { min-height: 92px; margin: -26px -28px 20px; padding: 22px 28px; border-bottom: 1px solid var(--q-border); background: linear-gradient(180deg, #f9fbfd, #f5f7fb); }
+.page-header h1 { font-size: 27px; font-weight: 750; letter-spacing: -.55px; }
+.page-header p { font-size: 13px; color: var(--q-muted); }
+.page-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+.page-actions > * { margin: 0 !important; }
+button { min-height: 40px; border: 1px solid #d7dde7; border-radius: 9px; background: #fff; color: #344054; font-size: 12px; font-weight: 650; box-shadow: 0 1px 1px rgba(16,24,40,.02); transition: .16s ease; }
+button:hover:not(:disabled) { border-color: #b8c2d1; background: #f8fafc; transform: translateY(-1px); }
+button.primary { background: var(--q-primary) !important; border-color: var(--q-primary) !important; color: #fff !important; box-shadow: 0 6px 16px rgba(37,99,235,.20); }
+button.primary:hover:not(:disabled) { background: var(--q-primary-dark) !important; border-color: var(--q-primary-dark) !important; }
+.panel, .metrics article, .company-card, .integration-grid article, .pack-grid article, .gap-cards article, .plan-card, .settings-grid .panel { border-color: var(--q-border); border-radius: var(--q-radius); box-shadow: var(--q-shadow); }
+.panel { padding: 20px; }
+.panel > header b { font-size: 14px; font-weight: 750; }
+.panel > header span { font-size: 11px; color: var(--q-muted); }
+.metrics { gap: 14px; margin-bottom: 16px; }
+.metrics article { min-height: 112px; padding: 18px; }
+.metrics span { font-size: 11px; color: var(--q-muted); }
+.metrics strong { font-size: 27px; letter-spacing: -.4px; }
+.metrics small { font-size: 10px; }
+.grid2 { gap: 15px; margin-bottom: 15px; }
+.table-wrap th, .panel th { padding: 11px 12px; background: #f8fafc; color: #667085; font-size: 10px; letter-spacing: .055em; }
+.table-wrap td, .panel td { padding: 12px; font-size: 12px; }
+.table-wrap tbody tr:hover td, .panel tbody tr:hover td { background: #fafcff; }
+.pill { padding: 5px 9px; font-size: 10px; font-weight: 700; }
+.toolbar { gap: 8px; margin-bottom: 14px; }
+.toolbar input, .toolbar select { height: 40px; border-color: #d7dde7; border-radius: 9px; background: #fff; font-size: 12px; }
+.form { padding: 22px; }
+.form label { font-size: 12px; color: #344054; }
+.form input, .form select, .form textarea, .inspector input, .inspector textarea { min-height: 42px; border-color: #d0d7e2; border-radius: 9px; font-size: 12px; }
+.form input:focus, .form select:focus, .form textarea:focus, .toolbar input:focus, .toolbar select:focus { border-color: #7da7f7; outline: 0; box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.modal-card { border-radius: 16px; box-shadow: 0 28px 80px rgba(15,23,42,.24); }
+.modal-card > header { padding: 17px 21px; }
+.modal-card h3 { font-size: 16px; }
+.empty { min-height: 240px; display: grid; place-items: center; align-content: center; gap: 5px; }
+.empty b { font-size: 14px; color: var(--q-text); }
+.empty span { font-size: 11px; color: var(--q-muted); }
+.inbox, .workflow { border-color: var(--q-border); border-radius: var(--q-radius); box-shadow: var(--q-shadow); }
+.conv-list, .customer, .inspector { background: #fbfcfe; }
+.conv.active { background: #eef5ff; }
+.kanban > section { border: 1px solid #e0e5ec; background: #eef2f7; }
+.kanban article { border-color: #dfe4ec; box-shadow: 0 1px 2px rgba(16,24,40,.03); }
+@media (max-width: 1200px) { .shell { grid-template-columns: 250px 1fr; } .shell > aside { width: 250px; } .shell nav a { font-size: 11px; } .page { padding-left: 22px; padding-right: 22px; } .page-header { margin-left: -22px; margin-right: -22px; padding-left: 22px; padding-right: 22px; } }
+@media (max-width: 850px) { .shell > aside { display: none; } .shell { grid-template-columns: 1fr; } .shell main > header { padding: 0 16px; } .page { padding: 20px 16px 44px; } .page-header { margin: -20px -16px 18px; padding: 18px 16px; } }
