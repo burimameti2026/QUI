@@ -1,0 +1,111 @@
+/* RENOVA UI SYSTEM — shared visual language for every feature and component. */
+:root{
+ --renova-bg:#f8f7f4;--renova-panel:#fff;--renova-line:#e3e3df;--renova-line-soft:#eeece8;
+ --renova-ink:#172033;--renova-text:#26354e;--renova-muted:#737e8f;--renova-orange:#e86b1f;--renova-orange-soft:#fff0e7;
+ --renova-blue:#2563eb;--renova-green:#07905a;--renova-red:#c43d35;--renova-shadow:0 6px 18px rgba(23,32,51,.045);
+}
+html,body{background:var(--renova-bg)!important;color:var(--renova-ink)!important}
+body{font-family:Inter,Segoe UI,Arial,sans-serif!important}
+
+/* Shared page rhythm */
+.page{background:var(--renova-bg)!important;max-width:1500px!important;padding:28px 32px 46px!important}
+.page-header{min-height:54px;margin-bottom:20px!important;align-items:flex-end!important}
+.page-header h1{color:var(--renova-ink)!important;font-size:24px!important;font-weight:780!important;letter-spacing:-.45px!important}
+.page-header p{color:var(--renova-muted)!important;font-size:10px!important;line-height:1.55!important}
+.page-actions{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important}
+
+/* Buttons / controls */
+button,.primary,.page-actions a,.toolbar button{font-size:10px!important;font-weight:700!important;border-radius:8px!important}
+button{border-color:var(--renova-line)!important;color:var(--renova-text)!important;background:#fff!important}
+button:hover{background:#faf7f4!important;border-color:#e8c8b5!important}
+button.primary,.primary,.page-actions .primary{background:var(--renova-orange)!important;border-color:var(--renova-orange)!important;color:#fff!important;box-shadow:0 5px 13px rgba(232,107,31,.16)!important}
+input,select,textarea{border-color:var(--renova-line)!important;border-radius:8px!important;background:#fff!important;color:var(--renova-ink)!important;font-size:10px!important}
+input:focus,select:focus,textarea:focus{outline:0!important;border-color:#efb08a!important;box-shadow:0 0 0 3px rgba(232,107,31,.08)!important}
+
+/* Cards / panels */
+.panel,.metrics article,.knowledge-metrics article,.company-card,.integration-grid article,.pack-grid article,.gap-cards article,.pipeline-summary,.calendar-strip article{
+ background:var(--renova-panel)!important;border:1px solid var(--renova-line)!important;border-radius:12px!important;box-shadow:var(--renova-shadow)!important
+}
+.panel{padding:17px!important}
+.panel>header{margin-bottom:14px!important}
+.panel>header b,.panel>header strong{color:var(--renova-ink)!important}
+.panel>header span{color:var(--renova-muted)!important}
+
+/* Metrics */
+.metrics{gap:12px!important;margin-bottom:14px!important}
+.metrics article{padding:15px!important;gap:6px!important}
+.metrics article:hover{border-color:#efc3a7!important;box-shadow:0 9px 20px rgba(23,32,51,.07)!important}
+.metrics span{color:var(--renova-muted)!important;font-size:9px!important}
+.metrics strong{color:var(--renova-ink)!important;font-size:23px!important}
+.metrics small{color:var(--renova-green)!important}
+
+/* Tables */
+.table-wrap,.panel .table-wrap{border:1px solid var(--renova-line-soft);border-radius:9px;overflow:auto}
+.table-wrap th,.panel th{background:#faf9f7!important;color:#7a8492!important;border-bottom:1px solid var(--renova-line)!important;padding:10px!important;font-size:8px!important;text-transform:uppercase;letter-spacing:.45px}
+.table-wrap td,.panel td{color:var(--renova-text)!important;border-bottom:1px solid var(--renova-line-soft)!important;padding:11px 10px!important;font-size:9px!important}
+.table-wrap tr:last-child td,.panel tr:last-child td{border-bottom:0!important}
+
+/* Search / toolbars */
+.toolbar{gap:8px!important;margin-bottom:13px!important;align-items:center!important}
+.toolbar input,.toolbar select{height:37px!important}
+.toolbar input{min-width:280px!important}
+.search{border-color:var(--renova-line)!important;background:#fff!important}
+
+/* Pills / statuses */
+.pill{border:1px solid var(--renova-line-soft);background:#f5f5f2!important;color:#536074!important}
+.pill.success{background:#e8f7ef!important;color:#087747!important;border-color:#ccebdc!important}
+.pill.hot{background:#fff0ed!important;color:#b23c31!important;border-color:#f1d0cb!important}
+.score{background:#fff4dc!important;color:#a56a10!important}
+
+/* Forms */
+.form{padding:18px!important}
+.form label{color:var(--renova-text)!important}
+.form input,.form select,.form textarea,.inspector input,.inspector textarea{padding:9px 10px!important}
+
+/* Company / feature cards */
+.company-grid,.integration-grid,.pack-grid,.gap-cards{gap:12px!important}
+.company-card,.integration-grid article,.pack-grid article,.gap-cards article{padding:15px!important}
+.company-card:hover,.integration-grid article:hover,.pack-grid article:hover,.gap-cards article:hover{border-color:#efc3a7!important;box-shadow:0 9px 20px rgba(23,32,51,.065)!important;transform:translateY(-1px)}
+.company-card header i,.integration-grid article>i{background:var(--renova-orange-soft)!important;color:var(--renova-orange)!important}
+.company-card b{color:var(--renova-ink)!important}
+.company-card a{color:var(--renova-orange)!important}
+
+/* Pipeline / kanban */
+.pipeline-summary{overflow:hidden}
+.pipeline-summary div{border-color:var(--renova-line)!important;padding:14px!important}
+.pipeline-summary span{color:var(--renova-muted)!important}
+.pipeline-summary b{color:var(--renova-ink)!important}
+.kanban>section{background:#f1f0ed!important;border:1px solid var(--renova-line)!important;border-radius:10px!important}
+.kanban article{border-color:var(--renova-line)!important;border-radius:9px!important;box-shadow:0 3px 9px rgba(23,32,51,.035)}
+.kanban article:hover{border-color:#efc3a7!important}
+
+/* Inbox / detailed feature surfaces */
+.inbox{background:#fff!important;border:1px solid var(--renova-line)!important;border-radius:12px!important;box-shadow:var(--renova-shadow)!important}
+.conv-list,.customer{border-color:var(--renova-line)!important}
+.conv.active{background:var(--renova-orange-soft)!important}
+.tabs .active{background:var(--renova-orange-soft)!important;color:var(--renova-orange)!important}
+.messages{background:#faf9f7!important}
+.messages article p{border-color:var(--renova-line)!important}
+.messages article.agent p{background:var(--renova-orange)!important;border-color:var(--renova-orange)!important}
+.ai-event{background:#fff7f1!important;color:#a34e1b!important;border-color:#f1d3bf!important}
+
+/* Shared modal / empty / wizard / callout components */
+.modal-card{border:1px solid var(--renova-line)!important;border-radius:13px!important;box-shadow:0 24px 60px rgba(23,32,51,.18)!important}
+.modal-card>header{border-color:var(--renova-line)!important}
+.modal-card h3{color:var(--renova-ink)!important}
+.empty{border:1px dashed #d8d7d2!important;border-radius:11px!important;background:#fff!important;padding:28px!important;color:var(--renova-muted)!important;text-align:center}
+.empty b{display:block;color:var(--renova-ink)!important;font-size:12px!important;margin-bottom:5px}
+.wizard{margin-bottom:16px}
+.wizard ol{margin:0!important;padding:0!important}
+.wizard li{background:#fff!important;border-color:var(--renova-line)!important;border-radius:10px!important}
+.wizard li.active{border-color:#efc3a7!important;background:var(--renova-orange-soft)!important}
+.wizard li span{background:#f0efeb!important;color:#657084!important}
+.wizard li.active span,.wizard li.done span{background:var(--renova-orange)!important;color:#fff!important}
+.callout{border:1px solid var(--renova-line)!important;border-radius:11px!important;background:#fff!important;box-shadow:var(--renova-shadow)!important}
+.callout.info{background:#f8fbff!important;border-color:#d9e6fb!important}.callout.success{background:#f3fbf7!important;border-color:#d6eee1!important}.callout.warning{background:#fffaf0!important;border-color:#f1dfb7!important}
+
+/* Remove accidental legacy dark SaaS surfaces inside feature pages. */
+.page .dark,.page .saas-card{background:#fff!important;color:var(--renova-ink)!important}
+
+@media(max-width:950px){.page{padding:22px!important}.metrics{grid-template-columns:repeat(2,1fr)!important}.grid2{grid-template-columns:1fr!important}.company-grid,.integration-grid,.pack-grid,.gap-cards{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:650px){.page{padding:16px!important}.page-header{align-items:flex-start!important;flex-direction:column!important}.metrics,.company-grid,.integration-grid,.pack-grid,.gap-cards{grid-template-columns:1fr!important}.toolbar{flex-wrap:wrap}.toolbar input{min-width:0!important;width:100%!important}}
