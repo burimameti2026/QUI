@@ -19,7 +19,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly uiAttributes = ['placeholder', 'title', 'aria-label'] as const;
 
   constructor() {
-    this.observer.observe(this.host, { childList: true, subtree: true, attributes: true, attributeFilter: [...this.uiAttributes] });
+    this.observer.observe(this.host, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: [...this.uiAttributes] });
     queueMicrotask(() => this.translate());
   }
 
@@ -35,15 +35,14 @@ export class AdminStaticI18nDirective implements OnDestroy {
     }
 
     for (const text of nodes) {
-      const original = this.originals.get(text) ?? text.nodeValue ?? '';
+      const current = text.nodeValue ?? '';
+      const original = this.originals.get(text) ?? current;
       if (!this.originals.has(text)) this.originals.set(text, original);
-      const trimmed = original.trim();
-      if (!trimmed || trimmed.length > 400) continue;
-      const translated = this.translateValue(trimmed);
-      if (translated === trimmed) continue;
+      const translated = this.translateValue(original.trim());
+      if (translated === original.trim()) continue;
       const leading = original.match(/^\s*/)?.[0] ?? '';
       const trailing = original.match(/\s*$/)?.[0] ?? '';
-      text.nodeValue = leading + translated + trailing;
+      if (current !== leading + translated + trailing) text.nodeValue = leading + translated + trailing;
     }
 
     const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
@@ -75,6 +74,13 @@ export class AdminStaticI18nDirective implements OnDestroy {
     if (gap !== value) return gap;
     const cms = ADMIN_CMS_TRANSLATIONS[value]?.[language];
     if (cms) return cms;
+    const dynamicKpi = value.match(/^(\d+)\s+(selected|high priority|verified accounts|hot prospects|active campaigns|replies|demo ready)$/i);
+    if (dynamicKpi) {
+      const count = dynamicKpi[1];
+      const suffix = dynamicKpi[2].toLowerCase();
+      const translatedSuffix = adminNavigationText(suffix === 'high priority' ? '0 high priority' : suffix, language).replace(/^0\s*/, '');
+      if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
+    }
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
   }
 
