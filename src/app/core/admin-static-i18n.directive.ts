@@ -10,6 +10,7 @@ import { adminNavigationText } from './admin-navigation-translations';
 import { adminPageInteriorText } from './admin-page-interior-translations';
 import { adminPageInteriorDynamicText } from './admin-page-interior-dynamic-translations';
 import { adminPageInteriorGlobalText } from './admin-page-interior-global-translations';
+import { adminAcquisitionInteriorText } from './admin-page-interior-acquisition-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -17,6 +18,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly i18n = inject(AdminI18nService);
   private readonly originals = new WeakMap<Text, string>();
   private readonly attributeOriginals = new WeakMap<HTMLElement, Map<string, string>>();
+  private readonly propertyOriginals = new WeakMap<HTMLElement, Map<string, string | string[]>>();
   private readonly observer = new MutationObserver(() => this.translate());
   private readonly languageEffect = effect(() => { this.i18n.language(); this.translate(); });
   private readonly uiAttributes = ['placeholder', 'title', 'aria-label'] as const;
@@ -65,10 +67,48 @@ export class AdminStaticI18nDirective implements OnDestroy {
         if (value !== nextValue) element.setAttribute(attribute, nextValue);
       }
     }
+
+    this.translateComponentInputs(elements);
+  }
+
+  private translateComponentInputs(elements: HTMLElement[]): void {
+    const language = this.i18n.language();
+    const scalarProps = ['title', 'subtitle', 'text', 'label'] as const;
+    const arrayProps = ['steps', 'descriptions'] as const;
+
+    for (const element of elements) {
+      const tag = element.tagName.toLowerCase();
+      if (!['qai-page-header', 'qai-modal', 'qai-callout', 'qai-wizard-steps'].includes(tag)) continue;
+      let originals = this.propertyOriginals.get(element);
+      if (!originals) { originals = new Map<string, string | string[]>(); this.propertyOriginals.set(element, originals); }
+
+      for (const prop of scalarProps) {
+        const value = (element as any)[prop];
+        if (typeof value !== 'string' || !value.trim() || value.length > 400) continue;
+        const original = originals.get(prop);
+        if (!originals.has(prop)) originals.set(prop, value);
+        const source = typeof original === 'string' ? original : value;
+        const translated = adminAcquisitionInteriorText(source, language);
+        const resolved = translated === source ? this.translateValue(source) : translated;
+        if (resolved !== source && (element as any)[prop] !== resolved) (element as any)[prop] = resolved;
+      }
+
+      for (const prop of arrayProps) {
+        const value = (element as any)[prop];
+        if (!Array.isArray(value) || !value.length) continue;
+        const original = originals.get(prop);
+        if (!originals.has(prop)) originals.set(prop, [...value]);
+        const source = Array.isArray(original) ? original : value;
+        const translated = source.map(item => typeof item === 'string' ? this.translateValue(item) : item);
+        if (translated.some((item, index) => item !== value[index])) (element as any)[prop] = translated;
+      }
+    }
   }
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const acquisition = adminAcquisitionInteriorText(value, language);
+    if (acquisition !== value) return acquisition;
     const global = adminPageInteriorGlobalText(value, language);
     if (global !== value) return global;
     const interior = adminPageInteriorText(value, language);
