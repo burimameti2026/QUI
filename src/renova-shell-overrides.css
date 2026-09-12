@@ -4,14 +4,31 @@ qai-shell .shell.collapsed{grid-template-columns:72px minmax(0,1fr)!important}
 qai-shell .shell>aside.sidebar{position:sticky!important;inset:auto!important;top:0!important;left:auto!important;width:276px!important;height:100vh!important;box-sizing:border-box!important;padding:22px 14px 14px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;background:#fff!important;color:#172033!important;border-right:1px solid #e4e3df!important}
 qai-shell .shell.collapsed>aside.sidebar{width:72px!important;padding-left:10px!important;padding-right:10px!important}
 qai-shell .shell>main{grid-column:2!important;min-width:0!important;overflow-x:hidden!important;background:#f8f7f4!important}
+
+/* Expanded navigation: clean line icons, full labels, one aligned grid. */
+qai-shell .department-nav{width:100%!important;box-sizing:border-box!important;overflow-x:hidden!important}
+qai-shell .department-heading{width:100%!important;box-sizing:border-box!important;margin-left:0!important;margin-right:0!important;padding-left:8px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important}
+qai-shell .department-heading span{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;color:#e86b1f!important}
+qai-shell .department-items{width:100%!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important}
+qai-shell .department-items a{width:100%!important;box-sizing:border-box!important;min-width:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:10px!important;margin:2px 0!important;padding:0 10px!important;min-height:38px!important;border-radius:8px!important;color:#46546b!important;background:transparent!important;box-shadow:none!important}
+qai-shell .department-items a:hover{background:#faf5f1!important;color:#1d2b43!important}
+qai-shell .department-items a.active{background:#fff0e7!important;color:#df5f16!important;box-shadow:inset 3px 0 0 #e86b1f!important}
+qai-shell .nav-icon{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:currentColor!important;font-size:14px!important;line-height:1!important}
+qai-shell .nav-label{display:block!important;min-width:0!important;flex:1 1 auto!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;text-align:left!important;color:inherit!important;font-size:11px!important;font-weight:650!important}
+qai-shell .shell:not(.collapsed) .brand-copy,qai-shell .shell:not(.collapsed) .workspace div,qai-shell .shell:not(.collapsed) .department-heading b,qai-shell .shell:not(.collapsed) .nav-label,qai-shell .shell:not(.collapsed) .real-workspace span:nth-child(2),qai-shell .shell:not(.collapsed) .real-workspace>strong,qai-shell .shell:not(.collapsed) .account div,qai-shell .shell:not(.collapsed) .account>span:last-child{display:flex!important}
+
+/* Collapsed navigation: compact icon rail only. */
 qai-shell .shell.collapsed .brand-copy,qai-shell .shell.collapsed .workspace div,qai-shell .shell.collapsed .department-heading b,qai-shell .shell.collapsed .nav-label,qai-shell .shell.collapsed .real-workspace span:nth-child(2),qai-shell .shell.collapsed .real-workspace>strong,qai-shell .shell.collapsed .account div,qai-shell .shell.collapsed .account>span:last-child{display:none!important}
 qai-shell .shell.collapsed .brand{justify-content:center!important}
 qai-shell .shell.collapsed .workspace{justify-content:center!important}
-qai-shell .shell.collapsed .department-heading{justify-content:center!important;margin-left:0!important;margin-right:0!important}
-qai-shell .shell.collapsed .department-items a{justify-content:center!important;padding-left:0!important;padding-right:0!important}
+qai-shell .shell.collapsed .department-heading{justify-content:center!important;margin-left:0!important;margin-right:0!important;padding-left:0!important}
+qai-shell .shell.collapsed .department-heading span{background:transparent!important;border:0!important;box-shadow:none!important}
+qai-shell .shell.collapsed .department-items a{justify-content:center!important;width:100%!important;padding-left:0!important;padding-right:0!important}
+qai-shell .shell.collapsed .nav-icon{background:transparent!important;border:0!important;box-shadow:none!important}
 qai-shell .shell.collapsed .real-workspace{justify-content:center!important;padding:8px!important;margin-left:2px!important;margin-right:2px!important}
 qai-shell .shell.collapsed .account{justify-content:center!important}
 qai-shell .shell.collapsed .collapse-btn{font-size:0!important}
 qai-shell .shell.collapsed .collapse-btn::after{content:'→';font-size:14px}
 qai-shell .shell:not(.collapsed) .collapse-btn::after{content:'←';font-size:14px}
+
 @media(max-width:900px){qai-shell .shell,qai-shell .shell.collapsed{display:block!important}qai-shell .shell>aside.sidebar,qai-shell .shell.collapsed>aside.sidebar{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;padding:8px 10px!important}qai-shell .shell>main{display:block!important;width:100%!important}qai-shell .shell.collapsed .brand-copy,qai-shell .shell.collapsed .workspace div,qai-shell .shell.collapsed .department-heading b,qai-shell .shell.collapsed .nav-label{display:none!important}}
