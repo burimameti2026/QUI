@@ -1,20 +1,31 @@
-/* Renova shell override: must load after legacy pro-saas shell rules. */
+/* Renova shell override: final shell rules load after legacy and design-system styles. */
 qai-shell .shell{display:grid!important;grid-template-columns:276px minmax(0,1fr)!important;min-height:100vh!important;background:#f8f7f4!important;transition:grid-template-columns .2s ease!important}
 qai-shell .shell.collapsed{grid-template-columns:72px minmax(0,1fr)!important}
 qai-shell .shell>aside.sidebar{position:sticky!important;inset:auto!important;top:0!important;left:auto!important;width:276px!important;height:100vh!important;box-sizing:border-box!important;padding:22px 14px 14px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;background:#fff!important;color:#172033!important;border-right:1px solid #e4e3df!important}
 qai-shell .shell.collapsed>aside.sidebar{width:72px!important;padding-left:10px!important;padding-right:10px!important}
 qai-shell .shell>main{grid-column:2!important;min-width:0!important;overflow-x:hidden!important;background:#f8f7f4!important}
 
-/* Expanded navigation: clean line icons, full labels, one aligned grid. */
+/* Navigation hierarchy. Section headings are not menu states. */
 qai-shell .department-nav{width:100%!important;box-sizing:border-box!important;overflow-x:hidden!important}
-qai-shell .department-heading{width:100%!important;box-sizing:border-box!important;margin-left:0!important;margin-right:0!important;padding-left:8px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important}
-qai-shell .department-heading span{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;color:#e86b1f!important}
-qai-shell .department-items{width:100%!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important}
-qai-shell .department-items a{width:100%!important;box-sizing:border-box!important;min-width:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:10px!important;margin:2px 0!important;padding:0 10px!important;min-height:38px!important;border-radius:8px!important;color:#46546b!important;background:transparent!important;box-shadow:none!important}
-qai-shell .department-items a:hover{background:#faf5f1!important;color:#1d2b43!important}
-qai-shell .department-items a.active{background:#fff0e7!important;color:#df5f16!important;box-shadow:inset 3px 0 0 #e86b1f!important}
+qai-shell .department-heading{width:100%!important;box-sizing:border-box!important;margin-left:0!important;margin-right:0!important;padding-left:8px!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;background:transparent!important;border:0!important;color:#71809a!important}
+qai-shell .department-heading span{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;color:#71809a!important}
+qai-shell .department-heading b{color:#71809a!important;font-size:10px!important;font-weight:800!important;letter-spacing:.09em!important}
+qai-shell .department-items{width:100%!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important}
+
+/* FINAL MENU STATES: inactive = dark blue, active = light blue. */
+qai-shell .department-items a,
+qai-shell .department-items a:link,
+qai-shell .department-items a:visited{width:100%!important;box-sizing:border-box!important;min-width:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:10px!important;margin:0!important;padding:0 10px!important;min-height:38px!important;border-radius:8px!important;border:0!important;outline:0!important;color:#edf4ff!important;background:#17345f!important;box-shadow:none!important;text-decoration:none!important;font-size:11px!important;font-weight:650!important;line-height:1.2!important;transition:background .15s ease,color .15s ease,box-shadow .15s ease!important}
+qai-shell .department-items a:hover{background:#214574!important;color:#fff!important}
+qai-shell .department-items a.active,
+qai-shell .department-items a[aria-current="page"]{background:#dbeafe!important;color:#17345f!important;font-weight:750!important;box-shadow:inset 3px 0 0 #2563eb!important}
+qai-shell .department-items a.active:hover,
+qai-shell .department-items a[aria-current="page"]:hover{background:#cfe3ff!important;color:#17345f!important}
+qai-shell .department-items a:focus-visible{outline:2px solid #7fb3ff!important;outline-offset:1px!important}
+
+/* Flat line icons: no tile/background behind icons. */
 qai-shell .nav-icon{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:currentColor!important;font-size:14px!important;line-height:1!important}
-qai-shell .nav-label{display:block!important;min-width:0!important;flex:1 1 auto!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;text-align:left!important;color:inherit!important;font-size:11px!important;font-weight:650!important}
+qai-shell .nav-label{display:block!important;min-width:0!important;flex:1 1 auto!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap!important;text-align:left!important;color:inherit!important;font-size:11px!important;font-weight:inherit!important}
 qai-shell .shell:not(.collapsed) .brand-copy,qai-shell .shell:not(.collapsed) .workspace div,qai-shell .shell:not(.collapsed) .department-heading b,qai-shell .shell:not(.collapsed) .nav-label,qai-shell .shell:not(.collapsed) .real-workspace span:nth-child(2),qai-shell .shell:not(.collapsed) .real-workspace>strong,qai-shell .shell:not(.collapsed) .account div,qai-shell .shell:not(.collapsed) .account>span:last-child{display:flex!important}
 
 /* Collapsed navigation: compact icon rail only. */
