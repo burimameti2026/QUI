@@ -1,5 +1,5 @@
 import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
-import { AdminI18nService } from './admin-i18n.service';
+import { AdminI18nService, AdminLanguage } from './admin-i18n.service';
 import { adminText } from './admin-page-translations';
 import { adminExtraText } from './admin-extra-translations';
 import { adminCrmText } from './admin-crm-translations';
@@ -67,12 +67,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
-
-    // Page-interior catalog is checked first so headings, form labels,
-    // table states, safety copy and domain actions are translated consistently.
     const interior = adminPageInteriorText(value, language);
     if (interior !== value) return interior;
-
     const navigation = adminNavigationText(value, language);
     if (navigation !== value) return navigation;
     const pageCopy = adminPageCopyText(value, language);
@@ -100,31 +96,25 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
     }
 
-    // Dynamic page-interior counters keep the surrounding English shell out of
-    // localized pages without requiring every numeric value to have a key.
     const compound = this.translateCompound(value, language);
     if (compound !== value) return compound;
 
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
   }
 
-  private translateCompound(value: string, language: ReturnType<AdminI18nService['language']>): string {
-    const countWord = (count: string, key: string): string => {
-      const translated = adminPageInteriorText(key, language);
-      return translated === key ? key : `${count} ${translated}`;
-    };
-
+  private translateCompound(value: string, language: AdminLanguage): string {
     let match = value.match(/^(\d+)\s+campaigns\s+·\s+(\d+)\s+running$/i);
     if (match) {
       const campaigns = adminPageInteriorText('Campaigns', language);
-      const running = adminPageInteriorText('Active', language);
-      return `${match[1]} ${campaigns} · ${match[2]} ${running.toLowerCase()}`;
+      const active = adminPageInteriorText('Active', language);
+      return `${match[1]} ${campaigns} · ${match[2]} ${active.toLowerCase()}`;
     }
 
     match = value.match(/^(\d+)\s+(total|pending)$/i);
     if (match) {
       const key = match[2].toLowerCase() === 'total' ? 'Total' : 'Pending';
-      return countWord(match[1], key);
+      const translated = adminPageInteriorText(key, language);
+      if (translated !== key) return `${match[1]} ${translated}`;
     }
 
     match = value.match(/^Showing\s+(\d+)\s*[–-]\s*(\d+)\s+of\s+(\d+)$/i);
