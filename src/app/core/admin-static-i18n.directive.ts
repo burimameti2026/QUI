@@ -7,6 +7,7 @@ import { ADMIN_CMS_TRANSLATIONS } from './admin-cms-translations';
 import { adminUiGapText } from './admin-ui-gap-translations';
 import { adminPageCopyText } from './admin-page-copy-translations';
 import { adminNavigationText } from './admin-navigation-translations';
+import { adminPageInteriorText } from './admin-page-interior-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -33,6 +34,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
       nodes.push(text);
     }
+
     for (const text of nodes) {
       const current = text.nodeValue ?? '';
       const original = this.originals.get(text) ?? current;
@@ -43,6 +45,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
       const trailing = original.match(/\s*$/)?.[0] ?? '';
       if (current !== leading + translated + trailing) text.nodeValue = leading + translated + trailing;
     }
+
     const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
     for (const element of elements) {
       for (const attribute of this.uiAttributes) {
@@ -64,6 +67,12 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+
+    // Page-interior catalog is checked first so headings, form labels,
+    // table states, safety copy and domain actions are translated consistently.
+    const interior = adminPageInteriorText(value, language);
+    if (interior !== value) return interior;
+
     const navigation = adminNavigationText(value, language);
     if (navigation !== value) return navigation;
     const pageCopy = adminPageCopyText(value, language);
@@ -72,6 +81,7 @@ export class AdminStaticI18nDirective implements OnDestroy {
     if (gap !== value) return gap;
     const cms = ADMIN_CMS_TRANSLATIONS[value]?.[language];
     if (cms) return cms;
+
     const dynamicKpi = value.match(/^(\d+)\s+(selected|high priority|verified accounts|hot prospects|active campaigns|replies|demo ready)$/i);
     if (dynamicKpi) {
       const count = dynamicKpi[1];
@@ -87,10 +97,51 @@ export class AdminStaticI18nDirective implements OnDestroy {
       };
       const key = suffixKeys[suffix];
       const translatedSuffix = key ? adminNavigationText(key, language).replace(/^0\s*/, '') : suffix;
-      if (translatedSuffix !== key?.replace(/^0\s*/, '') && translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
       if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
     }
+
+    // Dynamic page-interior counters keep the surrounding English shell out of
+    // localized pages without requiring every numeric value to have a key.
+    const compound = this.translateCompound(value, language);
+    if (compound !== value) return compound;
+
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
+  }
+
+  private translateCompound(value: string, language: ReturnType<AdminI18nService['language']>): string {
+    const countWord = (count: string, key: string): string => {
+      const translated = adminPageInteriorText(key, language);
+      return translated === key ? key : `${count} ${translated}`;
+    };
+
+    let match = value.match(/^(\d+)\s+campaigns\s+·\s+(\d+)\s+running$/i);
+    if (match) {
+      const campaigns = adminPageInteriorText('Campaigns', language);
+      const running = adminPageInteriorText('Active', language);
+      return `${match[1]} ${campaigns} · ${match[2]} ${running.toLowerCase()}`;
+    }
+
+    match = value.match(/^(\d+)\s+(total|pending)$/i);
+    if (match) {
+      const key = match[2].toLowerCase() === 'total' ? 'Total' : 'Pending';
+      return countWord(match[1], key);
+    }
+
+    match = value.match(/^Showing\s+(\d+)\s*[–-]\s*(\d+)\s+of\s+(\d+)$/i);
+    if (match) {
+      const showing = adminPageInteriorText('Showing', language);
+      const of = adminPageInteriorText('of', language);
+      if (showing !== 'Showing' && of !== 'of') return `${showing} ${match[1]}–${match[2]} ${of} ${match[3]}`;
+    }
+
+    match = value.match(/^Page\s+(\d+)\s+of\s+(\d+)$/i);
+    if (match) {
+      const page = adminPageInteriorText('Page', language);
+      const of = adminPageInteriorText('of', language);
+      if (page !== 'Page' && of !== 'of') return `${page} ${match[1]} ${of} ${match[2]}`;
+    }
+
+    return value;
   }
 
   ngOnDestroy(): void { this.observer.disconnect(); this.languageEffect.destroy(); }
