@@ -7,18 +7,10 @@ import { TenantRuntimeService } from '../core/tenant-runtime.service';
 import { AdminI18nService } from '../core/admin-i18n.service';
 import { AdminStaticI18nDirective } from '../core/admin-static-i18n.directive';
 
-interface NavigationItem {
-  group: string;
-  label: string;
-  url: string;
-  icon: string;
-  module: string;
-  permission: string;
-}
+interface NavigationItem { group: string; label: string; url: string; icon: string; module: string; permission: string; }
 
 @Component({
-  selector: 'qai-shell',
-  standalone: true,
+  selector: 'qai-shell', standalone: true,
   imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive, AdminStaticI18nDirective],
   template: `
     <div class="shell" [class.collapsed]="collapsed">
@@ -26,7 +18,7 @@ interface NavigationItem {
         <div class="brand">
           <i class="brand-mark">R</i>
           <div class="brand-copy"><strong>RENOVA</strong><small>ENTERPRISE</small></div>
-          <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'"></button>
+          <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'">{{ collapsed ? '→' : '←' }}</button>
         </div>
         <div class="workspace">
           <i>{{ initials(workspaceName) }}</i>
@@ -105,14 +97,10 @@ export class ShellComponent {
     {group:'ADMINISTRATION',label:'Users & Roles',url:'/platform/users',icon:'◎',module:'core',permission:'settings.manage'},
     {group:'ADMINISTRATION',label:'Audit & Governance',url:'/platform/audit',icon:'▤',module:'core',permission:'settings.manage'}
   ];
-
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
   get visibleGroups() { return this.groups.filter(group => this.navBy(group).length > 0); }
-  get searchResults() {
-    const q = this.query.trim().toLowerCase();
-    return q ? this.nav.filter(item => `${item.label} ${item.group}`.toLowerCase().includes(q)).slice(0, 8) : [];
-  }
+  get searchResults() { const q = this.query.trim().toLowerCase(); return q ? this.nav.filter(item => `${item.label} ${item.group}`.toLowerCase().includes(q)).slice(0, 8) : []; }
   navBy(group: string) { return this.nav.filter(item => item.group === group && this.allowed(item)); }
   allowed(item: NavigationItem) { return (!item.permission || this.auth.hasPermission(item.permission)) && (!item.module || this.auth.hasModule(item.module)); }
   groupIcon(group: string) { const icons: Record<string,string> = {'COMMAND CENTER':'⌂','SALES & ACQUISITION':'◇','CONTENT & KNOWLEDGE':'▤','ORDERING & DISPATCH':'▦','FINANCE':'€','AUTOMATION & IMPROVE':'✦','ADMINISTRATION':'⚙'}; return icons[group] || '•'; }
