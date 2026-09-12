@@ -11,6 +11,7 @@ import { adminPageInteriorText } from './admin-page-interior-translations';
 import { adminPageInteriorDynamicText } from './admin-page-interior-dynamic-translations';
 import { adminPageInteriorGlobalText } from './admin-page-interior-global-translations';
 import { adminAcquisitionInteriorText } from './admin-page-interior-acquisition-translations';
+import { adminKnowledgeDiscoveryInteriorText } from './admin-page-interior-knowledge-discovery-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -88,8 +89,9 @@ export class AdminStaticI18nDirective implements OnDestroy {
         const original = originals.get(prop);
         if (!originals.has(prop)) originals.set(prop, value);
         const source = typeof original === 'string' ? original : value;
-        const translated = adminAcquisitionInteriorText(source, language);
-        const resolved = translated === source ? this.translateValue(source) : translated;
+        const translated = adminKnowledgeDiscoveryInteriorText(source, language);
+        const acquisition = translated === source ? adminAcquisitionInteriorText(source, language) : translated;
+        const resolved = acquisition === source ? this.translateValue(source) : acquisition;
         if (resolved !== source && (element as any)[prop] !== resolved) (element as any)[prop] = resolved;
       }
 
@@ -107,6 +109,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
 
   private translateValue(value: string): string {
     const language = this.i18n.language();
+    const knowledgeDiscovery = adminKnowledgeDiscoveryInteriorText(value, language);
+    if (knowledgeDiscovery !== value) return knowledgeDiscovery;
     const acquisition = adminAcquisitionInteriorText(value, language);
     if (acquisition !== value) return acquisition;
     const global = adminPageInteriorGlobalText(value, language);
