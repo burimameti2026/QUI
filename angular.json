@@ -28,30 +28,21 @@
               "src/shared-actions.css",
               "src/modal-viewport.css",
               "src/pro-saas.css",
-              "src/renova-shell-overrides.css"
+              "src/renova-shell-overrides.css",
+              "src/renova-design-system.css"
             ]
           },
           "configurations": {
-            "production": {
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
+            "production": {"outputHashing": "all"},
+            "development": {"optimization": false,"extractLicenses": false,"sourceMap": true}
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": {
-              "buildTarget": "qualifyai-admin:build:production"
-            },
-            "development": {
-              "buildTarget": "qualifyai-admin:build:development"
-            }
+            "production": {"buildTarget": "qualifyai-admin:build:production"},
+            "development": {"buildTarget": "qualifyai-admin:build:development"}
           },
           "defaultConfiguration": "development"
         }
