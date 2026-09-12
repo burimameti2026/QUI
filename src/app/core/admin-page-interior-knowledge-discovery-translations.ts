@@ -21,7 +21,6 @@ const T: Record<string, Record<AdminLanguage, string>> = {
   'Delete': { en:'Delete', mk:'Избриши', sq:'Fshi', de:'Löschen' },
   'Edit knowledge': { en:'Edit knowledge', mk:'Уреди знаење', sq:'Ndrysho njohuritë', de:'Wissen bearbeiten' },
   'Add knowledge': { en:'Add knowledge', mk:'Додај знаење', sq:'Shto njohuri', de:'Wissen hinzufügen' },
-  'Knowledge base': { en:'Knowledge base', mk:'База на знаење', sq:'Baza e njohurive', de:'Wissensbasis' },
   'Title': { en:'Title', mk:'Наслов', sq:'Titulli', de:'Titel' },
   'Content': { en:'Content', mk:'Содржина', sq:'Përmbajtja', de:'Inhalt' },
   'Published for automated retrieval': { en:'Published for automated retrieval', mk:'Објавено за автоматизирано пребарување', sq:'Publikuar për kërkim të automatizuar', de:'Für den automatisierten Abruf veröffentlicht' },
