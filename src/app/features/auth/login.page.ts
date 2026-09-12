@@ -8,6 +8,13 @@ import { AuthService } from "../../core/auth.service";
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `<div class="login">
+    <header class="login-topbar">
+      <div class="login-topbar-brand">
+        <i class="product-logo" aria-hidden="true"><span></span><span></span><span></span></i>
+        <div><b>Renova</b><small>Business automation</small></div>
+      </div>
+      <div class="login-topbar-meta"><span>AI-powered revenue workspace</span><em>Secure access</em></div>
+    </header>
     <section class="login-hero">
       <div class="login-brand">
         <i class="product-logo" aria-hidden="true"
