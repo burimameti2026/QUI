@@ -8,6 +8,7 @@ import { adminUiGapText } from './admin-ui-gap-translations';
 import { adminPageCopyText } from './admin-page-copy-translations';
 import { adminNavigationText } from './admin-navigation-translations';
 import { adminPageInteriorText } from './admin-page-interior-translations';
+import { adminPageInteriorDynamicText } from './admin-page-interior-dynamic-translations';
 
 @Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
 export class AdminStaticI18nDirective implements OnDestroy {
@@ -69,6 +70,8 @@ export class AdminStaticI18nDirective implements OnDestroy {
     const language = this.i18n.language();
     const interior = adminPageInteriorText(value, language);
     if (interior !== value) return interior;
+    const dynamicInterior = adminPageInteriorDynamicText(value, language);
+    if (dynamicInterior !== value) return dynamicInterior;
     const navigation = adminNavigationText(value, language);
     if (navigation !== value) return navigation;
     const pageCopy = adminPageCopyText(value, language);
@@ -105,30 +108,30 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private translateCompound(value: string, language: AdminLanguage): string {
     let match = value.match(/^(\d+)\s+campaigns\s+·\s+(\d+)\s+running$/i);
     if (match) {
-      const campaigns = adminPageInteriorText('Campaigns', language);
-      const active = adminPageInteriorText('Active', language);
+      const campaigns = adminPageInteriorDynamicText('Campaigns', language);
+      const active = adminPageInteriorDynamicText('Active', language);
       return `${match[1]} ${campaigns} · ${match[2]} ${active.toLowerCase()}`;
     }
 
     match = value.match(/^(\d+)\s+(total|pending)$/i);
     if (match) {
       const key = match[2].toLowerCase() === 'total' ? 'Total' : 'Pending';
-      const translated = adminPageInteriorText(key, language);
+      const translated = adminPageInteriorDynamicText(key, language);
       if (translated !== key) return `${match[1]} ${translated}`;
     }
 
     match = value.match(/^Showing\s+(\d+)\s*[–-]\s*(\d+)\s+of\s+(\d+)$/i);
     if (match) {
-      const showing = adminPageInteriorText('Showing', language);
-      const of = adminPageInteriorText('of', language);
-      if (showing !== 'Showing' && of !== 'of') return `${showing} ${match[1]}–${match[2]} ${of} ${match[3]}`;
+      const showing = adminPageInteriorDynamicText('Showing', language);
+      const of = adminPageInteriorDynamicText('of', language);
+      return `${showing} ${match[1]}–${match[2]} ${of} ${match[3]}`;
     }
 
     match = value.match(/^Page\s+(\d+)\s+of\s+(\d+)$/i);
     if (match) {
-      const page = adminPageInteriorText('Page', language);
-      const of = adminPageInteriorText('of', language);
-      if (page !== 'Page' && of !== 'of') return `${page} ${match[1]} ${of} ${match[2]}`;
+      const page = adminPageInteriorDynamicText('Page', language);
+      const of = adminPageInteriorDynamicText('of', language);
+      return `${page} ${match[1]} ${of} ${match[2]}`;
     }
 
     return value;
