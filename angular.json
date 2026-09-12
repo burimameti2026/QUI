@@ -19,7 +19,10 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/renova-design-system.css",
+              "src/renova-shell-layout.css",
+              "src/renova-shell-overrides.css"
             ]
           },
           "configurations": {
