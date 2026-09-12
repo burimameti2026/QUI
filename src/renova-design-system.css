@@ -104,8 +104,22 @@ input:focus,select:focus,textarea:focus{outline:0!important;border-color:#efb08a
 .callout{border:1px solid var(--renova-line)!important;border-radius:11px!important;background:#fff!important;box-shadow:var(--renova-shadow)!important}
 .callout.info{background:#f8fbff!important;border-color:#d9e6fb!important}.callout.success{background:#f3fbf7!important;border-color:#d6eee1!important}.callout.warning{background:#fffaf0!important;border-color:#f1dfb7!important}
 
+/* Login header */
+.login{min-height:100vh;background:var(--renova-bg)!important;color:var(--renova-ink)!important}
+.login-topbar{position:sticky!important;top:0!important;z-index:30!important;display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:72px!important;padding:0 36px!important;background:rgba(255,255,255,.96)!important;border-bottom:1px solid var(--renova-line)!important;box-shadow:0 1px 8px rgba(23,32,51,.04)!important;backdrop-filter:blur(10px)!important}
+.login-topbar-brand{display:flex!important;align-items:center!important;gap:11px!important}
+.login-topbar-brand .product-logo{display:grid!important;grid-template-columns:repeat(3,6px)!important;align-items:end!important;justify-content:center!important;gap:3px!important;width:38px!important;height:38px!important;padding:8px!important;border-radius:10px!important;background:var(--renova-orange)!important;box-shadow:0 6px 14px rgba(232,107,31,.18)!important}
+.login-topbar-brand .product-logo span{display:block!important;width:6px!important;border-radius:2px!important;background:#fff!important}
+.login-topbar-brand .product-logo span:nth-child(1){height:10px!important}.login-topbar-brand .product-logo span:nth-child(2){height:15px!important}.login-topbar-brand .product-logo span:nth-child(3){height:20px!important}
+.login-topbar-brand div{display:flex!important;flex-direction:column!important;line-height:1!important}
+.login-topbar-brand b{font-size:16px!important;letter-spacing:-.2px!important;color:var(--renova-ink)!important}
+.login-topbar-brand small{margin-top:5px!important;color:var(--renova-muted)!important;font-size:9px!important;font-weight:600!important}
+.login-topbar-meta{display:flex!important;align-items:center!important;gap:12px!important;color:var(--renova-muted)!important;font-size:10px!important;font-weight:600!important}
+.login-topbar-meta em{padding:6px 9px!important;border:1px solid #dfe3e9!important;border-radius:999px!important;background:#fff!important;color:#667085!important;font-size:9px!important;font-style:normal!important}
+.login-hero{background:linear-gradient(135deg,#2b211c,#6b3a1f 70%,#9a5425)!important}
+
 /* Remove accidental legacy dark SaaS surfaces inside feature pages. */
 .page .dark,.page .saas-card{background:#fff!important;color:var(--renova-ink)!important}
 
 @media(max-width:950px){.page{padding:22px!important}.metrics{grid-template-columns:repeat(2,1fr)!important}.grid2{grid-template-columns:1fr!important}.company-grid,.integration-grid,.pack-grid,.gap-cards{grid-template-columns:repeat(2,1fr)!important}}
-@media(max-width:650px){.page{padding:16px!important}.page-header{align-items:flex-start!important;flex-direction:column!important}.metrics,.company-grid,.integration-grid,.pack-grid,.gap-cards{grid-template-columns:1fr!important}.toolbar{flex-wrap:wrap}.toolbar input{min-width:0!important;width:100%!important}}
+@media(max-width:650px){.page{padding:16px!important}.page-header{align-items:flex-start!important;flex-direction:column!important}.metrics,.company-grid,.integration-grid,.pack-grid,.gap-cards{grid-template-columns:1fr!important}.toolbar{flex-wrap:wrap}.toolbar input{min-width:0!important;width:100%!important}.login-topbar{min-height:64px!important;padding:0 16px!important}.login-topbar-meta span{display:none!important}.login-topbar-meta em{font-size:8px!important}.login-topbar-brand .product-logo{width:34px!important;height:34px!important}.login-topbar-brand b{font-size:15px!important}}
