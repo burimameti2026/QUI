@@ -21,13 +21,28 @@ body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSy
 .shell>aside .brand strong,.shell>aside .brand small,.shell>aside .workspace div,.shell>aside .real-workspace span,.shell>aside .account div,.shell>aside .account>span:last-child{display:revert!important}
 .shell>aside .brand{justify-content:flex-start!important;padding:2px 8px 18px!important}
 .shell>aside .workspace{justify-content:flex-start!important;padding:12px 8px!important}
-.shell>aside .department-heading{justify-content:space-between!important;margin:18px 8px 7px!important;color:var(--renova-muted)!important}
-.shell>aside .department-heading b{display:block!important;font-size:11px!important;letter-spacing:.08em}
-.shell>aside .department-items a{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:11px!important;min-height:40px!important;padding:8px 10px!important;border-radius:8px!important;color:#3e4859!important;background:transparent!important;text-decoration:none!important}
+
+/* Sidebar hierarchy: headings are labels, never selected controls. */
+.shell>aside .department-heading{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;margin:18px 8px 7px!important;padding:0!important;border:0!important;background:transparent!important;color:var(--renova-muted)!important}
+.shell>aside .department-heading:first-child{margin-top:4px!important}
+.shell>aside .department-heading span{display:grid!important;flex:0 0 20px!important;width:20px!important;height:20px!important;place-items:center!important;background:transparent!important;border:0!important;color:var(--renova-accent)!important;font-size:12px!important}
+.shell>aside .department-heading b{display:block!important;margin:0!important;padding:0!important;color:var(--renova-muted)!important;font-size:10px!important;font-weight:800!important;letter-spacing:.09em!important;line-height:20px!important}
+
+/* Menu items: one consistent geometry for inactive, hover and active states. */
+.shell>aside .department-items{display:flex!important;flex-direction:column!important;gap:2px!important;margin:0!important;padding:0!important}
+.shell>aside .department-items a,
+.shell>aside .department-items a:link,
+.shell>aside .department-items a:visited{display:flex!important;align-items:center!important;justify-content:flex-start!important;box-sizing:border-box!important;width:100%!important;min-height:40px!important;margin:0!important;padding:8px 10px!important;gap:11px!important;border:0!important;border-radius:8px!important;outline:0!important;color:#4a5568!important;background:transparent!important;text-decoration:none!important;font-size:11px!important;font-weight:600!important;line-height:1.2!important;box-shadow:none!important;transition:background .15s ease,color .15s ease,box-shadow .15s ease!important}
 .shell>aside .department-items a:hover{background:#f7f8fa!important;color:var(--renova-text)!important}
-.shell>aside .department-items a.active,.shell>aside .department-items a[aria-current="page"]{background:var(--renova-accent-soft)!important;color:var(--renova-accent)!important;font-weight:600!important}
-.shell>aside .department-items a .nav-icon{width:20px!important;min-width:20px!important;height:20px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;color:currentColor!important;font-size:16px!important}
-.shell>aside .nav-label{white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important}
+.shell>aside .department-items a:focus-visible{outline:2px solid rgba(242,106,33,.28)!important;outline-offset:1px!important}
+.shell>aside .department-items a.active,
+.shell>aside .department-items a[aria-current="page"]{background:var(--renova-accent-soft)!important;color:var(--renova-accent)!important;font-weight:700!important;box-shadow:inset 3px 0 0 var(--renova-accent)!important}
+.shell>aside .department-items a.active:hover,
+.shell>aside .department-items a[aria-current="page"]:hover{background:#ffede1!important;color:#df5e17!important}
+
+/* Icons stay line-like/flat: no dark or colored tile behind an item icon. */
+.shell>aside .department-items a .nav-icon{display:grid!important;flex:0 0 22px!important;width:22px!important;height:22px!important;min-width:22px!important;place-items:center!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;color:currentColor!important;font-size:15px!important;font-weight:500!important;line-height:1!important}
+.shell>aside .department-items a .nav-label{display:block!important;min-width:0!important;flex:1!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:inherit!important}
 
 /* Shared Renova surfaces. */
 .renova-page,.page,.feature-page{color:var(--renova-text)}
