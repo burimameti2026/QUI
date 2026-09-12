@@ -33,7 +33,6 @@ export class AdminStaticI18nDirective implements OnDestroy {
       if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
       nodes.push(text);
     }
-
     for (const text of nodes) {
       const current = text.nodeValue ?? '';
       const original = this.originals.get(text) ?? current;
@@ -44,7 +43,6 @@ export class AdminStaticI18nDirective implements OnDestroy {
       const trailing = original.match(/\s*$/)?.[0] ?? '';
       if (current !== leading + translated + trailing) text.nodeValue = leading + translated + trailing;
     }
-
     const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
     for (const element of elements) {
       for (const attribute of this.uiAttributes) {
@@ -78,7 +76,18 @@ export class AdminStaticI18nDirective implements OnDestroy {
     if (dynamicKpi) {
       const count = dynamicKpi[1];
       const suffix = dynamicKpi[2].toLowerCase();
-      const translatedSuffix = adminNavigationText(suffix === 'high priority' ? '0 high priority' : suffix, language).replace(/^0\s*/, '');
+      const suffixKeys: Record<string,string> = {
+        selected: '0 selected',
+        'high priority': '0 high priority',
+        'verified accounts': 'Verified accounts',
+        'hot prospects': 'Hot prospects',
+        'active campaigns': 'Active campaigns',
+        replies: 'Replies',
+        'demo ready': 'Demo ready'
+      };
+      const key = suffixKeys[suffix];
+      const translatedSuffix = key ? adminNavigationText(key, language).replace(/^0\s*/, '') : suffix;
+      if (translatedSuffix !== key?.replace(/^0\s*/, '') && translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
       if (translatedSuffix !== suffix) return `${count} ${translatedSuffix}`;
     }
     return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
