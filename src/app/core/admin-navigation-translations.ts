@@ -48,7 +48,7 @@ export const ADMIN_NAV_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   '0 high priority': {en:'0 high priority',mk:'0 со висок приоритет',sq:'0 me prioritet të lartë',de:'0 mit hoher Priorität'},
   'All': {en:'All',mk:'Сите',sq:'Të gjitha',de:'Alle'},
   'All categories': {en:'All categories',mk:'Сите категории',sq:'Të gjitha kategoritë',de:'Alle Kategorien'},
-  'All statuses': {en:'All statuses',mk:'Сите статуси',sq:'Të gjitha statusи',de:'Alle Status'},
+  'All statuses': {en:'All statuses',mk:'Сите статуси',sq:'Të gjitha statuset',de:'Alle Status'},
   'No data': {en:'No data',mk:'Нема податоци',sq:'Nuk ka të dhëna',de:'Keine Daten'},
   'No results': {en:'No results',mk:'Нема резултати',sq:'Nuk ka rezultate',de:'Keine Ergebnisse'}
 };
