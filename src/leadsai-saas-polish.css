@@ -1,0 +1,106 @@
+/* LeadsAI SaaS polish — visual benchmark: clean enterprise logistics SaaS */
+:root{
+  --leads-bg:#f7f8fa;
+  --leads-surface:#fff;
+  --leads-border:#e4e7ec;
+  --leads-text:#111827;
+  --leads-muted:#667085;
+  --leads-primary:#2563eb;
+  --leads-primary-soft:#eff6ff;
+  --leads-purple:#7c3aed;
+  --leads-green:#078a5a;
+  --leads-amber:#d97706;
+  --leads-red:#dc3d4b;
+  --leads-shadow:0 4px 16px rgba(16,24,40,.045);
+}
+
+html,body{background:var(--leads-bg)!important;color:var(--leads-text)!important}
+body{font-family:Inter,Segoe UI,Arial,sans-serif!important}
+
+/* Application shell */
+qai-shell .shell{background:var(--leads-bg)!important}
+qai-shell .shell>aside.sidebar{background:#fff!important;border-right:1px solid var(--leads-border)!important}
+qai-shell .department-items a{color:#667085!important;border-radius:8px!important}
+qai-shell .department-items a:hover{background:#f5f7fa!important;color:#101828!important}
+qai-shell .department-items a.active,qai-shell .department-items a[aria-current="page"]{background:var(--leads-primary-soft)!important;color:var(--leads-primary)!important;box-shadow:inset 3px 0 0 var(--leads-primary)!important}
+qai-shell .brand-mark{border-radius:9px!important}
+
+/* Page rhythm */
+.page{max-width:1440px!important;padding:24px 28px 42px!important;background:var(--leads-bg)!important}
+.page-header{margin-bottom:18px!important}
+.page-header h1{font-size:25px!important;font-weight:750!important;letter-spacing:-.5px!important;color:#101828!important}
+.page-header p{font-size:11px!important;color:var(--leads-muted)!important}
+.page-actions{gap:8px!important}
+
+/* Reference-style controls */
+button,.primary,.page-actions a,.toolbar button{min-height:34px;border-radius:8px!important;font-size:10px!important;font-weight:650!important}
+button{background:#fff!important;border:1px solid var(--leads-border)!important;color:#344054!important}
+button:hover{background:#f8fafc!important;border-color:#cfd5dd!important}
+button.primary,.primary,.page-actions .primary{background:var(--leads-primary)!important;border-color:var(--leads-primary)!important;color:#fff!important;box-shadow:0 4px 10px rgba(37,99,235,.15)!important}
+input,select,textarea{background:#fff!important;border:1px solid var(--leads-border)!important;border-radius:8px!important;color:#101828!important;font-size:10px!important}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#9dbaf8!important;box-shadow:0 0 0 3px rgba(37,99,235,.08)!important}
+
+/* Shared surfaces */
+.panel,.metrics article,.company-card,.integration-grid article,.pack-grid article,.gap-cards article,.pipeline-summary,.calendar-strip article,.inbox,.callout{background:#fff!important;border:1px solid var(--leads-border)!important;border-radius:11px!important;box-shadow:var(--leads-shadow)!important}
+.panel{padding:16px!important}
+.panel>header{border-bottom:1px solid #eef0f3!important;padding-bottom:12px!important}
+
+/* KPI cards — compact, clean, like the reference */
+.metrics{gap:10px!important}
+.metrics article{min-height:112px!important;padding:15px!important;box-shadow:var(--leads-shadow)!important}
+.metrics article strong{font-size:23px!important;color:#101828!important}
+.metrics article span{font-size:9px!important;color:#667085!important}
+.metrics article small{font-size:8px!important;color:var(--leads-green)!important}
+
+/* Dashboard metric cards */
+.metric-grid{gap:10px!important}
+.metric-card{min-height:132px!important;padding:15px!important;border:1px solid var(--leads-border)!important;border-radius:11px!important;background:#fff!important;box-shadow:var(--leads-shadow)!important}
+.metric-card::before{height:2px!important}
+.metric-card::after{opacity:.4!important}
+.metric-card:hover{transform:translateY(-1px)!important;border-color:#cbd5e1!important;box-shadow:0 9px 22px rgba(16,24,40,.07)!important}
+.metric-icon{width:30px!important;height:30px!important;border-radius:8px!important}
+.metric-label{font-size:10px!important;color:#667085!important}
+.metric-card>strong{margin:14px 0 11px!important;font-size:25px!important;color:#101828!important}
+.metric-card small{font-size:8px!important;color:#667085!important}
+
+/* Dashboard executive / command surfaces */
+.executive-band{padding:21px!important;border:1px solid var(--leads-border)!important;border-radius:12px!important;background:#fff!important;box-shadow:var(--leads-shadow)!important}
+.executive-band h2{font-size:20px!important;color:#101828!important}
+.executive-band p{font-size:10px!important;color:#667085!important}
+.executive-context{border:1px solid var(--leads-border)!important;background:#fafbfc!important}
+.executive-context span{border-left-color:#eef0f3!important;color:#667085!important}
+.executive-context b{color:#101828!important}
+.command-grid,.detail-grid{gap:12px!important}
+.revenue-card,.automation-card,.data-card{background:#fff!important;border:1px solid var(--leads-border)!important;border-radius:12px!important;box-shadow:var(--leads-shadow)!important}
+.card-heading{min-height:62px!important;padding:13px 16px!important;background:#fff!important;border-bottom:1px solid #eef0f3!important}
+.card-heading h3{font-size:13px!important;color:#101828!important}
+.revenue-body,.impact-grid{background:#fff!important;padding:13px 15px!important}
+.revenue-highlight,.revenue-row,.impact-grid>div{background:#fafbfc!important;border:1px solid #e8ebef!important;border-radius:9px!important}
+.revenue-highlight{background:#f4f8ff!important;border-color:#d8e5fb!important}
+.revenue-note,.automation-note{background:#f8fafc!important;border:1px solid #edf0f3!important}
+
+/* Tables */
+.table-wrap,.panel .table-wrap{border:1px solid var(--leads-border)!important;border-radius:9px!important;background:#fff!important}
+.table-wrap th,.panel th{background:#fafbfc!important;color:#667085!important;border-bottom:1px solid var(--leads-border)!important;padding:10px!important;font-size:8px!important}
+.table-wrap td,.panel td{color:#344054!important;border-bottom:1px solid #f0f1f3!important;padding:10px!important;font-size:9px!important}
+.opportunity-columns{background:#f8fafc!important;border-color:var(--leads-border)!important}
+.opportunity{background:#fff!important;border-color:#e8ebef!important}
+.opportunity:hover{background:#fafcff!important;border-color:#cbd5e1!important}
+
+/* Tabs / status */
+.tabs{gap:4px!important}
+.tabs .active{background:var(--leads-primary-soft)!important;color:var(--leads-primary)!important;border-radius:7px!important}
+.pill{background:#f8fafc!important;border:1px solid #e7eaf0!important;color:#475467!important;border-radius:999px!important}
+.pill.success{background:#ecfdf3!important;color:#067647!important;border-color:#abefc6!important}
+.pill.hot{background:#fff1f3!important;color:#b42318!important;border-color:#fecdca!important}
+.score{background:#fffaeb!important;color:#b54708!important}
+
+/* Forms and empty states */
+.form{background:#fff!important;border:1px solid var(--leads-border)!important;border-radius:11px!important;box-shadow:var(--leads-shadow)!important}
+.empty{background:#fff!important;border:1px dashed #d8dde5!important;border-radius:10px!important}
+.modal-card{border:1px solid var(--leads-border)!important;border-radius:12px!important;box-shadow:0 20px 55px rgba(16,24,40,.16)!important}
+
+/* Mobile */
+@media(max-width:1050px){.metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.command-grid,.detail-grid{grid-template-columns:1fr!important}}
+@media(max-width:700px){.page{padding:17px!important}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.executive-band{grid-template-columns:1fr!important}.executive-context{width:100%!important}.page-header{align-items:flex-start!important;flex-direction:column!important}.page-actions{width:100%!important}.page-actions>*{flex:1 1 auto!important}.opportunity-columns,.opportunity{grid-template-columns:1fr!important}.opportunity-columns{display:none!important}}
+@media(max-width:460px){.metric-grid{grid-template-columns:1fr!important}.page-actions{display:grid!important;grid-template-columns:1fr!important}}
