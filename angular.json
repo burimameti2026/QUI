@@ -25,7 +25,8 @@
               "src/renova-shell-overrides.css",
               "src/renova-login.css",
               "src/leadsai-saas-refinement.css",
-              "src/leadsai-saas-polish.css"
+              "src/leadsai-saas-polish.css",
+              "src/leadsai-saas-reference.css"
             ]
           },
           "configurations": {
