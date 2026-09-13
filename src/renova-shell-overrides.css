@@ -12,16 +12,16 @@ qai-shell .department-heading span{flex:0 0 22px!important;width:22px!important;
 qai-shell .department-heading b{color:#71809a!important;font-size:10px!important;font-weight:800!important;letter-spacing:.09em!important}
 qai-shell .department-items{width:100%!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important}
 
-/* FINAL MENU STATES: inactive = dark blue, active = light blue. */
+/* FINAL MENU STATES: inactive = transparent/muted, active = light blue pill (OrchestrateIQ-style light rail). */
 qai-shell .department-items a,
 qai-shell .department-items a:link,
-qai-shell .department-items a:visited{width:100%!important;box-sizing:border-box!important;min-width:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:10px!important;margin:0!important;padding:0 10px!important;min-height:38px!important;border-radius:8px!important;border:0!important;outline:0!important;color:#edf4ff!important;background:var(--renova-sidebar)!important;box-shadow:none!important;text-decoration:none!important;font-size:11px!important;font-weight:650!important;line-height:1.2!important;transition:background .15s ease,color .15s ease,box-shadow .15s ease!important}
-qai-shell .department-items a:hover{background:var(--renova-sidebar-hover)!important;color:#fff!important}
+qai-shell .department-items a:visited{width:100%!important;box-sizing:border-box!important;min-width:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;gap:10px!important;margin:0!important;padding:0 10px!important;min-height:38px!important;border-radius:8px!important;border:0!important;outline:0!important;color:#5b6472!important;background:transparent!important;box-shadow:none!important;text-decoration:none!important;font-size:11px!important;font-weight:650!important;line-height:1.2!important;transition:background .15s ease,color .15s ease,box-shadow .15s ease!important}
+qai-shell .department-items a:hover{background:#f2f3f6!important;color:#172033!important}
 qai-shell .department-items a.active,
-qai-shell .department-items a[aria-current="page"]{background:#dbeafe!important;color:var(--renova-sidebar)!important;font-weight:750!important;box-shadow:inset 3px 0 0 #2563eb!important}
+qai-shell .department-items a[aria-current="page"]{background:var(--renova-orange-soft)!important;color:var(--renova-orange)!important;font-weight:750!important;box-shadow:inset 3px 0 0 var(--renova-orange)!important}
 qai-shell .department-items a.active:hover,
-qai-shell .department-items a[aria-current="page"]:hover{background:#cfe3ff!important;color:var(--renova-sidebar)!important}
-qai-shell .department-items a:focus-visible{outline:2px solid #7fb3ff!important;outline-offset:1px!important}
+qai-shell .department-items a[aria-current="page"]:hover{background:#dfe6ff!important;color:var(--renova-orange)!important}
+qai-shell .department-items a:focus-visible{outline:2px solid #9db4ff!important;outline-offset:1px!important}
 
 /* Flat line icons: no tile/background behind icons. */
 qai-shell .nav-icon{flex:0 0 22px!important;width:22px!important;height:22px!important;display:grid!important;place-items:center!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:currentColor!important;font-size:14px!important;line-height:1!important}

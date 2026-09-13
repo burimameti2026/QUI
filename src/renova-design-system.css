@@ -18,9 +18,9 @@ body{font-family:Inter,Segoe UI,Arial,sans-serif!important}
 button,.primary,.page-actions a,.toolbar button{font-size:10px!important;font-weight:700!important;border-radius:8px!important}
 button{border-color:var(--renova-line)!important;color:var(--renova-text)!important;background:#fff!important}
 button:hover{background:#faf7f4!important;border-color:#e8c8b5!important}
-button.primary,.primary,.page-actions .primary{background:var(--renova-orange)!important;border-color:var(--renova-orange)!important;color:#fff!important;box-shadow:0 5px 13px rgba(232,107,31,.16)!important}
+button.primary,.primary,.page-actions .primary{background:var(--renova-orange)!important;border-color:var(--renova-orange)!important;color:#fff!important;box-shadow:0 5px 13px rgba(63,90,235,.16)!important}
 input,select,textarea{border-color:var(--renova-line)!important;border-radius:8px!important;background:#fff!important;color:var(--renova-ink)!important;font-size:10px!important}
-input:focus,select:focus,textarea:focus{outline:0!important;border-color:#efb08a!important;box-shadow:0 0 0 3px rgba(232,107,31,.08)!important}
+input:focus,select:focus,textarea:focus{outline:0!important;border-color:#efb08a!important;box-shadow:0 0 0 3px rgba(63,90,235,.08)!important}
 
 /* Cards / panels */
 .panel,.metrics article,.knowledge-metrics article,.company-card,.integration-grid article,.pack-grid article,.gap-cards article,.pipeline-summary,.calendar-strip article{
@@ -108,7 +108,7 @@ input:focus,select:focus,textarea:focus{outline:0!important;border-color:#efb08a
 .login{min-height:100vh;background:var(--renova-bg)!important;color:var(--renova-ink)!important}
 .login-topbar{position:sticky!important;top:0!important;z-index:30!important;display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:72px!important;padding:0 36px!important;background:rgba(255,255,255,.96)!important;border-bottom:1px solid var(--renova-line)!important;box-shadow:0 1px 8px rgba(23,32,51,.04)!important;backdrop-filter:blur(10px)!important}
 .login-topbar-brand{display:flex!important;align-items:center!important;gap:11px!important}
-.login-topbar-brand .product-logo{display:grid!important;grid-template-columns:repeat(3,6px)!important;align-items:end!important;justify-content:center!important;gap:3px!important;width:38px!important;height:38px!important;padding:8px!important;border-radius:10px!important;background:var(--renova-orange)!important;box-shadow:0 6px 14px rgba(232,107,31,.18)!important}
+.login-topbar-brand .product-logo{display:grid!important;grid-template-columns:repeat(3,6px)!important;align-items:end!important;justify-content:center!important;gap:3px!important;width:38px!important;height:38px!important;padding:8px!important;border-radius:10px!important;background:var(--renova-orange)!important;box-shadow:0 6px 14px rgba(63,90,235,.18)!important}
 .login-topbar-brand .product-logo span{display:block!important;width:6px!important;border-radius:2px!important;background:#fff!important}
 .login-topbar-brand .product-logo span:nth-child(1){height:10px!important}.login-topbar-brand .product-logo span:nth-child(2){height:15px!important}.login-topbar-brand .product-logo span:nth-child(3){height:20px!important}
 .login-topbar-brand div{display:flex!important;flex-direction:column!important;line-height:1!important}
