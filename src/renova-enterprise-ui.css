@@ -1,0 +1,130 @@
+/* Renova Enterprise UI — unified dashboard-grade enterprise treatment */
+.page > .tenant-bar,
+.page > .meta,
+.page > .toolbar,
+.page > .flow,
+.page > .grid,
+.page > .panel,
+.page > .tabs { font-family: Inter, Segoe UI, Arial, sans-serif; }
+
+.page > .tenant-bar {
+  position: relative; overflow: hidden; padding: 18px 20px; margin: 0 0 16px;
+  border: 1px solid #d8e2f0; border-radius: 14px;
+  background: linear-gradient(110deg,#ffffff 0%,#f4f8ff 100%);
+  box-shadow: 0 7px 22px rgba(23,52,95,.06);
+}
+.page > .tenant-bar::after { content:""; position:absolute; width:180px; height:180px; right:-70px; top:-105px; border-radius:50%; background:#eaefff; pointer-events:none; }
+.page > .tenant-bar span,.page > .meta span,.page > .meta small { color:#718096 !important; letter-spacing:1px !important; font-weight:700; }
+.page > .tenant-bar strong { color:#17345f; letter-spacing:.6px; }
+.page > .tenant-bar small { color:#718096; }
+
+.page > .metrics { gap:12px; }
+.page > .metrics article { border-color:#dce5f1 !important; box-shadow:0 6px 18px rgba(23,52,95,.05) !important; }
+.page > .metrics article strong { color:#17345f; }
+
+.page > .flow {
+  padding: 14px; margin-bottom: 16px; border:1px solid #d8e2f0; border-radius:14px;
+  background:#f7faff; box-shadow:0 5px 16px rgba(23,52,95,.035);
+}
+.page > .flow div { border-radius:10px; background:#fff; border:1px solid #e3eaf3; padding:10px 12px; }
+.page > .flow b { color:#17345f; font-size:9px; letter-spacing:.7px; }
+.page > .flow span { color:#718096; }
+.page > .flow i { color:#3f5aeb; font-weight:800; }
+
+.page > .grid { gap:12px; }
+.page > .grid .card {
+  min-height:78px; padding:14px; border-color:#dce5f1; border-radius:13px;
+  box-shadow:0 6px 18px rgba(23,52,95,.045); transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}
+.page > .grid .card:hover { transform:translateY(-2px); border-color:#b9cbea; box-shadow:0 11px 24px rgba(23,52,95,.09); }
+.page > .grid .card b { color:#172033; font-size:10px; }
+.page > .grid .card span { color:#718096; }
+.page > .grid .card > strong { color:#3f5aeb; }
+.page > .grid .card .icon { background:#eaefff !important; color:#3158d9 !important; border:1px solid #d7e0fb; }
+.page > .grid .card .icon.green { background:#e8f7ef !important; color:#087747 !important; border-color:#ccebdc; }
+.page > .grid .card .icon.red { background:#eef4ff !important; color:#3158d9 !important; border-color:#d7e0fb; }
+.page > .grid .card .icon.violet { background:#f0edff !important; color:#6844c5 !important; border-color:#e0d9ff; }
+.page > .grid .card .icon.amber { background:#fff7e6 !important; color:#92610b !important; border-color:#f6e6bf; }
+
+/* Module pages */
+.page > .tabs {
+  gap:7px; padding:2px 0 14px; scrollbar-width:thin;
+}
+.page > .tabs a {
+  padding:8px 12px !important; border:1px solid #dce5f1 !important; border-radius:9px !important;
+  background:#fff !important; color:#66748b !important; font-size:9px !important; font-weight:600;
+  transition:.15s ease;
+}
+.page > .tabs a:hover { border-color:#bdcce0 !important; color:#3158d9 !important; background:#f7faff !important; }
+.page > .tabs a.active {
+  color:#17345f !important; border-color:#b9cbea !important; background:#eaefff !important;
+  box-shadow:inset 0 -2px 0 #3f5aeb; font-weight:800 !important;
+}
+
+.page > .meta { gap:12px; margin-bottom:16px; }
+.page > .meta > div {
+  padding:14px 16px !important; border:1px solid #dce5f1 !important; border-radius:12px !important;
+  background:#fff !important; box-shadow:0 5px 16px rgba(23,52,95,.035);
+}
+.page > .meta b { color:#17345f; font-size:12px; }
+
+.page > .toolbar {
+  padding:12px 14px !important; margin-bottom:16px !important; border:1px solid #d8e2f0 !important;
+  border-radius:11px !important; background:#f7faff !important; color:#17345f;
+}
+.page > .toolbar span { color:#718096 !important; }
+
+.page > .panel {
+  border:1px solid #dce5f1 !important; border-radius:14px !important; background:#fff !important;
+  box-shadow:0 7px 22px rgba(23,52,95,.045); overflow:hidden;
+}
+.page > .panel table { min-width:760px; }
+.page > .panel th {
+  padding:11px 12px !important; background:#f7faff !important; border-bottom:1px solid #dce5f1 !important;
+  color:#718096 !important; font-size:8px !important; letter-spacing:.5px; text-transform:uppercase;
+}
+.page > .panel td { padding:12px !important; border-bottom:1px solid #edf1f6 !important; color:#344054; font-size:9px !important; }
+.page > .panel tbody tr:hover { background:#fafcff; }
+.page > .panel .link { color:#3158d9 !important; font-weight:700; }
+.page > .panel .state { color:#718096; }
+.page > .panel .empty { padding:46px 24px !important; color:#344054; }
+.page > .panel .empty span { color:#718096 !important; }
+.page > .panel .error { background:#fff6f6 !important; color:#a33a3a !important; }
+
+/* Enterprise action buttons */
+.page > qai-page-header .primary,
+.page > qai-page-header button.primary,
+.page > qai-page-header .refresh,
+.page > qai-page-header .secondary,
+.page > qai-page-header .back {
+  border-radius:9px !important; font-weight:700 !important;
+}
+.page > qai-page-header .primary { background:#3f5aeb !important; border-color:#3f5aeb !important; }
+.page > qai-page-header .primary:hover { background:#3150db !important; }
+.page > qai-page-header .secondary,
+.page > qai-page-header .refresh,
+.page > qai-page-header .back { color:#3158d9 !important; border-color:#d6e0ed !important; background:#fff !important; }
+
+/* Drawers / dialogs */
+.page .drawer,
+.page .overlay { background:rgba(15,23,42,.46) !important; backdrop-filter:blur(2px); }
+.page .drawer .modal,
+.page .overlay .drawer {
+  border-left:1px solid #dce5f1; background:#fff; box-shadow:-18px 0 45px rgba(23,52,95,.16);
+}
+.page .modal-head,.page .drawer header { border-bottom:1px solid #edf1f6; padding-bottom:15px; }
+.page .modal-head small,.page .drawer header small { color:#3f5aeb !important; font-weight:800; letter-spacing:1px; }
+.page .modal-head h3,.page .drawer h2 { color:#17345f; }
+.page .form label,.page .drawer>label { color:#66748b !important; }
+.page .form input,.page .form select,.page .drawer>label select {
+  border-color:#d6e0ed !important; border-radius:9px !important; background:#fff; color:#172033;
+}
+.page .form input:focus,.page .form select:focus { outline:2px solid #dbe5ff; border-color:#7d9ae8 !important; }
+.page .modal-actions .primary { background:#3f5aeb !important; border-color:#3f5aeb !important; }
+.page .modal-actions .secondary { color:#3158d9 !important; }
+
+@media(max-width:1050px){ .page > .grid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:700px){
+  .page > .grid{grid-template-columns:1fr}.page > .meta{grid-template-columns:1fr}.page > .flow{grid-template-columns:1fr}
+  .page > .flow i{transform:rotate(90deg)}.page > .panel table{min-width:680px}
+}
