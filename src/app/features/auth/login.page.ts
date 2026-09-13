@@ -8,13 +8,7 @@ import { AuthService } from "../../core/auth.service";
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `<div class="login">
-    <header class="login-topbar">
-      <div class="login-topbar-brand">
-        <i class="product-logo" aria-hidden="true"><span></span><span></span><span></span></i>
-        <div><b>Renova</b><small>Business automation</small></div>
-      </div>
-      <div class="login-topbar-meta"><span>AI-powered revenue workspace</span><em>Secure access</em></div>
-    </header>
+   
     <section class="login-hero">
       <div class="login-brand">
         <i class="product-logo" aria-hidden="true"
@@ -75,8 +69,8 @@ import { AuthService } from "../../core/auth.service";
       </div>
     </section>
     <form (ngSubmit)="submit()">
-      <h2>Renova workspace</h2>
-      <p>Sign in to the Renova marketing and acquisition workspace.</p>
+      <h2>Please sign in</h2>
+      <p>Sign in to the marketing and acquisition workspace.</p>
       <label>Workspace<input [(ngModel)]="tenant" name="tenant" autocomplete="organization" /></label>
       <label>Email / admin<input [(ngModel)]="email" name="email" type="text" autocomplete="username" /></label>
       <label>Password<input [(ngModel)]="password" name="password" type="password" autocomplete="current-password" /></label>

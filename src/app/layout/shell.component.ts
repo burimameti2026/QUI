@@ -15,14 +15,14 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
   template: `
     <div class="shell" [class.collapsed]="collapsed">
       <aside class="sidebar">
-        <div class="brand">
+        <!-- <div class="brand">
           <i class="brand-mark">R</i>
           <div class="brand-copy"><strong>RENOVA</strong><small>ENTERPRISE</small></div>
           <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'">{{ collapsed ? '→' : '←' }}</button>
-        </div>
-        <div class="workspace">
-          <i>{{ initials(workspaceName) }}</i>
-          <div><b>{{ workspaceName }}</b><span>{{ i18n.t(runtime.runtime()?.plan || session?.licensePlan || 'Licensed') }} workspace</span></div>
+        </div> -->
+        <div class="workspace background"><span class="workspace-icon">⌂</span>
+          <!-- <i>{{ initials(workspaceName) }}</i> -->
+          <div class="workspace-info" text-color="white"><b>{{ workspaceName }}</b><span>{{ i18n.t(runtime.runtime()?.plan || session?.licensePlan || 'Licensed') }} workspace</span></div>
         </div>
         <nav class="department-nav">
           <ng-container *ngFor="let group of visibleGroups">
