@@ -20,24 +20,24 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
           <div class="brand-copy"><strong>Leads<span>AI</span></strong><small>ENTERPRISE PLATFORM</small></div>
           <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'">{{ collapsed ? '→' : '←' }}</button>
         </div>
-        <nav class="reference-menu">
-          <a class="menu-item" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><span class="nav-icon">⌂</span><span class="nav-label">{{ i18n.t('Dashboard') }}</span></a>
-          <a class="menu-item" routerLink="/crm/leads" routerLinkActive="active"><span class="nav-icon">▣</span><span class="nav-label">{{ i18n.t('Leads') }}</span></a>
-          <a class="menu-item" routerLink="/crm/companies" routerLinkActive="active"><span class="nav-icon">▧</span><span class="nav-label">{{ i18n.t('CRM') }}</span></a>
-          <a class="menu-item" routerLink="/crm/opportunities" routerLinkActive="active"><span class="nav-icon">♡</span><span class="nav-label">{{ i18n.t('Opportunities') }}</span></a>
-          <button class="menu-item menu-parent" type="button" [class.open]="ordersOpen" (click)="ordersOpen = !ordersOpen"><span class="nav-icon">▤</span><span class="nav-label">{{ i18n.t('Orders') }}</span><span class="menu-chevron" [class.open]="ordersOpen">⌄</span></button>
-          <div class="menu-children" *ngIf="ordersOpen">
-            <a routerLink="/enterprise/orders" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Delivery Orders') }}</a>
-            <a routerLink="/enterprise/fulfillment" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Shipments') }}</a>
-            <a routerLink="/billing" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Invoices') }}</a>
-          </div>
-          <a class="menu-item" routerLink="/enterprise/inventory" routerLinkActive="active"><span class="nav-icon">▥</span><span class="nav-label">{{ i18n.t('Inventory') }}</span></a>
-          <a class="menu-item" routerLink="/enterprise/fulfillment" routerLinkActive="active"><span class="nav-icon">▤</span><span class="nav-label">{{ i18n.t('Warehouse') }}</span></a>
-          <a class="menu-item" routerLink="/enterprise/logistics" routerLinkActive="active"><span class="nav-icon">▱</span><span class="nav-label">{{ i18n.t('Fleet & Drivers') }}</span></a>
-          <a class="menu-item" routerLink="/analytics" routerLinkActive="active"><span class="nav-icon">▧</span><span class="nav-label">{{ i18n.t('Reports') }}</span></a>
-          <a class="menu-item" routerLink="/automations" routerLinkActive="active"><span class="nav-icon">✣</span><span class="nav-label">{{ i18n.t('Automation') }}</span></a>
-          <a class="menu-item" routerLink="/platform" routerLinkActive="active"><span class="nav-icon">⚙</span><span class="nav-label">{{ i18n.t('Settings') }}</span></a>
+
+        <nav class="reference-menu" aria-label="Application navigation">
+          <ng-container *ngFor="let group of groups">
+            <div class="menu-group" [class.closed]="!isGroupOpen(group)">
+              <button class="group-heading" type="button" (click)="toggleGroup(group)" [attr.aria-expanded]="isGroupOpen(group)">
+                <span>{{ i18n.t(group) }}</span><span class="group-chevron">⌄</span>
+              </button>
+              <div class="group-items" *ngIf="isGroupOpen(group)">
+                <ng-container *ngFor="let item of itemsFor(group)">
+                  <a *ngIf="allowed(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:item.url === '/dashboard'}">
+                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span>
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
         </nav>
+
         <div class="account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><div><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></div><span class="account-chevron">⌄</span></div>
       </aside>
       <main>
@@ -59,24 +59,25 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
   `,
   styles: [`
     :host{display:block}
-    .reference-menu{display:flex;flex-direction:column;gap:2px;padding:2px 6px 12px;}
-    .reference-menu .menu-item{position:relative;display:flex;align-items:center;width:100%;box-sizing:border-box;min-height:39px;padding:9px 11px;border:0;border-radius:10px;background:transparent;color:#52627f;text-decoration:none;font:inherit;font-size:10px;font-weight:500;cursor:pointer;text-align:left;transition:background .16s ease,color .16s ease;}
-    .reference-menu .menu-item:hover{background:#f7f9fd;color:#315fcf;}
-    .reference-menu .menu-item.active{background:#edf3ff;color:#155eef;box-shadow:inset 3px 0 0 #2563eb;font-weight:650;}
-    .reference-menu .menu-parent.open{color:#445571;}
-    .reference-menu .nav-icon{width:25px;flex:0 0 25px;display:inline-grid;place-items:center;font-size:13px;line-height:1;color:currentColor;opacity:.92;}
+    .reference-menu{display:flex;flex-direction:column;gap:4px;padding:4px 7px 14px;overflow:auto;min-height:0;}
+    .menu-group{padding:0 0 4px;}
+    .group-heading{display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 10px 6px;border:0;background:transparent;color:#98a3b5;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:left;cursor:pointer;}
+    .group-heading:hover{color:#687792;}
+    .group-chevron{font-size:11px;letter-spacing:0;transition:transform .18s ease;color:#9ba6b7;}
+    .menu-group.closed .group-chevron{transform:rotate(-90deg);}
+    .group-items{display:grid;gap:2px;}
+    .reference-menu .menu-item{position:relative;display:flex;align-items:center;width:100%;box-sizing:border-box;min-height:37px;padding:8px 10px;border:0;border-radius:10px;background:transparent;color:#52627f;text-decoration:none;font:inherit;font-size:10px;font-weight:500;cursor:pointer;text-align:left;transition:background .16s ease,color .16s ease,box-shadow .16s ease;}
+    .reference-menu .menu-item:hover{background:#f5f8fd;color:#315fcf;}
+    .reference-menu .menu-item.active{background:linear-gradient(90deg,#edf3ff,#f4f7ff);color:#155eef;box-shadow:inset 3px 0 0 #2563eb,0 3px 10px rgba(37,99,235,.055);font-weight:650;}
+    .reference-menu .nav-icon{width:25px;flex:0 0 25px;display:inline-grid;place-items:center;font-size:12px;line-height:1;color:currentColor;opacity:.9;}
     .reference-menu .nav-label{padding-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .reference-menu .menu-chevron{margin-left:auto;font-size:12px;color:#8290a7;transition:transform .18s ease;}
-    .reference-menu .menu-chevron.open{transform:rotate(180deg);color:#52627f;}
-    .reference-menu .menu-children{margin:0 0 5px 25px;padding:1px 0 2px 12px;border-left:1px solid #e8edf5;display:grid;gap:2px;}
-    .reference-menu .menu-children a{display:flex;align-items:center;min-height:31px;padding:7px 9px;color:#65738a;text-decoration:none;font-size:9px;border-radius:8px;white-space:nowrap;}
-    .reference-menu .menu-children a:hover{background:#f7f9fd;color:#315fcf;}
-    .reference-menu .menu-children a.active{background:#edf3ff;color:#155eef;font-weight:650;box-shadow:inset 2px 0 0 #2563eb;}
-    .reference-menu .child-dot{width:5px;height:5px;border:1px solid currentColor;border-radius:50%;margin-right:9px;flex:0 0 5px;}
     .account{margin-top:auto;}
-    .shell.collapsed .reference-menu .nav-label,.shell.collapsed .reference-menu .menu-chevron,.shell.collapsed .reference-menu .menu-children{display:none!important;}
+    .shell.collapsed .reference-menu .nav-label,.shell.collapsed .reference-menu .group-heading span:first-child{display:none!important;}
+    .shell.collapsed .reference-menu .group-heading{justify-content:center;padding:6px;}
+    .shell.collapsed .reference-menu .group-heading .group-chevron{display:none;}
+    .shell.collapsed .reference-menu .group-items{display:grid!important;}
     .shell.collapsed .reference-menu{padding-left:4px;padding-right:4px;}
-    .shell.collapsed .reference-menu .menu-item{width:42px;height:42px;min-height:42px;padding:0;justify-content:center;margin:3px auto;}
+    .shell.collapsed .reference-menu .menu-item{width:42px;height:42px;min-height:42px;padding:0;justify-content:center;margin:2px auto;}
     .shell.collapsed .reference-menu .nav-icon{width:24px;flex-basis:24px;}
   `]
 })
@@ -87,7 +88,6 @@ export class ShellComponent {
   private readonly router = inject(Router);
   query = '';
   collapsed = false;
-  ordersOpen = true;
   readonly nav: NavigationItem[] = [
     {group:'COMMAND CENTER',label:'Dashboard',url:'/dashboard',icon:'⌂',module:'core',permission:''},
     {group:'SALES & ACQUISITION',label:'Leads',url:'/crm/leads',icon:'▣',module:'crm',permission:'crm.read'},
@@ -126,9 +126,14 @@ export class ShellComponent {
     {group:'ADMINISTRATION',label:'Users & Roles',url:'/users',icon:'◎',module:'core',permission:'users.read'},
     {group:'ADMINISTRATION',label:'Audit & Governance',url:'/audit',icon:'▤',module:'core',permission:'audit.read'}
   ];
+  groupOpen: Record<string, boolean> = {};
+  get groups() { return [...new Set(this.nav.map(item => item.group))]; }
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
   get searchResults() { const q = this.query.trim().toLowerCase(); return q ? this.nav.filter(item => `${item.label} ${item.group}`.toLowerCase().includes(q)).filter(item => this.allowed(item)).slice(0, 8) : []; }
+  itemsFor(group: string) { return this.nav.filter(item => item.group === group); }
+  isGroupOpen(group: string) { return this.groupOpen[group] !== false; }
+  toggleGroup(group: string) { this.groupOpen[group] = !this.isGroupOpen(group); }
   allowed(item: NavigationItem) { return (!item.permission || this.auth.hasPermission(item.permission)) && (!item.module || this.auth.hasModule(item.module)); }
   initials(value: string) { return value.split(/[-_\s]+/).filter(Boolean).slice(0,2).map(part => part[0]).join('').toUpperCase() || 'R'; }
   toggleSidebar() { this.collapsed = !this.collapsed; }
