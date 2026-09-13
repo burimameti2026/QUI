@@ -28,12 +28,13 @@
               "src/leadsai-saas-polish.css",
               "src/leadsai-saas-reference.css",
               "src/leadsai-enterprise-ui.css",
-              "src/leadsai-saas-final-pass.css"
+              "src/leadsai-saas-final-pass.css",
+              "src/leadsai-visual-correction.css"
             ]
           },
           "configurations": {
             "production": {"outputHashing": "all"},
-            "development": {"optimization": false,"extractLicenses": false,"sourceMap": true}
+            "development": {"optimization": false, "extractLicenses": false, "sourceMap": true}
           },
           "defaultConfiguration": "production"
         },

@@ -1,0 +1,134 @@
+/* LeadsAI visual correction pass — softer, layered enterprise SaaS surfaces. */
+:root{
+  --la-bg:#f7f9fc;
+  --la-surface:#ffffff;
+  --la-surface-soft:#fbfcff;
+  --la-line:#e7ecf3;
+  --la-line-soft:#eef2f7;
+  --la-text:#14213d;
+  --la-muted:#71809a;
+  --la-primary:#3b63f3;
+  --la-primary-soft:#eef4ff;
+  --la-shadow:0 2px 5px rgba(20,33,61,.025),0 12px 32px rgba(44,62,96,.055);
+  --la-shadow-hover:0 5px 14px rgba(44,62,96,.06),0 18px 42px rgba(44,62,96,.07);
+}
+
+/* The previous pass made the product too flat and too dense. Restore hierarchy and depth. */
+html,body{background:var(--la-bg)!important;color:var(--la-text);}
+qai-shell .shell{grid-template-columns:214px minmax(0,1fr)!important;background:var(--la-bg)!important;}
+qai-shell .sidebar{width:214px!important;background:rgba(255,255,255,.97)!important;border-right:1px solid #e8edf4!important;padding:14px 10px!important;box-shadow:4px 0 24px rgba(40,60,95,.025);}
+qai-shell .brand{padding:1px 8px 15px!important;min-height:44px;}
+qai-shell .brand-copy strong{font-size:18px!important;letter-spacing:-.04em;color:#172554!important;}
+qai-shell .brand-copy strong span{color:var(--la-primary)!important;}
+qai-shell .brand-copy small{font-size:7px!important;letter-spacing:.11em!important;color:#8996aa!important;}
+qai-shell .brand-mark{width:31px!important;height:31px!important;border-radius:10px!important;box-shadow:0 6px 14px rgba(59,99,243,.18);}
+qai-shell .collapse-btn{width:27px!important;height:27px!important;border:1px solid #e6ebf2!important;border-radius:8px!important;background:#fff!important;color:#71809a!important;}
+qai-shell .workspace{margin:0 2px 14px!important;padding:10px 9px!important;border:1px solid #e5ebf4!important;border-radius:12px!important;background:linear-gradient(180deg,#f8faff,#f4f7fd)!important;box-shadow:0 4px 14px rgba(44,62,96,.035);}
+qai-shell .workspace-icon{width:28px;height:28px;border-radius:8px;background:#edf3ff;color:var(--la-primary);display:grid;place-items:center;font-size:13px;}
+qai-shell .workspace-info b{font-size:10px!important;color:#263754!important;}
+qai-shell .workspace-info span{font-size:7px!important;color:#8b98ac!important;}
+qai-shell .department-nav{padding:0 2px!important;}
+qai-shell .department-heading{margin:15px 7px 6px!important;color:#96a1b3!important;}
+qai-shell .department-heading b{font-size:7px!important;letter-spacing:.12em!important;}
+qai-shell .department-items a{min-height:34px!important;padding:8px 9px!important;border-radius:9px!important;margin:2px 0!important;color:#52617a!important;font-size:10px!important;transition:background .18s ease,box-shadow .18s ease,color .18s ease!important;}
+qai-shell .department-items a:hover{background:#f5f8ff!important;color:var(--la-primary)!important;}
+qai-shell .department-items a.active{background:linear-gradient(90deg,#edf3ff,#f4f7ff)!important;color:var(--la-primary)!important;box-shadow:inset 2px 0 0 var(--la-primary),0 3px 10px rgba(59,99,243,.055)!important;font-weight:700!important;}
+qai-shell .nav-icon{font-size:11px!important;color:currentColor!important;}
+qai-shell .real-workspace{margin:10px 2px!important;padding:11px 10px!important;border:1px solid #dfe7ff!important;border-radius:12px!important;background:linear-gradient(145deg,#f5f8ff,#eef3ff)!important;box-shadow:0 7px 20px rgba(59,99,243,.06);}
+qai-shell .real-workspace-icon{width:28px!important;height:28px!important;border-radius:8px!important;background:#fff!important;color:var(--la-primary)!important;box-shadow:0 3px 8px rgba(59,99,243,.08);}
+qai-shell .real-workspace b{font-size:9px!important;color:#29417a!important;}
+qai-shell .real-workspace small{font-size:7px!important;color:#8491a7!important;}
+qai-shell .account{margin:0 2px!important;padding:10px 6px 2px!important;border-top:1px solid #edf1f6!important;}
+qai-shell .account b{font-size:9px!important;color:#34435d!important;}
+qai-shell .account small{font-size:7px!important;color:#8c98ab!important;}
+qai-shell .account .avatar{width:31px!important;height:31px!important;background:#eef3ff!important;color:var(--la-primary)!important;}
+
+qai-shell main{background:var(--la-bg)!important;}
+qai-shell .app-header{height:62px!important;background:rgba(255,255,255,.94)!important;border-bottom:1px solid #e9eef5!important;padding:0 24px!important;backdrop-filter:blur(10px);}
+qai-shell .global-search{height:38px!important;width:min(390px,48vw)!important;border:1px solid #e4eaf2!important;border-radius:11px!important;background:#fff!important;box-shadow:0 3px 12px rgba(44,62,96,.035)!important;}
+qai-shell .global-search input{font-size:10px!important;}
+qai-shell .global-search kbd{border:1px solid #e6ebf2!important;background:#f7f9fc!important;color:#8b96a8!important;border-radius:5px!important;font-size:8px!important;}
+qai-shell .portal-link{font-size:8px!important;color:#71809a!important;}
+qai-shell .header-tool{width:34px!important;height:34px!important;border:1px solid #e5eaf2!important;border-radius:9px!important;background:#fff!important;box-shadow:0 2px 8px rgba(44,62,96,.025);}
+qai-shell .header-avatar{border:0!important;background:transparent!important;}
+
+qai-shell .page{max-width:1540px!important;padding:30px 34px 52px!important;}
+.page-header{margin-bottom:24px!important;}
+.page-header h1{font-size:27px!important;line-height:1.15!important;letter-spacing:-.035em!important;color:var(--la-text)!important;}
+.page-header p{font-size:10px!important;color:#7b889d!important;}
+
+/* Page chrome: soft elevation rather than hard one-pixel boxes. */
+.panel,.card,.surface,.data-card,.revenue-card,.automation-card,.company-card,.integration-grid article,.pack-grid article,.gap-cards article,.metric-card,.metrics article,.pipeline-summary,.inbox,.callout,.directory-card{
+  border:1px solid var(--la-line)!important;
+  border-radius:16px!important;
+  box-shadow:var(--la-shadow)!important;
+  background:var(--la-surface)!important;
+}
+.panel:hover,.card:hover,.data-card:hover,.company-card:hover,.metric-card:hover,.metrics article:hover{box-shadow:var(--la-shadow-hover)!important;border-color:#dfe6f0!important;}
+.metric-grid,.metrics{gap:16px!important;}
+.metric-card,.metrics article{min-height:132px!important;padding:19px 20px!important;}
+.metric-card .label,.metric-label,.metrics span{font-size:9px!important;color:#71809a!important;}
+.metric-card .value,.metric-value,.metrics strong{font-size:24px!important;color:#14213d!important;}
+
+/* Enterprise tabs and metadata become navigation chrome, not heavy blocks. */
+qai-page-header + .tabs,qai-page-header + nav.tabs{margin:0 0 18px!important;padding:0 2px 11px!important;border-bottom:1px solid #e7ecf3!important;overflow:auto;}
+qai-page-header + .tabs a,qai-page-header + nav.tabs a{padding:9px 13px!important;border-radius:9px!important;background:transparent!important;color:#738098!important;font-size:10px!important;font-weight:600!important;white-space:nowrap;}
+qai-page-header + .tabs a:hover,qai-page-header + nav.tabs a:hover{background:#f5f8ff!important;color:#4565c9!important;}
+qai-page-header + .tabs a.active,qai-page-header + nav.tabs a.active{background:#edf3ff!important;color:var(--la-primary)!important;box-shadow:inset 0 -2px 0 var(--la-primary)!important;}
+.meta{gap:16px!important;margin-bottom:18px!important;}
+.meta div{min-height:68px!important;padding:14px 16px!important;border:1px solid var(--la-line)!important;border-radius:13px!important;background:#fff!important;box-shadow:0 3px 12px rgba(44,62,96,.035)!important;}
+.meta small{font-size:8px!important;letter-spacing:.1em!important;color:#9aa5b5!important;}
+.meta b{font-size:11px!important;color:#1d2b45!important;}
+.toolbar{padding:12px 14px!important;margin-bottom:18px!important;border:1px solid var(--la-line)!important;border-radius:13px!important;background:#fff!important;box-shadow:0 3px 12px rgba(44,62,96,.035)!important;}
+
+/* Remove the large artificial empty-panel height that made zero-record pages look broken/hanging. */
+.panel{min-height:0!important;}
+.panel:has(.empty-state),.panel:has(.empty),.panel:has(.directory-empty){min-height:0!important;}
+.empty-state,.empty,.loading-state,.directory-empty{min-height:150px!important;padding:30px!important;border:1px dashed #dfe6f0!important;border-radius:13px!important;background:linear-gradient(180deg,#fcfdff,#f9fbfe)!important;display:grid;place-items:center;text-align:center;}
+
+/* Tables: more breathing room, softer header, stronger row hierarchy. */
+.table-wrap{border:1px solid var(--la-line)!important;border-radius:14px!important;box-shadow:0 3px 12px rgba(44,62,96,.035)!important;background:#fff!important;}
+thead th,.panel th{padding:12px 14px!important;background:#f8faff!important;color:#7b879b!important;border-bottom:1px solid #e9eef5!important;font-size:9px!important;letter-spacing:.06em!important;}
+tbody td,.panel td{padding:14px!important;color:#40506a!important;font-size:10px!important;border-bottom:1px solid #eff2f6!important;}
+tbody tr:hover td,.panel tbody tr:hover td{background:#fbfcff!important;}
+
+/* Status chips: pastel and restrained, like the reference. */
+.pill,.status-pill,.badge{font-size:9px!important;padding:6px 9px!important;border-radius:999px!important;}
+.pill.success,.status-pill.success,.badge.success{background:#eafaf2!important;color:#16805a!important;border-color:#c9efd9!important;}
+.pill.warning,.status-pill.warning,.badge.warning{background:#fff6e7!important;color:#b46a09!important;border-color:#f7dfb0!important;}
+.pill.danger,.status-pill.danger,.badge.danger{background:#fff0f1!important;color:#c44955!important;border-color:#f7cdd2!important;}
+.pill.info,.status-pill.info,.badge.info{background:#edf4ff!important;color:#3566cf!important;border-color:#cfe0ff!important;}
+
+/* Buttons: primary is saturated but not visually dominant; secondary stays airy. */
+button,.btn,a[role=button]{border-radius:10px!important;}
+.primary{box-shadow:0 5px 12px rgba(59,99,243,.15)!important;}
+.secondary{background:#fff!important;border-color:#e1e7f0!important;color:#44526a!important;box-shadow:0 2px 7px rgba(44,62,96,.025)!important;}
+input,select,textarea{border-color:#e0e6ef!important;border-radius:10px!important;box-shadow:inset 0 1px 1px rgba(44,62,96,.015)!important;}
+
+/* Prevent legacy orange event styling from breaking the unified palette. */
+.event-name{background:#edf4ff!important;color:#3566cf!important;border-color:#d4e2ff!important;}
+
+/* Softer drawer/modal treatment. */
+.drawer{width:min(720px,100%)!important;border-left:1px solid #e4eaf2!important;box-shadow:-18px 0 50px rgba(31,45,72,.10)!important;padding:28px!important;}
+.overlay{background:rgba(18,31,55,.24)!important;backdrop-filter:blur(2px);}
+.modal,.dialog,.overlay-card,.modal-card{border-radius:18px!important;box-shadow:0 24px 80px rgba(31,45,72,.16)!important;}
+
+@media(max-width:900px){
+  qai-shell .shell{grid-template-columns:72px minmax(0,1fr)!important;}
+  qai-shell .sidebar{width:72px!important;padding:12px 8px!important;}
+  qai-shell .brand-copy,qai-shell .workspace-info,qai-shell .department-heading b,qai-shell .nav-label,qai-shell .real-workspace span:nth-child(2),qai-shell .real-workspace>strong,qai-shell .account div,qai-shell .account>span:last-child{display:none!important;}
+  qai-shell .brand{justify-content:center!important;padding-bottom:12px!important;}
+  qai-shell .department-items a{justify-content:center!important;padding:8px!important;}
+  qai-shell .real-workspace{justify-content:center!important;padding:8px!important;}
+  qai-shell .account{justify-content:center!important;}
+  qai-shell .page{padding:22px 20px 40px!important;}
+}
+@media(max-width:640px){
+  qai-shell .shell{display:block!important;}
+  qai-shell .sidebar{display:none!important;}
+  qai-shell .app-header{padding:0 14px!important;}
+  qai-shell .page{padding:18px 14px 32px!important;}
+  .page-header h1{font-size:23px!important;}
+  .metric-grid,.metrics{grid-template-columns:1fr!important;}
+  .meta{grid-template-columns:1fr!important;}
+}
