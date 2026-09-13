@@ -30,7 +30,8 @@
               "src/leadsai-saas-final-pass.css",
               "src/leadsai-visual-correction.css",
               "src/leadsai-reference-depth.css",
-              "src/leadsai-saas-refinement.css"
+              "src/leadsai-saas-refinement.css",
+              "src/leadsai-content-final.css"
             ]
           },
           "configurations": {
