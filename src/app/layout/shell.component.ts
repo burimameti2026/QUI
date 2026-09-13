@@ -20,20 +20,17 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
           <div class="brand-copy"><strong>Leads<span>AI</span></strong><small>ENTERPRISE PLATFORM</small></div>
           <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'">{{ collapsed ? '→' : '←' }}</button>
         </div>
-
         <nav class="reference-menu">
           <a class="menu-item" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><span class="nav-icon">⌂</span><span class="nav-label">{{ i18n.t('Dashboard') }}</span></a>
           <a class="menu-item" routerLink="/crm/leads" routerLinkActive="active"><span class="nav-icon">▣</span><span class="nav-label">{{ i18n.t('Leads') }}</span></a>
           <a class="menu-item" routerLink="/crm/companies" routerLinkActive="active"><span class="nav-icon">▧</span><span class="nav-label">{{ i18n.t('CRM') }}</span></a>
           <a class="menu-item" routerLink="/crm/opportunities" routerLinkActive="active"><span class="nav-icon">♡</span><span class="nav-label">{{ i18n.t('Opportunities') }}</span></a>
-
           <button class="menu-item menu-parent" type="button" [class.open]="ordersOpen" (click)="ordersOpen = !ordersOpen"><span class="nav-icon">▤</span><span class="nav-label">{{ i18n.t('Orders') }}</span><span class="menu-chevron" [class.open]="ordersOpen">⌄</span></button>
           <div class="menu-children" *ngIf="ordersOpen">
             <a routerLink="/enterprise/orders" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Delivery Orders') }}</a>
             <a routerLink="/enterprise/fulfillment" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Shipments') }}</a>
             <a routerLink="/billing" routerLinkActive="active"><span class="child-dot"></span>{{ i18n.t('Invoices') }}</a>
           </div>
-
           <a class="menu-item" routerLink="/enterprise/inventory" routerLinkActive="active"><span class="nav-icon">▥</span><span class="nav-label">{{ i18n.t('Inventory') }}</span></a>
           <a class="menu-item" routerLink="/enterprise/fulfillment" routerLinkActive="active"><span class="nav-icon">▤</span><span class="nav-label">{{ i18n.t('Warehouse') }}</span></a>
           <a class="menu-item" routerLink="/enterprise/logistics" routerLinkActive="active"><span class="nav-icon">▱</span><span class="nav-label">{{ i18n.t('Fleet & Drivers') }}</span></a>
@@ -41,16 +38,14 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
           <a class="menu-item" routerLink="/automations" routerLinkActive="active"><span class="nav-icon">✣</span><span class="nav-label">{{ i18n.t('Automation') }}</span></a>
           <a class="menu-item" routerLink="/platform" routerLinkActive="active"><span class="nav-icon">⚙</span><span class="nav-label">{{ i18n.t('Settings') }}</span></a>
         </nav>
-
         <div class="account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><div><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></div><span class="account-chevron">⌄</span></div>
       </aside>
-
       <main>
         <header class="app-header">
           <div class="header-search-wrap">
             <label class="global-search"><span>⌕</span><input [(ngModel)]="query" [placeholder]="i18n.t('Search pages and modules')"/><kbd>Ctrl K</kbd></label>
             <a class="portal-link" routerLink="/renova/portal">↗ {{ i18n.t('Public Renova portal') }}</a>
-            <div class="admin-language"><span>◎</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)"><option *ngFor="let language of i18n.languages" [value]="language.code">{{ language.label }}</option></div>
+            <div class="admin-language"><span>◎</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)"><option *ngFor="let language of i18n.languages" [value]="language.code">{{ language.label }}</option></select></div>
             <section class="header-search-results" *ngIf="query.trim()"><button type="button" *ngFor="let item of searchResults" (click)="go(item.url)"><i>{{ item.icon }}</i><span><b>{{ i18n.t(item.label) }}</b><small>{{ i18n.t(item.group) }}</small></span></button></section>
           </div>
           <div class="header-tools">
@@ -93,7 +88,6 @@ export class ShellComponent {
   query = '';
   collapsed = false;
   ordersOpen = true;
-
   readonly nav: NavigationItem[] = [
     {group:'COMMAND CENTER',label:'Dashboard',url:'/dashboard',icon:'⌂',module:'core',permission:''},
     {group:'SALES & ACQUISITION',label:'Leads',url:'/crm/leads',icon:'▣',module:'crm',permission:'crm.read'},
@@ -135,7 +129,6 @@ export class ShellComponent {
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
   get searchResults() { const q = this.query.trim().toLowerCase(); return q ? this.nav.filter(item => `${item.label} ${item.group}`.toLowerCase().includes(q)).filter(item => this.allowed(item)).slice(0, 8) : []; }
-  navBy(group: string) { return this.nav.filter(item => item.group === group && this.allowed(item)); }
   allowed(item: NavigationItem) { return (!item.permission || this.auth.hasPermission(item.permission)) && (!item.module || this.auth.hasModule(item.module)); }
   initials(value: string) { return value.split(/[-_\s]+/).filter(Boolean).slice(0,2).map(part => part[0]).join('').toUpperCase() || 'R'; }
   toggleSidebar() { this.collapsed = !this.collapsed; }
