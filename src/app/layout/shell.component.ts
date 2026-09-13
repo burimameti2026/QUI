@@ -15,14 +15,14 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
   template: `
     <div class="shell" [class.collapsed]="collapsed">
       <aside class="sidebar">
-        <!-- <div class="brand">
-          <i class="brand-mark">R</i>
-          <div class="brand-copy"><strong>RENOVA</strong><small>ENTERPRISE</small></div>
+        <div class="brand">
+          <i class="brand-mark" aria-hidden="true"></i>
+          <div class="brand-copy"><strong>Leads<span>AI</span></strong><small>ENTERPRISE PLATFORM</small></div>
           <button class="collapse-btn" type="button" (click)="toggleSidebar()" [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'">{{ collapsed ? '→' : '←' }}</button>
-        </div> -->
-        <div class="workspace background"><span class="workspace-icon">⌂</span>
-          <!-- <i>{{ initials(workspaceName) }}</i> -->
-          <div class="workspace-info" text-color="white"><b>{{ workspaceName }}</b><span>{{ i18n.t(runtime.runtime()?.plan || session?.licensePlan || 'Licensed') }} workspace</span></div>
+        </div>
+        <div class="workspace">
+          <span class="workspace-icon">⌂</span>
+          <div class="workspace-info"><b>{{ workspaceName }}</b><span>{{ i18n.t(runtime.runtime()?.plan || session?.licensePlan || 'Licensed') }} workspace</span></div>
         </div>
         <nav class="department-nav">
           <ng-container *ngFor="let group of visibleGroups">
@@ -46,6 +46,10 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
             <a class="portal-link" routerLink="/renova/portal">↗ {{ i18n.t('Public Renova portal') }}</a>
             <div class="admin-language"><span>◎</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)"><option *ngFor="let language of i18n.languages" [value]="language.code">{{ language.label }}</option></select></div>
             <section class="header-search-results" *ngIf="query.trim()"><button type="button" *ngFor="let item of searchResults" (click)="go(item.url)"><i>{{ item.icon }}</i><span><b>{{ i18n.t(item.label) }}</b><small>{{ i18n.t(item.group) }}</small></span></button></section>
+          </div>
+          <div class="header-tools">
+            <button type="button" class="header-tool" aria-label="Notifications">♧<span class="notification-dot">3</span></button>
+            <button type="button" class="header-avatar" aria-label="Account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><i>⌄</i></button>
           </div>
         </header>
         <section class="page" qaiAdminStaticI18n><router-outlet/></section>
@@ -88,14 +92,14 @@ export class ShellComponent {
     {group:'ORDERING & DISPATCH',label:'Warehousing & Dispatch',url:'/enterprise/fulfillment',icon:'▦',module:'core',permission:''},
     {group:'ORDERING & DISPATCH',label:'Logistics',url:'/enterprise/logistics',icon:'↗',module:'core',permission:''},
     {group:'FINANCE',label:'Finance',url:'/enterprise/finance',icon:'€',module:'core',permission:''},
-    {group:'FINANCE',label:'Billing & Subscription',url:'/platform/billing',icon:'◫',module:'core',permission:'billing.read'},
-    {group:'AUTOMATION & IMPROVE',label:'Automation',url:'/automation',icon:'⚙',module:'automation',permission:'automation.read'},
+    {group:'FINANCE',label:'Billing & Subscription',url:'/billing',icon:'◫',module:'core',permission:'billing.read'},
+    {group:'AUTOMATION & IMPROVE',label:'Automation',url:'/automations',icon:'⚙',module:'automation',permission:'automation.read'},
     {group:'AUTOMATION & IMPROVE',label:'Analytics',url:'/analytics',icon:'◒',module:'analytics',permission:'analytics.read'},
     {group:'AUTOMATION & IMPROVE',label:'Knowledge Improvement',url:'/knowledge/improve',icon:'✦',module:'knowledge',permission:'knowledge.read'},
     {group:'ADMINISTRATION',label:'Platform Management',url:'/platform',icon:'⚙',module:'core',permission:'settings.manage'},
     {group:'ADMINISTRATION',label:'Prepare Real Workspace',url:'/platform/prepare-workspace',icon:'＋',module:'core',permission:'settings.manage'},
-    {group:'ADMINISTRATION',label:'Users & Roles',url:'/platform/users',icon:'◎',module:'core',permission:'settings.manage'},
-    {group:'ADMINISTRATION',label:'Audit & Governance',url:'/platform/audit',icon:'▤',module:'core',permission:'settings.manage'}
+    {group:'ADMINISTRATION',label:'Users & Roles',url:'/users',icon:'◎',module:'core',permission:'settings.manage'},
+    {group:'ADMINISTRATION',label:'Audit & Governance',url:'/audit',icon:'▤',module:'core',permission:'settings.manage'}
   ];
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
