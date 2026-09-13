@@ -24,13 +24,13 @@
               "src/renova-shell-layout.css",
               "src/renova-shell-overrides.css",
               "src/renova-login.css",
-              "src/leadsai-saas-refinement.css",
               "src/leadsai-saas-polish.css",
               "src/leadsai-saas-reference.css",
               "src/leadsai-enterprise-ui.css",
               "src/leadsai-saas-final-pass.css",
               "src/leadsai-visual-correction.css",
-              "src/leadsai-reference-depth.css"
+              "src/leadsai-reference-depth.css",
+              "src/leadsai-saas-refinement.css"
             ]
           },
           "configurations": {
