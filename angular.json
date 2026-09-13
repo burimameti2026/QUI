@@ -26,7 +26,8 @@
               "src/renova-login.css",
               "src/leadsai-saas-refinement.css",
               "src/leadsai-saas-polish.css",
-              "src/leadsai-saas-reference.css"
+              "src/leadsai-saas-reference.css",
+              "src/leadsai-enterprise-ui.css"
             ]
           },
           "configurations": {
