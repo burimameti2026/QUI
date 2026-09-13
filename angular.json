@@ -29,7 +29,8 @@
               "src/leadsai-saas-reference.css",
               "src/leadsai-enterprise-ui.css",
               "src/leadsai-saas-final-pass.css",
-              "src/leadsai-visual-correction.css"
+              "src/leadsai-visual-correction.css",
+              "src/leadsai-reference-depth.css"
             ]
           },
           "configurations": {
