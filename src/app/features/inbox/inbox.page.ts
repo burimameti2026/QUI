@@ -40,7 +40,7 @@ import { InboxService } from "./inbox.service";
         <div class="data-state" *ngIf="loading">Loading conversations…</div>
         <button
           class="conv"
-          *ngFor="let c of visible"
+          *ngFor="let c of visible; trackBy: trackConversation"
           [class.active]="selected?.id === c.id"
           (click)="select(c)"
         >
@@ -275,6 +275,8 @@ export class InboxPage implements OnInit {
     aiEnabled: true,
   };
   ticketForm: any = { subject: "", description: "", priority: 1 };
+  private visibleCache: any[] = [];
+  private visibleKey = "";
   constructor(
     private data: InboxService,
     private api: ApiService,
@@ -290,6 +292,7 @@ export class InboxPage implements OnInit {
     this.data.conversations<any[]>().subscribe({
       next: (rows) => {
         this.items = rows || [];
+        this.visibleKey = "";
         this.loading = false;
         if (this.items.length && !this.selected) this.select(this.items[0]);
       },
@@ -300,11 +303,19 @@ export class InboxPage implements OnInit {
     });
   }
   get visible() {
-    return this.items.filter(
+    const key = `${this.items.length}|${this.filter}|${this.query}`;
+    if (key === this.visibleKey) return this.visibleCache;
+    const query = this.query.trim().toLowerCase();
+    this.visibleKey = key;
+    this.visibleCache = this.items.filter(
       (item) =>
         (this.filter === "all" || this.status(item.status) === "Open") &&
-        this.name(item).toLowerCase().includes(this.query.toLowerCase()),
+        this.name(item).toLowerCase().includes(query),
     );
+    return this.visibleCache;
+  }
+  trackConversation(_index: number, item: any) {
+    return item?.id ?? _index;
   }
   select(conversation: any) {
     this.selected = conversation;
