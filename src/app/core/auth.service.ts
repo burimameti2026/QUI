@@ -43,13 +43,8 @@ export class AuthService {
       .pipe(tap(response => this.storeSession(response, normalizedTenant)));
   }
 
-  accessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
-  }
-
-  hasRefreshToken(): boolean {
-    return !!localStorage.getItem(this.refreshTokenKey);
-  }
+  accessToken(): string | null { return localStorage.getItem(this.accessTokenKey); }
+  hasRefreshToken(): boolean { return !!localStorage.getItem(this.refreshTokenKey); }
 
   hasValidAccessToken(): boolean {
     const token = this.accessToken();
@@ -90,7 +85,8 @@ export class AuthService {
       .set('refresh_token',refreshToken)
       .set('scope','openid profile email offline_access qualifyai-api');
     this.refreshRequest = this.http.post<TokenResponse>('/connect/token',body.toString(),{
-      headers:{'Content-Type':'application/x-www-form-urlencoded'}
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      timeout:5000
     }).pipe(
       tap(response => this.storeSession(response)),
       map(response => response.access_token),
@@ -129,9 +125,7 @@ export class AuthService {
       if (!encoded) return null;
       const base64 = encoded.replace(/-/g,'+').replace(/_/g,'/').padEnd(Math.ceil(encoded.length/4)*4,'=');
       return JSON.parse(atob(base64)) as Record<string,unknown>;
-    } catch {
-      return null;
-    }
+    } catch { return null; }
   }
 
   private readSession(token:string|null):UserSession|null {
