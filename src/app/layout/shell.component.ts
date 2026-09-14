@@ -25,9 +25,11 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
         </div>
         <nav class="reference-menu" aria-label="Application navigation">
           <ng-container *ngFor="let group of groups">
-            <div class="menu-group">
-              <div class="group-heading"><span>{{ i18n.t(group) }}</span><span class="group-chevron">⌄</span></div>
-              <div class="group-items">
+            <div class="menu-group" [class.open]="isGroupExpanded(group)">
+              <button class="group-heading" type="button" (click)="toggleGroup(group)" [attr.aria-expanded]="isGroupExpanded(group)">
+                <span>{{ i18n.t(group) }}</span><span class="group-chevron">{{ isGroupExpanded(group) ? '⌃' : '⌄' }}</span>
+              </button>
+              <div class="group-items" *ngIf="isGroupExpanded(group)">
                 <ng-container *ngFor="let item of itemsFor(group)">
                   <a *ngIf="allowed(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:item.url === '/dashboard'}"><span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span></a>
                 </ng-container>
@@ -50,7 +52,7 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
 })
 export class ShellComponent {
   readonly auth = inject(AuthService); readonly runtime = inject(TenantRuntimeService); readonly i18n = inject(AdminI18nService); private readonly router = inject(Router);
-  query=''; collapsed=false;
+  query=''; collapsed=false; expandedGroup: string | null = null;
   readonly nav: NavigationItem[] = [
     {group:'COMMAND CENTER',label:'Dashboard',url:'/dashboard',icon:'⌂',module:'core',permission:''},
     {group:'SALES & ACQUISITION',label:'Leads',url:'/crm/leads',icon:'▣',module:'crm',permission:'crm.read'},
@@ -92,6 +94,12 @@ export class ShellComponent {
   get workspaceName(){return this.session?.tenantSlug||this.session?.tenantId||'Renova Workspace'}
   get searchResults(){const q=this.query.trim().toLowerCase();return q?this.nav.filter(x=>`${x.label} ${x.group}`.toLowerCase().includes(q)).filter(x=>this.allowed(x)).slice(0,8):[]}
   itemsFor(g:string){return this.nav.filter(x=>x.group===g)}
+  isGroupExpanded(group:string){
+    if(this.expandedGroup !== null) return this.expandedGroup === group;
+    const currentUrl=this.router.url.split('?')[0].split('#')[0];
+    return this.nav.some(item=>item.group===group && (currentUrl===item.url || currentUrl.startsWith(`${item.url}/`)));
+  }
+  toggleGroup(group:string){this.expandedGroup=this.isGroupExpanded(group)?'__none__':group;}
   allowed(x:NavigationItem){return(!x.permission||this.auth.hasPermission(x.permission))&&(!x.module||this.auth.hasModule(x.module))}
   initials(v:string){return v.split(/[-_\s]+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'R'}
   toggleSidebar(){this.collapsed=!this.collapsed}
