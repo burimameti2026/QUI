@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { catchError, map, of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TenantRuntimeService } from './tenant-runtime.service';
 
@@ -8,12 +8,20 @@ export function requireModule(code: string): CanActivateFn {
   return () => {
     const runtime = inject(TenantRuntimeService);
     const router = inject(Router);
-    return runtime.load().pipe(
-      map(() => runtime.isActive() && runtime.hasModule(code)
+    const current = runtime.runtime();
+
+    // Navigation must never wait on tenant-runtime. If it is already cached,
+    // enforce the known module state synchronously; otherwise let the page open
+    // and hydrate the runtime in the background. Backend authorization remains
+    // the source of truth for the actual API operation.
+    if (current) {
+      return runtime.isActive() && runtime.hasModule(code)
         ? true
-        : router.createUrlTree(['/dashboard'], { queryParams: { reason: 'module-unavailable', module: code } })),
-      catchError(() => of(router.createUrlTree(['/dashboard'], { queryParams: { reason: 'tenant-runtime-unavailable', module: code } })))
-    );
+        : router.createUrlTree(['/dashboard'], { queryParams: { reason: 'module-unavailable', module: code } });
+    }
+
+    runtime.load().subscribe({ error: () => undefined });
+    return true;
   };
 }
 
