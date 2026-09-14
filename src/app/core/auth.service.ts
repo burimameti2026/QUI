@@ -39,7 +39,7 @@ export class AuthService {
     const normalizedEmail = this.normalizeLoginEmail(normalizedTenant, email);
     let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
     if(mfaCode) body=body.set('mfa_code',mfaCode.trim());
-    return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}})
+    return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'},timeout:15000})
       .pipe(tap(response => this.storeSession(response, normalizedTenant)));
   }
 
@@ -89,7 +89,7 @@ export class AuthService {
       timeout:5000
     }).pipe(
       tap(response => this.storeSession(response)),
-      map(response => response.access_token),
+      map((response: TokenResponse) => response.access_token),
       finalize(() => this.refreshRequest = undefined),
       shareReplay({bufferSize:1,refCount:false})
     );
