@@ -4,7 +4,7 @@ import { Observable, timeout } from 'rxjs';
 
 @Injectable({providedIn:'root'})
 export class ApiService {
-  private readonly requestTimeoutMs = 15000;
+  private readonly requestTimeoutMs = 5000;
 
   constructor(private http: HttpClient) {}
 
