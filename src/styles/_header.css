@@ -1,0 +1,38 @@
+/* Shared application header: one clean surface and one primary accent. */
+.shell main > header.app-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.shell .global-search {
+  background: #f8fafc !important;
+  border-color: #dfe5ee !important;
+  color: #667085 !important;
+  box-shadow: none !important;
+}
+.shell .global-search:hover,
+.shell .global-search:focus-within {
+  background: #ffffff !important;
+  border-color: #b8cdf7 !important;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.08) !important;
+}
+.shell .global-search > span { color: var(--color-primary) !important; }
+.shell .global-search input { color: var(--color-text) !important; }
+.shell .global-search input::placeholder { color: #667085 !important; }
+
+.shell .portal-link,
+.shell .admin-language {
+  background: #ffffff !important;
+  border-color: #dfe5ee !important;
+}
+.shell .portal-link { color: var(--color-primary) !important; }
+.shell .portal-link:hover { background: var(--color-primary-soft) !important; }
+.shell .admin-language > span { color: var(--color-primary) !important; }
+.shell .admin-language select { color: #344054 !important; }
+
+.shell .header-tool,
+.shell .header-avatar { color: #475467 !important; }
+.shell .header-tool:hover,
+.shell .header-avatar:hover { color: var(--color-primary) !important; }
+.shell .notification-dot { background: var(--color-primary) !important; }
