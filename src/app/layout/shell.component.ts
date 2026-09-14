@@ -25,9 +25,9 @@ interface NavigationItem { group: string; label: string; url: string; icon: stri
         </div>
         <nav class="reference-menu" aria-label="Application navigation">
           <ng-container *ngFor="let group of groups">
-            <div class="menu-group" [class.closed]="!isGroupOpen(group)">
-              <button class="group-heading" type="button" (click)="toggleGroup(group)" [attr.aria-expanded]="isGroupOpen(group)"><span>{{ i18n.t(group) }}</span><span class="group-chevron">⌄</span></button>
-              <div class="group-items" *ngIf="isGroupOpen(group)">
+            <div class="menu-group">
+              <div class="group-heading"><span>{{ i18n.t(group) }}</span><span class="group-chevron">⌄</span></div>
+              <div class="group-items">
                 <ng-container *ngFor="let item of itemsFor(group)">
                   <a *ngIf="allowed(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact:item.url === '/dashboard'}"><span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span></a>
                 </ng-container>
@@ -87,14 +87,11 @@ export class ShellComponent {
     {group:'ADMINISTRATION',label:'Users & Roles',url:'/users',icon:'◎',module:'core',permission:'users.read'},
     {group:'ADMINISTRATION',label:'Audit & Governance',url:'/audit',icon:'▤',module:'core',permission:'audit.read'}
   ];
-  groupOpen:Record<string,boolean>={};
   get groups(){return [...new Set(this.nav.map(x=>x.group))]}
   get session(){return this.auth.session()}
   get workspaceName(){return this.session?.tenantSlug||this.session?.tenantId||'Renova Workspace'}
   get searchResults(){const q=this.query.trim().toLowerCase();return q?this.nav.filter(x=>`${x.label} ${x.group}`.toLowerCase().includes(q)).filter(x=>this.allowed(x)).slice(0,8):[]}
   itemsFor(g:string){return this.nav.filter(x=>x.group===g)}
-  isGroupOpen(g:string){if(Object.prototype.hasOwnProperty.call(this.groupOpen,g)) return this.groupOpen[g]; return this.itemsFor(g).some(x=>this.router.url===x.url || this.router.url.startsWith(x.url + '/'))}
-  toggleGroup(g:string){const next=!this.isGroupOpen(g); this.groups.forEach(x=>this.groupOpen[x]=false); this.groupOpen[g]=next}
   allowed(x:NavigationItem){return(!x.permission||this.auth.hasPermission(x.permission))&&(!x.module||this.auth.hasModule(x.module))}
   initials(v:string){return v.split(/[-_\s]+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'R'}
   toggleSidebar(){this.collapsed=!this.collapsed}
