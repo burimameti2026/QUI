@@ -1,83 +1,95 @@
-/* Shared application navigation — single source of truth for the light SaaS rail. */
+/* Shell navigation — single source of truth. Reference: structured enterprise rail with one accent. */
 qai-shell .shell > aside.sidebar {
-  background: #ffffff !important;
-  color: #172033 !important;
-  border-right: 1px solid #e2e7ef !important;
+  background: #354351 !important;
+  color: #f8fafc !important;
+  border-right: 1px solid #2a3541 !important;
   box-shadow: none !important;
 }
 qai-shell .shell .brand,
-qai-shell .shell .account { border-color: #edf0f4 !important; }
+qai-shell .shell .account { border-color: rgba(255,255,255,.14) !important; }
 qai-shell .shell .brand-copy strong,
-qai-shell .shell .account b { color: #172033 !important; }
-qai-shell .shell .brand-copy strong span { color: #2563eb !important; }
+qai-shell .shell .account b { color: #ffffff !important; }
+qai-shell .shell .brand-copy strong span { color: #4fd1c5 !important; }
 qai-shell .shell .brand-copy small,
-qai-shell .shell .account small { color: #667085 !important; }
-qai-shell .shell .brand-logo { background: #2563eb !important; color: #fff !important; box-shadow: none !important; }
-qai-shell .shell .collapse-btn { color: #667085 !important; }
+qai-shell .shell .account small { color: #b9c3ce !important; }
+qai-shell .shell .brand-logo { background: #4fd1c5 !important; color: #24313c !important; box-shadow: none !important; }
+qai-shell .shell .collapse-btn { color: #c8d1da !important; }
 
 qai-shell .shell .workspace-card {
-  background: #f8fafc !important;
-  border: 1px solid #e2e7ef !important;
-  color: #172033 !important;
+  background: #445463 !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  color: #ffffff !important;
 }
-qai-shell .shell .workspace-logo { background: #eff6ff !important; color: #2563eb !important; }
-qai-shell .shell .workspace-card b { color: #172033 !important; }
-qai-shell .shell .workspace-card small { color: #667085 !important; }
+qai-shell .shell .workspace-logo { background: #4fd1c5 !important; color: #26343f !important; }
+qai-shell .shell .workspace-card b { color: #ffffff !important; }
+qai-shell .shell .workspace-card small { color: #c0cad4 !important; }
+qai-shell .shell .workspace-more { color: #c0cad4 !important; }
 
-/* Groups and menu items: no dark tiles, no gray-on-dark text. */
 qai-shell .shell .reference-menu { gap: 4px !important; }
 qai-shell .shell .group-heading {
-  color: #475467 !important;
+  color: #aebac6 !important;
   font-size: 10px !important;
   font-weight: 800 !important;
   letter-spacing: .08em !important;
 }
-qai-shell .shell .group-heading:hover { color: #2563eb !important; }
-qai-shell .shell .group-chevron { color: #667085 !important; }
+qai-shell .shell .group-heading:hover { color: #ffffff !important; }
+qai-shell .shell .group-chevron { color: #c0cad4 !important; }
 
 qai-shell .shell .reference-menu .menu-item {
   min-height: 42px !important;
-  color: #344054 !important;
-  background: transparent !important;
+  color: #d8e0e7 !important;
+  background: #445463 !important;
   border: 1px solid transparent !important;
-  border-radius: 9px !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
   font-size: 12px !important;
   font-weight: 600 !important;
 }
 qai-shell .shell .reference-menu .menu-item:hover {
-  background: #f5f8ff !important;
-  color: #1d4ed8 !important;
-  border-color: #e6efff !important;
+  background: #506170 !important;
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.08) !important;
 }
 qai-shell .shell .reference-menu .menu-item.active,
 qai-shell .shell .reference-menu .menu-item[aria-current="page"] {
-  background: #eff6ff !important;
-  color: #2563eb !important;
-  border-color: #dbeafe !important;
-  box-shadow: inset 3px 0 0 #2563eb !important;
-  font-weight: 700 !important;
+  background: #4fd1c5 !important;
+  color: #18333a !important;
+  border-color: #4fd1c5 !important;
+  box-shadow: none !important;
+  font-weight: 750 !important;
 }
 qai-shell .shell .reference-menu .menu-item.active .nav-icon,
-qai-shell .shell .reference-menu .menu-item[aria-current="page"] .nav-icon { color: #2563eb !important; }
+qai-shell .shell .reference-menu .menu-item[aria-current="page"] .nav-icon { color: #18333a !important; }
 qai-shell .shell .reference-menu .nav-icon { color: currentColor !important; }
 
-/* Nested items: hierarchy through indentation and a subtle guide line. */
+/* Submenu hierarchy: active parent plus clean indented children. */
 qai-shell .shell .group-items {
-  padding: 3px 0 6px 14px !important;
+  padding: 4px 0 6px 14px !important;
   margin-left: 12px !important;
-  border-left: 1px solid #dbe3ef !important;
+  border-left: 1px solid rgba(79,209,197,.45) !important;
 }
 qai-shell .shell .group-items .menu-item {
-  min-height: 36px !important;
+  min-height: 34px !important;
   border-radius: 7px !important;
+  background: transparent !important;
+  color: #bdc8d2 !important;
   font-size: 11px !important;
+}
+qai-shell .shell .group-items .menu-item:hover {
+  background: rgba(255,255,255,.08) !important;
+  color: #ffffff !important;
+}
+qai-shell .shell .group-items .menu-item.active,
+qai-shell .shell .group-items .menu-item[aria-current="page"] {
+  background: #283641 !important;
+  color: #ffffff !important;
+  border-left: 2px solid #4fd1c5 !important;
 }
 
 qai-shell .shell .account .avatar,
 qai-shell .shell .header-avatar .avatar {
-  background: #eff6ff !important;
-  color: #2563eb !important;
+  background: #4fd1c5 !important;
+  color: #18333a !important;
 }
 
 @media (max-width: 900px) {
