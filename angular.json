@@ -33,7 +33,8 @@
               "src/leadsai-saas-refinement.css",
               "src/leadsai-content-final.css",
               "src/renova-enterprise-ui.css",
-              "src/enterprise-design-system.css"
+              "src/enterprise-design-system.css",
+              "src/styles/shared.css"
             ]
           },
           "configurations": {
