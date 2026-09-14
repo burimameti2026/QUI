@@ -20,18 +20,6 @@
             "assets": [],
             "styles": [
               "src/styles.css",
-              "src/renova-design-system.css",
-              "src/renova-login.css",
-              "src/leadsai-saas-polish.css",
-              "src/leadsai-saas-reference.css",
-              "src/leadsai-enterprise-ui.css",
-              "src/leadsai-saas-final-pass.css",
-              "src/leadsai-visual-correction.css",
-              "src/leadsai-reference-depth.css",
-              "src/leadsai-saas-refinement.css",
-              "src/leadsai-content-final.css",
-              "src/renova-enterprise-ui.css",
-              "src/enterprise-design-system.css",
               "src/styles/shared.css"
             ]
           },
