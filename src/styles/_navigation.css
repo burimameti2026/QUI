@@ -1,0 +1,71 @@
+/* Shared application navigation: light, readable, single accent. */
+.shell .sidebar {
+  background: #ffffff !important;
+  color: var(--color-text) !important;
+  border-right: 1px solid var(--color-border) !important;
+  box-shadow: 4px 0 18px rgba(16,24,40,.035) !important;
+}
+
+.shell .brand,
+.shell .account { border-color: #edf0f4 !important; }
+.shell .brand-copy strong,
+.shell .account b { color: #172033 !important; }
+.shell .brand-copy strong span { color: var(--color-primary) !important; }
+.shell .brand-copy small,
+.shell .account small { color: #667085 !important; }
+.shell .brand-logo { background: var(--color-primary) !important; box-shadow: none !important; }
+.shell .collapse-btn { color: #667085 !important; }
+
+.shell .workspace-card {
+  background: #f8fafc !important;
+  border: 1px solid #e5eaf1 !important;
+}
+.shell .workspace-logo { background: var(--color-primary-soft) !important; color: var(--color-primary) !important; }
+.shell .workspace-card b { color: #172033 !important; }
+.shell .workspace-card small { color: #667085 !important; }
+
+.shell .reference-menu { gap: 3px !important; }
+.shell .group-heading {
+  color: #475467 !important;
+  font-size: 9px !important;
+  letter-spacing: .08em !important;
+}
+.shell .group-heading:hover { color: var(--color-primary) !important; }
+.shell .group-chevron { color: #667085 !important; }
+
+.shell .reference-menu .menu-item {
+  min-height: 40px !important;
+  color: #344054 !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+.shell .reference-menu .menu-item:hover {
+  background: #f5f8ff !important;
+  color: var(--color-primary) !important;
+  border-color: #e7efff !important;
+}
+.shell .reference-menu .menu-item.active {
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary) !important;
+  border-color: #dbe8ff !important;
+  box-shadow: inset 3px 0 0 var(--color-primary) !important;
+}
+.shell .reference-menu .nav-icon {
+  color: currentColor !important;
+}
+
+.shell .account .avatar,
+.shell .header-avatar .avatar {
+  background: var(--color-primary-soft) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Clear hierarchy for open/closed groups and nested menu items. */
+.shell .menu-group.closed { padding-bottom: 1px !important; }
+.shell .group-items { padding: 1px 0 4px 0 !important; }
+
+@media (max-width: 900px) {
+  .shell .sidebar { box-shadow: none !important; }
+}
