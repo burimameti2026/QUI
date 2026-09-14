@@ -21,53 +21,71 @@ export class AdminStaticI18nDirective implements OnDestroy {
   private readonly originals = new WeakMap<Text, string>();
   private readonly attributeOriginals = new WeakMap<HTMLElement, Map<string, string>>();
   private readonly propertyOriginals = new WeakMap<HTMLElement, Map<string, string | string[]>>();
-  private readonly observer = new MutationObserver(() => this.translate());
-  private readonly languageEffect = effect(() => { this.i18n.language(); this.translate(); });
+  private translating = false;
+  private scheduled = false;
+  private readonly observer = new MutationObserver(() => this.scheduleTranslate());
+  private readonly languageEffect = effect(() => { this.i18n.language(); this.scheduleTranslate(); });
   private readonly uiAttributes = ['placeholder', 'title', 'aria-label'] as const;
 
   constructor() {
     this.observer.observe(this.host, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: [...this.uiAttributes] });
-    queueMicrotask(() => this.translate());
+    this.scheduleTranslate();
+  }
+
+  private scheduleTranslate(): void {
+    if (this.scheduled) return;
+    this.scheduled = true;
+    queueMicrotask(() => {
+      this.scheduled = false;
+      this.translate();
+    });
   }
 
   private translate(): void {
-    const walker = document.createTreeWalker(this.host, NodeFilter.SHOW_TEXT);
-    const nodes: Text[] = [];
-    let node: Node | null;
-    while ((node = walker.nextNode())) {
-      const text = node as Text;
-      const parent = text.parentElement;
-      if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
-      nodes.push(text);
-    }
-    for (const text of nodes) {
-      const current = text.nodeValue ?? '';
-      const original = this.originals.get(text) ?? current;
-      if (!this.originals.has(text)) this.originals.set(text, original);
-      const translated = this.translateValue(original.trim());
-      if (translated === original.trim()) continue;
-      const leading = original.match(/^\s*/)?.[0] ?? '';
-      const trailing = original.match(/\s*$/)?.[0] ?? '';
-      if (current !== leading + translated + trailing) text.nodeValue = leading + translated + trailing;
-    }
-    const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
-    for (const element of elements) {
-      for (const attribute of this.uiAttributes) {
-        const value = element.getAttribute(attribute);
-        if (value === null || value.trim().length === 0 || value.trim().length > 400) continue;
-        let originals = this.attributeOriginals.get(element);
-        if (!originals) { originals = new Map<string, string>(); this.attributeOriginals.set(element, originals); }
-        const original = originals.get(attribute) ?? value;
-        if (!originals.has(attribute)) originals.set(attribute, original);
+    if (this.translating) return;
+    this.translating = true;
+    try {
+      const walker = document.createTreeWalker(this.host, NodeFilter.SHOW_TEXT);
+      const nodes: Text[] = [];
+      let node: Node | null;
+      while ((node = walker.nextNode())) {
+        const text = node as Text;
+        const parent = text.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
+        nodes.push(text);
+      }
+      for (const text of nodes) {
+        const current = text.nodeValue ?? '';
+        const original = this.originals.get(text) ?? current;
+        if (!this.originals.has(text)) this.originals.set(text, original);
         const translated = this.translateValue(original.trim());
         if (translated === original.trim()) continue;
         const leading = original.match(/^\s*/)?.[0] ?? '';
         const trailing = original.match(/\s*$/)?.[0] ?? '';
         const nextValue = leading + translated + trailing;
-        if (value !== nextValue) element.setAttribute(attribute, nextValue);
+        if (current !== nextValue) text.nodeValue = nextValue;
       }
+      const elements = Array.from(this.host.querySelectorAll('*')) as HTMLElement[];
+      for (const element of elements) {
+        for (const attribute of this.uiAttributes) {
+          const value = element.getAttribute(attribute);
+          if (value === null || value.trim().length === 0 || value.trim().length > 400) continue;
+          let originals = this.attributeOriginals.get(element);
+          if (!originals) { originals = new Map<string, string>(); this.attributeOriginals.set(element, originals); }
+          const original = originals.get(attribute) ?? value;
+          if (!originals.has(attribute)) originals.set(attribute, original);
+          const translated = this.translateValue(original.trim());
+          if (translated === original.trim()) continue;
+          const leading = original.match(/^\s*/)?.[0] ?? '';
+          const trailing = original.match(/\s*$/)?.[0] ?? '';
+          const nextValue = leading + translated + trailing;
+          if (value !== nextValue) element.setAttribute(attribute, nextValue);
+        }
+      }
+      this.translateComponentInputs(elements);
+    } finally {
+      this.translating = false;
     }
-    this.translateComponentInputs(elements);
   }
 
   private translateComponentInputs(elements: HTMLElement[]): void {
