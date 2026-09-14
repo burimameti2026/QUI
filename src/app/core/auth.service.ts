@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, finalize, map, of, shareReplay, tap } from 'rxjs';
+import { Observable, finalize, map, of, shareReplay, tap, timeout } from 'rxjs';
 
 interface TokenResponse {
   access_token: string;
@@ -39,8 +39,8 @@ export class AuthService {
     const normalizedEmail = this.normalizeLoginEmail(normalizedTenant, email);
     let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
     if(mfaCode) body=body.set('mfa_code',mfaCode.trim());
-    return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'},timeout:15000})
-      .pipe(tap(response => this.storeSession(response, normalizedTenant)));
+    return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}})
+      .pipe(timeout(15000),tap(response => this.storeSession(response, normalizedTenant)));
   }
 
   accessToken(): string | null { return localStorage.getItem(this.accessTokenKey); }
@@ -85,10 +85,10 @@ export class AuthService {
       .set('refresh_token',refreshToken)
       .set('scope','openid profile email offline_access qualifyai-api');
     this.refreshRequest = this.http.post<TokenResponse>('/connect/token',body.toString(),{
-      headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      timeout:5000
+      headers:{'Content-Type':'application/x-www-form-urlencoded'}
     }).pipe(
-      tap(response => this.storeSession(response)),
+      timeout(5000),
+      tap((response: TokenResponse) => this.storeSession(response)),
       map((response: TokenResponse) => response.access_token),
       finalize(() => this.refreshRequest = undefined),
       shareReplay({bufferSize:1,refCount:false})
