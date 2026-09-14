@@ -27,12 +27,12 @@ export function requirePermission(permission: string): CanActivateFn {
     const auth = inject(AuthService);
     const router = inject(Router);
 
-    // Permissions are enforced by the API. Do not block route activation while
-    // waiting for an identity refresh; an existing session can render and any
-    // protected request will refresh/reject through the HTTP auth layer.
+    // Never wait for token refresh during navigation. If a refresh token exists,
+    // the interceptor will refresh the next protected API request as needed.
     if (!auth.hasValidAccessToken() && !auth.hasRefreshToken()) {
       return router.createUrlTree(['/login'], { queryParams: { reason: 'session-expired' } });
     }
+    if (!auth.hasValidAccessToken() && auth.hasRefreshToken()) return true;
 
     return auth.hasPermission(permission)
       ? true
