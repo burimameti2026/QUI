@@ -1,2 +1,3 @@
-/* Navigation foundation only. Shell visuals live in src/app/layout/shell.component.css. */
-.reference-menu{min-width:0}.group-heading{font:inherit}.menu-item{text-decoration:none}.nav-icon{display:grid;place-items:center}.nav-label{min-width:0}.group-items{min-width:0}
+/* Shared navigation foundation.
+   Shell visuals live in shell.component.css so the shell has one local source of truth.
+   Keep this file intentionally neutral to avoid legacy global overrides. */
