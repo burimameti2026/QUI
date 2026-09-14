@@ -26,7 +26,7 @@ export const routes: Routes = [
   {path:'crm/leads',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/crm/leads.page').then(m=>m.LeadsPage)},
   {path:'crm/opportunities',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/crm/opportunities.page').then(m=>m.OpportunitiesPage)},
   {path:'pipeline',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/pipeline/pipeline.page').then(m=>m.PipelinePage)},
-  {path:'golden-pipeline',canActivate:[requireModule('golden_pipeline')],loadComponent:()=>import('./features/pipeline/golden-pipeline.page').then(m=>m.GoldenPipelinePage)},
+  {path:'golden-pipeline',loadComponent:()=>import('./features/pipeline/golden-pipeline.page').then(m=>m.GoldenPipelinePage)},
   {path:'meetings',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/meetings/meetings.page').then(m=>m.MeetingsPage)},
   {path:'ai/agents',canActivate:[requireModule('ai')],loadComponent:()=>import('./features/ai-agents/ai-agents.page').then(m=>m.AiAgentsPage)},
   {path:'knowledge',canActivate:[requireModule('knowledge')],loadComponent:()=>import('./features/knowledge/knowledge.page').then(m=>m.KnowledgePage)},
