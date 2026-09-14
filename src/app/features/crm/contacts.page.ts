@@ -10,10 +10,11 @@ import { CrmService } from './crm.service';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   template: `
     <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
-      <button class="refresh-action" (click)="load()">↻ Refresh data</button>
+      <button class="refresh-action" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
       <button class="export-action" (click)="exportCsv()">⇩ Export CSV</button>
       <button class="primary" (click)="open()">+ Add contact</button>
     </qai-page-header>
+    <div class="callout warning" *ngIf="error"><span class="callout-icon">!</span><div><b>Contacts could not be loaded</b><p>{{ error }}</p></div></div>
     <section class="directory-card">
       <header>
         <div><span class="eyebrow">CRM DIRECTORY</span><h2>Contact workspace</h2><p>Search, review and manage every person in the customer lifecycle.</p></div>
@@ -24,7 +25,8 @@ import { CrmService } from './crm.service';
         <select [(ngModel)]="stage"><option value="">All lifecycle stages</option><option>visitor</option><option>lead</option><option>customer</option></select>
         <strong>{{ visible.length }} shown</strong>
       </div>
-      <div class="table-wrap contacts-table">
+      <div class="data-state" *ngIf="loading">Loading contacts…</div>
+      <div class="table-wrap contacts-table" *ngIf="!loading && visible.length">
         <table>
           <thead><tr><th>Contact</th><th>Email</th><th>Phone</th><th>Lifecycle</th><th>Created</th><th>Actions</th></tr></thead>
           <tbody><tr *ngFor="let x of visible">
@@ -35,29 +37,93 @@ import { CrmService } from './crm.service';
             <td><div class="directory-actions"><button (click)="open(x)">✎ Edit</button><button class="danger" (click)="remove(x)">Delete</button></div></td>
           </tr></tbody>
         </table>
-        <div class="directory-empty" *ngIf="!visible.length"><i>◎</i><strong>No contacts found</strong><span>Change the filters or add the first contact.</span></div>
       </div>
+      <div class="directory-empty" *ngIf="!loading && !error && !visible.length"><i>◎</i><strong>{{ rows.length ? 'No matching contacts' : 'No contacts yet' }}</strong><span>{{ rows.length ? 'Change the filters or add the first contact.' : 'Add a contact to start the CRM directory.' }}</span></div>
     </section>
     <qai-modal [open]="show" [title]="form.id ? 'Edit contact' : 'New contact'" (close)="show = false">
       <form class="form" (ngSubmit)="save()">
         <div class="form2"><label>First name<input [(ngModel)]="form.firstName" name="first" required /></label><label>Last name<input [(ngModel)]="form.lastName" name="last" /></label></div>
         <label>Email<input [(ngModel)]="form.email" name="email" type="email" /></label><label>Phone<input [(ngModel)]="form.phone" name="phone" /></label>
         <label>Lifecycle<select [(ngModel)]="form.lifecycleStage" name="stage"><option>visitor</option><option>lead</option><option>customer</option></select></label>
-        <footer><button type="button" (click)="show = false">Cancel</button><button class="primary" type="submit">Save contact</button></footer>
+        <footer><button type="button" (click)="show = false">Cancel</button><button class="primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save contact' }}</button></footer>
       </form>
     </qai-modal>`
 })
 export class ContactsPage implements OnInit {
-  rows: Contact[] = []; q = ''; stage = ''; show = false; form: Partial<Contact> = { lifecycleStage: 'lead' };
+  rows: Contact[] = [];
+  q = '';
+  stage = '';
+  show = false;
+  loading = false;
+  saving = false;
+  error = '';
+  form: Partial<Contact> = { lifecycleStage: 'lead' };
+
   constructor(private readonly crm: CrmService) {}
+
   ngOnInit(): void { this.load(); }
-  load(): void { this.crm.contacts().subscribe((r) => (this.rows = r)); }
-  get visible(): Contact[] { const q = this.q.toLowerCase(); return this.rows.filter((x) => (!q || `${x.firstName} ${x.lastName} ${x.email} ${x.phone}`.toLowerCase().includes(q)) && (!this.stage || x.lifecycleStage === this.stage)); }
+
+  load(): void {
+    if (this.loading) return;
+    this.loading = true;
+    this.error = '';
+    this.crm.contacts().subscribe({
+      next: (rows) => { this.rows = rows || []; this.loading = false; },
+      error: (error) => { this.error = this.apiError(error); this.loading = false; }
+    });
+  }
+
+  get visible(): Contact[] {
+    const q = this.q.trim().toLowerCase();
+    return this.rows.filter((x) =>
+      (!q || `${x.firstName} ${x.lastName} ${x.email} ${x.phone}`.toLowerCase().includes(q)) &&
+      (!this.stage || x.lifecycleStage === this.stage)
+    );
+  }
+
   get leadCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'lead').length; }
   get customerCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'customer').length; }
+
   open(x?: Contact): void { this.form = x ? { ...x } : { lifecycleStage: 'lead' }; this.show = true; }
-  save(): void { const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form); operation.subscribe((result) => { const index = this.rows.findIndex((x) => x.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; }); }
-  remove(x: Contact): void { if (!confirm(`Delete ${x.firstName} ${x.lastName}?`)) return; this.crm.deleteContact(x.id).subscribe(() => (this.rows = this.rows.filter((v) => v.id !== x.id))); }
+
+  save(): void {
+    if (this.saving) return;
+    this.saving = true;
+    this.error = '';
+    const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form);
+    operation.subscribe({
+      next: (result) => {
+        const index = this.rows.findIndex((x) => x.id === result.id);
+        if (index >= 0) this.rows[index] = result; else this.rows.unshift(result);
+        this.show = false;
+        this.saving = false;
+      },
+      error: (error) => { this.error = this.apiError(error); this.saving = false; }
+    });
+  }
+
+  remove(x: Contact): void {
+    if (!confirm(`Delete ${x.firstName} ${x.lastName}?`)) return;
+    this.error = '';
+    this.crm.deleteContact(x.id).subscribe({
+      next: () => this.rows = this.rows.filter((v) => v.id !== x.id),
+      error: (error) => this.error = this.apiError(error)
+    });
+  }
+
   initials(x: Contact): string { return ((x.firstName || '?')[0] + (x.lastName || '')[0]).toUpperCase(); }
-  exportCsv(): void { const header = 'FirstName,LastName,Email,Phone,Lifecycle\n'; const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n'); const anchor = document.createElement('a'); anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' })); anchor.download = 'qualifyai-contacts.csv'; anchor.click(); }
+
+  exportCsv(): void {
+    const header = 'FirstName,LastName,Email,Phone,Lifecycle\n';
+    const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n');
+    const anchor = document.createElement('a');
+    anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' }));
+    anchor.download = 'qualifyai-contacts.csv';
+    anchor.click();
+    URL.revokeObjectURL(anchor.href);
+  }
+
+  private apiError(error: any): string {
+    return error?.error?.detail || error?.error?.title || (error?.status ? `CRM API returned ${error.status}.` : 'CRM API is unavailable.');
+  }
 }
