@@ -1,70 +1,83 @@
-/* Shared application navigation: light, readable, single accent. */
+/* Shared application navigation — clean light SaaS rail. */
 .shell .sidebar {
-  background: #ffffff !important;
-  color: var(--color-text) !important;
-  border-right: 1px solid var(--color-border) !important;
-  box-shadow: 4px 0 18px rgba(16,24,40,.035) !important;
+  background: #fff !important;
+  color: #172033 !important;
+  border-right: 1px solid #e2e7ef !important;
+  box-shadow: none !important;
 }
 
 .shell .brand,
 .shell .account { border-color: #edf0f4 !important; }
 .shell .brand-copy strong,
 .shell .account b { color: #172033 !important; }
-.shell .brand-copy strong span { color: var(--color-primary) !important; }
+.shell .brand-copy strong span { color: #2563eb !important; }
 .shell .brand-copy small,
 .shell .account small { color: #667085 !important; }
-.shell .brand-logo { background: var(--color-primary) !important; box-shadow: none !important; }
+.shell .brand-logo { background: #2563eb !important; color: #fff !important; box-shadow: none !important; }
 .shell .collapse-btn { color: #667085 !important; }
 
 .shell .workspace-card {
   background: #f8fafc !important;
-  border: 1px solid #e5eaf1 !important;
+  border: 1px solid #e2e7ef !important;
+  color: #172033 !important;
 }
-.shell .workspace-logo { background: var(--color-primary-soft) !important; color: var(--color-primary) !important; }
+.shell .workspace-logo { background: #eff6ff !important; color: #2563eb !important; }
 .shell .workspace-card b { color: #172033 !important; }
 .shell .workspace-card small { color: #667085 !important; }
 
-.shell .reference-menu { gap: 3px !important; }
+/* Groups: quiet labels, strong readable navigation. */
+.shell .reference-menu { gap: 4px !important; }
 .shell .group-heading {
   color: #475467 !important;
-  font-size: 9px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
   letter-spacing: .08em !important;
 }
-.shell .group-heading:hover { color: var(--color-primary) !important; }
+.shell .group-heading:hover { color: #2563eb !important; }
 .shell .group-chevron { color: #667085 !important; }
 
 .shell .reference-menu .menu-item {
-  min-height: 40px !important;
+  min-height: 42px !important;
   color: #344054 !important;
   background: transparent !important;
   border: 1px solid transparent !important;
-  font-size: 11px !important;
+  border-radius: 9px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
 }
 .shell .reference-menu .menu-item:hover {
   background: #f5f8ff !important;
-  color: var(--color-primary) !important;
-  border-color: #e7efff !important;
+  color: #1d4ed8 !important;
+  border-color: #e6efff !important;
 }
 .shell .reference-menu .menu-item.active {
-  background: var(--color-primary-soft) !important;
-  color: var(--color-primary) !important;
-  border-color: #dbe8ff !important;
-  box-shadow: inset 3px 0 0 var(--color-primary) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  border-color: #dbeafe !important;
+  box-shadow: inset 3px 0 0 #2563eb !important;
+  font-weight: 700 !important;
 }
-.shell .reference-menu .nav-icon {
-  color: currentColor !important;
+.shell .reference-menu .menu-item.active .nav-icon { color: #2563eb !important; }
+.shell .reference-menu .nav-icon { color: currentColor !important; }
+
+/* Nested items: visible hierarchy without dark blocks. */
+.shell .group-items {
+  padding: 3px 0 6px 14px !important;
+  margin-left: 12px !important;
+  border-left: 1px solid #dbe3ef !important;
+}
+.shell .group-items .menu-item {
+  min-height: 36px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
 }
 
 .shell .account .avatar,
 .shell .header-avatar .avatar {
-  background: var(--color-primary-soft) !important;
-  color: var(--color-primary) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
 }
-
-/* Clear hierarchy for open/closed groups and nested menu items. */
-.shell .menu-group.closed { padding-bottom: 1px !important; }
-.shell .group-items { padding: 1px 0 4px 0 !important; }
 
 @media (max-width: 900px) {
   .shell .sidebar { box-shadow: none !important; }
