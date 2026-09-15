@@ -48,12 +48,21 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
           </section>
         </nav>
         <div class="sidebar-footer">
-          <div class="account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><div><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></div></div>
           <button type="button" class="logout-button" (click)="logout()"><span>⇥</span><span class="nav-label">{{ navLabel('Logout') }}</span></button>
         </div>
       </aside>
       <main>
-        <header class="app-header"><div class="header-search-wrap"><label class="global-search"><span>⌕</span><input [(ngModel)]="query" [placeholder]="i18n.t('Search pages and modules')"/><kbd>Ctrl K</kbd></label><a class="portal-link" routerLink="/renova/portal">↗ {{ i18n.t('Public Renova portal') }}</a><div class="admin-language"><span>◎</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)"><option *ngFor="let l of i18n.languages" [value]="l.code">{{ l.label }}</option></select></div></div></header>
+        <header class="app-header">
+          <div class="header-search-wrap">
+            <label class="global-search"><span>⌕</span><input [(ngModel)]="query" [placeholder]="i18n.t('Search pages and modules')"/><kbd>Ctrl K</kbd></label>
+            <a class="portal-link" routerLink="/renova/portal">↗ {{ i18n.t('Public Renova portal') }}</a>
+            <button type="button" class="admin-account" (click)="openAdmin()" aria-label="Open administrator account">
+              <span class="admin-avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span>
+              <span class="admin-copy"><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></span>
+              <span class="admin-chevron">⌄</span>
+            </button>
+          </div>
+        </header>
         <section class="page" qaiAdminStaticI18n><router-outlet /></section>
       </main>
     </div>
@@ -103,6 +112,7 @@ export class ShellComponent {
     if (x.url) void this.router.navigateByUrl(x.url);
   }
   toggleItem(x: Item): void { this.openItem(x); }
+  openAdmin(): void { void this.router.navigateByUrl('/users'); }
   logout(): void {
     this.auth.logout();
     void this.router.navigate(['/login']);
