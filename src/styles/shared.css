@@ -4,3 +4,26 @@
 @import url('./_surfaces.css');
 @import url('./_layout.css');
 @import url('./_header.css');
+
+/* Dashboard card headers use the same Renova blue visual language as the executive band. */
+.dashboard-content .card-heading {
+  background: linear-gradient(135deg, #0f2f68 0%, #164a9b 100%);
+  border-bottom-color: #123c80;
+  color: #fff;
+}
+.dashboard-content .card-heading h3,
+.dashboard-content .card-heading .eyebrow {
+  color: #fff;
+}
+.dashboard-content .card-heading .eyebrow { opacity: .72; }
+.dashboard-content .card-heading button,
+.dashboard-content .card-heading a {
+  border-color: rgba(255,255,255,.24);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+.dashboard-content .card-heading button:hover,
+.dashboard-content .card-heading a:hover {
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.38);
+}
