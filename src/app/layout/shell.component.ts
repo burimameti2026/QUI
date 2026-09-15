@@ -24,20 +24,16 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
           <div class="brand-copy"><strong>Leads<span>AI</span></strong><small>ENTERPRISE PLATFORM</small></div>
           <button type="button" class="collapse-btn" (click)="toggleSidebar()">{{ collapsed ? '→' : '←' }}</button>
         </div>
-
         <nav class="reference-menu">
           <section class="menu-group" *ngFor="let group of navigationGroups">
             <div class="group-heading">{{ navLabel(group.label) }}</div>
             <div class="group-items">
               <ng-container *ngFor="let item of group.items">
                 <div class="nav-node" *ngIf="allowed(item)">
-                  <a *ngIf="!hasChildren(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                  <a class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: !hasChildren(item) }">
                     <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ navLabel(item.label) }}</span>
                   </a>
-                  <button *ngIf="hasChildren(item)" type="button" class="menu-item parent-item" [class.active]="isItemActive(item)" (click)="openItem(item)">
-                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ navLabel(item.label) }}</span><span class="node-chevron">{{ isItemExpanded(item) ? '⌃' : '⌄' }}</span>
-                  </button>
-                  <div class="child-items" *ngIf="hasChildren(item) && isItemExpanded(item)">
+                  <div class="child-items" *ngIf="hasChildren(item) && isItemActive(item)">
                     <a *ngFor="let child of item.children" class="child-item" [routerLink]="child.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                       <span class="child-dot"></span><span>{{ navLabel(child.label) }}</span>
                     </a>
@@ -48,7 +44,6 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
           </section>
         </nav>
       </aside>
-
       <main>
         <header class="app-header">
           <div class="header-search-wrap">
@@ -83,10 +78,9 @@ export class ShellComponent {
   query = '';
   collapsed = false;
   adminMenuOpen = false;
-  expandedItem: Item | null | undefined = undefined;
 
   readonly navigationGroups: Group[] = [
-    { label: 'COMMAND CENTER', items: [i('Control Center', '/dashboard', '⌂', [i('Dashboard', '/dashboard', '⌂')])] },
+    { label: 'COMMAND CENTER', items: [i('Dashboard', '/dashboard', '⌂')] },
     { label: 'LEADS & ACQUISITION', items: [
       i('Leads', '/crm/leads', '▣'),
       i('CRM', '/crm/companies', '▧', [i('Companies', '/crm/companies', '▦'), i('Contacts', '/crm/contacts', '◎'), i('Opportunities', '/crm/opportunities', '♡')]),
@@ -100,13 +94,11 @@ export class ShellComponent {
       i('Replies & Inbox', '/inbox', '▱')
     ] },
     { label: 'CONTENT & KNOWLEDGE', items: [
-      i('CMS — Renova Content', '/renova/content', '▤'),
+      i('Renova Content', '/renova/content', '▤'),
       i('Knowledge', '/knowledge', '▥', [i('Knowledge Gaps', '/knowledge/gaps', '◇'), i('Knowledge Improvement', '/knowledge/improve', '✦')]),
-      i('Renova Product Catalog', '/catalog', '▦', [i('Promotion Automation', '/renova/promotion', '✦')])
+      i('Product Catalog', '/catalog', '▦', [i('Promotion Automation', '/renova/promotion', '✦')])
     ] },
     { label: 'ORDERING & DISPATCH', items: [i('Orders & Dispatch', '/enterprise', '◉'), i('Invoices', '/billing', '▤')] },
-    { label: 'ORDERING & DELIVERY', items: [i('Delivery Orders', '/enterprise/orders', '▤'), i('Shipments', '/enterprise/fulfillments', '▤')] },
-    { label: 'WAREHOUSE', items: [i('Inventory', '/enterprise/inventory', '▥'), i('Warehouse', '/enterprise/warehousing', '▤'), i('Fleet & Drivers', '/enterprise/logistics', '▱')] },
     { label: 'FINANCE', items: [i('Finance', '/enterprise/finance', '€')] },
     { label: 'AUTOMATION & IMPROVE', items: [i('Reports', '/analytics', '▧'), i('Automation', '/automations', '✣')] },
     { label: 'ADMINISTRATION', items: [i('Platform Management', '/platform', '⚙', [i('Prepare Real Workspace', '/platform/prepare-workspace', '＋'), i('Users & Roles', '/users', '◎'), i('Audit & Governance', '/audit', '▤')])] }
@@ -118,10 +110,7 @@ export class ShellComponent {
   allowed(x: Item): boolean { return (!x.permission || this.auth.hasPermission(x.permission)) && (!x.module || this.auth.hasModule(x.module)); }
   hasChildren(x: Item): boolean { return !!x.children?.length; }
   private currentUrl(): string { return this.router.url.split('?')[0].split('#')[0]; }
-  isItemActive(x: Item): boolean { const u = this.currentUrl(); if (u === x.url || u.startsWith(x.url + '/')) return true; for (const child of x.children ?? []) if (u === child.url || u.startsWith(child.url + '/')) return true; return false; }
-  isItemExpanded(x: Item): boolean { if (!this.hasChildren(x)) return false; if (this.expandedItem !== undefined) return this.expandedItem === x; return this.isItemActive(x); }
-  openItem(x: Item): void { if (!this.hasChildren(x)) return; this.expandedItem = this.isItemExpanded(x) ? null : x; if (x.url) void this.router.navigateByUrl(x.url); }
-  toggleItem(x: Item): void { this.openItem(x); }
+  isItemActive(x: Item): boolean { const u = this.currentUrl(); if (u === x.url || u.startsWith(x.url + '/')) return true; return (x.children ?? []).some(c => u === c.url || u.startsWith(c.url + '/')); }
   toggleAdminMenu(): void { this.adminMenuOpen = !this.adminMenuOpen; }
   openAdmin(): void { this.adminMenuOpen = false; void this.router.navigateByUrl('/users'); }
   logout(): void { this.adminMenuOpen = false; this.auth.logout(); void this.router.navigate(['/login']); }
