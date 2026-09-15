@@ -47,7 +47,10 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
             </div>
           </section>
         </nav>
-        <div class="account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><div><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></div></div>
+        <div class="sidebar-footer">
+          <div class="account"><span class="avatar">{{ initials(session?.name || session?.tenantSlug || 'BA') }}</span><div><b>{{ session?.name || 'Administrator' }}</b><small>{{ workspaceName }}</small></div></div>
+          <button type="button" class="logout-button" (click)="logout()"><span>⇥</span><span class="nav-label">{{ navLabel('Logout') }}</span></button>
+        </div>
       </aside>
       <main>
         <header class="app-header"><div class="header-search-wrap"><label class="global-search"><span>⌕</span><input [(ngModel)]="query" [placeholder]="i18n.t('Search pages and modules')"/><kbd>Ctrl K</kbd></label><a class="portal-link" routerLink="/renova/portal">↗ {{ i18n.t('Public Renova portal') }}</a><div class="admin-language"><span>◎</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)"><option *ngFor="let l of i18n.languages" [value]="l.code">{{ l.label }}</option></select></div></div></header>
@@ -79,9 +82,7 @@ export class ShellComponent {
 
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
-  navLabel(key: string): string {
-    return this.navigationTranslations[key]?.[this.i18n.language()] ?? key;
-  }
+  navLabel(key: string): string { return this.navigationTranslations[key]?.[this.i18n.language()] ?? key; }
   allowed(x: Item): boolean { return (!x.permission || this.auth.hasPermission(x.permission)) && (!x.module || this.auth.hasModule(x.module)); }
   hasChildren(x: Item): boolean { return !!x.children?.length; }
   private currentUrl(): string { return this.router.url.split('?')[0].split('#')[0]; }
@@ -102,6 +103,10 @@ export class ShellComponent {
     if (x.url) void this.router.navigateByUrl(x.url);
   }
   toggleItem(x: Item): void { this.openItem(x); }
+  logout(): void {
+    this.auth.logout();
+    void this.router.navigate(['/login']);
+  }
   initials(v: string): string { return v.split(/[-_\s]+/).filter(Boolean).slice(0, 2).map(x => x[0]).join('').toUpperCase() || 'R'; }
   toggleSidebar(): void { this.collapsed = !this.collapsed; }
   setLanguage(l: string): void { this.i18n.setLanguage(l as any); }
