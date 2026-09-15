@@ -1,0 +1,1 @@
+Enterprise UI source of truth: all enterprise headers, tabs, filters, actions, loading states and empty states must resolve through AdminStaticI18nDirective.
