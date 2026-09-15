@@ -7,7 +7,6 @@ import { Modal,PageHeader } from '../../shared/ui';
 @Component({
   standalone:true,
   imports:[CommonModule,FormsModule,Modal,PageHeader],
-  styleUrl:'./leads.page.css',
   template:`
     <qai-page-header title="Leads" subtitle="Automatically qualified demand ranked by intent, fit and buying readiness."><button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button><button type="button" class="primary" (click)="runAutomation()">⚡ Run sales automation</button><button type="button" class="primary" (click)="openCreate()">+ Create lead</button></qai-page-header>
     <div class="callout warning" *ngIf="error"><span class="callout-icon">!</span><div><b>Leads could not be loaded</b><p>{{error}}</p></div></div>
