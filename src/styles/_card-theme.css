@@ -1,0 +1,23 @@
+/* Shared enterprise card surface: a subtle tint, never a full-page wash. */
+.metric-card,
+.revenue-card,
+.automation-card,
+.data-card { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
+.metric-card:hover { background: linear-gradient(135deg, #f7f9fd 0%, #f0f4fb 62%, #f4f1fb 100%) !important; }
+.card-heading { background: linear-gradient(135deg, #edf3fb 0%, #e9eff8 65%, #efedf8 100%) !important; }
+.revenue-body,
+.impact-grid { background: transparent !important; }
+.revenue-highlight,
+.revenue-row,
+.impact-grid > div,
+.opportunity { background: rgba(255,255,255,.52) !important; }
+.revenue-highlight { background: linear-gradient(100deg, #e9f1ff, #e8eef9) !important; }
+.opportunity-columns { background: #e7edf6 !important; }
+
+/* CRM uses the same surface language as Dashboard. */
+.directory-card { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
+.directory-card > header { background: linear-gradient(135deg, #0f2f68 0%, #164a9b 100%) !important; }
+.directory-toolbar { background: rgba(237,243,251,.82) !important; }
+.metrics.compact article,
+.panel.table-wrap { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
+.metrics.compact article { border-color: #d7e1ef !important; }
