@@ -96,10 +96,12 @@ export class AuthService {
     return this.refreshRequest;
   }
 
-  logout(){
+  logout(): void {
+    this.refreshRequest = undefined;
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
     localStorage.removeItem(this.tenantKey);
+    sessionStorage.clear();
     this.loggedIn.set(false);
     this.session.set(null);
   }
