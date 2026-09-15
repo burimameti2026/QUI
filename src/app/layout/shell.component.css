@@ -34,10 +34,14 @@
 .child-item.active { background: #273641; color: #fff; font-weight: 600; }
 .child-dot { position: absolute; left: -16px; width: 6px; height: 6px; box-sizing: border-box; border: 1px solid #3b82f6; background: #354451; border-radius: 50%; }
 .child-item.active .child-dot { background: #3b82f6; }
-.account { display: flex; align-items: center; gap: 9px; padding: 9px 7px 1px; border-top: 1px solid rgba(255,255,255,.13); }
+.sidebar-footer { margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.13); }
+.account { display: flex; align-items: center; gap: 9px; padding: 7px 7px 5px; }
 .avatar { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #3b82f6; color: #fff; font-size: 8px; font-weight: 650; }
 .account div { display: flex; flex-direction: column; }
 .account b { font-size: 9px; color: #fff; font-weight: 600; }
+.logout-button { width: 100%; min-height: 34px; display: flex; align-items: center; gap: 9px; padding: 0 9px; border: 0; border-radius: 7px; background: transparent; color: #cbd5dd; font: inherit; font-size: 10px; cursor: pointer; text-align: left; }
+.logout-button:hover { background: #445460; color: #fff; }
+.logout-button > span:first-child { width: 22px; flex: 0 0 22px; display: grid; place-items: center; font-size: 14px; }
 .shell main { min-width: 0; background: #f5f7f8; }
 .app-header { height: 64px; box-sizing: border-box; padding: 0 24px; display: flex; align-items: center; background: #fff; border-bottom: 1px solid #dfe6e9; }
 .header-search-wrap { width: 100%; display: flex; align-items: center; gap: 10px; }
@@ -55,6 +59,7 @@
 .shell.collapsed .group-heading { font-size: 0; justify-content: center; }
 .shell.collapsed .menu-item { justify-content: center; padding: 0; }
 .shell.collapsed .child-items { display: none; }
+.shell.collapsed .logout-button { justify-content: center; padding: 0; }
 @media (max-width: 1000px) {
   .shell { grid-template-columns: 72px minmax(0, 1fr); }
   .brand-copy, .workspace-card div, .workspace-more, .nav-label, .account div { display: none; }
@@ -62,11 +67,12 @@
   .group-heading { font-size: 0; justify-content: center; }
   .menu-item { justify-content: center; }
   .child-items { display: none; }
+  .logout-button { justify-content: center; padding: 0; }
 }
 @media (max-width: 700px) {
   .shell { display: block; height: auto; min-height: 100vh; }
   .sidebar { height: auto; min-height: 58px; }
-  .reference-menu, .workspace-card, .account { display: none; }
+  .reference-menu, .workspace-card, .account, .logout-button { display: none; }
   .app-header { height: 56px; padding: 0 12px; }
   .page { height: auto; min-height: calc(100vh - 56px); padding: 14px 12px 28px; }
   .global-search { flex-basis: 0; }
