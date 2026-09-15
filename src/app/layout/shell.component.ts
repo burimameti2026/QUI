@@ -87,7 +87,7 @@ export class ShellComponent {
       i('Prospect Discovery', '/discover', '⌕'),
       i('Autonomous Acquisition', '/acquisition/autonomous', '✦'),
       i('Campaigns', '/campaigns', '↗'),
-      i('Qualified Leads', '/qualified-leads', '✓'),
+      i('Qualified Leads', '/crm/leads', '✓'),
       i('Sales Pipelines', '/pipeline', '▤'),
       i('Golden Pipeline', '/golden-pipeline', '◇'),
       i('Demos & Meetings', '/meetings', '◷'),
