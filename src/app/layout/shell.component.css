@@ -34,10 +34,7 @@
 .child-item.active { background: #273641; color: #fff; font-weight: 600; }
 .child-dot { position: absolute; left: -16px; width: 6px; height: 6px; box-sizing: border-box; border: 1px solid #3b82f6; background: #354451; border-radius: 50%; }
 .child-item.active .child-dot { background: #3b82f6; }
-.sidebar-footer { margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.13); }
-.logout-button { width: 100%; min-height: 34px; display: flex; align-items: center; gap: 9px; padding: 0 9px; border: 0; border-radius: 7px; background: transparent; color: #cbd5dd; font: inherit; font-size: 10px; cursor: pointer; text-align: left; }
-.logout-button:hover { background: #445460; color: #fff; }
-.logout-button > span:first-child { width: 22px; flex: 0 0 22px; display: grid; place-items: center; font-size: 14px; }
+.sidebar-footer { display: none; }
 .shell main { min-width: 0; background: #f5f7f8; }
 .app-header { height: 64px; box-sizing: border-box; padding: 0 24px; display: flex; align-items: center; background: #fff; border-bottom: 1px solid #dfe6e9; }
 .header-search-wrap { width: 100%; display: flex; align-items: center; gap: 10px; }
@@ -45,13 +42,21 @@
 .global-search input { width: 100%; min-width: 120px; border: 0; outline: 0; background: transparent; font-size: 10px; }
 .global-search kbd { font-size: 7px; border: 1px solid #dce4e8; border-radius: 4px; padding: 3px 5px; white-space: nowrap; }
 .portal-link { height: 38px; display: flex; align-items: center; margin-left: 4px; padding: 0 12px; border: 1px solid #dce4e8; border-radius: 9px; background: #fff; color: #405568; font-size: 9px; text-decoration: none; white-space: nowrap; }
-.admin-account { height: 38px; display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 3px 8px 3px 5px; border: 1px solid #dce4e8; border-radius: 9px; background: #fff; color: #26364d; cursor: pointer; text-align: left; }
-.admin-account:hover { background: #f5f8fc; border-color: #cbd8e7; }
+.admin-menu { position: relative; margin-left: auto; }
+.admin-account { height: 38px; display: flex; align-items: center; gap: 8px; padding: 3px 8px 3px 5px; border: 1px solid #dce4e8; border-radius: 9px; background: #fff; color: #26364d; cursor: pointer; text-align: left; }
+.admin-account:hover, .admin-account.open { background: #f5f8fc; border-color: #cbd8e7; }
 .admin-avatar { width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; background: #3b82f6; color: #fff; font-size: 8px; font-weight: 650; }
 .admin-copy { display: flex; flex-direction: column; min-width: 78px; line-height: 1.1; }
 .admin-copy b { font-size: 9px; font-weight: 650; }
 .admin-copy small { margin-top: 3px; color: #718096; font-size: 7px; }
 .admin-chevron { margin-left: 2px; color: #718096; font-size: 9px; }
+.admin-dropdown { position: absolute; top: calc(100% + 7px); right: 0; z-index: 1000; width: 190px; padding: 6px; background: #fff; border: 1px solid #d9e2ec; border-radius: 10px; box-shadow: 0 12px 30px rgba(31, 52, 73, .14); }
+.admin-menu-item { width: 100%; min-height: 34px; display: flex; align-items: center; gap: 9px; padding: 0 9px; border: 0; border-radius: 7px; background: transparent; color: #334155; font: inherit; font-size: 9px; cursor: pointer; text-align: left; }
+.admin-menu-item:hover { background: #f1f5fa; color: #1d4ed8; }
+.admin-menu-icon { width: 20px; flex: 0 0 20px; display: grid; place-items: center; color: #64748b; font-size: 13px; }
+.admin-menu-item:hover .admin-menu-icon { color: #2563eb; }
+.admin-menu-divider { height: 1px; margin: 5px 4px; background: #e5eaf0; }
+.logout-menu-item { color: #475569; }
 .page { height: calc(100vh - 64px); overflow: auto; box-sizing: border-box; padding: 22px 26px 38px; background: #f5f7f8; }
 .shell.collapsed { grid-template-columns: 72px minmax(0, 1fr); }
 .shell.collapsed .brand-copy, .shell.collapsed .workspace-card div, .shell.collapsed .workspace-more, .shell.collapsed .nav-label { display: none; }
@@ -59,7 +64,6 @@
 .shell.collapsed .group-heading { font-size: 0; justify-content: center; }
 .shell.collapsed .menu-item { justify-content: center; padding: 0; }
 .shell.collapsed .child-items { display: none; }
-.shell.collapsed .logout-button { justify-content: center; padding: 0; }
 @media (max-width: 1000px) {
   .shell { grid-template-columns: 72px minmax(0, 1fr); }
   .brand-copy, .workspace-card div, .workspace-more, .nav-label { display: none; }
@@ -67,7 +71,6 @@
   .group-heading { font-size: 0; justify-content: center; }
   .menu-item { justify-content: center; }
   .child-items { display: none; }
-  .logout-button { justify-content: center; padding: 0; }
   .admin-copy, .admin-chevron { display: none; }
   .admin-account { padding: 3px; }
 }
