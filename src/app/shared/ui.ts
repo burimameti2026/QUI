@@ -18,19 +18,6 @@ function translateValue(i18n: AdminI18nService, value: string): string {
     </div>
     <div class="page-actions"><ng-content /></div>
   </div>`,
-  styles: [`
-    :host { display: block; }
-    .page-header { display:flex; align-items:center; justify-content:space-between; gap:24px; width:100%; box-sizing:border-box; margin:0 0 22px; padding-inline:10px; }
-    .page-header-title { min-width:0; }
-    .page-header-title h1 { margin:0; }
-    .page-header-title p { margin:5px 0 0; }
-    .page-actions { display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-left:auto; flex:0 0 auto; flex-wrap:wrap; }
-    .page-actions > * { flex:0 0 auto; }
-    @media (max-width:700px) {
-      .page-header { align-items:flex-start; flex-direction:column; gap:14px; padding-inline:0; }
-      .page-actions { width:100%; justify-content:flex-start; margin-left:0; }
-    }
-  `],
 })
 export class PageHeader {
   readonly i18n = inject(AdminI18nService);
