@@ -8,6 +8,7 @@ import { CrmService } from './crm.service';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
+  styleUrl: './crm-directory.css',
   template: `
     <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
       <button class="refresh-action" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
@@ -58,72 +59,26 @@ export class ContactsPage implements OnInit {
   saving = false;
   error = '';
   form: Partial<Contact> = { lifecycleStage: 'lead' };
-
   constructor(private readonly crm: CrmService) {}
-
   ngOnInit(): void { this.load(); }
-
   load(): void {
     if (this.loading) return;
     this.loading = true;
     this.error = '';
-    this.crm.contacts().subscribe({
-      next: (rows) => { this.rows = rows || []; this.loading = false; },
-      error: (error) => { this.error = this.apiError(error); this.loading = false; }
-    });
+    this.crm.contacts().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } });
   }
-
-  get visible(): Contact[] {
-    const q = this.q.trim().toLowerCase();
-    return this.rows.filter((x) =>
-      (!q || `${x.firstName} ${x.lastName} ${x.email} ${x.phone}`.toLowerCase().includes(q)) &&
-      (!this.stage || x.lifecycleStage === this.stage)
-    );
-  }
-
+  get visible(): Contact[] { const q = this.q.trim().toLowerCase(); return this.rows.filter((x) => (!q || `${x.firstName} ${x.lastName} ${x.email} ${x.phone}`.toLowerCase().includes(q)) && (!this.stage || x.lifecycleStage === this.stage)); }
   get leadCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'lead').length; }
   get customerCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'customer').length; }
-
   open(x?: Contact): void { this.form = x ? { ...x } : { lifecycleStage: 'lead' }; this.show = true; }
-
   save(): void {
     if (this.saving) return;
-    this.saving = true;
-    this.error = '';
+    this.saving = true; this.error = '';
     const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form);
-    operation.subscribe({
-      next: (result) => {
-        const index = this.rows.findIndex((x) => x.id === result.id);
-        if (index >= 0) this.rows[index] = result; else this.rows.unshift(result);
-        this.show = false;
-        this.saving = false;
-      },
-      error: (error) => { this.error = this.apiError(error); this.saving = false; }
-    });
+    operation.subscribe({ next: (result) => { const index = this.rows.findIndex((x) => x.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } });
   }
-
-  remove(x: Contact): void {
-    if (!confirm(`Delete ${x.firstName} ${x.lastName}?`)) return;
-    this.error = '';
-    this.crm.deleteContact(x.id).subscribe({
-      next: () => this.rows = this.rows.filter((v) => v.id !== x.id),
-      error: (error) => this.error = this.apiError(error)
-    });
-  }
-
+  remove(x: Contact): void { if (!confirm(`Delete ${x.firstName} ${x.lastName}?`)) return; this.error = ''; this.crm.deleteContact(x.id).subscribe({ next: () => this.rows = this.rows.filter((v) => v.id !== x.id), error: (error) => this.error = this.apiError(error) }); }
   initials(x: Contact): string { return ((x.firstName || '?')[0] + (x.lastName || '')[0]).toUpperCase(); }
-
-  exportCsv(): void {
-    const header = 'FirstName,LastName,Email,Phone,Lifecycle\n';
-    const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n');
-    const anchor = document.createElement('a');
-    anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' }));
-    anchor.download = 'qualifyai-contacts.csv';
-    anchor.click();
-    URL.revokeObjectURL(anchor.href);
-  }
-
-  private apiError(error: any): string {
-    return error?.error?.detail || error?.error?.title || (error?.status ? `CRM API returned ${error.status}.` : 'CRM API is unavailable.');
-  }
+  exportCsv(): void { const header = 'FirstName,LastName,Email,Phone,Lifecycle\n'; const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n'); const anchor = document.createElement('a'); anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' })); anchor.download = 'qualifyai-contacts.csv'; anchor.click(); URL.revokeObjectURL(anchor.href); }
+  private apiError(error: any): string { return error?.error?.detail || error?.error?.title || (error?.status ? `CRM API returned ${error.status}.` : 'CRM API is unavailable.'); }
 }
