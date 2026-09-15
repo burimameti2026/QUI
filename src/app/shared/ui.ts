@@ -42,7 +42,33 @@ export class Modal { readonly i18n = inject(AdminI18nService); @Input() open=fal
 @Component({selector:"qai-empty",standalone:true,template:`<div class="empty"><b>{{ translate(title) }}</b><span>{{ translate(text) }}</span></div>`})
 export class Empty { readonly i18n = inject(AdminI18nService); @Input() title="No data"; @Input() text=""; translate(value:string):string{return translateValue(this.i18n,value);} }
 
-@Component({selector:"qai-wizard-steps",standalone:true,imports:[CommonModule],template:`<nav class="wizard" [attr.aria-label]="translate(label)"><ol><li *ngFor="let step of steps;let index=index" [class.active]="index===current" [class.done]="isDone(index)"><span>{{isDone(index)?'✓':index+1}}</span><div><b>{{translate(step)}}</b><small *ngIf="descriptions[index]">{{translate(descriptions[index])}}</small></div></li></ol></nav>`})
+@Component({
+  selector:"qai-wizard-steps",
+  standalone:true,
+  imports:[CommonModule],
+  template:`<nav class="wizard" [attr.aria-label]="translate(label)"><ol><li *ngFor="let step of steps;let index=index" [class.active]="index===current" [class.done]="isDone(index)"><span>{{isDone(index)?'✓':index+1}}</span><div><b>{{translate(step)}}</b><small *ngIf="descriptions[index]">{{translate(descriptions[index])}}</small></div></li></ol></nav>`,
+  styles:[`
+    :host { display: block; min-width: 0; }
+    .wizard { display: block; width: 100%; padding: 16px 18px 18px; background: #fff; }
+    .wizard ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
+    .wizard ol::before { content: ""; position: absolute; top: 19px; left: 32px; right: 32px; height: 2px; background: #d9e3f1; }
+    .wizard li { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px; color: #64748b; text-align: center; }
+    .wizard li > span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #cbd8e8; border-radius: 50%; background: #fff; color: #62748c; font-size: 11px; font-weight: 800; box-shadow: 0 0 0 5px #fff; }
+    .wizard li.done > span, .wizard li.active > span { border-color: #2563eb; background: #2563eb; color: #fff; }
+    .wizard li.active > span { box-shadow: 0 0 0 5px #eaf2ff; }
+    .wizard li > div { min-width: 0; }
+    .wizard li b { display: block; color: #334155; font-size: 10px; font-weight: 800; }
+    .wizard li.active b { color: #1d4ed8; }
+    .wizard li small { display: block; margin-top: 4px; color: #7b8798; font-size: 8px; line-height: 1.35; }
+    @media (max-width: 680px) {
+      .wizard { padding: 14px 16px 16px; }
+      .wizard ol { grid-template-columns: 1fr; gap: 10px; }
+      .wizard ol::before { top: 18px; bottom: 18px; left: 19px; right: auto; width: 2px; height: auto; }
+      .wizard li { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 11px; padding: 0; text-align: left; }
+      .wizard li > span { box-shadow: 0 0 0 4px #fff; }
+    }
+  `]
+})
 export class WizardSteps { readonly i18n=inject(AdminI18nService); @Input() steps:string[]=[]; @Input() descriptions:string[]=[]; @Input() current=0; @Input() label="Setup progress"; translate(value:string):string{return translateValue(this.i18n,value);} isDone(index:number):boolean{return index<this.current;} }
 
 @Component({selector:"qai-callout",standalone:true,imports:[CommonModule],template:`<aside [class]="'callout '+tone"><span class="callout-icon">{{icon}}</span><div><b>{{translate(title)}}</b><p>{{translate(text)}}</p><ng-content /></div></aside>`})
