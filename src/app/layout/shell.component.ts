@@ -24,9 +24,10 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
           <div class="brand-copy"><strong>Leads<span>AI</span></strong><small>ENTERPRISE PLATFORM</small></div>
           <button type="button" class="collapse-btn" (click)="toggleSidebar()">{{ collapsed ? '→' : '←' }}</button>
         </div>
+
         <nav class="reference-menu">
           <section class="menu-group" *ngFor="let group of navigationGroups">
-            <div class="group-heading">{{ navLabel(group.label) }}</div>
+            <div class="group-heading" *ngIf="group.label">{{ navLabel(group.label) }}</div>
             <div class="group-items">
               <ng-container *ngFor="let item of group.items">
                 <div class="nav-node" *ngIf="allowed(item)">
@@ -44,6 +45,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
           </section>
         </nav>
       </aside>
+
       <main>
         <header class="app-header">
           <div class="header-search-wrap">
@@ -80,28 +82,55 @@ export class ShellComponent {
   adminMenuOpen = false;
 
   readonly navigationGroups: Group[] = [
-    { label: 'COMMAND CENTER', items: [i('Dashboard', '/dashboard', '⌂')] },
+    // Dashboard is the single command-center entry; do not duplicate it with another parent item.
+    { label: '', items: [i('Dashboard', '/dashboard', '⌂')] },
+
     { label: 'LEADS & ACQUISITION', items: [
       i('Leads', '/crm/leads', '▣'),
-      i('CRM', '/crm/companies', '▧', [i('Companies', '/crm/companies', '▦'), i('Contacts', '/crm/contacts', '◎'), i('Opportunities', '/crm/opportunities', '♡')]),
+      i('CRM', '/crm/companies', '▧', [
+        i('Companies', '/crm/companies', '▦'),
+        i('Contacts', '/crm/contacts', '◎'),
+        i('Opportunities', '/crm/opportunities', '♡')
+      ]),
       i('Prospect Discovery', '/discover', '⌕'),
       i('Autonomous Acquisition', '/acquisition/autonomous', '✦'),
       i('Campaigns', '/campaigns', '↗'),
-      i('Qualified Leads', '/crm/leads', '◆'),
       i('Sales Pipelines', '/pipeline', '▤'),
       i('Golden Pipeline', '/golden-pipeline', '◇'),
       i('Demos & Meetings', '/meetings', '◷'),
       i('Replies & Inbox', '/inbox', '▱')
     ] },
+
     { label: 'CONTENT & KNOWLEDGE', items: [
       i('Renova Content', '/renova/content', '▤'),
-      i('Knowledge', '/knowledge', '▥', [i('Knowledge Gaps', '/knowledge/gaps', '◇'), i('Knowledge Improvement', '/knowledge/improve', '✦')]),
-      i('Product Catalog', '/catalog', '▦', [i('Promotion Automation', '/renova/promotion', '✦')])
+      i('Knowledge', '/knowledge', '▥', [
+        i('Knowledge Gaps', '/knowledge/gaps', '◇'),
+        i('Knowledge Improvement', '/knowledge', '✦')
+      ]),
+      i('Product Catalog', '/catalog', '▦', [
+        i('Promotion Automation', '/renova/promotion', '✦')
+      ])
     ] },
-    { label: 'ORDERING & DISPATCH', items: [i('Orders & Dispatch', '/enterprise', '◉'), i('Invoices', '/billing', '▤')] },
+
+    // Enterprise Operations is the single operational workspace for orders, dispatch,
+    // delivery, shipments, inventory, warehouse and fleet. Do not repeat those as sidebar items.
+    { label: 'ORDERING & DISPATCH', items: [
+      i('Orders & Dispatch', '/enterprise', '◉'),
+      i('Invoices', '/billing', '▤')
+    ] },
+
     { label: 'FINANCE', items: [i('Finance', '/enterprise/finance', '€')] },
-    { label: 'AUTOMATION & IMPROVE', items: [i('Reports', '/analytics', '▧'), i('Automation', '/automations', '✣')] },
-    { label: 'ADMINISTRATION', items: [i('Platform Management', '/platform', '⚙', [i('Prepare Real Workspace', '/platform/prepare-workspace', '＋'), i('Users & Roles', '/users', '◎'), i('Audit & Governance', '/audit', '▤')])] }
+    { label: 'AUTOMATION & IMPROVE', items: [
+      i('Reports', '/analytics', '▧'),
+      i('Automation', '/automations', '✣')
+    ] },
+    { label: 'ADMINISTRATION', items: [
+      i('Platform Management', '/platform', '⚙', [
+        i('Prepare Real Workspace', '/platform/prepare-workspace', '＋'),
+        i('Users & Roles', '/users', '◎'),
+        i('Audit & Governance', '/audit', '▤')
+      ])
+    ] }
   ];
 
   get session() { return this.auth.session(); }
@@ -110,7 +139,11 @@ export class ShellComponent {
   allowed(x: Item): boolean { return (!x.permission || this.auth.hasPermission(x.permission)) && (!x.module || this.auth.hasModule(x.module)); }
   hasChildren(x: Item): boolean { return !!x.children?.length; }
   private currentUrl(): string { return this.router.url.split('?')[0].split('#')[0]; }
-  isItemActive(x: Item): boolean { const u = this.currentUrl(); if (u === x.url || u.startsWith(x.url + '/')) return true; return (x.children ?? []).some(c => u === c.url || u.startsWith(c.url + '/')); }
+  isItemActive(x: Item): boolean {
+    const u = this.currentUrl();
+    if (u === x.url || u.startsWith(x.url + '/')) return true;
+    return (x.children ?? []).some(c => u === c.url || u.startsWith(c.url + '/'));
+  }
   toggleAdminMenu(): void { this.adminMenuOpen = !this.adminMenuOpen; }
   openAdmin(): void { this.adminMenuOpen = false; void this.router.navigateByUrl('/users'); }
   logout(): void { this.adminMenuOpen = false; this.auth.logout(); void this.router.navigate(['/login']); }
