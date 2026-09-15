@@ -1,22 +1,94 @@
-/* Shared enterprise card surface: a subtle tint, never a full-page wash. */
+/* Unified enterprise card system: subtle tinted surfaces, never a full-page wash. */
+:root {
+  --card-surface: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%);
+  --card-surface-hover: linear-gradient(135deg, #f7f9fd 0%, #f0f4fb 62%, #f4f1fb 100%);
+  --card-header: linear-gradient(135deg, #eaf1fa 0%, #e5ecf6 65%, #eceaf6 100%);
+  --card-ink: #26364d;
+  --card-muted: #65748a;
+  --card-border: #d7e1ef;
+}
+
 .metric-card,
 .revenue-card,
 .automation-card,
-.data-card { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
-.metric-card:hover { background: linear-gradient(135deg, #f7f9fd 0%, #f0f4fb 62%, #f4f1fb 100%) !important; }
+.data-card,
+.directory-card,
+.metrics.compact article,
+.panel.table-wrap,
+.panel,
+.card,
+.section-card,
+.content-card {
+  background: var(--card-surface) !important;
+  border-color: var(--card-border);
+  box-shadow: 0 8px 24px rgba(15,47,104,.055);
+}
+
+.metric-card:hover { background: var(--card-surface-hover) !important; }
+
+/* All standard card headers: light blue/grey surface with readable dark text. */
+.card-heading,
+.directory-card > header,
+.panel > header,
+.card > header,
+.section-card > header,
+.content-card > header {
+  background: var(--card-header) !important;
+  border-bottom: 1px solid #d5dfeb !important;
+  color: var(--card-ink) !important;
+}
+
+.card-heading h3,
+.card-heading .eyebrow,
+.directory-card > header h2,
+.directory-card > header p,
+.directory-card > header .eyebrow,
+.panel > header h1,
+.panel > header h2,
+.panel > header h3,
+.panel > header p,
+.card > header h1,
+.card > header h2,
+.card > header h3,
+.card > header p,
+.section-card > header h1,
+.section-card > header h2,
+.section-card > header h3,
+.section-card > header p,
+.content-card > header h1,
+.content-card > header h2,
+.content-card > header h3,
+.content-card > header p {
+  color: var(--card-ink) !important;
+}
+
+.card-heading .eyebrow,
+.directory-card > header .eyebrow {
+  opacity: 1;
+  color: #61728a !important;
+}
+
+.card-heading button,
+.card-heading a,
+.directory-card > header button,
+.panel > header button,
+.card > header button {
+  background: #fff !important;
+  border-color: #d0dbe9 !important;
+  color: #315fbd !important;
+}
+
+.directory-card > header p { color: #68778d !important; }
+.directory-summary span { color: #68778d !important; }
+.directory-summary b { color: #26364d !important; }
+
 .revenue-body,
 .impact-grid { background: transparent !important; }
 .revenue-highlight,
 .revenue-row,
 .impact-grid > div,
-.opportunity { background: rgba(255,255,255,.52) !important; }
+.opportunity { background: rgba(255,255,255,.55) !important; }
 .revenue-highlight { background: linear-gradient(100deg, #e9f1ff, #e8eef9) !important; }
 .opportunity-columns { background: #e7edf6 !important; }
-
-/* CRM uses the same surface language as Dashboard. */
-.directory-card { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
-.directory-card > header { background: linear-gradient(135deg, #0f2f68 0%, #164a9b 100%) !important; }
 .directory-toolbar { background: rgba(237,243,251,.82) !important; }
-.metrics.compact article,
-.panel.table-wrap { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
-.metrics.compact article { border-color: #d7e1ef !important; }
+.metrics.compact article { border-color: var(--card-border) !important; }
