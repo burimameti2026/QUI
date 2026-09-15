@@ -8,7 +8,6 @@ import { CrmService } from './crm.service';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  styleUrl: './crm-directory.css',
   template: `
     <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
       <button class="refresh-action" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
