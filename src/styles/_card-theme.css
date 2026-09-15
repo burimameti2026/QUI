@@ -4,7 +4,6 @@
 .automation-card,
 .data-card { background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%) !important; }
 .metric-card:hover { background: linear-gradient(135deg, #f7f9fd 0%, #f0f4fb 62%, #f4f1fb 100%) !important; }
-.card-heading { background: linear-gradient(135deg, #edf3fb 0%, #e9eff8 65%, #efedf8 100%) !important; }
 .revenue-body,
 .impact-grid { background: transparent !important; }
 .revenue-highlight,
