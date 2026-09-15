@@ -6,7 +6,7 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
 
-@Component({ standalone: true, imports: [CommonModule, PageHeader], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css', './dashboard-modern.css'] })
+@Component({ standalone: true, imports: [CommonModule, PageHeader], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css', './dashboard-modern.css', './dashboard-scale.css'] })
 export class DashboardPage implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
