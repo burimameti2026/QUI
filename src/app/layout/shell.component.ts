@@ -16,6 +16,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
   selector: 'qai-shell',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive, AdminStaticI18nDirective],
+  styleUrls: ['./shell.component.css'],
   template: `
     <div class="shell" [class.collapsed]="collapsed">
       <aside class="sidebar">
