@@ -6,6 +6,7 @@ import { AuthService } from '../core/auth.service';
 import { TenantRuntimeService } from '../core/tenant-runtime.service';
 import { AdminI18nService } from '../core/admin-i18n.service';
 import { AdminStaticI18nDirective } from '../core/admin-static-i18n.directive';
+import { NAVIGATION_TRANSLATIONS } from '../core/navigation-translations';
 
 interface Item { label: string; url: string; icon: string; module?: string; permission?: string; children?: Item[] }
 interface Group { label: string; items: Item[] }
@@ -26,19 +27,19 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
         <div class="workspace-card"><span class="workspace-logo">⌂</span><div><b>{{ workspaceName }}</b><small>Licensed workspace</small></div><span class="workspace-more">⌄</span></div>
         <nav class="reference-menu">
           <section class="menu-group" *ngFor="let group of navigationGroups">
-            <div class="group-heading">{{ i18n.t(group.label) }}</div>
+            <div class="group-heading">{{ navLabel(group.label) }}</div>
             <div class="group-items">
               <ng-container *ngFor="let item of group.items">
                 <div class="nav-node" *ngIf="allowed(item)">
                   <a *ngIf="!hasChildren(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span>
+                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ navLabel(item.label) }}</span>
                   </a>
                   <button *ngIf="hasChildren(item)" type="button" class="menu-item parent-item" [class.active]="isItemActive(item)" (click)="openItem(item)">
-                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span><span class="node-chevron">{{ isItemExpanded(item) ? '⌃' : '⌄' }}</span>
+                    <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ navLabel(item.label) }}</span><span class="node-chevron">{{ isItemExpanded(item) ? '⌃' : '⌄' }}</span>
                   </button>
                   <div class="child-items" *ngIf="hasChildren(item) && isItemExpanded(item)">
                     <a *ngFor="let child of item.children" class="child-item" [routerLink]="child.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                      <span class="child-dot"></span><span>{{ i18n.t(child.label) }}</span>
+                      <span class="child-dot"></span><span>{{ navLabel(child.label) }}</span>
                     </a>
                   </div>
                 </div>
@@ -61,6 +62,7 @@ export class ShellComponent {
   readonly runtime = inject(TenantRuntimeService);
   readonly i18n = inject(AdminI18nService);
   private readonly router = inject(Router);
+  readonly navigationTranslations = NAVIGATION_TRANSLATIONS;
   query = '';
   collapsed = false;
   expandedItem: Item | null | undefined = undefined;
@@ -77,6 +79,9 @@ export class ShellComponent {
 
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
+  navLabel(key: string): string {
+    return this.navigationTranslations[key]?.[this.i18n.language()] ?? key;
+  }
   allowed(x: Item): boolean { return (!x.permission || this.auth.hasPermission(x.permission)) && (!x.module || this.auth.hasModule(x.module)); }
   hasChildren(x: Item): boolean { return !!x.children?.length; }
   private currentUrl(): string { return this.router.url.split('?')[0].split('#')[0]; }
