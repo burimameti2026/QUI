@@ -8,9 +8,10 @@ import { CrmService } from './crm.service';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
+  styleUrl: './crm-directory.css',
   template: `
     <qai-page-header title="Companies" subtitle="Account intelligence, firmographics and commercial activity.">
-      <button class="refresh-action" (click)="load()">↻ Refresh data</button>
+      <button class="refresh-action" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
       <button class="primary" (click)="open()">+ Add company</button>
     </qai-page-header>
     <div class="callout warning" *ngIf="error"><span class="callout-icon">!</span><div><b>Companies could not be loaded</b><p>{{ error }}</p></div></div>
@@ -46,20 +47,20 @@ import { CrmService } from './crm.service';
         <label>Name<input [(ngModel)]="form.name" name="name" required /></label><label>Domain<input [(ngModel)]="form.domain" name="domain" /></label>
         <div class="form2"><label>Industry<input [(ngModel)]="form.industry" name="industry" /></label><label>Country<input [(ngModel)]="form.country" name="country" /></label></div>
         <div class="form2"><label>Employees<input type="number" [(ngModel)]="form.employees" name="employees" /></label><label>Annual revenue<input type="number" [(ngModel)]="form.annualRevenue" name="revenue" /></label></div>
-        <footer><button type="button" (click)="show = false">Cancel</button><button class="primary" type="submit">Save company</button></footer>
+        <footer><button type="button" (click)="show = false">Cancel</button><button class="primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save company' }}</button></footer>
       </form>
     </qai-modal>
   `
 })
 export class CompaniesPage implements OnInit {
-  rows: Company[] = []; q = ''; show = false; loading = false; error = ''; form: Partial<Company> = {};
+  rows: Company[] = []; q = ''; show = false; loading = false; saving = false; error = ''; form: Partial<Company> = {};
   constructor(private readonly crm: CrmService) {}
   ngOnInit(): void { this.load(); }
-  load(): void { this.loading = true; this.error = ''; this.crm.companies().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } }); }
+  load(): void { if (this.loading) return; this.loading = true; this.error = ''; this.crm.companies().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } }); }
   get visible(): Company[] { const term = this.q.trim().toLowerCase(); return this.rows.filter((company) => !term || `${company.name} ${company.domain} ${company.industry} ${company.country}`.toLowerCase().includes(term)); }
   open(company?: Company): void { this.form = company ? { ...company } : {}; this.show = true; }
-  save(): void { const operation = this.form.id ? this.crm.updateCompany(this.form.id, this.form) : this.crm.createCompany(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((row) => row.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; }, error: (error) => this.error = this.apiError(error) }); }
-  remove(company: Company): void { if (!confirm(`Delete ${company.name}?`)) return; this.crm.deleteCompany(company.id).subscribe({ next: () => this.rows = this.rows.filter((row) => row.id !== company.id), error: (error) => this.error = this.apiError(error) }); }
+  save(): void { if (this.saving) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateCompany(this.form.id, this.form) : this.crm.createCompany(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((row) => row.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
+  remove(company: Company): void { if (!confirm(`Delete ${company.name}?`)) return; this.error = ''; this.crm.deleteCompany(company.id).subscribe({ next: () => this.rows = this.rows.filter((row) => row.id !== company.id), error: (error) => this.error = this.apiError(error) }); }
   initials(name: string): string { return name.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'CO'; }
   companyUrl(domain: string): string { if (!domain) return '#'; return /^https?:\/\//i.test(domain) ? domain : `https://${domain}`; }
   money(value: number): string { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value); }
