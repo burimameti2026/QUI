@@ -1,0 +1,375 @@
+/*
+ * Dashboard visual system
+ * One shared surface language for feature pages.
+ */
+:root {
+  --ds-blue: #2563eb;
+  --ds-blue-dark: #173f7a;
+  --ds-blue-soft: #d6e8ff;
+  --ds-blue-border: #bfd3ef;
+  --ds-surface: #ffffff;
+  --ds-page: #f5f7fb;
+  --ds-card: #f8fbff;
+  --ds-border: #d6e0ec;
+  --ds-text: #26364d;
+  --ds-muted: #68778d;
+  --ds-radius: 14px;
+  --ds-shadow: 0 7px 20px rgba(15, 47, 104, 0.055);
+}
+
+/* Every feature uses the same readable content width and page rhythm. */
+.page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 26px 28px 42px;
+  background: var(--ds-page);
+}
+
+.page-header {
+  width: 100%;
+  min-height: 58px;
+  margin: 0 0 16px;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* One card surface. No random gradients or floating cards. */
+.card,
+.panel,
+.section-card,
+.content-card,
+.data-card,
+.directory-card,
+.metric-card,
+.revenue-card,
+.automation-card,
+.list-card {
+  border: 1px solid var(--ds-border) !important;
+  border-radius: var(--ds-radius) !important;
+  background: var(--ds-surface) !important;
+  box-shadow: var(--ds-shadow) !important;
+}
+
+/* One blue card header, matching Dashboard. */
+.card-heading,
+.directory-card > header,
+.panel > header,
+.card > header,
+.section-card > header,
+.content-card > header,
+.list-header {
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 14px 18px !important;
+  border-bottom: 1px solid var(--ds-blue-border) !important;
+  border-radius: var(--ds-radius) var(--ds-radius) 0 0 !important;
+  background: var(--ds-blue-soft) !important;
+  color: var(--ds-blue-dark) !important;
+}
+
+.card-heading h1,
+.card-heading h2,
+.card-heading h3,
+.directory-card > header h1,
+.directory-card > header h2,
+.directory-card > header h3,
+.panel > header h1,
+.panel > header h2,
+.panel > header h3,
+.card > header h1,
+.card > header h2,
+.card > header h3,
+.section-card > header h1,
+.section-card > header h2,
+.section-card > header h3,
+.content-card > header h1,
+.content-card > header h2,
+.content-card > header h3,
+.list-header h1,
+.list-header h2,
+.list-header h3 {
+  margin: 0 !important;
+  color: var(--ds-blue-dark) !important;
+  font-weight: 650 !important;
+}
+
+.card-heading p,
+.directory-card > header p,
+.panel > header p,
+.card > header p,
+.section-card > header p,
+.content-card > header p,
+.list-header p {
+  margin: 4px 0 0 !important;
+  color: var(--ds-muted) !important;
+}
+
+/* Standard controls. */
+.page button.primary,
+.page .primary,
+.page .primary-action,
+.page .btn-primary {
+  border-color: var(--ds-blue) !important;
+  background: var(--ds-blue) !important;
+  color: #fff !important;
+}
+
+.page button.primary:hover:not(:disabled),
+.page .primary:hover:not(:disabled),
+.page .primary-action:hover:not(:disabled),
+.page .btn-primary:hover:not(:disabled) {
+  border-color: #1d4ed8 !important;
+  background: #1d4ed8 !important;
+}
+
+.page button.secondary,
+.page .secondary,
+.page .quiet-action,
+.page .export-action,
+.page .small {
+  border-color: var(--ds-blue-border) !important;
+  background: #fff !important;
+  color: #315fbd !important;
+}
+
+.page button.secondary:hover:not(:disabled),
+.page .secondary:hover:not(:disabled),
+.page .quiet-action:hover:not(:disabled),
+.page .export-action:hover:not(:disabled),
+.page .small:hover:not(:disabled) {
+  border-color: #9fbbe4 !important;
+  background: #f4f8ff !important;
+  color: #164a9b !important;
+}
+
+/* Standard icon circles. */
+.metric-icon,
+.tab-icon,
+.directory-identity i {
+  border: 1px solid #c8daf7 !important;
+  border-radius: 50% !important;
+  background: #e8f0ff !important;
+  color: #164a9b !important;
+}
+
+/* Keep KPI cards subtly tinted in Dashboard order: blue, violet, green, amber, rose. */
+.metric-card.blue {
+  background: linear-gradient(145deg, #f8fbff 0%, #eef5ff 100%) !important;
+}
+
+.metric-card.violet {
+  background: linear-gradient(145deg, #fbf9ff 0%, #f4efff 100%) !important;
+}
+
+.metric-card.green {
+  background: linear-gradient(145deg, #f7fdfb 0%, #eaf8f2 100%) !important;
+}
+
+.metric-card.amber {
+  background: linear-gradient(145deg, #fffdf8 0%, #fff5df 100%) !important;
+}
+
+.metric-card.rose {
+  background: linear-gradient(145deg, #fff9fa 0%, #fff0f3 100%) !important;
+}
+
+/* Tables, lists and empty states share the same alignment. */
+.table-wrap,
+.data-table,
+.directory-table {
+  overflow: auto;
+  border: 1px solid var(--ds-border) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+}
+
+thead th,
+.table-head,
+.row.header {
+  color: #65748a !important;
+  background: #e8f0fa !important;
+  font-weight: 700 !important;
+}
+
+tbody tr:hover {
+  background: #f5f9ff !important;
+}
+
+.empty,
+.directory-empty {
+  color: var(--ds-muted);
+  background: #fff;
+}
+
+/* Campaign page: make the lower sections follow the same Dashboard hierarchy. */
+.campaigns,
+.safety,
+.approval-panel,
+.campaign-activity {
+  border: 1px solid var(--ds-border) !important;
+  border-radius: var(--ds-radius) !important;
+  background: #fff !important;
+  box-shadow: var(--ds-shadow) !important;
+}
+
+.campaigns > header,
+.safety > header,
+.approval-panel > header,
+.campaign-activity > header {
+  min-height: 64px !important;
+  margin: 0 !important;
+  padding: 14px 18px !important;
+  border-bottom: 1px solid var(--ds-blue-border) !important;
+  border-radius: var(--ds-radius) var(--ds-radius) 0 0 !important;
+  background: var(--ds-blue-soft) !important;
+  color: var(--ds-blue-dark) !important;
+}
+
+.campaigns > header h1,
+.campaigns > header h2,
+.campaigns > header h3,
+.safety > header h1,
+.safety > header h2,
+.safety > header h3,
+.approval-panel > header h1,
+.approval-panel > header h2,
+.approval-panel > header h3,
+.campaign-activity > header h1,
+.campaign-activity > header h2,
+.campaign-activity > header h3 {
+  color: var(--ds-blue-dark) !important;
+}
+
+.campaigns > header .eyebrow,
+.safety > header .eyebrow,
+.approval-panel > header .eyebrow,
+.campaign-activity > header .eyebrow {
+  color: #61728a !important;
+}
+
+/* Safety controls use neutral/blue status treatment; only semantic warning states keep warm tones. */
+.safety li button {
+  border: 1px solid #d9e3ef !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+}
+
+.safety li button:hover {
+  border-color: var(--ds-blue-border) !important;
+  background: #f5f9ff !important;
+  transform: none !important;
+}
+
+.safety li button > b {
+  background: #e8f0ff !important;
+  color: #315fbd !important;
+}
+
+/* Campaign builder step navigation: same connected timeline language as Dashboard. */
+.steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 0 0 20px;
+  padding: 4px 0 8px;
+  border: 0 !important;
+}
+
+.steps::before {
+  content: "";
+  position: absolute;
+  top: 23px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: #cbd7e6;
+}
+
+.steps button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 62px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  border: 0 !important;
+  background: transparent !important;
+  color: #64748b !important;
+  text-align: center;
+}
+
+.steps button b {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  margin: 0 !important;
+  place-items: center;
+  border: 1px solid #cbd8e8;
+  border-radius: 50%;
+  background: #fff !important;
+  color: #64748b !important;
+  box-shadow: 0 0 0 4px #fff;
+}
+
+.steps button.active,
+.steps button.done {
+  color: var(--ds-blue-dark) !important;
+}
+
+.steps button.active b,
+.steps button.done b {
+  border-color: var(--ds-blue) !important;
+  background: var(--ds-blue) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 22px 20px 36px;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding: 18px 14px 32px;
+  }
+
+  .page-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0;
+  }
+
+  .steps::before {
+    top: 16px;
+    bottom: 16px;
+    left: 15px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+
+  .steps button {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    min-height: 42px;
+    text-align: left;
+  }
+}
