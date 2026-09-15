@@ -33,7 +33,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
                   <a *ngIf="!hasChildren(item)" class="menu-item" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span>
                   </a>
-                  <button *ngIf="hasChildren(item)" type="button" class="menu-item parent-item" [class.active]="isItemActive(item)" (click)="toggleItem(item)">
+                  <button *ngIf="hasChildren(item)" type="button" class="menu-item parent-item" [class.active]="isItemActive(item)" (click)="openItem(item)">
                     <span class="nav-icon">{{ item.icon }}</span><span class="nav-label">{{ i18n.t(item.label) }}</span><span class="node-chevron">{{ isItemExpanded(item) ? '⌃' : '⌄' }}</span>
                   </button>
                   <div class="child-items" *ngIf="hasChildren(item) && isItemExpanded(item)">
@@ -91,10 +91,12 @@ export class ShellComponent {
     if (this.expandedItem !== undefined) return this.expandedItem === x;
     return this.isItemActive(x);
   }
-  toggleItem(x: Item): void {
+  openItem(x: Item): void {
     if (!this.hasChildren(x)) return;
     this.expandedItem = this.isItemExpanded(x) ? null : x;
+    if (x.url) void this.router.navigateByUrl(x.url);
   }
+  toggleItem(x: Item): void { this.openItem(x); }
   initials(v: string): string { return v.split(/[-_\s]+/).filter(Boolean).slice(0, 2).map(x => x[0]).join('').toUpperCase() || 'R'; }
   toggleSidebar(): void { this.collapsed = !this.collapsed; }
   setLanguage(l: string): void { this.i18n.setLanguage(l as any); }
