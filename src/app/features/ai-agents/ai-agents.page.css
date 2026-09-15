@@ -1,0 +1,103 @@
+.agent-deployment {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 26px;
+  margin-bottom: 16px;
+  padding: 18px 20px;
+  border-color: #d7e1ef;
+  background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%);
+}
+
+.agent-deployment .eyebrow {
+  color: #2563eb;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.agent-deployment h2 {
+  margin: 4px 0;
+  color: #26364d;
+  font-size: 1rem;
+}
+
+.agent-deployment p {
+  max-width: 680px;
+  margin: 0;
+  color: #526278;
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.agent-deployment ol {
+  display: grid;
+  gap: 8px;
+  min-width: 235px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agent-deployment li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 1px solid #dbe4f0;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.agent-deployment li b {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.success-dot {
+  background: #22c55e;
+}
+
+.neutral-dot {
+  background: #94a3b8;
+}
+
+.agent-deployment li span {
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-deployment li strong {
+  color: #26364d;
+  font-size: 0.72rem;
+}
+
+.agent-deployment li small {
+  color: #64748b;
+  font-size: 0.67rem;
+}
+
+.test header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.test header small {
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 0.68rem;
+}
+
+@media (max-width: 900px) {
+  .agent-deployment {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .agent-deployment ol {
+    width: 100%;
+    min-width: 0;
+  }
+}
