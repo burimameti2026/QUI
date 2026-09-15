@@ -1,7 +1,7 @@
 /* Shared header foundation. Shell geometry and navigation remain local to shell.component.css. */
 .shell main > header.app-header{background:#fff;border-bottom:1px solid var(--color-border);color:var(--color-text)}
-.shell .global-search{background:#fbfcfd;border-color:#dce4e8;color:#81909a;box-shadow:none}
-.shell .global-search:hover,.shell .global-search:focus-within{background:#fff;border-color:#b9cbd0;box-shadow:none}
-.shell .global-search>span{color:#4f8f91}.shell .global-search input{color:var(--color-text)}.shell .global-search input::placeholder{color:#82909a}
-.shell .portal-link,.shell .admin-language{background:#fff;border-color:#dce4e8}.shell .portal-link{color:#50606b}.shell .portal-link:hover{background:#f3f7f8}.shell .admin-language>span{color:#4f8f91}.shell .admin-language select{color:#344054}
-.shell .header-tool,.shell .header-avatar{color:#61717b}.shell .header-tool:hover,.shell .header-avatar:hover{color:#4f8f91}.shell .notification-dot{background:#4f8f91}
+.shell .global-search{background:#fbfcfd;border-color:#dce4ee;color:#718096;box-shadow:none}
+.shell .global-search:hover,.shell .global-search:focus-within{background:#fff;border-color:#a9c2ea;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.shell .global-search>span{color:#2563eb}.shell .global-search input{color:var(--color-text)}.shell .global-search input::placeholder{color:#8290a3}
+.shell .portal-link,.shell .admin-language{background:#fff;border-color:#dce4ee}.shell .portal-link{color:#475569}.shell .portal-link:hover{background:#f5f8fe}.shell .admin-language>span{color:#2563eb}.shell .admin-language select{color:#344054}
+.shell .header-tool,.shell .header-avatar{color:#5f6f83}.shell .header-tool:hover,.shell .header-avatar:hover{color:#2563eb}.shell .notification-dot{background:#2563eb}
