@@ -58,10 +58,7 @@
   white-space: nowrap;
 }
 
-.directory-summary b {
-  color: #173f7a;
-  font-size: 12px;
-}
+.directory-summary b { color: #173f7a; font-size: 12px; }
 
 .directory-toolbar {
   display: grid;
@@ -207,8 +204,52 @@ tr:hover td { background: #fbfdff; }
 .form2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form footer { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
 
+/* Dashboard geometry: keep Leads on the same 115% visual scale and frame. */
+:host {
+  display: block;
+  font-size: 115%;
+}
+
+.page-leads,
+.page-leads * { box-sizing: border-box; }
+
+.page-leads {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 4px 28px 42px;
+}
+
+.directory-card { box-shadow: 0 6px 18px rgba(23, 32, 51, 0.06); }
+
+.directory-card > header {
+  min-height: 78px;
+  padding: 17px 20px;
+}
+
+.directory-toolbar { padding: 16px 19px; }
+
+.directory-toolbar label,
+.directory-toolbar input,
+.directory-toolbar select { height: 42px; }
+
+.directory-toolbar input { height: 40px; }
+
+.directory-card th { height: 46px; padding: 0 16px; }
+.directory-card td { padding: 14px 16px; }
+
+.directory-empty { min-height: 250px; padding: 58px 24px; }
+
+.form { gap: 16px; }
+.form input,
+.form select { height: 42px; }
+
+@media (max-width: 1180px) {
+  .page-leads { padding-left: 20px; padding-right: 20px; }
+}
+
 @media (max-width: 900px) {
-  .page-leads { padding: 0 20px 32px; }
+  :host { font-size: 110%; }
+  .page-leads { padding: 4px 20px 32px; }
   .directory-card > header { flex-direction: column; }
   .directory-summary { justify-content: flex-start; }
   .directory-toolbar { grid-template-columns: 1fr; }
@@ -216,7 +257,8 @@ tr:hover td { background: #fbfdff; }
 }
 
 @media (max-width: 560px) {
-  .page-leads { padding: 0 14px 24px; }
+  :host { font-size: 100%; }
+  .page-leads { padding: 4px 14px 24px; }
   .form2 { grid-template-columns: 1fr; }
   .directory-summary span { flex: 1; justify-content: center; }
 }
