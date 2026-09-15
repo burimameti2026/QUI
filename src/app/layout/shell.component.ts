@@ -68,8 +68,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
         <section class="page" qaiAdminStaticI18n><router-outlet /></section>
       </main>
     </div>
-  `,
-  styleUrl: './shell.component.css'
+  `
 })
 export class ShellComponent {
   readonly auth = inject(AuthService);
@@ -82,9 +81,7 @@ export class ShellComponent {
   adminMenuOpen = false;
 
   readonly navigationGroups: Group[] = [
-    // Dashboard is the single command-center entry; do not duplicate it with another parent item.
     { label: '', items: [i('Dashboard', '/dashboard', '⌂')] },
-
     { label: 'LEADS & ACQUISITION', items: [
       i('Leads', '/crm/leads', '▣'),
       i('CRM', '/crm/companies', '▧', [
@@ -100,7 +97,6 @@ export class ShellComponent {
       i('Demos & Meetings', '/meetings', '◷'),
       i('Replies & Inbox', '/inbox', '▱')
     ] },
-
     { label: 'CONTENT & KNOWLEDGE', items: [
       i('Renova Content', '/renova/content', '▤'),
       i('Knowledge', '/knowledge', '▥', [
@@ -111,14 +107,10 @@ export class ShellComponent {
         i('Promotion Automation', '/renova/promotion', '✦')
       ])
     ] },
-
-    // Enterprise Operations is the single operational workspace for orders, dispatch,
-    // delivery, shipments, inventory, warehouse and fleet. Do not repeat those as sidebar items.
     { label: 'ORDERING & DISPATCH', items: [
       i('Orders & Dispatch', '/enterprise', '◉'),
       i('Invoices', '/billing', '▤')
     ] },
-
     { label: 'FINANCE', items: [i('Finance', '/enterprise/finance', '€')] },
     { label: 'AUTOMATION & IMPROVE', items: [
       i('Reports', '/analytics', '▧'),
