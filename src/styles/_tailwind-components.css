@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 @layer components {
   .page {
     @apply mx-auto w-full max-w-[1720px] px-7 pb-14 pt-7;
