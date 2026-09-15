@@ -8,7 +8,7 @@ import { AdminI18nService } from '../core/admin-i18n.service';
 import { AdminStaticI18nDirective } from '../core/admin-static-i18n.directive';
 import { NAVIGATION_TRANSLATIONS } from '../core/navigation-translations';
 
-interface Item { label: string; url: string; icon: string; module?: string; permission?: string; children?: Item }
+interface Item { label: string; url: string; icon: string; module?: string; permission?: string; children?: Item[] }
 interface Group { label: string; items: Item[] }
 const i = (label: string, url: string, icon: string, children?: Item[]): Item => ({ label, url, icon, children });
 
