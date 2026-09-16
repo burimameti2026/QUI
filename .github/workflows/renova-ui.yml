@@ -1,13 +1,13 @@
-name: Renova UI CI
+name: QUI UI CI
 
 on:
   push:
-    branches: [renova]
+    branches: [renova, newstyle]
   pull_request:
-    branches: [renova]
+    branches: [renova, newstyle]
 
 concurrency:
-  group: renova-ui-${{ github.ref }}
+  group: qui-ui-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
