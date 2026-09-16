@@ -5,8 +5,9 @@ import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { BillingService } from '../billing/billing.service';
+import { PageHeader } from '../../shared/ui';
 
-@Component({ standalone: true, imports: [CommonModule], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css'] })
+@Component({ standalone: true, imports: [CommonModule, PageHeader], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css'] })
 export class DashboardPage implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
@@ -27,6 +28,8 @@ export class DashboardPage implements OnInit {
   get sessionName() { return this.auth.session()?.name || this.auth.session()?.tenantSlug || 'Current workspace'; }
   get activeAgentCount() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
   get publishedProducts() { return this.products.filter(x => String(x.publication?.status || '').toLowerCase() === 'published').length; }
+  get activePlans() { return this.plans.filter(x => String(x.status).toLowerCase() === 'active').length; }
+  get recentRun() { return this.runs[0]; }
   get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
   get qualifiedProspects() { return Number(this.acquisition.hot || 0); }
   get financeStat() { return this.billingSnapshot?.subscription?.status || this.billingSnapshot?.subscription?.planName || 'Ready'; }
