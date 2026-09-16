@@ -20,12 +20,7 @@
             "assets": [],
             "styles": [
               "src/styles.css",
-              "src/styles/_enterprise-consistency.css",
-              "src/app/features/acquisition/discover-workflow.css",
-              "src/app/features/acquisition/campaigns-enterprise.css",
-              "src/styles/_dashboard-system.css",
-              "src/styles/_final-ui-system.css",
-              "src/styles/_layout-geometry-fix.css"
+              "src/styles/_design-system.css"
             ]
           },
           "configurations": {
