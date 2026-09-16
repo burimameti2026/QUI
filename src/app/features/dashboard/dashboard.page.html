@@ -1,92 +1,77 @@
-<qai-page-header title="">
-  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
-
-  <button type="button" class="primary" (click)="go('/renova/promotion')">Open promotion plan</button>
+<qai-page-header title="Home" subtitle="One operating hub for Leads, CMS, Finance and Admin.">
+  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh</button>
 </qai-page-header>
 
-<main class="dashboard-content">
-  <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{ error }}</span></div>
+<main class="hub-content">
+  <div class="hub-alert" *ngIf="error"><strong>Live data notice</strong><span>{{ error }}</span></div>
 
-  <section class="journey-timeline" aria-label="Acquisition journey">
-    <div class="timeline-head">
-      <div><span class="eyebrow">GROWTH JOURNEY</span><h2>From product readiness to qualified demand</h2></div>
-      <span class="timeline-status"><i></i> Workspace operating flow</span>
+  <section class="hub-hero">
+    <div class="hub-hero-copy">
+      <span class="eyebrow">COMMAND CENTER</span>
+      <h2>Everything important, one workspace at a time.</h2>
+      <p>Start with the job you need to do. Leads is the primary growth workspace; CMS, Finance and Admin stay focused and out of the way until you need them.</p>
     </div>
-    <div class="timeline-track">
-      <div class="timeline-step active"><span class="timeline-node">01</span><div><small>PRODUCT</small><strong>Product readiness</strong><em>Catalog & localization</em></div></div>
-      <span class="timeline-line"></span>
-      <div class="timeline-step"><span class="timeline-node">02</span><div><small>MARKET</small><strong>Promotion plan</strong><em>Target markets & positioning</em></div></div>
-      <span class="timeline-line"></span>
-      <div class="timeline-step"><span class="timeline-node">03</span><div><small>ACQUISITION</small><strong>Autonomous discovery</strong><em>Find & qualify prospects</em></div></div>
-      <span class="timeline-line"></span>
-      <div class="timeline-step"><span class="timeline-node">04</span><div><small>OUTREACH</small><strong>Human-approved delivery</strong><em>Campaigns & replies</em></div></div>
-      <span class="timeline-line"></span>
-      <div class="timeline-step"><span class="timeline-node">05</span><div><small>DEMAND</small><strong>Qualified demand</strong><em>Commercial handoff</em></div></div>
+    <div class="hub-hero-meta">
+      <span><i></i> Workspace connected</span>
+      <b>{{ sessionName }}</b>
     </div>
   </section>
 
-  <ng-container *ngIf="loaded && !error">
-    <section class="executive-band renova-band">
-      <div><span class="eyebrow">RENOVA BALKAN EXPANSION</span><h2>One operating picture for the full acquisition loop.</h2><p>The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.</p></div>
-      <div class="executive-context"><span><i class="status-dot"></i>Workspace live</span><span><b>{{ publishedProducts }}</b> products published</span><span><b>{{ activeAgentCount }}</b> active agent</span></div>
-    </section>
+  <section class="workspace-grid" *ngIf="loaded">
+    <button type="button" class="workspace-tile leads" (click)="go('/discover')">
+      <div class="workspace-tile-top"><span class="workspace-icon">◎</span><span class="workspace-arrow">→</span></div>
+      <span class="workspace-kicker">PRIMARY WORKSPACE</span>
+      <h3>Leads</h3>
+      <p>Discover, qualify and convert prospects through the full sales journey.</p>
+      <div class="workspace-stat"><strong>{{ acquisition.discovered || 0 }}</strong><span>prospects discovered</span></div>
+      <div class="workspace-links"><span>Discovery</span><span>CRM</span><span>Pipeline</span><span>Campaigns</span></div>
+    </button>
 
-    <section class="metric-grid">
-      <button type="button" class="metric-card blue" (click)="go('/catalog')"><span class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Product catalog</span></span><strong>{{ products.length }}</strong><small><b>{{ publishedProducts }}</b> public publications live <i>→</i></small></button>
-      <button type="button" class="metric-card violet" (click)="go('/renova/promotion')"><span class="metric-top"><span class="metric-icon">✦</span><span class="metric-label">Promotion plans</span></span><strong>{{ activePlans }}</strong><small>active market programs <i>→</i></small></button>
-      <button type="button" class="metric-card green" (click)="go('/acquisition/autonomous')"><span class="metric-top"><span class="metric-icon">↯</span><span class="metric-label">Autonomous agents</span></span><strong>{{ activeAgentCount }}</strong><small>running acquisition engines <i>→</i></small></button>
-      <button type="button" class="metric-card amber" (click)="go('/discover')"><span class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Prospects discovered</span></span><strong>{{ acquisition.discovered || 0 }}</strong><small><b>{{ qualifiedProspects }}</b> high-fit prospects <i>→</i></small></button>
-      <button type="button" class="metric-card rose" (click)="go('/acquisition/approval-queue')"><span class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Awaiting delivery</span></span><strong>{{ queuedMessages }}</strong><small>review the approval queue <i>→</i></small></button>
-    </section>
+    <button type="button" class="workspace-tile cms" (click)="go('/renova/content')">
+      <div class="workspace-tile-top"><span class="workspace-icon">▤</span><span class="workspace-arrow">→</span></div>
+      <span class="workspace-kicker">CONTENT</span>
+      <h3>CMS</h3>
+      <p>Manage Renova content, products, localization and promotion programs.</p>
+      <div class="workspace-stat"><strong>{{ publishedProducts }}</strong><span>published products</span></div>
+      <div class="workspace-links"><span>Content</span><span>Catalog</span><span>Promotions</span></div>
+    </button>
 
-    <section class="command-grid">
-      <article class="revenue-card">
-        <div class="card-heading"><div><span class="eyebrow">AUTONOMOUS LOOP</span><h3>Acquisition engine</h3></div><span class="trend"><i></i> {{ recentRun ? (recentRun.status || 'Run ready') : 'Ready' }}</span></div>
-        <div class="revenue-body">
-          <div class="revenue-highlight"><span class="impact-icon blue-impact">↗</span><span><small>Latest discovery run</small><strong>{{ recentRun ? (recentRun.discoveredCount || 0) : 0 }} prospects</strong></span></div>
-          <div class="revenue-row"><span><small>Qualified</small><em>Passed autonomous scoring threshold</em></span><strong>{{ recentRun?.qualifiedCount || 0 }}</strong></div>
-          <div class="revenue-row"><span><small>High score</small><em>Ready for targeted sales action</em></span><strong>{{ recentRun?.highScoreCount || 0 }}</strong></div>
-        </div>
-        <div class="revenue-note"><span>Next action</span><strong (click)="go('/acquisition/autonomous')">Open agent →</strong></div>
-      </article>
+    <button type="button" class="workspace-tile finance" (click)="go('/billing')">
+      <div class="workspace-tile-top"><span class="workspace-icon">€</span><span class="workspace-arrow">→</span></div>
+      <span class="workspace-kicker">OPERATIONS</span>
+      <h3>Finance</h3>
+      <p>Billing, subscription state and enterprise operational services.</p>
+      <div class="workspace-stat"><strong>{{ financeStat }}</strong><span>subscription status</span></div>
+      <div class="workspace-links"><span>Billing</span><span>Orders</span><span>Inventory</span><span>Logistics</span></div>
+    </button>
 
-      <article class="automation-card">
-        <div class="card-heading"><div><span class="eyebrow">CAMPAIGN CONTROL</span><h3>Active outreach</h3></div><button type="button" (click)="go('/campaigns')">View campaigns <span>→</span></button></div>
-        <div class="impact-grid">
-          <div><span class="impact-icon blue-impact">↗</span><span><small>Running campaigns</small><strong>{{ campaigns.length }}</strong></span></div>
-          <div><span class="impact-icon violet-impact">▱</span><span><small>Queued messages</small><strong>{{ queuedMessages }}</strong></span></div>
-          <div><span class="impact-icon green-impact">✓</span><span><small>Replies</small><strong>{{ acquisition.replies || 0 }}</strong></span></div>
-        </div>
-        <div class="automation-note"><span><i></i> Guardrail</span><strong>Approval before delivery</strong></div>
-      </article>
-    </section>
+    <button type="button" class="workspace-tile admin" (click)="go('/platform')">
+      <div class="workspace-tile-top"><span class="workspace-icon">⚙</span><span class="workspace-arrow">→</span></div>
+      <span class="workspace-kicker">CONTROL PLANE</span>
+      <h3>Admin</h3>
+      <p>Platform management, tenants, access, security and governance.</p>
+      <div class="workspace-stat"><strong>{{ activeAgentCount }}</strong><span>active acquisition agents</span></div>
+      <div class="workspace-links"><span>Platform</span><span>Users</span><span>Security</span><span>Audit</span></div>
+    </button>
+  </section>
 
-    <section class="detail-grid">
-      <article class="data-card opportunity-card">
-        <div class="card-heading"><div><span class="eyebrow">MARKET ACTIVATION</span><h3>Current programs</h3></div><button type="button" (click)="go('/renova/promotion')">Manage plans <span>→</span></button></div>
-        <div class="opportunity-table">
-          <div class="opportunity-columns"><span>Program</span><span>Language</span><span>Status</span><span>Automation</span></div>
-          <div class="opportunity" *ngFor="let plan of plans">
-            <div class="account-cell"><span class="company-mark">R</span><div class="opportunity-main"><strong>{{ plan.name }}</strong><span>{{ plan.targetCustomerProfile }}</span></div></div>
-            <span class="intent-cell">{{ plan.campaignLanguage | uppercase }}</span><span class="score-chip">{{ plan.status }}</span><b>{{ plan.enableAutonomousProspecting ? 'Autonomous' : 'Manual' }}</b>
-          </div>
-        </div>
-        <p class="no-records" *ngIf="!plans.length">No promotion plans have been created.</p>
-      </article>
-
-      <article class="data-card knowledge-card">
-        <div class="card-heading"><div><span class="eyebrow">PUBLISHING</span><h3>Public product experience</h3></div><a href="/renova/portal" target="_blank" rel="noreferrer">Open portal <span>→</span></a></div>
-        <div class="knowledge-list">
-          <div class="knowledge-gap"><span class="gap-mark">▦</span><div class="gap-copy"><strong>{{ products.length }} catalog products</strong><span>{{ publishedProducts }} are published to the public Renova portal.</span></div><em>LIVE</em></div>
-          <div class="knowledge-gap"><span class="gap-mark">◎</span><div class="gap-copy"><strong>4-language content</strong><span>EN, MK, SQ and DE localization is seeded for the demo workspace.</span></div><em>READY</em></div>
-          <div class="knowledge-gap"><span class="gap-mark">↯</span><div class="gap-copy"><strong>Inbound inquiry path</strong><span>Distributor inquiries enter the tenant workspace as structured portal inquiries.</span></div><em>CONNECTED</em></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="detail-grid final-row">
-      <article class="data-card opportunity-card next-card"><div class="card-heading"><div><span class="eyebrow">NEXT STEP</span><h3>Human review</h3></div><button type="button" (click)="go('/acquisition/approval-queue')">Open queue <span>→</span></button></div><p class="large-copy">Use the approval queue to review the exact subject, body and destination before delivery. The backend still enforces sender verification, suppression and provider controls.</p></article>
-      <article class="data-card knowledge-card next-card"><div class="card-heading"><div><span class="eyebrow">CROSS-SYSTEM HANDOFF</span><h3>Qualified demand → FusionFleet</h3></div></div><p class="large-copy">LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.</p></article>
-    </section>
-  </ng-container>
+  <section class="hub-lower" *ngIf="loaded">
+    <article class="overview-card">
+      <header><div><span class="eyebrow">LEADS SNAPSHOT</span><h3>Prospecting → qualified demand</h3></div><button type="button" (click)="go('/analytics')">Open analytics →</button></header>
+      <div class="snapshot-grid">
+        <div><span>Discovered</span><strong>{{ acquisition.discovered || 0 }}</strong></div>
+        <div><span>Qualified</span><strong>{{ qualifiedProspects }}</strong></div>
+        <div><span>Queued for review</span><strong>{{ queuedMessages }}</strong></div>
+        <div><span>Campaigns</span><strong>{{ campaigns.length }}</strong></div>
+      </div>
+    </article>
+    <article class="overview-card">
+      <header><div><span class="eyebrow">SYSTEM STATUS</span><h3>Workspace services</h3></div></header>
+      <div class="service-list">
+        <div><span class="service-dot live"></span><div><b>Autonomous acquisition</b><small>{{ activeAgentCount }} active agents</small></div><span class="service-state">READY</span></div>
+        <div><span class="service-dot live"></span><div><b>Public catalog</b><small>{{ publishedProducts }} published products</small></div><span class="service-state">LIVE</span></div>
+        <div><span class="service-dot neutral"></span><div><b>Human approval</b><small>{{ queuedMessages }} items awaiting review</small></div><span class="service-state">GUARDED</span></div>
+      </div>
+    </article>
+  </section>
 </main>
