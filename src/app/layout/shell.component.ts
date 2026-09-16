@@ -7,16 +7,13 @@ import { TenantRuntimeService } from '../core/tenant-runtime.service';
 import { AdminI18nService } from '../core/admin-i18n.service';
 import { AdminStaticI18nDirective } from '../core/admin-static-i18n.directive';
 
-interface Item { label: string; url: string; icon: string }
-const i = (label: string, url: string, icon: string): Item => ({ label, url, icon });
-
 @Component({
   selector: 'qai-shell',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive, AdminStaticI18nDirective],
   styleUrls: ['./shell.component.css'],
   template: `
-    <div class="shell" [class.collapsed]="collapsed">
+    <div class="shell" [class.collapsed]="collapsed" [class.hub-shell]="isHub">
       <aside class="sidebar">
         <div class="brand">
           <a class="brand-link" routerLink="/dashboard" aria-label="LeadsAI home">
@@ -28,7 +25,6 @@ const i = (label: string, url: string, icon: string): Item => ({ label, url, ico
 
         <nav class="reference-menu" aria-label="Primary navigation">
           <label class="sidebar-search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search"/><kbd>/</kbd></label>
-
           <section class="menu-group reference-group">
             <div class="group-heading">SALES OPERATIONS</div>
             <div class="group-items">
@@ -39,11 +35,7 @@ const i = (label: string, url: string, icon: string): Item => ({ label, url, ico
               <a class="menu-item" routerLink="/inbox" routerLinkActive="active"><span class="nav-icon">▤</span><span class="nav-label">Messages</span><span class="nav-count">4</span></a>
             </div>
           </section>
-
-          <section class="menu-group reference-group">
-            <div class="group-heading">INSIGHTS &amp; MANAGEMENT</div>
-          </section>
-
+          <section class="menu-group reference-group"><div class="group-heading">INSIGHTS &amp; MANAGEMENT</div></section>
           <section class="menu-group reference-group">
             <div class="group-heading group-heading-row"><span>WORKSPACES</span><button type="button" class="group-add" aria-label="Add workspace">+</button></div>
             <div class="group-items workspace-items">
@@ -52,7 +44,6 @@ const i = (label: string, url: string, icon: string): Item => ({ label, url, ico
               <a class="menu-item" routerLink="/tickets" routerLinkActive="active"><span class="workspace-dot support"></span><span class="nav-label">Support &amp; Success</span></a>
             </div>
           </section>
-
           <section class="menu-group reference-group">
             <div class="group-heading">PRODUCTIVITY</div>
             <div class="group-items">
@@ -68,7 +59,8 @@ const i = (label: string, url: string, icon: string): Item => ({ label, url, ico
       <main class="app-main">
         <header class="app-header">
           <div class="header-search-wrap">
-            <label class="global-search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search pages and modules"/><kbd>Ctrl K</kbd></label>
+            <a class="hub-brand" routerLink="/dashboard" *ngIf="isHub"><span class="hub-brand-logo">L</span><span><b>LeadsAI</b><small>WORKSPACE HUB</small></span></a>
+            <label class="global-search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search leads, contacts, invoices..."/><kbd>Ctrl K</kbd></label>
             <div class="header-context"><span class="context-dot"></span>{{ workspaceLabel }}</div>
             <a class="header-icon" routerLink="/inbox" title="Inbox">◌<span class="notification-dot"></span></a>
             <div class="admin-menu" (click)="$event.stopPropagation()">
@@ -102,6 +94,7 @@ export class ShellComponent {
   get session() { return this.auth.session(); }
   get workspaceName() { return this.session?.tenantSlug || this.session?.tenantId || 'Renova Workspace'; }
   get workspaceLabel() { return 'All workspaces'; }
+  get isHub() { return this.router.url === '/dashboard' || this.router.url === '/'; }
   toggleAdminMenu(): void { this.adminMenuOpen = !this.adminMenuOpen; }
   openAdmin(): void { this.adminMenuOpen = false; void this.router.navigateByUrl('/users'); }
   logout(): void { this.adminMenuOpen = false; this.auth.logout(); void this.router.navigate(['/login']); }
