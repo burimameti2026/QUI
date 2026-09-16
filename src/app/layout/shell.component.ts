@@ -29,6 +29,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
         </div>
 
         <nav class="reference-menu" aria-label="Primary navigation">
+          <label class="sidebar-search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search"/><kbd>/</kbd></label>
           <a class="home-link" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
             <span class="nav-icon">⌂</span><span class="nav-label">Home</span>
           </a>
