@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { TenantRuntimeService } from '../core/tenant-runtime.service';
 import { AdminI18nService } from '../core/admin-i18n.service';
@@ -13,7 +13,7 @@ const i = (label: string, url: string, icon: string): Item => ({ label, url, ico
 @Component({
   selector: 'qai-shell',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, AdminStaticI18nDirective],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive, AdminStaticI18nDirective],
   styleUrls: ['./shell.component.css'],
   template: `
     <div class="shell" [class.collapsed]="collapsed">
