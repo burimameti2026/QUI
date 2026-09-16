@@ -20,8 +20,7 @@
             "assets": [],
             "styles": [
               "src/styles.css",
-              "src/styles/_design-system.css",
-              "src/styles/_reference-system.css"
+              "src/styles/_design-system.css"
             ]
           },
           "configurations": {
