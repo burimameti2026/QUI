@@ -1,68 +1,44 @@
-<qai-page-header title="Home">
-  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
-  <button type="button" class="primary-action" (click)="go('/discover')">+ New prospect</button>
-</qai-page-header>
-
 <main class="hub-content">
   <div class="hub-alert" *ngIf="error"><strong>Live data notice</strong><span>{{ error }}</span></div>
 
-  <section class="dashboard-metrics" *ngIf="loaded">
-    <article><span>Leads</span><strong>{{ acquisition.discovered || 0 }}</strong><small>discovered</small></article>
-    <article><span>Qualified leads</span><strong>{{ qualifiedProspects }}</strong><small>qualified demand</small></article>
-    <article><span>Campaigns</span><strong>{{ campaigns.length }}</strong><small>active programs</small></article>
-    <article><span>Published products</span><strong>{{ publishedProducts }}</strong><small>catalog</small></article>
-    <article><span>Acquisition agents</span><strong>{{ activeAgentCount }}</strong><small>active agents</small></article>
+  <section class="hub-intro">
+    <h1>Good morning, {{ sessionName }}</h1>
+    <p>Pick a workspace to get started</p>
   </section>
 
-  <section class="dashboard-section">
-    <header class="section-heading">
-      <div><span class="eyebrow">WORKSPACES</span><h2>Choose where you want to work</h2></div>
-    </header>
-    <div class="workspace-grid" *ngIf="loaded">
-      <button type="button" class="workspace-tile" (click)="go('/discover')">
-        <div class="workspace-tile-top"><span class="workspace-icon">◎</span><span class="workspace-arrow">→</span></div>
-        <span class="workspace-kicker">PRIMARY WORKSPACE</span><h3>Leads</h3>
-        <p>Discover, qualify and convert prospects through the sales journey.</p>
-        <div class="workspace-stat"><strong>{{ acquisition.discovered || 0 }}</strong><span>prospects discovered</span></div>
-      </button>
-      <button type="button" class="workspace-tile" (click)="go('/renova/content')">
-        <div class="workspace-tile-top"><span class="workspace-icon">▤</span><span class="workspace-arrow">→</span></div>
-        <span class="workspace-kicker">CONTENT</span><h3>CMS</h3>
-        <p>Manage content, products, localization and promotion programs.</p>
-        <div class="workspace-stat"><strong>{{ publishedProducts }}</strong><span>published products</span></div>
-      </button>
-      <button type="button" class="workspace-tile" (click)="go('/billing')">
-        <div class="workspace-tile-top"><span class="workspace-icon">€</span><span class="workspace-arrow">→</span></div>
-        <span class="workspace-kicker">OPERATIONS</span><h3>Finance</h3>
-        <p>Billing, subscription state and enterprise operational services.</p>
-        <div class="workspace-stat"><strong>{{ financeStat }}</strong><span>subscription status</span></div>
-      </button>
-      <button type="button" class="workspace-tile" (click)="go('/platform')">
-        <div class="workspace-tile-top"><span class="workspace-icon">⚙</span><span class="workspace-arrow">→</span></div>
-        <span class="workspace-kicker">CONTROL PLANE</span><h3>Admin</h3>
-        <p>Platform management, tenants, access, security and governance.</p>
-        <div class="workspace-stat"><strong>{{ activeAgentCount }}</strong><span>active acquisition agents</span></div>
-      </button>
-    </div>
+  <section class="workspace-grid" *ngIf="loaded" aria-label="Workspaces">
+    <button type="button" class="workspace-tile leads" (click)="go('/discover')">
+      <div class="workspace-main">
+        <span class="workspace-icon">L</span>
+        <div><h2>Leads</h2><p>Find, qualify and work every deal — prospecting, CRM, pipeline, campaigns.</p></div>
+      </div>
+      <div class="workspace-footer"><span class="workspace-stat">{{ acquisition.discovered || 0 }} new this week</span><span class="workspace-arrow">→</span></div>
+    </button>
+
+    <button type="button" class="workspace-tile cms" (click)="go('/renova/content')">
+      <div class="workspace-main">
+        <span class="workspace-icon">C</span>
+        <div><h2>CMS</h2><p>Manage the Renova content site, promotions and the product catalog.</p></div>
+      </div>
+      <div class="workspace-footer"><span class="workspace-stat">{{ plans.length }} drafts pending</span><span class="workspace-arrow">→</span></div>
+    </button>
+
+    <button type="button" class="workspace-tile finance" (click)="go('/billing')">
+      <div class="workspace-main">
+        <span class="workspace-icon">F</span>
+        <div><h2>Finance</h2><p>Invoices, orders and enterprise operations in one place.</p></div>
+      </div>
+      <div class="workspace-footer"><span class="workspace-stat">{{ financeStat }}</span><span class="workspace-arrow">→</span></div>
+    </button>
+
+    <button type="button" class="workspace-tile admin" (click)="go('/platform')">
+      <div class="workspace-main">
+        <span class="workspace-icon">A</span>
+        <div><h2>Admin</h2><p>Users, roles, platform, tenants, security and audit.</p></div>
+      </div>
+      <div class="workspace-footer"><span class="workspace-stat">{{ queuedMessages }} pending approvals</span><span class="workspace-arrow">→</span></div>
+    </button>
   </section>
 
-  <section class="dashboard-lower" *ngIf="loaded">
-    <article class="overview-card">
-      <header><div><span class="eyebrow">LEADS SNAPSHOT</span><h3>Prospecting → qualified demand</h3></div><button type="button" (click)="go('/analytics')">Open analytics →</button></header>
-      <div class="snapshot-grid">
-        <div><span>Discovered</span><strong>{{ acquisition.discovered || 0 }}</strong></div>
-        <div><span>Qualified</span><strong>{{ qualifiedProspects }}</strong></div>
-        <div><span>Queued for review</span><strong>{{ queuedMessages }}</strong></div>
-        <div><span>Campaigns</span><strong>{{ campaigns.length }}</strong></div>
-      </div>
-    </article>
-    <article class="overview-card">
-      <header><div><span class="eyebrow">SYSTEM STATUS</span><h3>Workspace services</h3></div></header>
-      <div class="service-list">
-        <div><span class="service-dot live"></span><div><b>Autonomous acquisition</b><small>{{ activeAgentCount }} active agents</small></div><span class="service-state">READY</span></div>
-        <div><span class="service-dot live"></span><div><b>Public catalog</b><small>{{ publishedProducts }} published products</small></div><span class="service-state">LIVE</span></div>
-        <div><span class="service-dot neutral"></span><div><b>Human approval</b><small>{{ queuedMessages }} items awaiting review</small></div><span class="service-state">GUARDED</span></div>
-      </div>
-    </article>
-  </section>
+  <div class="hub-loading" *ngIf="!loaded">Loading workspace status…</div>
 </main>
