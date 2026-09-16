@@ -6,7 +6,6 @@ import { AuthService } from '../core/auth.service';
 import { TenantRuntimeService } from '../core/tenant-runtime.service';
 import { AdminI18nService } from '../core/admin-i18n.service';
 import { AdminStaticI18nDirective } from '../core/admin-static-i18n.directive';
-import { NAVIGATION_TRANSLATIONS } from '../core/navigation-translations';
 
 interface Item { label: string; url: string; icon: string; children?: Item[] }
 interface Group { label: string; items: Item[] }
@@ -19,7 +18,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
   imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive, AdminStaticI18nDirective],
   styleUrls: ['./shell.component.css'],
   template: `
-    <div class="shell" [class.collapsed]="collapsed" [class]="'workspace-' + currentWorkspace">
+    <div class="shell" [class.collapsed]="collapsed" [ngClass]="'workspace-' + currentWorkspace">
       <aside class="sidebar">
         <div class="brand">
           <a class="brand-link" routerLink="/dashboard" aria-label="LeadsAI home">
@@ -36,7 +35,7 @@ const i = (label: string, url: string, icon: string, children?: Item[]): Item =>
 
           <div class="workspace-switcher" *ngIf="currentWorkspace === 'hub'">
             <span class="group-heading">WORKSPACES</span>
-            <a *ngFor="let workspace of workspaces" class="workspace-nav" [class.active]="currentWorkspace === workspace.id" [routerLink]="workspace.url">
+            <a *ngFor="let workspace of workspaces" class="workspace-nav" [routerLink]="workspace.url">
               <span class="workspace-nav-icon">{{ workspace.icon }}</span><span class="nav-label">{{ workspace.label }}</span>
             </a>
           </div>
@@ -98,7 +97,6 @@ export class ShellComponent {
   readonly runtime = inject(TenantRuntimeService);
   readonly i18n = inject(AdminI18nService);
   private readonly router = inject(Router);
-  readonly navigationTranslations = NAVIGATION_TRANSLATIONS;
   query = '';
   collapsed = false;
   adminMenuOpen = false;
@@ -143,7 +141,6 @@ export class ShellComponent {
   }
   get workspaceLabel() { return this.currentWorkspace === 'hub' ? 'All workspaces' : this.workspaces.find(x => x.id === this.currentWorkspace)?.label || 'Leads'; }
   get visibleGroups() { return this.currentWorkspace === 'hub' ? [] : this.workspaceGroups[this.currentWorkspace]; }
-
   hasChildren(x: Item): boolean { return !!x.children?.length; }
   private currentUrl(): string { return this.router.url.split('?')[0].split('#')[0]; }
   isItemActive(x: Item): boolean { const u = this.currentUrl(); return u === x.url || u.startsWith(x.url + '/') || (x.children ?? []).some(c => u === c.url || u.startsWith(c.url + '/')); }
