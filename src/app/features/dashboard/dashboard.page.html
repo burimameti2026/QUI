@@ -1,61 +1,52 @@
-<qai-page-header title="Home" subtitle="One operating hub for Leads, CMS, Finance and Admin.">
-  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh</button>
+<qai-page-header title="Home" subtitle="Your workspace overview and daily operating status.">
+  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
+  <button type="button" class="primary-action" (click)="go('/discover')">+ New prospect</button>
 </qai-page-header>
 
 <main class="hub-content">
   <div class="hub-alert" *ngIf="error"><strong>Live data notice</strong><span>{{ error }}</span></div>
 
-  <section class="hub-hero">
-    <div class="hub-hero-copy">
-      <span class="eyebrow">COMMAND CENTER</span>
-      <h2>Everything important, one workspace at a time.</h2>
-      <p>Start with the job you need to do. Leads is the primary growth workspace; CMS, Finance and Admin stay focused and out of the way until you need them.</p>
-    </div>
-    <div class="hub-hero-meta">
-      <span><i></i> Workspace connected</span>
-      <b>{{ sessionName }}</b>
+  <section class="dashboard-metrics" *ngIf="loaded">
+    <article><span>Leads</span><strong>{{ acquisition.discovered || 0 }}</strong><small>discovered</small></article>
+    <article><span>Qualified leads</span><strong>{{ qualifiedProspects }}</strong><small>qualified demand</small></article>
+    <article><span>Campaigns</span><strong>{{ campaigns.length }}</strong><small>active programs</small></article>
+    <article><span>Published products</span><strong>{{ publishedProducts }}</strong><small>catalog</small></article>
+    <article><span>Acquisition agents</span><strong>{{ activeAgentCount }}</strong><small>active agents</small></article>
+  </section>
+
+  <section class="dashboard-section">
+    <header class="section-heading">
+      <div><span class="eyebrow">WORKSPACES</span><h2>Choose where you want to work</h2></div>
+    </header>
+    <div class="workspace-grid" *ngIf="loaded">
+      <button type="button" class="workspace-tile" (click)="go('/discover')">
+        <div class="workspace-tile-top"><span class="workspace-icon">◎</span><span class="workspace-arrow">→</span></div>
+        <span class="workspace-kicker">PRIMARY WORKSPACE</span><h3>Leads</h3>
+        <p>Discover, qualify and convert prospects through the sales journey.</p>
+        <div class="workspace-stat"><strong>{{ acquisition.discovered || 0 }}</strong><span>prospects discovered</span></div>
+      </button>
+      <button type="button" class="workspace-tile" (click)="go('/renova/content')">
+        <div class="workspace-tile-top"><span class="workspace-icon">▤</span><span class="workspace-arrow">→</span></div>
+        <span class="workspace-kicker">CONTENT</span><h3>CMS</h3>
+        <p>Manage content, products, localization and promotion programs.</p>
+        <div class="workspace-stat"><strong>{{ publishedProducts }}</strong><span>published products</span></div>
+      </button>
+      <button type="button" class="workspace-tile" (click)="go('/billing')">
+        <div class="workspace-tile-top"><span class="workspace-icon">€</span><span class="workspace-arrow">→</span></div>
+        <span class="workspace-kicker">OPERATIONS</span><h3>Finance</h3>
+        <p>Billing, subscription state and enterprise operational services.</p>
+        <div class="workspace-stat"><strong>{{ financeStat }}</strong><span>subscription status</span></div>
+      </button>
+      <button type="button" class="workspace-tile" (click)="go('/platform')">
+        <div class="workspace-tile-top"><span class="workspace-icon">⚙</span><span class="workspace-arrow">→</span></div>
+        <span class="workspace-kicker">CONTROL PLANE</span><h3>Admin</h3>
+        <p>Platform management, tenants, access, security and governance.</p>
+        <div class="workspace-stat"><strong>{{ activeAgentCount }}</strong><span>active acquisition agents</span></div>
+      </button>
     </div>
   </section>
 
-  <section class="workspace-grid" *ngIf="loaded">
-    <button type="button" class="workspace-tile leads" (click)="go('/discover')">
-      <div class="workspace-tile-top"><span class="workspace-icon">◎</span><span class="workspace-arrow">→</span></div>
-      <span class="workspace-kicker">PRIMARY WORKSPACE</span>
-      <h3>Leads</h3>
-      <p>Discover, qualify and convert prospects through the full sales journey.</p>
-      <div class="workspace-stat"><strong>{{ acquisition.discovered || 0 }}</strong><span>prospects discovered</span></div>
-      <div class="workspace-links"><span>Discovery</span><span>CRM</span><span>Pipeline</span><span>Campaigns</span></div>
-    </button>
-
-    <button type="button" class="workspace-tile cms" (click)="go('/renova/content')">
-      <div class="workspace-tile-top"><span class="workspace-icon">▤</span><span class="workspace-arrow">→</span></div>
-      <span class="workspace-kicker">CONTENT</span>
-      <h3>CMS</h3>
-      <p>Manage Renova content, products, localization and promotion programs.</p>
-      <div class="workspace-stat"><strong>{{ publishedProducts }}</strong><span>published products</span></div>
-      <div class="workspace-links"><span>Content</span><span>Catalog</span><span>Promotions</span></div>
-    </button>
-
-    <button type="button" class="workspace-tile finance" (click)="go('/billing')">
-      <div class="workspace-tile-top"><span class="workspace-icon">€</span><span class="workspace-arrow">→</span></div>
-      <span class="workspace-kicker">OPERATIONS</span>
-      <h3>Finance</h3>
-      <p>Billing, subscription state and enterprise operational services.</p>
-      <div class="workspace-stat"><strong>{{ financeStat }}</strong><span>subscription status</span></div>
-      <div class="workspace-links"><span>Billing</span><span>Orders</span><span>Inventory</span><span>Logistics</span></div>
-    </button>
-
-    <button type="button" class="workspace-tile admin" (click)="go('/platform')">
-      <div class="workspace-tile-top"><span class="workspace-icon">⚙</span><span class="workspace-arrow">→</span></div>
-      <span class="workspace-kicker">CONTROL PLANE</span>
-      <h3>Admin</h3>
-      <p>Platform management, tenants, access, security and governance.</p>
-      <div class="workspace-stat"><strong>{{ activeAgentCount }}</strong><span>active acquisition agents</span></div>
-      <div class="workspace-links"><span>Platform</span><span>Users</span><span>Security</span><span>Audit</span></div>
-    </button>
-  </section>
-
-  <section class="hub-lower" *ngIf="loaded">
+  <section class="dashboard-lower" *ngIf="loaded">
     <article class="overview-card">
       <header><div><span class="eyebrow">LEADS SNAPSHOT</span><h3>Prospecting → qualified demand</h3></div><button type="button" (click)="go('/analytics')">Open analytics →</button></header>
       <div class="snapshot-grid">
