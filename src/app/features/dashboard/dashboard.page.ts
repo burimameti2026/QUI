@@ -4,10 +4,9 @@ import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { PageHeader } from '../../shared/ui';
 import { BillingService } from '../billing/billing.service';
 
-@Component({ standalone: true, imports: [CommonModule, PageHeader], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css'] })
+@Component({ standalone: true, imports: [CommonModule], templateUrl: './dashboard.page.html', styleUrls: ['./dashboard.page.css'] })
 export class DashboardPage implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
