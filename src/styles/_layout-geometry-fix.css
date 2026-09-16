@@ -28,5 +28,22 @@ tbody tr:hover { background:#f5f9ff !important; }
 .content-admin > header { margin:0 0 18px !important; padding:0 0 18px !important; }
 .content-admin .sections { margin:0 0 16px !important; }
 .content-admin .section-panel { margin:0 0 16px !important; }
+
+/* Hard geometry reset for every Renova shell: content starts immediately after the sidebar/header gutter. */
+.shell { width:100% !important; max-width:none !important; }
+.shell > main,.shell > .main,.shell > .content,.shell > .main-content,.shell > .app-content { min-width:0 !important; width:100% !important; max-width:none !important; margin:0 !important; padding:0 !important; }
+.shell .page,.shell .dashboard-content { width:100% !important; max-width:none !important; margin:0 !important; }
+.page > .container,.page > .content-container,.page > .page-container,.page > .content,.page > .main-content,.page > .shell-content,.page > .workspace,.page > .workspace-content { width:100% !important; max-width:none !important; margin-left:0 !important; margin-right:0 !important; }
+.page [class*="container"],[class*="page-content"],[class*="content-wrapper"],[class*="workspace-wrapper"] { max-width:none !important; }
+.page .grid,.page .content-grid,.page .section-grid,.page .cards-grid,.page .toolbar,.page .filters,.page .directory-toolbar { width:100% !important; max-width:none !important; }
+.page .toolbar,.page .filters,.page .directory-toolbar { margin-left:0 !important; margin-right:0 !important; }
+.page .table-wrap,.page .data-table,.page .directory-table { width:100% !important; max-width:none !important; }
+.page .page-actions button,.page .header-actions button { margin-right:0 !important; }
+
+/* Keep the reference Prospect Discovery rhythm: compact vertical spacing, no artificial empty columns. */
+.page > * + * { margin-top:14px; }
+.page > qai-page-header + *,.page > .page-header + * { margin-top:0 !important; }
+.page .section,.page .panel,.page .card,.page .content-card,.page .data-card,.page .list-card { margin-left:0 !important; margin-right:0 !important; }
+
 @media (max-width:1100px) { .page { padding:20px 18px 36px !important; } }
 @media (max-width:680px) { .page { padding:18px 14px 32px !important; } .page-header { flex-direction:column !important; } .page-actions,.header-actions { width:100% !important; margin-left:0 !important; justify-content:flex-start !important; } }
