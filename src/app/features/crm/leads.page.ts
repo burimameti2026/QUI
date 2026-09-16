@@ -9,7 +9,7 @@ import { Modal, PageHeader } from '../../shared/ui';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./leads.page.css'],
   template: `
-    <qai-page-header title="Leads" subtitle="Automatically qualified demand ranked by intent, fit and buying readiness.">
+    <qai-page-header title="Leads" subtitle="Qualified demand ranked by intent, fit and buying readiness.">
       <button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button>
       <button type="button" class="primary" (click)="runAutomation()">⚡ Run sales automation</button>
       <button type="button" class="primary" (click)="openCreate()">+ Create lead</button>
@@ -20,67 +20,65 @@ import { Modal, PageHeader } from '../../shared/ui';
       <div><b>Leads could not be loaded</b><p>{{ error }}</p></div>
     </div>
 
-    <section class="directory-card">
-      <header>
-        <div>
-          <span class="eyebrow">SALES DIRECTORY</span>
-          <h2>Qualified lead workspace</h2>
-          <p>Review intent, value and qualification state from one structured list.</p>
-        </div>
-        <div class="directory-summary">
-          <span><b>{{ rows.length }}</b> Total</span>
-          <span><b>{{ count(80, 101) }}</b> Hot</span>
-          <span><b>{{ money(total()) }}</b> Value</span>
-        </div>
-      </header>
+    <section class="lead-workspace">
+      <div class="lead-metrics">
+        <article><span>New leads</span><strong>{{ rows.length }}</strong><small>Current workspace</small></article>
+        <article><span>Qualified leads</span><strong>{{ count(80, 101) }}</strong><small>Score ≥ 80</small></article>
+        <article><span>Open value</span><strong>{{ money(total()) }}</strong><small>Estimated pipeline value</small></article>
+      </div>
 
-      <div class="directory-toolbar">
-        <label>
+      <nav class="lead-tabs" aria-label="Lead filters">
+        <button class="active" type="button">All</button>
+        <button type="button">Favorite</button>
+        <button type="button">New</button>
+        <button type="button">Assigned to me</button>
+        <button type="button">Overdue</button>
+        <button type="button">Hot</button>
+      </nav>
+
+      <div class="lead-toolbar">
+        <label class="lead-search">
           <span>⌕</span>
-          <input [(ngModel)]="q" placeholder="Search leads, intent or source" />
+          <input [(ngModel)]="q" placeholder="Search leads" />
         </label>
+        <button type="button" class="toolbar-icon" aria-label="Filter">▽</button>
+        <button type="button" class="toolbar-icon" aria-label="Sort">↕</button>
+        <button type="button" class="toolbar-icon" aria-label="View options">☷</button>
         <select [(ngModel)]="temp" aria-label="Filter by temperature">
           <option value="">All temperatures</option>
           <option>Hot</option>
           <option>Warm</option>
           <option>Cold</option>
         </select>
-        <strong>{{ visible.length }} shown</strong>
+        <span class="shown-count">{{ visible.length }} shown</span>
       </div>
 
       <div class="data-state" *ngIf="loading">Loading leads…</div>
 
-      <div class="directory-empty" *ngIf="!loading && !error && !visible.length">
-        <i>◆</i>
+      <div class="lead-empty" *ngIf="!loading && !error && !visible.length">
         <strong>{{ rows.length ? 'No matching leads' : 'No leads available' }}</strong>
-        <span>{{ rows.length ? 'No leads match the current search or temperature filter.' : 'There are no leads in this workspace yet. Create a lead or run the acquisition workflow.' }}</span>
+        <span>{{ rows.length ? 'No leads match the current search or temperature filter.' : 'Create a lead or run the acquisition workflow.' }}</span>
         <button class="primary" (click)="openCreate()">Create lead</button>
       </div>
 
-      <div class="table-wrap" *ngIf="!loading && visible.length">
-        <table>
+      <div class="lead-table-wrap" *ngIf="!loading && visible.length">
+        <table class="lead-table">
           <thead>
-            <tr><th>Lead</th><th>Score</th><th>Source</th><th>Temperature</th><th>Status</th><th>Est. value</th><th>Actions</th></tr>
+            <tr>
+              <th class="check-col"><input type="checkbox" aria-label="Select all" /></th>
+              <th>Lead</th><th>Company</th><th>Email</th><th>Status</th><th>Manager</th><th>Value</th><th>Actions</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let x of visible">
-              <td>
-                <div class="directory-identity">
-                  <i>{{ x.score }}</i>
-                  <span><b>{{ x.intentSummary || 'New enquiry' }}</b><small>Qualified demand</small></span>
-                </div>
-              </td>
-              <td><span class="score" [class.hot]="x.score >= 80">{{ x.score }}</span></td>
+              <td class="check-col"><input type="checkbox" /></td>
+              <td><div class="lead-person"><span>{{ (x.intentSummary || 'N').charAt(0) }}</span><b>{{ x.intentSummary || 'New enquiry' }}</b></div></td>
               <td>{{ x.source || '—' }}</td>
-              <td><span class="pill" [class.hot]="x.score >= 80">{{ temperature(x) }}</span></td>
-              <td>{{ x.status || 'New' }}</td>
+              <td>{{ x.email || '—' }}</td>
+              <td><span class="lead-status" [class.hot]="x.score >= 80">{{ temperature(x) }}</span></td>
+              <td>{{ x.manager || '—' }}</td>
               <td><b>{{ money(x.estimatedValue || 0) }}</b></td>
-              <td>
-                <div class="directory-actions">
-                  <button class="small" (click)="qualify(x)">Qualify</button>
-                  <button class="small primary" (click)="convert(x)">Create opportunity</button>
-                </div>
-              </td>
+              <td><div class="directory-actions"><button class="small" (click)="qualify(x)">Qualify</button><button class="small primary" (click)="convert(x)">Opportunity</button></div></td>
             </tr>
           </tbody>
         </table>
@@ -101,10 +99,7 @@ import { Modal, PageHeader } from '../../shared/ui';
           <label>Score<input type="number" min="0" max="100" [(ngModel)]="form.score" name="score" /></label>
         </div>
         <label>Estimated value<input type="number" min="0" [(ngModel)]="form.estimatedValue" name="estimatedValue" /></label>
-        <footer>
-          <button type="button" (click)="showCreate = false">Cancel</button>
-          <button class="primary" type="submit">Create lead</button>
-        </footer>
+        <footer><button type="button" (click)="showCreate = false">Cancel</button><button class="primary" type="submit">Create lead</button></footer>
       </form>
     </qai-modal>
   `
@@ -164,20 +159,8 @@ export class LeadsPage implements OnInit {
   temperature(x: any) { return x.score >= 80 ? 'Hot' : x.score >= 50 ? 'Warm' : 'Cold'; }
   money(v: number) { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v || 0); }
 
-  qualify(x: any) {
-    this.data.qualify(x.id).subscribe({ next: r => Object.assign(x, r), error: () => alert('Lead qualification failed.') });
-  }
-
-  convert(x: any) {
-    this.data.convert(x.id).subscribe({ next: () => alert('Opportunity created and follow-up automation scheduled.'), error: () => alert('Could not create opportunity.') });
-  }
-
-  runAutomation() {
-    this.data.runSales().subscribe({
-      next: r => alert(`Automation complete: ${r.processed || 0} leads processed, ${r.opportunitiesCreated || 0} opportunities created.`),
-      error: () => alert('Sales automation run failed.')
-    });
-  }
-
+  qualify(x: any) { this.data.qualify(x.id).subscribe({ next: r => Object.assign(x, r), error: () => alert('Lead qualification failed.') }); }
+  convert(x: any) { this.data.convert(x.id).subscribe({ next: () => alert('Opportunity created and follow-up automation scheduled.'), error: () => alert('Could not create opportunity.') }); }
+  runAutomation() { this.data.runSales().subscribe({ next: r => alert(`Automation complete: ${r.processed || 0} leads processed, ${r.opportunitiesCreated || 0} opportunities created.`), error: () => alert('Sales automation run failed.') }); }
   private apiError(e: any) { return e?.error?.detail || e?.error?.title || (e?.status ? `CRM API returned ${e.status}.` : 'CRM API is unavailable.'); }
 }
