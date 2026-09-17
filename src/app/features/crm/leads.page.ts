@@ -4,16 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { CrmService } from './crm.service';
 import { Modal, PageHeader } from '../../shared/ui';
 import { RefinedDataGrid } from '../../shared/components/refined-data-grid.component';
+import { RefinedKpiStrip } from '../../shared/components/refined-kpi-strip.component';
+import { RefinedTabs } from '../../shared/components/refined-tabs.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid],
+  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
   styleUrls: ['./leads.orange-style.css'],
   template: `
     <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers." accent="orange">
       <button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button>
       <button type="button" class="quiet-action">⇧ Import</button>
-      <button type="button" class="primary" (click)="openCreate()">+ Create Lead</button>
+      <button type="button" class="primary">+ Create Lead</button>
     </qai-page-header>
 
     <div class="callout warning" *ngIf="error">
@@ -21,17 +23,17 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
     </div>
 
     <section class="lead-workspace">
-      <div class="refined-kpi-strip refined-kpi-strip--five">
+      <qai-kpi-strip>
         <article><span class="kpi-icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg></article>
         <article><span class="kpi-icon">◎</span><span>Qualified Leads</span><strong>{{ count(80, 101) }}</strong><small>↗ 4.2% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,25 13,17 25,21 39,10 52,16 64,12 76,20 91,8 108,4"/></svg></article>
         <article><span class="kpi-icon">◇</span><span>Contacted</span><strong>{{ contactedCount }}</strong><small>↗ 8.5% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,30 13,23 25,27 38,16 51,21 65,13 77,17 91,7 108,12"/></svg></article>
         <article><span class="kpi-icon">◷</span><span>Avg Response Time</span><strong>1.8h</strong><small>↗ 15% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,27 13,25 26,17 39,21 52,13 65,17 78,9 92,14 108,4"/></svg></article>
         <article><span class="kpi-icon">△</span><span>Hot Leads</span><strong>{{ count(80, 101) }}</strong><small>↘ 2% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,12 14,7 27,16 39,8 51,14 65,6 78,12 91,5 108,11"/></svg></article>
-      </div>
+      </qai-kpi-strip>
 
-      <nav class="refined-tabs" aria-label="Lead filters">
+      <qai-refined-tabs aria-label="Lead filters">
         <button class="active" type="button">All</button><button type="button">Favourite</button><button type="button">New</button><button type="button">Assigned to me</button><button type="button">Overdue</button><button type="button">Hot</button>
-      </nav>
+      </qai-refined-tabs>
 
       <div class="lead-toolbar">
         <label class="lead-search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label>
