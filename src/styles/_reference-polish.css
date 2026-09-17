@@ -1,0 +1,152 @@
+/* Global reference polish — shared card language used across workspaces. */
+:root {
+  --ref-bg: #f5f7fb;
+  --ref-surface: #ffffff;
+  --ref-border: #dbe3ed;
+  --ref-border-soft: #e7edf4;
+  --ref-ink: #10243d;
+  --ref-muted: #667b93;
+  --ref-blue: #2563eb;
+}
+
+html, body { background: var(--ref-bg); }
+.app-main,
+.page,
+.dashboard-content,
+.shell-page,
+.catalog-shell,
+.pipeline-shell,
+.platform-shell,
+.content-admin,
+.directory-shell,
+.workspace-shell {
+  background: var(--ref-bg) !important;
+}
+
+/* Page surfaces stay white; the workspace around them is the reference cool-gray canvas. */
+qai-page-header .page-header { background: #fff !important; }
+.dashboard-content { padding: 20px 24px 40px !important; }
+
+/* Primary content cards: crisp, quiet, no heavy panel chrome. */
+.card,
+.panel,
+.section-card,
+.content-card,
+.data-card,
+.directory-card,
+.list-card,
+.workspace-card,
+.prospect-card,
+.settings-card,
+.config-card,
+.detail-card,
+.form-card,
+.table-card,
+.revenue-card,
+.automation-card {
+  border: 1px solid var(--ref-border) !important;
+  border-radius: 12px !important;
+  background: var(--ref-surface) !important;
+  box-shadow: 0 1px 3px rgba(31, 55, 84, .045) !important;
+}
+
+.card > header,
+.panel > header,
+.section-card > header,
+.content-card > header,
+.directory-card > header,
+.card-heading,
+.list-header,
+.workspace-header,
+.prospect-header {
+  min-height: 62px !important;
+  padding: 15px 17px !important;
+  border-bottom: 1px solid var(--ref-border-soft) !important;
+  background: #fff !important;
+}
+
+.card-body,
+.panel-body,
+.section-body,
+.card-content,
+.directory-body { padding: 17px !important; }
+
+.card-heading h3,
+.workspace-header h3,
+.prospect-header h3 {
+  margin: 4px 0 0 !important;
+  color: var(--ref-ink) !important;
+  font-size: 15px !important;
+  line-height: 1.25 !important;
+  font-weight: 750 !important;
+  letter-spacing: -.015em !important;
+}
+
+/* Dashboard composition follows the same spacing rhythm as Prospect Discovery. */
+.dashboard-content .journey-timeline {
+  margin: 0 0 14px !important;
+  padding: 20px 20px 18px !important;
+  border: 1px solid #d5dfeb !important;
+  border-radius: 14px !important;
+  background: #edf4ff !important;
+  box-shadow: 0 1px 2px rgba(26, 55, 86, .03) !important;
+}
+.dashboard-content .executive-band {
+  margin: 0 0 14px !important;
+  padding: 19px 20px !important;
+  border: 1px solid var(--ref-border) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 3px rgba(31, 55, 84, .045) !important;
+}
+.dashboard-content .metric-grid { gap: 12px !important; margin-bottom: 14px !important; }
+.dashboard-content .metric-card {
+  min-height: 132px !important;
+  padding: 17px !important;
+  border: 1px solid #d7e0ea !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 2px 7px rgba(36, 60, 88, .055) !important;
+}
+.dashboard-content .metric-card:hover {
+  transform: none !important;
+  box-shadow: 0 3px 10px rgba(36, 60, 88, .075) !important;
+}
+.dashboard-content .metric-icon {
+  width: 31px !important;
+  height: 31px !important;
+  border-radius: 8px !important;
+  background: #eaf2ff !important;
+  color: var(--ref-blue) !important;
+}
+.dashboard-content .metric-card:nth-child(2) .metric-icon { background: #f0eaff !important; color: #7c3aed !important; }
+.dashboard-content .metric-card:nth-child(3) .metric-icon { background: #def8eb !important; color: #059669 !important; }
+.dashboard-content .metric-card:nth-child(4) .metric-icon { background: #fff2c9 !important; color: #d97706 !important; }
+.dashboard-content .metric-card:nth-child(5) .metric-icon { background: #ffe6eb !important; color: #e11d48 !important; }
+.dashboard-content .metric-card strong { margin: 14px 0 9px !important; color: var(--ref-ink) !important; font-size: 29px !important; font-weight: 750 !important; }
+.dashboard-content .metric-label { color: #526a84 !important; font-size: 10px !important; font-weight: 700 !important; }
+.dashboard-content .metric-card small { color: #8293a7 !important; font-size: 9px !important; }
+
+.dashboard-content .command-grid,
+.dashboard-content .detail-grid { gap: 14px !important; margin-bottom: 14px !important; }
+.dashboard-content .data-card { box-shadow: 0 2px 7px rgba(36, 60, 88, .045) !important; }
+.dashboard-content .data-card .card-footer { border-top: 1px solid var(--ref-border-soft) !important; background: #fbfcfe !important; }
+.dashboard-content .data-card .card-heading button,
+.dashboard-content .data-card .card-heading a {
+  border: 1px solid #d5dfeb !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #36516e !important;
+}
+
+/* Keep internal rows visually subordinate to the card itself. */
+.dashboard-content .engine-row,
+.dashboard-content .knowledge-gap,
+.dashboard-content .opportunity,
+.dashboard-content .impact-grid > div {
+  border-color: var(--ref-border-soft) !important;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-content { padding-left: 18px !important; padding-right: 18px !important; }
+}
