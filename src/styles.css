@@ -10,19 +10,58 @@
 }
 
 /* Reference shell: the dashboard uses the same navigation shell as every workspace. */
-.shell.hub-shell {
-  grid-template-columns: 308px minmax(0, 1fr) !important;
-  background: #fff !important;
-}
+.shell.hub-shell { grid-template-columns: 308px minmax(0, 1fr) !important; background: #fff !important; }
+.shell.hub-shell .sidebar { display: block !important; }
+.shell.hub-shell .app-main { min-width: 0; }
+.shell.hub-shell .page { background: #fff !important; }
 
-.shell.hub-shell .sidebar {
-  display: block !important;
-}
-
-.shell.hub-shell .app-main {
-  min-width: 0;
-}
-
-.shell.hub-shell .page {
-  background: #fff !important;
-}
+/* Prospect Discovery — reference design, implemented in the global stylesheet. */
+.app-main:has(.discovery-hero){background:#f4f7fb!important;color:#10243d}
+.app-main:has(.discovery-hero) qai-page-header .page-header{min-height:96px!important;padding:22px 22px 18px!important;border-bottom:1px solid #dce4ed!important;background:#f8fafc!important;align-items:center!important}
+.app-main:has(.discovery-hero) qai-page-header h1{color:#10243d!important;font-size:29px!important;font-weight:750!important;letter-spacing:-.035em!important}
+.app-main:has(.discovery-hero) qai-page-header p{margin-top:7px!important;color:#5c7189!important;font-size:14px!important}
+.app-main:has(.discovery-hero) .page-actions,.app-main:has(.discovery-hero) .header-actions{gap:9px!important}
+.app-main:has(.discovery-hero) qai-page-header button{height:35px!important;min-height:35px!important;padding:0 14px!important;border:1px solid #d5dfeb!important;border-radius:8px!important;background:#fff!important;color:#29435f!important;font-size:12px!important;font-weight:700!important}
+.app-main:has(.discovery-hero) qai-page-header button.primary{border-color:#2563eb!important;background:#2563eb!important;color:#fff!important}
+.app-main:has(.discovery-hero) .discovery-hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);margin:18px 20px 14px;border:1px solid #d5dfeb;border-radius:14px;overflow:hidden;background:linear-gradient(105deg,#e8f2ff 0%,#f2f4ff 54%,#f6f1ff 100%);box-shadow:0 1px 2px rgba(26,55,86,.03)}
+.app-main:has(.discovery-hero) .hero-copy{padding:28px 24px 24px}
+.app-main:has(.discovery-hero) .hero-copy .section-kicker,.app-main:has(.discovery-hero) .journey-label{color:#2563eb!important;font-size:10px!important;font-weight:800!important;letter-spacing:.09em}
+.app-main:has(.discovery-hero) .hero-copy h2{margin:10px 0 7px;color:#10243d;font-size:23px;line-height:1.2;font-weight:750;letter-spacing:-.025em}
+.app-main:has(.discovery-hero) .hero-copy>p{max-width:620px;margin:0;color:#58708b;font-size:12px;line-height:1.55}
+.app-main:has(.discovery-hero) .hero-context{display:flex;gap:8px;margin-top:18px}
+.app-main:has(.discovery-hero) .hero-context span{display:inline-flex;align-items:center;gap:7px;min-height:30px;padding:0 10px;border:1px solid #d4dfeb;border-radius:7px;background:rgba(255,255,255,.78);color:#49647f;font-size:10px}
+.app-main:has(.discovery-hero) .hero-context b{color:#10243d}.app-main:has(.discovery-hero) .hero-context i{width:7px;height:7px;border-radius:50%;background:#18a957}
+.app-main:has(.discovery-hero) .journey-panel{min-width:0;padding:18px 14px 14px;border-left:1px solid #d7e0ed;background:rgba(255,255,255,.4)}
+.app-main:has(.discovery-hero) .journey-label{display:block;margin:0 0 10px 2px;color:#627891!important;font-size:10px!important}
+.app-main:has(.discovery-hero) .journey-panel qai-wizard-steps{display:block}
+.app-main:has(.discovery-hero) .journey-panel .wizard-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.app-main:has(.discovery-hero) .journey-panel .wizard-step{min-height:62px;padding:10px 11px;border:1px solid #d9e2ec;border-radius:11px;background:rgba(255,255,255,.72)}
+.app-main:has(.discovery-hero) .journey-panel .wizard-step.active{border-color:#8ea8ff;background:#f5f7ff}
+.app-main:has(.discovery-hero) .discovery-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:0 20px 14px;border:0!important;background:transparent!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card{position:relative;display:flex!important;align-items:flex-start;gap:11px;min-height:145px;padding:17px 16px!important;border:1px solid #d7e0ea!important;border-radius:14px!important;background:#fff!important;box-shadow:0 2px 8px rgba(36,60,88,.06)!important;overflow:hidden}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card::before{height:3px;border-radius:0}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card::after{content:'';position:absolute;width:74px;height:74px;top:-30px;right:-20px;border-radius:50%;background:#eff6ff}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(1)::before{background:#2563eb}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)::before{background:#7c3aed}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3)::before{background:#059669}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4)::before{background:#d97706}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5)::before{background:#e11d48}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card>i{position:relative;z-index:1;width:31px;height:31px;border:0;border-radius:8px;background:#eaf2ff;color:#2563eb;font-style:normal;font-size:11px}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)>i{background:#f0eaff;color:#7c3aed}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3)>i{background:#def8eb;color:#059669}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4)>i{background:#fff2c9;color:#d97706}.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5)>i{background:#ffe6eb;color:#e11d48}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card span{color:#526a84!important;font-size:11px!important;font-weight:700!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card strong{margin:14px 0 10px!important;color:#10243d!important;font-size:30px!important;font-weight:750!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card small{color:#8293a7!important;font-size:10px!important}
+.app-main:has(.discovery-hero) .notice{margin:0 20px 14px!important;border-radius:10px!important}
+.app-main:has(.discovery-hero) .workspace-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(360px,1fr);gap:14px;margin:0 20px 14px;border:0!important;background:transparent!important}
+.app-main:has(.discovery-hero) .workspace-card,.app-main:has(.discovery-hero) .prospect-card{overflow:hidden;border:1px solid #d7e0ea!important;border-radius:14px!important;background:#fff!important;box-shadow:0 2px 8px rgba(36,60,88,.05)!important}
+.app-main:has(.discovery-hero) .workspace-header,.app-main:has(.discovery-hero) .prospect-header{min-height:78px!important;padding:17px 18px!important;border-bottom:1px solid #e0e7ef!important;background:#fff!important;border-radius:0!important}
+.app-main:has(.discovery-hero) .workspace-header h3,.app-main:has(.discovery-hero) .prospect-header h3{margin:5px 0 3px;color:#10243d;font-size:15px;font-weight:750}
+.app-main:has(.discovery-hero) .workspace-header p,.app-main:has(.discovery-hero) .prospect-header p{color:#75889e;font-size:10px}
+.app-main:has(.discovery-hero) .header-action,.app-main:has(.discovery-hero) .profile-state,.app-main:has(.discovery-hero) .signal-action{height:32px;min-height:32px;padding:0 11px;border:1px solid #d5dfeb!important;border-radius:8px;background:#fff;color:#36516e;font-size:10px;font-weight:700}
+.app-main:has(.discovery-hero) .profile-list{gap:8px;padding:12px 14px 14px}
+.app-main:has(.discovery-hero) .profile-option{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:11px;align-items:center;min-height:72px;padding:10px 11px;border:1px solid #d9e2ec;border-radius:10px;background:#fff}
+.app-main:has(.discovery-hero) .profile-option:hover{background:#f8fbff;border-color:#c6d7ed}.app-main:has(.discovery-hero) .profile-option.selected{background:#f5f9ff;border-color:#8db3ff;box-shadow:0 0 0 1px rgba(37,99,235,.08) inset}
+.app-main:has(.discovery-hero) .profile-mark{width:36px;height:36px;border:0;border-radius:9px;background:#edf3fb;color:#31587f;font-size:11px}.app-main:has(.discovery-hero) .profile-option.selected .profile-mark{background:#2f67d3;color:#fff}
+.app-main:has(.discovery-hero) .profile-copy strong{color:#17304d;font-size:11px}.app-main:has(.discovery-hero) .profile-copy small{color:#637b95;font-size:9px}.app-main:has(.discovery-hero) .profile-copy em{color:#8798aa;font-size:8px}.app-main:has(.discovery-hero) .profile-option.selected .profile-state{border-color:#b4cbff!important;background:#edf4ff;color:#2563eb}
+.app-main:has(.discovery-hero) .audience-card{display:flex;flex-direction:column}.app-main:has(.discovery-hero) .selection-summary{margin:16px 16px 13px;padding:13px;border:1px solid #d9e2ec;border-radius:10px;background:#f8fafc}.app-main:has(.discovery-hero) .selection-count{width:42px;height:42px;border:0;border-radius:9px;background:#3269d0;font-size:17px}.app-main:has(.discovery-hero) .selection-summary strong{color:#17304d;font-size:11px}.app-main:has(.discovery-hero) .selection-summary div span{color:#8092a6;font-size:9px}
+.app-main:has(.discovery-hero) .list-name{margin:0 16px 12px;color:#526a84;font-size:10px}.app-main:has(.discovery-hero) .list-name input{margin-top:4px;min-height:40px;border:1px solid #cbd8e6!important;border-radius:8px!important}.app-main:has(.discovery-hero) .create-list{width:calc(100% - 32px);margin:0 16px 7px;height:36px!important;min-height:36px!important;justify-content:space-between;border:0!important;border-radius:8px!important;background:#82a7ef!important;color:#fff!important}.app-main:has(.discovery-hero) .create-list:not(:disabled){background:#2563eb!important}.app-main:has(.discovery-hero) .audience-help{margin:0 16px 16px;color:#8798aa;font-size:9px}
+.app-main:has(.discovery-hero) .prospect-card{margin:0 20px 20px}.app-main:has(.discovery-hero) .prospect-header{display:flex;align-items:center;justify-content:space-between;gap:18px}.app-main:has(.discovery-hero) .score-filter{color:#526a84;font-size:10px}.app-main:has(.discovery-hero) .score-filter input{width:64px;min-height:34px;border:1px solid #cbd8e6!important;border-radius:7px!important}.app-main:has(.discovery-hero) .prospect-toolbar{min-height:42px;padding:0 16px;border-bottom:1px solid #e0e7ef;background:#f8fafc;font-size:10px;color:#71849a}.app-main:has(.discovery-hero) .prospect-toolbar b{color:#17304d}.app-main:has(.discovery-hero) .prospect-toolbar button{color:#2563eb}.app-main:has(.discovery-hero) .prospect-table{min-width:980px}.app-main:has(.discovery-hero) .prospect-table th{height:42px;padding:0 13px;background:#f7f9fc;color:#75879b;font-size:9px}.app-main:has(.discovery-hero) .prospect-table td{height:64px;padding:9px 13px;color:#3f5872;font-size:10px}.app-main:has(.discovery-hero) .prospect-table tbody tr.selected-row td{background:#f5f9ff}.app-main:has(.discovery-hero) .company-cell>span{width:34px;height:34px;border:0;border-radius:8px;background:#edf3fb;color:#31587f}.app-main:has(.discovery-hero) .company-cell b{color:#17304d;font-size:10px}.app-main:has(.discovery-hero) .company-cell small,.app-main:has(.discovery-hero) .prospect-table td>small{color:#8495a7;font-size:9px}.app-main:has(.discovery-hero) .score{border:0;border-radius:7px;background:#eef4fb;color:#31587f}.app-main:has(.discovery-hero) .intent-score{background:#fff0e6;color:#d96817}.app-main:has(.discovery-hero) .priority-value.high{border:0;border-radius:6px;background:#fff0e6;color:#d96817}.app-main:has(.discovery-hero) .status-pill{border:1px solid #cfe0d5!important;border-radius:6px!important;background:#f1faf4!important;color:#2f8053}.app-main:has(.discovery-hero) .signal-action{height:30px;min-height:30px}
+@media(max-width:1100px){.app-main:has(.discovery-hero) .discovery-hero{grid-template-columns:1fr}.app-main:has(.discovery-hero) .journey-panel{border-left:0;border-top:1px solid #d7e0ed}.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.app-main:has(.discovery-hero) .workspace-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.app-main:has(.discovery-hero) qai-page-header .page-header{align-items:flex-start!important;flex-direction:column}.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.app-main:has(.discovery-hero) .hero-context{flex-wrap:wrap}}
+@media(max-width:480px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:1fr}.app-main:has(.discovery-hero) .hero-copy{padding:22px 16px}.app-main:has(.discovery-hero) .discovery-hero,.app-main:has(.discovery-hero) .discovery-metrics,.app-main:has(.discovery-hero) .workspace-grid,.app-main:has(.discovery-hero) .prospect-card{margin-left:12px;margin-right:12px}}
