@@ -4,13 +4,12 @@
   
   <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{ error }}</span></div>
 
-  <section class="journey-timeline card" aria-label="Acquisition journey">
-    <qai-page-header title="Dashboard" subtitle="Product readiness → market activation → autonomous acquisition → qualified demand.">
+  <qai-page-header title="Dashboard" subtitle="Product readiness → market activation → autonomous acquisition → qualified demand.">
   <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
-  <!-- <a class="quiet-action" href="/renova/portal" target="_blank" rel="noreferrer">↗ Public portal</a> -->
   <button type="button" class="primary" (click)="go('/renova/promotion')">Open promotion plan</button>
 </qai-page-header>
-    <div class="timeline-head">
+
+  <section class="journey-timeline card" aria-label="Acquisition journey"><div class="timeline-head">
       <div><span class="eyebrow">GROWTH JOURNEY</span><h2>From product readiness to qualified demand</h2></div>
       <span class="timeline-status"><i></i> Workspace operating flow</span>
     </div>
