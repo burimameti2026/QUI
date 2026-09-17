@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CrmService } from './crm.service';
 import { Modal, PageHeader } from '../../shared/ui';
+import { RefinedDataGrid } from '../../shared/components/refined-data-grid.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, PageHeader],
+  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid],
   styleUrls: ['./leads.orange-style.css'],
   template: `
     <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers.">
@@ -20,7 +21,7 @@ import { Modal, PageHeader } from '../../shared/ui';
     </div>
 
     <section class="lead-workspace">
-      <div class="lead-metrics">
+      <div class="refined-kpi-strip">
         <article>
           <span class="kpi-icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small>
           <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg>
@@ -39,7 +40,7 @@ import { Modal, PageHeader } from '../../shared/ui';
         </article>
       </div>
 
-      <nav class="lead-tabs" aria-label="Lead filters">
+      <nav class="refined-tabs" aria-label="Lead filters">
         <button class="active" type="button">All</button><button type="button">Favourite</button><button type="button">New</button><button type="button">Assigned to me</button><button type="button">Overdue</button><button type="button">Hot</button>
       </nav>
 
@@ -58,8 +59,8 @@ import { Modal, PageHeader } from '../../shared/ui';
         <button class="primary" (click)="openCreate()">Create Lead</button>
       </div>
 
-      <div class="lead-table-wrap" *ngIf="!loading && visible.length">
-        <table class="lead-table">
+      <qai-data-grid *ngIf="!loading && visible.length">
+        <table>
           <thead><tr><th class="check-col"><input type="checkbox" aria-label="Select all" /></th><th>Lead</th><th>Company</th><th>Email</th><th>Status</th><th>Source</th><th>Assigned to</th><th>Created</th><th>Actions</th></tr></thead>
           <tbody>
             <tr *ngFor="let x of visible">
@@ -73,7 +74,7 @@ import { Modal, PageHeader } from '../../shared/ui';
             </tr>
           </tbody>
         </table>
-      </div>
+      </qai-data-grid>
     </section>
 
     <qai-modal [open]="showCreate" title="Create lead" (close)="showCreate = false">
