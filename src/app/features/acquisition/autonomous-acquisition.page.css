@@ -99,13 +99,6 @@
   letter-spacing: .04em;
 }
 
-.panel {
-  margin: 0 0 16px;
-  overflow: hidden;
-  border: 1px solid var(--ui-border);
-  background: var(--ui-surface);
-}
-
 .panel > h2 {
   margin: 0;
   padding: 11px 14px;
@@ -192,11 +185,6 @@ textarea {
   flex-wrap: wrap;
   margin-top: 12px;
   margin-bottom: 14px;
-}
-
-.table-wrap {
-  overflow-x: auto;
-  margin: 0;
 }
 
 table {

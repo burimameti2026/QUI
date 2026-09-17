@@ -27,14 +27,6 @@
   font-size: 13px;
 }
 
-.eyebrow {
-  color: var(--ui-faint);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
 .hero-badge {
   min-width: 210px;
   align-self: center;
@@ -227,29 +219,6 @@
   max-width: 680px;
   color: var(--ui-faint);
   font-size: 10px;
-}
-
-.quiet-action,
-.primary {
-  padding: 8px 12px;
-  border: 1px solid var(--ui-border-strong);
-  border-radius: 0;
-  font: inherit;
-  font-size: 11px;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.quiet-action {
-  background: var(--ui-surface);
-  color: var(--ui-ink-soft);
-}
-
-.primary {
-  border-color: var(--ui-accent);
-  background: var(--ui-accent);
-  color: #fff;
 }
 
 .primary:disabled {

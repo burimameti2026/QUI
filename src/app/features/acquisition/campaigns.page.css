@@ -2,14 +2,6 @@
   display: block;
 }
 
-.eyebrow {
-  color: var(--ui-muted);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .refresh-action {
   background: var(--ui-surface);
   border-color: var(--ui-border-strong);

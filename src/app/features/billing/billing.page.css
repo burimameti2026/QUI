@@ -22,16 +22,6 @@
   box-shadow: 0 8px 24px rgba(39, 58, 86, 0.06);
 }
 
-.section-kicker {
-  display: block;
-  margin-bottom: 6px;
-  color: #65748a;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .subscription-hero h2 {
   margin: 0;
   color: #26364d;
@@ -66,14 +56,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-bottom: 18px;
-}
-
-.panel {
-  overflow: hidden;
-  border: 1px solid #d7e1ef;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%);
-  box-shadow: 0 8px 24px rgba(39, 58, 86, 0.05);
 }
 
 .panel > header {
@@ -126,23 +108,6 @@
   font-size: 12px;
 }
 
-.pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 3px 9px;
-  border: 1px solid #c9d9ee;
-  border-radius: 999px;
-  background: #eef5ff;
-  color: #245b9f;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.table-wrap {
-  margin-bottom: 18px;
-}
-
 .table-wrap table {
   width: 100%;
   border-collapse: collapse;
@@ -185,10 +150,6 @@
 
   .subscription-price {
     align-items: flex-start;
-  }
-
-  .table-wrap {
-    overflow-x: auto;
   }
 
   .table-wrap table {
