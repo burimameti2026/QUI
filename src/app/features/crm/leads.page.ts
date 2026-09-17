@@ -21,7 +21,7 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
     </div>
 
     <section class="lead-workspace">
-      <div class="refined-kpi-strip">
+      <div class="refined-kpi-strip refined-kpi-strip--five">
         <article>
           <span class="kpi-icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small>
           <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg>
@@ -37,6 +37,10 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
         <article>
           <span class="kpi-icon">◷</span><span>Avg Response Time</span><strong>1.8h</strong><small>↗ 15% vs previous period</small>
           <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,27 13,25 26,17 39,21 52,13 65,17 78,9 92,14 108,4"/></svg>
+        </article>
+        <article>
+          <span class="kpi-icon">△</span><span>Hot Leads</span><strong>{{ count(80, 101) }}</strong><small>↘ 2% vs previous period</small>
+          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,12 14,7 27,16 39,8 51,14 65,6 78,12 91,5 108,11"/></svg>
         </article>
       </div>
 
