@@ -10,10 +10,10 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
   imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid],
   styleUrls: ['./leads.orange-style.css'],
   template: `
-    <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers.">
+    <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers." accent="orange">
       <button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button>
       <button type="button" class="quiet-action">⇧ Import</button>
-      <button type="button" class="primary leads-primary" (click)="openCreate()">+ Create Lead</button>
+      <button type="button" class="primary" (click)="openCreate()">+ Create Lead</button>
     </qai-page-header>
 
     <div class="callout warning" *ngIf="error">
@@ -22,26 +22,11 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
 
     <section class="lead-workspace">
       <div class="refined-kpi-strip refined-kpi-strip--five">
-        <article>
-          <span class="kpi-icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small>
-          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg>
-        </article>
-        <article>
-          <span class="kpi-icon">◎</span><span>Qualified Leads</span><strong>{{ count(80, 101) }}</strong><small>↗ 4.2% vs previous period</small>
-          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,25 13,17 25,21 39,10 52,16 64,12 76,20 91,8 108,4"/></svg>
-        </article>
-        <article>
-          <span class="kpi-icon">◇</span><span>Contacted</span><strong>{{ contactedCount }}</strong><small>↗ 8.5% vs previous period</small>
-          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,30 13,23 25,27 38,16 51,21 65,13 77,17 91,7 108,12"/></svg>
-        </article>
-        <article>
-          <span class="kpi-icon">◷</span><span>Avg Response Time</span><strong>1.8h</strong><small>↗ 15% vs previous period</small>
-          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,27 13,25 26,17 39,21 52,13 65,17 78,9 92,14 108,4"/></svg>
-        </article>
-        <article>
-          <span class="kpi-icon">△</span><span>Hot Leads</span><strong>{{ count(80, 101) }}</strong><small>↘ 2% vs previous period</small>
-          <svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,12 14,7 27,16 39,8 51,14 65,6 78,12 91,5 108,11"/></svg>
-        </article>
+        <article><span class="kpi-icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg></article>
+        <article><span class="kpi-icon">◎</span><span>Qualified Leads</span><strong>{{ count(80, 101) }}</strong><small>↗ 4.2% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,25 13,17 25,21 39,10 52,16 64,12 76,20 91,8 108,4"/></svg></article>
+        <article><span class="kpi-icon">◇</span><span>Contacted</span><strong>{{ contactedCount }}</strong><small>↗ 8.5% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,30 13,23 25,27 38,16 51,21 65,13 77,17 91,7 108,12"/></svg></article>
+        <article><span class="kpi-icon">◷</span><span>Avg Response Time</span><strong>1.8h</strong><small>↗ 15% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,27 13,25 26,17 39,21 52,13 65,17 78,9 92,14 108,4"/></svg></article>
+        <article><span class="kpi-icon">△</span><span>Hot Leads</span><strong>{{ count(80, 101) }}</strong><small>↘ 2% vs previous period</small><svg class="kpi-chart" viewBox="0 0 108 38" aria-hidden="true"><polyline points="0,12 14,7 27,16 39,8 51,14 65,6 78,12 91,5 108,11"/></svg></article>
       </div>
 
       <nav class="refined-tabs" aria-label="Lead filters">
@@ -66,17 +51,9 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
       <qai-data-grid *ngIf="!loading && visible.length">
         <table>
           <thead><tr><th class="check-col"><input type="checkbox" aria-label="Select all" /></th><th>Lead</th><th>Company</th><th>Email</th><th>Status</th><th>Source</th><th>Assigned to</th><th>Created</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let x of visible">
-              <td class="check-col"><input type="checkbox" /></td>
-              <td><div class="lead-person"><b>{{ x.intentSummary || 'New enquiry' }}</b></div></td>
-              <td>{{ x.source || '—' }}</td><td>{{ x.email || '—' }}</td>
-              <td><span class="lead-status" [class.hot]="x.score >= 80">{{ temperature(x) }}</span></td>
-              <td>{{ x.source || 'Search' }}</td>
-              <td>{{ x.manager || '—' }}</td><td>{{ createdDate(x) }}</td>
-              <td><div class="directory-actions"><button class="small" (click)="qualify(x)">Qualify</button><button class="small primary" (click)="convert(x)">Opportunity</button></div></td>
-            </tr>
-          </tbody>
+          <tbody><tr *ngFor="let x of visible">
+            <td class="check-col"><input type="checkbox" /></td><td><div class="lead-person"><b>{{ x.intentSummary || 'New enquiry' }}</b></div></td><td>{{ x.source || '—' }}</td><td>{{ x.email || '—' }}</td><td><span class="lead-status" [class.hot]="x.score >= 80">{{ temperature(x) }}</span></td><td>{{ x.source || 'Search' }}</td><td>{{ x.manager || '—' }}</td><td>{{ createdDate(x) }}</td><td><div class="directory-actions"><button class="small" (click)="qualify(x)">Qualify</button><button class="small primary" (click)="convert(x)">Opportunity</button></div></td>
+          </tr></tbody>
         </table>
       </qai-data-grid>
     </section>
@@ -93,13 +70,7 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
   `
 })
 export class LeadsPage implements OnInit {
-  rows: any[] = [];
-  contacts: any[] = [];
-  q = '';
-  temp = '';
-  showCreate = false;
-  loading = false;
-  error = '';
+  rows: any[] = []; contacts: any[] = []; q = ''; temp = ''; showCreate = false; loading = false; error = '';
   form: any = { contactId: '', source: 'manual', score: 50, estimatedValue: 0, intentSummary: '' };
   constructor(private data: CrmService) {}
   ngOnInit() { this.load(); }
