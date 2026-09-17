@@ -11,18 +11,24 @@ function translateValue(i18n: AdminI18nService, value: string): string {
 @Component({
   selector: "qai-page-header",
   standalone: true,
-  template: `<div class="page-header">
+  template: `<div class="page-header" [class.page-header--orange]="accent === 'orange'">
     <div class="page-header-title" *ngIf="title || subtitle">
       <h1 *ngIf="title">{{ translate(title) || title }}</h1>
       <p *ngIf="subtitle">{{ translate(subtitle) || subtitle }}</p>
     </div>
     <div class="page-actions"><ng-content /></div>
   </div>`,
+  styles: [`
+    :host { display:block; min-width:0; }
+    :host .page-header--orange .primary { border-color:#f97316!important; background:#f97316!important; color:#fff!important; }
+    :host .page-header--orange .primary:hover { border-color:#ea580c!important; background:#ea580c!important; }
+  `]
 })
 export class PageHeader {
   readonly i18n = inject(AdminI18nService);
   @Input() title = "";
   @Input() subtitle = "";
+  @Input() accent: "default" | "orange" = "default";
   translate(value: string): string { return translateValue(this.i18n, value); }
 }
 
