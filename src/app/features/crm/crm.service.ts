@@ -29,6 +29,7 @@ export class CrmService {
   leads() { return this.api.get<Lead[]>("crm/leads"); }
   createLead(x: Partial<Lead>) { return this.api.post<Lead>("crm/leads", x); }
   updateLead(id: string, x: Partial<Lead>) { return this.api.put<Lead>(`crm/leads/${id}`, x); }
+  deleteLead(id: string) { return this.api.delete<void>(`crm/leads/${id}`); }
   qualify(id: string) { return this.api.post<Lead>(`sales/leads/${id}/qualify`, {}); }
   convert(id: string) { return this.api.post<Opportunity>(`sales/leads/${id}/convert`, {}); }
   opportunities() { return this.api.get<Opportunity[]>("crm/opportunities"); }
