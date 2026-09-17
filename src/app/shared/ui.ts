@@ -13,8 +13,8 @@ function translateValue(i18n: AdminI18nService, value: string): string {
   standalone: true,
   template: `<div class="page-header">
     <div class="page-header-title" *ngIf="title || subtitle">
-      <h1 *ngIf="title">{{ translate(title) }}</h1>
-      <p *ngIf="subtitle">{{ translate(subtitle) }}</p>
+      <h1 *ngIf="title">{{ translate(title) || title }}</h1>
+      <p *ngIf="subtitle">{{ translate(subtitle) || subtitle }}</p>
     </div>
     <div class="page-actions"><ng-content /></div>
   </div>`,
