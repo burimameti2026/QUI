@@ -14,7 +14,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   template: `
     <section class="leads-page-header">
       <div class="title"><h1>Leads <span class="count">{{ rows.length }}</span></h1><p>Manage your sales leads and move qualified demand into the CRM.</p></div>
-      <div class="actions"><button type="button" (click)="load()">↻ Refresh data</button><button type="button">⇧ Import</button><button type="button" class="primary" (click)="openCreate()">+ Create Lead</button></div>
+      <div class="actions"><button type="button" (click)="load()">↻ Refresh data</button><button type="button" class="primary" (click)="openCreate()">+ Create Lead</button></div>
     </section>
     <div class="callout warning" *ngIf="error"><span class="callout-icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
     <section class="lead-workspace">
