@@ -7,7 +7,7 @@ import { Modal, PageHeader } from '../../shared/ui';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  styleUrls: ['./leads.page.css'],
+  styleUrls: ['./leads.orange-style.css'],
   template: `
     <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers.">
       <button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button>
