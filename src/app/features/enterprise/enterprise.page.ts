@@ -7,8 +7,8 @@ import { PageHeader } from '../../shared/ui';
 interface Overview { facilities:number; customers:number; orders:number; pendingOrders:number; stockItems:number; movementsInTransit:number; shipments:number; unpaidPayments:number; }
 
 @Component({standalone:true,imports:[CommonModule,RouterLink,PageHeader],template:`
-<qai-page-header title="Renova Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="refresh" (click)="load()">↻ Refresh</button></qai-page-header>
-<section class="tenant-bar"><div><span>WORKSPACE</span><strong>RENOVA</strong></div><small>Tenant-isolated operational data · RenovaPromotions</small></section>
+<qai-page-header title=" Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="refresh" (click)="load()">↻ Refresh</button></qai-page-header>
+<section class="tenant-bar"><div><span>WORKSPACE</span><strong></strong></div><small>Tenant-isolated operational data · Promotions</small></section>
 <section class="metrics"><article *ngFor="let m of metrics"><span>{{m.label}}</span><strong>{{m.value}}</strong><small>{{m.note}}</small></article></section>
 <section class="flow"><div><b>01 · COMMERCIAL</b><span>Customer → Order → Pricing → Fulfillment</span></div><i>→</i><div><b>02 · PHYSICAL</b><span>Stock → Warehouse → Shipment → Delivery</span></div><i>→</i><div><b>03 · FINANCIAL</b><span>Proforma → Invoice → Payment → Reconciliation</span></div></section>
 <section class="grid"><a *ngFor="let m of modules" [routerLink]="m.route" class="card"><div class="icon" [class]="m.tone">{{m.icon}}</div><div><b>{{m.title}}</b><span>{{m.text}}</span></div><strong>→</strong></a></section>
@@ -33,5 +33,5 @@ export class EnterprisePage implements OnInit {
  ];
  get metrics(){return [{label:'Facilities',value:this.data.facilities,note:'Factories · warehouses · distribution'},{label:'Customers',value:this.data.customers,note:'Customer accounts'},{label:'Orders',value:this.data.orders,note:`${this.data.pendingOrders} pending`},{label:'Stock',value:this.data.stockItems,note:'Tracked balances'},{label:'Shipments',value:this.data.shipments,note:'Active shipments'},{label:'Payments',value:this.data.unpaidPayments,note:'Open payment states'}]}
  ngOnInit(){this.load()}
- load(){this.error='';this.api.get<Overview>('enterprise/overview').subscribe({next:x=>this.data=x,error:e=>this.error=e?.error?.detail||'Renova Enterprise API is unavailable.'})}
+ load(){this.error='';this.api.get<Overview>('enterprise/overview').subscribe({next:x=>this.data=x,error:e=>this.error=e?.error?.detail||' Enterprise API is unavailable.'})}
 }

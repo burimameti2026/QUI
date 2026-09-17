@@ -17,7 +17,7 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
       <button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button>
       <button type="button" class="primary-action" *ngIf="canCreate" (click)="openCreate()">＋ New {{ title }}</button>
     </qai-page-header>
-    <div class="breadcrumb"><a routerLink="/enterprise">Renova</a><span>›</span><span>Enterprise Operations</span><span>›</span><strong>{{ title }}</strong></div>
+    <div class="breadcrumb"><a routerLink="/enterprise"></a><span>›</span><span>Enterprise Operations</span><span>›</span><strong>{{ title }}</strong></div>
     <nav class="tabs" aria-label="Enterprise modules">
       <a *ngFor="let t of tabs" [routerLink]="'/enterprise/'+t.key" [class.active]="section===t.key"><span class="tab-icon">{{ tabIcon(t.key) }}</span><span>{{t.label}}</span></a>
     </nav>
@@ -31,7 +31,7 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
     </section>
     <section class="list-card">
       <header class="list-header">
-        <div><span class="eyebrow">ENTERPRISE OPERATIONS</span><h2>{{ title }}</h2><p>{{ rows.length | number }} records in the current Renova workspace.</p></div>
+        <div><span class="eyebrow">ENTERPRISE OPERATIONS</span><h2>{{ title }}</h2><p>{{ rows.length | number }} records in the current workspace.</p></div>
         <div class="header-actions"><button type="button" class="export-action" (click)="exportCsv()">⇩ Export <span>⌄</span></button><button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button><button type="button" class="primary-action" *ngIf="canCreate" (click)="openCreate()">＋ New</button></div>
       </header>
       <div class="filters">
@@ -47,7 +47,7 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
           <tbody><tr *ngFor="let row of pagedRows; trackBy: trackRow"><td class="check-col"><input type="checkbox" [checked]="isSelected(row)" (change)="toggleRow(row)" /></td><td *ngFor="let k of keys" [class.primary-cell]="k==='number'||k==='code'"><ng-container *ngIf="k==='status'; else normalValue"><span class="status-chip" [ngClass]="statusTone(row[k])">{{ display(row,k) }}</span></ng-container><ng-template #normalValue><span [title]="display(row,k)">{{ display(row,k) }}</span></ng-template></td><td *ngIf="hasStatus"><button type="button" class="table-link" (click)="openStatus(row)">Update status</button></td><td class="row-actions"><button type="button" class="dots" (click)="openRowActions(row)" [attr.aria-label]="'Actions for '+display(row,keys[0]||'id')">•••</button></td></tr></tbody>
         </table>
       </div>
-      <div class="state" *ngIf="loading"><span class="spinner"></span><strong>Loading Renova data…</strong><span>Synchronizing this module with the Enterprise API.</span></div>
+      <div class="state" *ngIf="loading"><span class="spinner"></span><strong>Loading data…</strong><span>Synchronizing this module with the Enterprise API.</span></div>
       <div class="state" *ngIf="!loading && !error && !filteredRows.length"><span class="state-icon">⌕</span><strong>{{ rows.length ? 'No matching records' : 'No Renova records yet' }}</strong><span>{{ rows.length ? 'Try another search or clear the filters.' : 'This tenant API returned no records for this module.' }}</span></div>
       <footer class="table-footer" *ngIf="!loading && !error && filteredRows.length"><span>Showing {{ pageStart + 1 }} – {{ pageEnd }} of {{ filteredRows.length | number }} {{ title.toLowerCase() }}</span><div class="pagination"><button type="button" (click)="previousPage()" [disabled]="page===1">‹</button><button type="button" *ngFor="let p of pageNumbers" [class.page-active]="p===page" (click)="goPage(p)">{{p}}</button><button type="button" (click)="nextPage()" [disabled]="page===pageCount">›</button></div></footer>
     </section>

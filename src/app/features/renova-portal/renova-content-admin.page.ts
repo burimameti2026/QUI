@@ -122,11 +122,11 @@ export class RenovaContentAdminPage implements OnInit {
       next: value => {
         this.publishing = false;
         this.content = { ...this.content, ...(value || {}), status: 'Published' };
-        this.message = 'Renova portal content published.';
+        this.message = 'Portal content published.';
       },
       error: error => {
         this.publishing = false;
-        this.error = error?.error?.detail || 'Unable to publish Renova portal content.';
+        this.error = error?.error?.detail || 'Unable to publish portal content.';
       }
     });
   }
@@ -139,11 +139,11 @@ export class RenovaContentAdminPage implements OnInit {
       next: value => {
         this.publishing = false;
         this.content = { ...this.content, ...(value || {}), status: 'Draft' };
-        this.message = 'Renova portal content moved to draft.';
+        this.message = 'portal content moved to draft.';
       },
       error: error => {
         this.publishing = false;
-        this.error = error?.error?.detail || 'Unable to move Renova portal content to draft.';
+        this.error = error?.error?.detail || 'Unable to move portal content to draft.';
       }
     });
   }

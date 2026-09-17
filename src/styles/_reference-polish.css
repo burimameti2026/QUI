@@ -25,7 +25,7 @@ html, body { background: var(--ref-bg); }
 
 /* Page surfaces stay white; the workspace around them is the reference cool-gray canvas. */
 qai-page-header .page-header { background: #fff !important; }
-.dashboard-content { padding: 20px 24px 40px !important; }
+.dashboard-content { padding: 0px 0px 0px !important; }
 
 /* Primary content cards: crisp, quiet, no heavy panel chrome. */
 .card,
@@ -47,7 +47,7 @@ qai-page-header .page-header { background: #fff !important; }
   border: 1px solid var(--ref-border) !important;
   border-radius: 12px !important;
   background: var(--ref-surface) !important;
-  box-shadow: 0 1px 3px rgba(31, 55, 84, .045) !important;
+  box-shadow: 0 1px 3px rgba(218, 80, 1, 0.045) !important;
 }
 
 .card > header,
@@ -84,18 +84,18 @@ qai-page-header .page-header { background: #fff !important; }
 
 /* Dashboard composition follows the same spacing rhythm as Prospect Discovery. */
 .dashboard-content .journey-timeline {
-  margin: 0 0 14px !important;
-  padding: 20px 20px 18px !important;
+  margin: 0 0 0px !important;
+
   border: 1px solid #d5dfeb !important;
-  border-radius: 14px !important;
+  border-radius: 0px !important;
   background: #edf4ff !important;
   box-shadow: 0 1px 2px rgba(26, 55, 86, .03) !important;
 }
 .dashboard-content .executive-band {
   margin: 0 0 14px !important;
-  padding: 19px 20px !important;
+
   border: 1px solid var(--ref-border) !important;
-  border-radius: 12px !important;
+  border-radius: 0px !important;
   background: #fff !important;
   box-shadow: 0 1px 3px rgba(31, 55, 84, .045) !important;
 }

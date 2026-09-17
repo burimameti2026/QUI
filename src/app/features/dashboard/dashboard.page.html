@@ -1,13 +1,15 @@
-<qai-page-header title="Dashboard" subtitle="Product readiness → market activation → autonomous acquisition → qualified demand.">
+
+
+<main class="dashboard-content workspace-leads">
+  
+  <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{ error }}</span></div>
+
+  <section class="journey-timeline card" aria-label="Acquisition journey">
+    <qai-page-header title="Dashboard" subtitle="Product readiness → market activation → autonomous acquisition → qualified demand.">
   <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
   <!-- <a class="quiet-action" href="/renova/portal" target="_blank" rel="noreferrer">↗ Public portal</a> -->
   <button type="button" class="primary" (click)="go('/renova/promotion')">Open promotion plan</button>
 </qai-page-header>
-
-<main class="dashboard-content workspace-leads">
-  <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{ error }}</span></div>
-
-  <section class="journey-timeline card" aria-label="Acquisition journey">
     <div class="timeline-head">
       <div><span class="eyebrow">GROWTH JOURNEY</span><h2>From product readiness to qualified demand</h2></div>
       <span class="timeline-status"><i></i> Workspace operating flow</span>
@@ -27,7 +29,7 @@
 
   <ng-container *ngIf="loaded">
     <section class="executive-band card renova-band">
-      <div><span class="eyebrow">RENOVA BALKAN EXPANSION</span><h2>One operating picture for the full acquisition loop.</h2><p>The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.</p></div>
+      <div><span class="eyebrow"></span><h2>One operating picture for the full acquisition loop.</h2><p>The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.</p></div>
       <div class="executive-context"><span><i class="status-dot"></i>Workspace live</span><span><b>{{ publishedProducts }}</b> products published</span><span><b>{{ activeAgentCount }}</b> active agent</span></div>
     </section>
 
@@ -77,7 +79,7 @@
       <article class="data-card knowledge-card">
         <div class="card-heading"><div><span class="eyebrow">PUBLISHING</span><h3>Public product experience</h3></div><a href="/renova/portal" target="_blank" rel="noreferrer">Open portal <span>→</span></a></div>
         <div class="knowledge-list">
-          <div class="knowledge-gap"><span class="gap-mark">▦</span><div class="gap-copy"><strong>{{ products.length }} catalog products</strong><span>{{ publishedProducts }} are published to the public Renova portal.</span></div><em>LIVE</em></div>
+          <div class="knowledge-gap"><span class="gap-mark">▦</span><div class="gap-copy"><strong>{{ products.length }} catalog products</strong><span>{{ publishedProducts }} are published to the public portal.</span></div><em>LIVE</em></div>
           <div class="knowledge-gap"><span class="gap-mark">◎</span><div class="gap-copy"><strong>4-language content</strong><span>EN, MK, SQ and DE localization is seeded for the demo workspace.</span></div><em>READY</em></div>
           <div class="knowledge-gap"><span class="gap-mark">↯</span><div class="gap-copy"><strong>Inbound inquiry path</strong><span>Distributor inquiries enter the tenant workspace as structured portal inquiries.</span></div><em>CONNECTED</em></div>
         </div>

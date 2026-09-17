@@ -1,7 +1,7 @@
 <section class="catalog-shell">
   <header class="catalog-hero">
     <div>
-      <span class="eyebrow">RENOVA PRODUCT HUB</span>
+      <span class="eyebrow"> PRODUCT HUB</span>
       <h1>Product Catalog</h1>
       <p>Manage product information, markets, languages and publication from one workspace.</p>
     </div>
@@ -34,7 +34,7 @@
   <div class="table-card">
     <div class="row header"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>LANGUAGES</span><span>STATUS</span><span></span></div>
     <div class="row" *ngFor="let product of filteredProducts">
-      <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'Renova product' }}</small></div>
+      <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || ' product' }}</small></div>
       <span>{{ product.code }}</span>
       <span>{{ categoryName(product.productCategoryId) }}</span>
       <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
@@ -42,7 +42,7 @@
       <a class="manage" [routerLink]="['/catalog', product.id]">Manage →</a>
     </div>
     <div class="empty" *ngIf="!loading && products.length && !filteredProducts.length">No products match the current filters.</div>
-    <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first Renova product to start the promotion workflow.</div>
+    <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first  product to start the promotion workflow.</div>
     <div class="empty" *ngIf="loading">Loading catalog…</div>
     <div class="empty error" *ngIf="!loading && error">{{ error }}</div>
   </div>

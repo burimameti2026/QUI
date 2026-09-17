@@ -17,7 +17,7 @@ export const ADMIN_NAV_TRANSLATIONS: Record<string, Record<AdminLanguage, string
   'Facilities': {en:'Facilities',mk:'Објекти',sq:'Objektet',de:'Anlagen'},
   'Financials': {en:'Financials',mk:'Финансии',sq:'Financat',de:'Finanzen'},
   'Billing & Subscription': {en:'Billing & Subscription',mk:'Наплата и претплата',sq:'Faturimi dhe abonimi',de:'Abrechnung & Abonnement'},
-  'CMS — Renova Content': {en:'CMS — Renova Content',mk:'CMS — Renova содржина',sq:'CMS — Përmbajtja Renova',de:'CMS — Renova-Inhalte'},
+  'CMS —  Content': {en:'CMS —  Content',mk:'CMS —  содржина',sq:'CMS — Përmbajtja ',de:'CMS — -Inhalte'},
   'Knowledge Gaps': {en:'Knowledge Gaps',mk:'Недостатоци во знаењето',sq:'Boshllëqet e njohurive',de:'Wissenslücken'},
   'Prospect Discovery': {en:'Prospect Discovery',mk:'Откривање потенцијални клиенти',sq:'Zbulimi i prospekteve',de:'Interessenten finden'},
   'Autonomous Acquisition': {en:'Autonomous Acquisition',mk:'Автономна аквизиција',sq:'Akvizimi autonom',de:'Autonome Akquise'},
