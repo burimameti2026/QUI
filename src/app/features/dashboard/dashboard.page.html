@@ -4,10 +4,10 @@
   <button type="button" class="primary" (click)="go('/renova/promotion')">Open promotion plan</button>
 </qai-page-header>
 
-<main class="dashboard-content">
+<main class="dashboard-content workspace-leads">
   <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{ error }}</span></div>
 
-  <section class="journey-timeline" aria-label="Acquisition journey">
+  <section class="journey-timeline card" aria-label="Acquisition journey">
     <div class="timeline-head">
       <div><span class="eyebrow">GROWTH JOURNEY</span><h2>From product readiness to qualified demand</h2></div>
       <span class="timeline-status"><i></i> Workspace operating flow</span>
@@ -26,7 +26,7 @@
   </section>
 
   <ng-container *ngIf="loaded">
-    <section class="executive-band renova-band">
+    <section class="executive-band card renova-band">
       <div><span class="eyebrow">RENOVA BALKAN EXPANSION</span><h2>One operating picture for the full acquisition loop.</h2><p>The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.</p></div>
       <div class="executive-context"><span><i class="status-dot"></i>Workspace live</span><span><b>{{ publishedProducts }}</b> products published</span><span><b>{{ activeAgentCount }}</b> active agent</span></div>
     </section>
