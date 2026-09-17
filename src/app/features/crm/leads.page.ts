@@ -13,7 +13,7 @@ import { RefinedDataGrid } from '../../shared/components/refined-data-grid.compo
     <qai-page-header title="Leads" subtitle="Discover, manage and convert your leads into customers.">
       <button type="button" class="quiet-action" (click)="load()">↻ Refresh data</button>
       <button type="button" class="quiet-action">⇧ Import</button>
-      <button type="button" class="primary" (click)="openCreate()">+ Create Lead</button>
+      <button type="button" class="primary leads-primary" (click)="openCreate()">+ Create Lead</button>
     </qai-page-header>
 
     <div class="callout warning" *ngIf="error">
