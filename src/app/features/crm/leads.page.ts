@@ -74,7 +74,7 @@ export class LeadsPage implements OnInit {
   temperature(x:any){return x.score>=80?'Hot':x.score>=50?'Warm':'Cold'}
   money(v:number){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v||0)}
   saveEdit(){if(!this.editForm?.id)return;this.data.updateLead(this.editForm.id,this.editForm).subscribe({next:r=>{const i=this.rows.findIndex(x=>x.id===this.editForm.id);if(i>=0)this.rows[i]=r;this.showEdit=false},error:()=>alert('Lead update failed.')})}
-  saveAssignment(){this.showAssign=false}
+  saveAssignment(){const manager=String(this.form.manager||'').trim();if(!manager)return;this.selected.forEach(x=>this.data.updateLead(x.id,{manager}).subscribe({next:r=>{const i=this.rows.findIndex(v=>v.id===x.id);if(i>=0)this.rows[i]=r},error:()=>{}}));this.showAssign=false;this.clearSelection()}
   qualify(x:any){this.data.qualify(x.id).subscribe({next:r=>Object.assign(x,r),error:()=>alert('Lead qualification failed.')})}
   convert(x:any){this.data.convert(x.id).subscribe({next:()=>alert('Opportunity created and follow-up automation scheduled.'),error:()=>alert('Could not create opportunity.')})}
   private apiError(e:any){return e?.error?.detail||e?.error?.title||(e?.status?`CRM API returned ${e.status}.`:'CRM API is unavailable.')}
