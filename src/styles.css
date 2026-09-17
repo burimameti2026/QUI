@@ -65,3 +65,253 @@
 @media(max-width:1100px){.app-main:has(.discovery-hero) .discovery-hero{grid-template-columns:1fr}.app-main:has(.discovery-hero) .journey-panel{border-left:0;border-top:1px solid #d7e0ed}.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.app-main:has(.discovery-hero) .workspace-grid{grid-template-columns:1fr}}
 @media(max-width:700px){.app-main:has(.discovery-hero) qai-page-header .page-header{align-items:flex-start!important;flex-direction:column}.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.app-main:has(.discovery-hero) .hero-context{flex-wrap:wrap}}
 @media(max-width:480px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:1fr}.app-main:has(.discovery-hero) .hero-copy{padding:22px 16px}.app-main:has(.discovery-hero) .discovery-hero,.app-main:has(.discovery-hero) .discovery-metrics,.app-main:has(.discovery-hero) .workspace-grid,.app-main:has(.discovery-hero) .prospect-card{margin-left:12px;margin-right:12px}}
+
+
+/* Prospect Discovery — align with the Leads/Dashboard reference geometry. */
+.app-main:has(.discovery-hero) {
+  background: #fff !important;
+  color: #202124 !important;
+}
+.app-main:has(.discovery-hero) qai-page-header .page-header {
+  min-height: 76px !important;
+  padding: 20px 28px 16px !important;
+  background: #fff !important;
+  border-bottom: 1px solid #e1e5e9 !important;
+}
+.app-main:has(.discovery-hero) qai-page-header h1 {
+  color: #202124 !important;
+  font-size: 22px !important;
+}
+.app-main:has(.discovery-hero) qai-page-header p {
+  color: #858a91 !important;
+  font-size: 11px !important;
+}
+.app-main:has(.discovery-hero) qai-page-header button {
+  height: 34px !important;
+  min-height: 34px !important;
+  border: 1px solid #d8dce1 !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  color: #555b63 !important;
+}
+.app-main:has(.discovery-hero) qai-page-header button.primary {
+  border-color: #f97316 !important;
+  background: #f97316 !important;
+  color: #fff !important;
+}
+.app-main:has(.discovery-hero) .discovery-hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr) !important;
+  margin: 0 28px 14px !important;
+  border: 1px solid #e1e5e9 !important;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.app-main:has(.discovery-hero) .hero-copy {
+  padding: 20px !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .hero-copy .section-kicker,
+.app-main:has(.discovery-hero) .journey-label {
+  color: #858a91 !important;
+}
+.app-main:has(.discovery-hero) .hero-copy h2 {
+  margin: 7px 0 !important;
+  color: #202124 !important;
+  font-size: 18px !important;
+}
+.app-main:has(.discovery-hero) .hero-copy > p {
+  color: #737980 !important;
+  font-size: 11px !important;
+}
+.app-main:has(.discovery-hero) .hero-context span {
+  border-color: #e1e5e9 !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  color: #737980 !important;
+}
+.app-main:has(.discovery-hero) .journey-panel {
+  padding: 16px !important;
+  border-left: 1px solid #e1e5e9 !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .journey-panel .wizard-steps {
+  gap: 6px !important;
+}
+.app-main:has(.discovery-hero) .journey-panel .wizard-step {
+  min-height: 58px !important;
+  padding: 9px !important;
+  border: 1px solid #e1e5e9 !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .journey-panel .wizard-step.active {
+  border-color: #fdba74 !important;
+  background: #fff7ed !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics {
+  gap: 0 !important;
+  margin: 0 28px 14px !important;
+  border: 1px solid #e1e5e9 !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card {
+  min-height: 108px !important;
+  padding: 14px 18px !important;
+  border: 0 !important;
+  border-right: 1px solid #e1e5e9 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:last-child {
+  border-right: 0 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card::after {
+  display: none !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card::before {
+  height: 2px !important;
+  background: #f97316 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)::before,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3)::before,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4)::before,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5)::before {
+  background: #6b7280 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card > i {
+  background: #fff7ed !important;
+  color: #f97316 !important;
+  border: 1px solid #fed7aa !important;
+  border-radius: 3px !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2) > i,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3) > i,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4) > i,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5) > i {
+  background: #f8fafc !important;
+  color: #6b7280 !important;
+  border-color: #e1e5e9 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card span {
+  color: #6b7280 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card strong {
+  color: #202124 !important;
+  font-size: 25px !important;
+}
+.app-main:has(.discovery-hero) .workspace-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 14px !important;
+  margin: 0 28px 14px !important;
+}
+.app-main:has(.discovery-hero) .workspace-card,
+.app-main:has(.discovery-hero) .prospect-card {
+  border: 1px solid #e1e5e9 !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.app-main:has(.discovery-hero) .workspace-header,
+.app-main:has(.discovery-hero) .prospect-header {
+  min-height: 58px !important;
+  padding: 12px 14px !important;
+  border-bottom: 1px solid #e1e5e9 !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .workspace-header h3,
+.app-main:has(.discovery-hero) .prospect-header h3 {
+  color: #202124 !important;
+  font-size: 14px !important;
+}
+.app-main:has(.discovery-hero) .workspace-header p,
+.app-main:has(.discovery-hero) .prospect-header p {
+  color: #858a91 !important;
+}
+.app-main:has(.discovery-hero) .header-action,
+.app-main:has(.discovery-hero) .profile-state,
+.app-main:has(.discovery-hero) .signal-action {
+  border-radius: 3px !important;
+  border-color: #d8dce1 !important;
+  background: #fff !important;
+  color: #555b63 !important;
+}
+.app-main:has(.discovery-hero) .profile-option {
+  border-color: #e1e5e9 !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+}
+.app-main:has(.discovery-hero) .profile-option.selected {
+  border-color: #fdba74 !important;
+  background: #fff7ed !important;
+}
+.app-main:has(.discovery-hero) .profile-option.selected .profile-state {
+  border-color: #fed7aa !important;
+  background: #fff7ed !important;
+  color: #ea580c !important;
+}
+.app-main:has(.discovery-hero) .selection-summary {
+  border-color: #e1e5e9 !important;
+  border-radius: 3px !important;
+  background: #f8fafc !important;
+}
+.app-main:has(.discovery-hero) .selection-count {
+  border-radius: 3px !important;
+  background: #f97316 !important;
+}
+.app-main:has(.discovery-hero) .create-list {
+  border-radius: 3px !important;
+  background: #f97316 !important;
+}
+.app-main:has(.discovery-hero) .create-list:not(:disabled) {
+  background: #f97316 !important;
+}
+.app-main:has(.discovery-hero) .prospect-card {
+  margin: 0 28px 20px !important;
+}
+.app-main:has(.discovery-hero) .prospect-toolbar {
+  border-bottom: 1px solid #e1e5e9 !important;
+  background: #f8fafc !important;
+}
+.app-main:has(.discovery-hero) .prospect-table th {
+  background: #f8fafc !important;
+  color: #737980 !important;
+}
+.app-main:has(.discovery-hero) .prospect-table td {
+  color: #555b63 !important;
+}
+.app-main:has(.discovery-hero) .prospect-table tbody tr.selected-row td {
+  background: #fff7ed !important;
+}
+.app-main:has(.discovery-hero) .company-cell > span {
+  border-radius: 3px !important;
+  background: #f8fafc !important;
+  color: #555b63 !important;
+}
+.app-main:has(.discovery-hero) .score {
+  border-radius: 3px !important;
+}
+.app-main:has(.discovery-hero) .signal-action {
+  color: #ea580c !important;
+}
+.app-main:has(.discovery-hero) .notice {
+  margin-left: 28px !important;
+  margin-right: 28px !important;
+  border-radius: 3px !important;
+}
+@media(max-width:1100px) {
+  .app-main:has(.discovery-hero) .discovery-hero { grid-template-columns: 1fr !important; }
+  .app-main:has(.discovery-hero) .journey-panel { border-left: 0 !important; border-top: 1px solid #e1e5e9 !important; }
+}
+@media(max-width:700px) {
+  .app-main:has(.discovery-hero) .discovery-hero,
+  .app-main:has(.discovery-hero) .discovery-metrics,
+  .app-main:has(.discovery-hero) .workspace-grid,
+  .app-main:has(.discovery-hero) .prospect-card {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
+}
