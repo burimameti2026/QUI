@@ -58,7 +58,7 @@ export interface UiPageConfig {
   id: string;
   name: string;
   shell: { header: boolean; breadcrumb?: boolean };
-  header?: { title?: string; subtitle?: string; actions?: UiPageAction[] };
+  header?: { title?: string; subtitle?: string; appearance?: UiAppearance; actions?: UiPageAction[] };
   sections: UiPageSectionConfig[];
 }
 
