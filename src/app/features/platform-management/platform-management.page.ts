@@ -56,3 +56,19 @@ import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive
  `]
 })
 export class PlatformManagementPage {}
+
+
+/* Platform header primary action — use the product orange, never the default blue. */
+.platform qai-page-header .page-header a.primary,
+.platform qai-page-header .page-header a.primary:visited{
+  background:#f97316!important;
+  border-color:#f97316!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+.platform qai-page-header .page-header a.primary:hover,
+.platform qai-page-header .page-header a.primary:focus{
+  background:#ea580c!important;
+  border-color:#ea580c!important;
+  color:#fff!important;
+}
