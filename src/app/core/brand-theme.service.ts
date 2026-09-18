@@ -91,9 +91,11 @@ export class BrandThemeService {
     root.style.setProperty("--brand-primary", primary);
     root.style.setProperty("--brand-primary-hover", this.mix(primary, "#000000", 0.12));
     root.style.setProperty("--brand-primary-soft", primarySoft);
+    root.style.setProperty("--brand-primary-border", this.mix(primary, "#ffffff", 0.68));
     root.style.setProperty("--brand-accent", accent);
     root.style.setProperty("--brand-accent-hover", this.mix(accent, "#000000", 0.12));
     root.style.setProperty("--brand-accent-soft", accentSoft);
+    root.style.setProperty("--brand-accent-border", this.mix(accent, "#ffffff", 0.68));
 
     root.style.setProperty("--ui-accent", "var(--brand-primary)");
     root.style.setProperty("--ui-accent-soft", "var(--brand-primary-soft)");
@@ -102,6 +104,8 @@ export class BrandThemeService {
     root.style.setProperty("--cms-soft", "var(--brand-accent-soft)");
     root.style.setProperty("--leads", "var(--brand-primary)");
     root.style.setProperty("--leads-soft", "var(--brand-primary-soft)");
+    const theme = this.document.querySelector('meta[name="theme-color"]');
+    theme?.setAttribute("content", primary);
   }
 
   private mix(hex: string, target: string, targetWeight: number): string {
