@@ -31,7 +31,43 @@ import { PageHeader } from "../../shared/ui";
             >Accent color<input type="color" [(ngModel)]="brand.accentColor"
           /></label>
         </div>
-        <p class="theme-help">These two values are the source of truth for application actions, active navigation, focus states, highlights and brand accents across the workspace. Individual pages do not define their own brand colors.</p><button class="primary" (click)="saveBrand()">Save branding</button>
+        <p class="theme-help">Primary and accent define the core brand identity. Component colors below control the reusable application surfaces, so pages consume the same configured values instead of hardcoded brand colors.</p>
+        <div class="theme-section">
+          <div class="theme-section-head"><strong>Buttons</strong><span>Header actions and primary actions</span></div>
+          <div class="color-grid">
+            <label class="color-setting">Primary button background<input type="color" [(ngModel)]="brand.buttonPrimaryColor" /></label>
+            <label class="color-setting">Secondary button background<input type="color" [(ngModel)]="brand.buttonSecondaryColor" /></label>
+          </div>
+        </div>
+        <div class="theme-section">
+          <div class="theme-section-head"><strong>Card headers</strong><span>Workspace, prospect and configuration card headers</span></div>
+          <label class="color-setting">Card header background<input type="color" [(ngModel)]="brand.cardHeaderColor" /></label>
+        </div>
+        <div class="theme-section">
+          <div class="theme-section-head"><strong>Prospect Discovery KPIs</strong><span>Configure KPI 1–6 independently</span></div>
+          <div class="color-grid kpi-colors">
+            <label class="color-setting">KPI 1<input type="color" [(ngModel)]="brand.kpi1Color" /></label>
+            <label class="color-setting">KPI 2<input type="color" [(ngModel)]="brand.kpi2Color" /></label>
+            <label class="color-setting">KPI 3<input type="color" [(ngModel)]="brand.kpi3Color" /></label>
+            <label class="color-setting">KPI 4<input type="color" [(ngModel)]="brand.kpi4Color" /></label>
+            <label class="color-setting">KPI 5<input type="color" [(ngModel)]="brand.kpi5Color" /></label>
+            <label class="color-setting">KPI 6<input type="color" [(ngModel)]="brand.kpi6Color" /></label>
+          </div>
+        </div>
+        <div class="component-preview">
+          <div class="component-preview-title">Live component preview</div>
+          <div class="preview-row">
+            <button class="preview-primary" type="button" [style.background]="brand.buttonPrimaryColor">Primary</button>
+            <button class="preview-secondary" type="button" [style.background]="brand.buttonSecondaryColor">Secondary</button>
+          </div>
+          <div class="preview-card">
+            <header [style.background]="brand.cardHeaderColor"><span>Card header</span><b>Configured</b></header>
+            <div class="preview-kpis">
+              <i *ngFor="let color of [brand.kpi1Color,brand.kpi2Color,brand.kpi3Color,brand.kpi4Color,brand.kpi5Color,brand.kpi6Color]" [style.background]="color"></i>
+            </div>
+          </div>
+        </div>
+        <button class="primary" (click)="saveBrand()">Save branding</button>
       </section>
       <section class="panel">
         <h3>Widget preview</h3>
