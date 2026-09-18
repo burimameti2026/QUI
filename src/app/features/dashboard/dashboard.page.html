@@ -1,72 +1,8 @@
-<qai-page-header title="Acquisition command center">
-  <button type="button" class="quiet-action" (click)="refresh()">↻ Refresh data</button>
-  <button type="button" class="primary" (click)="go('/renova/promotion')">Open promotion plan</button>
-</qai-page-header>
+<div class="alert alert-error" *ngIf="error">
+  <strong>Live workspace warning</strong><span>{{ error }}</span>
+</div>
 
-<main class="dashboard-content">
-  <div class="alert alert-error" *ngIf="error">
-    <strong>Live workspace warning</strong><span>{{ error }}</span>
-  </div>
-
-  <qai-ui-steps
-    eyebrow="ACQUISITION WORKFLOW"
-    title="Build an evidence-backed target market"
-    badge="Workspace operating flow"
-    [steps]="workflowSteps">
-  </qai-ui-steps>
-
-  <qai-ui-section [columns]="1">
-    <qai-ui-card [model]="{
-      eyebrow: 'OPERATING PICTURE',
-      title: 'One operating picture for the full acquisition loop.',
-      text: 'The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.'
-    }"></qai-ui-card>
-  </qai-ui-section>
-
-  <qai-ui-metrics [items]="metrics" (action)="go($event)"></qai-ui-metrics>
-
-  <qai-ui-section [columns]="2">
-    <qai-ui-card [model]="acquisitionCard" (action)="go($event)"></qai-ui-card>
-    <qai-ui-card [model]="outreachCard" (action)="go($event)"></qai-ui-card>
-  </qai-ui-section>
-
-  <qai-ui-section [columns]="2">
-    <qai-ui-table-card
-      eyebrow="MARKET ACTIVATION"
-      title="Current programs"
-      [columns]="[
-        { key: 'program', label: 'Program' },
-        { key: 'language', label: 'Language' },
-        { key: 'status', label: 'Status' },
-        { key: 'automation', label: 'Automation' }
-      ]"
-      [rows]="programRows"
-      emptyText="No promotion plans have been created."
-      [action]="{ label: 'Manage plans', route: '/renova/promotion' }"
-      (actionClick)="go($event)">
-    </qai-ui-table-card>
-
-    <qai-ui-list-card
-      eyebrow="PUBLISHING"
-      title="Public product experience"
-      [items]="publicExperience"
-      [action]="{ label: 'Open portal', route: '/renova/portal' }"
-      (actionClick)="go($event)">
-    </qai-ui-list-card>
-  </qai-ui-section>
-
-  <qai-ui-section [columns]="2">
-    <qai-ui-card [model]="{
-      eyebrow: 'NEXT STEP',
-      title: 'Human review',
-      text: 'Use the approval queue to review the exact subject, body and destination before delivery. The backend still enforces sender verification, suppression and provider controls.',
-      action: { label: 'Open queue', route: '/acquisition/approval-queue' }
-    }" (action)="go($event)"></qai-ui-card>
-
-    <qai-ui-card [model]="{
-      eyebrow: 'CROSS-SYSTEM HANDOFF',
-      title: 'Qualified demand → FusionFleet',
-      text: 'LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.'
-    }"></qai-ui-card>
-  </qai-ui-section>
-</main>
+<qai-ui-page-renderer
+  [config]="pageConfig"
+  (action)="handleAction($event)">
+</qai-ui-page-renderer>
