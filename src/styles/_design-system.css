@@ -103,7 +103,7 @@ qai-page-header .page-header {
   padding: 20px 28px 16px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--ref-line) !important;
-  background: #fff !important;
+  background: transparent !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
