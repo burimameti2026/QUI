@@ -21,7 +21,6 @@
             "styles": [
               "src/styles.css",
               "src/styles/_design-system.css",
-              "src/styles/_reference-polish.css",
               "src/styles/_refined-leads.css"
             ]
           },
