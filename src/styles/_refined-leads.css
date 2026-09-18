@@ -7,7 +7,7 @@
 .shell:has(.leads-page-header) .header-context{font-size:11px!important;color:#737c85!important}
 .shell:has(.leads-page-header) .header-icon{width:36px!important;height:36px!important;border-radius:3px!important}
 .shell:has(.leads-page-header) .admin-account{min-height:38px!important;border-radius:3px!important}
-.shell:has(.leads-page-header) .page{background:#fff!important}
+.shell:has(.leads-page-header) .page{background:#f7f8fc!important}
 .shell:has(.leads-page-header) .brand{min-height:76px!important;padding:13px 16px!important;background:#f7f8fa!important}
 .shell:has(.leads-page-header) .reference-menu{padding:12px 10px 28px!important}
 .shell:has(.leads-page-header) .group-heading{padding:11px 10px 6px!important;background:transparent!important;color:#a0a5ab!important;font-size:9px!important;font-weight:700!important;letter-spacing:.08em!important}
