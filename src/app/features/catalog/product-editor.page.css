@@ -28,7 +28,7 @@
 }
 
 .back:hover {
-  color: #f97316;
+  color: var(--brand-primary);
 }
 
 .topbar h1 {
@@ -70,8 +70,8 @@
 }
 
 .secondary:hover {
-  border-color: #fed7aa;
-  color: #f97316;
+  border-color: var(--brand-primary-border);
+  color: var(--brand-primary);
 }
 
 .language-bar {
@@ -121,7 +121,7 @@
 }
 
 .language-pills button:hover {
-  border-color: #fed7aa;
+  border-color: var(--brand-primary-border);
   color: #1d7a45;
 }
 
@@ -170,8 +170,8 @@
   height: 30px;
   place-items: center;
   border-radius: 8px;
-  background: #fff7ed;
-  color: #c2410c;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   font-size: 10px;
   font-weight: 850;
 }
@@ -233,8 +233,8 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #f97316;
-  box-shadow: 0 0 0 3px #f9731614;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px var(--brand-primary)14;
 }
 
 input::placeholder,
@@ -265,8 +265,8 @@ textarea {
 }
 
 .languages label:has(input:checked) {
-  border-color: #fed7aa;
-  background: #fff7ed;
+  border-color: var(--brand-primary-border);
+  background: var(--brand-primary-soft);
 }
 
 .languages input,
@@ -339,7 +339,7 @@ textarea {
   padding: 12px 14px;
   border: 1px solid #fecdca;
   background: #fef3f2;
-  color: #c2410c;
+  color: var(--brand-primary);
   border-radius: 10px;
   font-size: 11px;
   font-weight: 700;
