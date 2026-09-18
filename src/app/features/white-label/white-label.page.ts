@@ -133,6 +133,23 @@ interface LayoutSection {
                   </div>
                 </div>
 
+                <div class="appearance-area">
+                  <div class="appearance-heading">
+                    <div><strong>Appearance</strong><span>Configure this item independently. These values are presentation overrides for this component/template.</span></div>
+                  </div>
+                  <div class="appearance-grid">
+                    <label>Surface<input type="color" [(ngModel)]="item.appearance.surfaceColor" /></label>
+                    <label>Header<input type="color" [(ngModel)]="item.appearance.headerColor" /></label>
+                    <label>Border<input type="color" [(ngModel)]="item.appearance.borderColor" /></label>
+                    <label>Title text<input type="color" [(ngModel)]="item.appearance.titleColor" /></label>
+                    <label>Body text<input type="color" [(ngModel)]="item.appearance.textColor" /></label>
+                    <label>Muted text<input type="color" [(ngModel)]="item.appearance.mutedTextColor" /></label>
+                    <label>Accent<input type="color" [(ngModel)]="item.appearance.accentColor" /></label>
+                    <label>Height (px)<input type="number" min="0" max="1200" step="1" [(ngModel)]="item.appearance.height" /></label>
+                    <label>Radius (px)<input type="number" min="0" max="40" step="1" [(ngModel)]="item.appearance.radius" /></label>
+                  </div>
+                </div>
+
                 <div class="item-footer">
                   <span>Template ID: <code>{{ item.template }}</code></span>
                   <button type="button" class="remove" (click)="removeItem(section, itemIndex)">Remove</button>
