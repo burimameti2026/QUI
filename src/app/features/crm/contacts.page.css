@@ -9,7 +9,7 @@
   box-shadow:none!important;
 }
 .directory-toolbar label:focus-within{
-  border-color:#f97316!important;
+  border-color:var(--brand-primary)!important;
   box-shadow:0 0 0 3px rgba(249,115,22,.10)!important;
 }
 .directory-toolbar label input,
@@ -29,7 +29,7 @@
   box-shadow:none!important;
 }
 .directory-toolbar select:focus{
-  border-color:#f97316!important;
+  border-color:var(--brand-primary)!important;
   box-shadow:0 0 0 3px rgba(249,115,22,.10)!important;
 }
 .directory-toolbar select option{
