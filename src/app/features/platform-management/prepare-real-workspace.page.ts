@@ -80,7 +80,7 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
       <div class="status" *ngIf="status" [class.error]="error"><strong>{{error?'Workspace action failed':'Workspace status'}}</strong><span>{{status}}</span></div>
     </div>
   `,
-  styles: [\`
+  styles: [`
     :host{display:block;min-height:100%;background:#f5f7fb;color:#101828}
     .eyebrow{display:block;color:#98a2b3;font-size:9px;font-weight:800;letter-spacing:.11em}
     .steps{display:flex;gap:8px;margin:0 28px 14px;flex-wrap:wrap}
@@ -108,7 +108,7 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
     @media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pipeline{grid-template-columns:repeat(5,minmax(0,1fr))}.pipeline i{display:none}}
     @media(max-width:760px){.steps,.section,.status{margin-left:16px;margin-right:16px}.grid,.form-grid,.result-grid{grid-template-columns:1fr}.split-heading,.success-head{flex-direction:column}.pipeline{grid-template-columns:1fr}.actions{justify-content:flex-start}}
     @media(max-width:560px){.steps,.section,.status{margin-left:0;margin-right:0}.section{padding:16px;border-left:0;border-right:0;border-radius:0}}
-  \`]})
+  `]})
 export class PrepareRealWorkspacePage {
   private readonly service=inject(RealWorkspaceService); options:RealWorkspaceOptions|null=null; result:RealWorkspaceResult|null=null; step=1; useCase=''; templateKey=''; industry=''; region=''; countries=''; name=''; dailyDiscoveryLimit=25; minimumScore=70; saving=false; status=''; error=false;
   ngOnInit(){this.service.options().subscribe({next:x=>this.options=x,error:()=>this.fail('Could not load workspace options.')});}
