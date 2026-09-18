@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { AcquisitionService } from './acquisition.service';
 import { PageHeader } from '../../shared/ui';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, FormsModule, PageHeader],
   templateUrl: './approval-queue.page.html',
   styleUrl: './approval-queue.page.css'
 })
