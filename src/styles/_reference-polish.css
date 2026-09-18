@@ -6,7 +6,7 @@
   --ref-border-soft: #e7edf4;
   --ref-ink: #10243d;
   --ref-muted: #667b93;
-  --ref-blue: #2563eb;
+  --ref-blue: var(--brand-accent);
 }
 
 html, body { background: var(--ref-bg); }
@@ -88,7 +88,7 @@ qai-page-header .page-header { background: #fff !important; }
 
   border: 1px solid #d5dfeb !important;
   border-radius: 0px !important;
-  background: #edf4ff !important;
+  background: var(--brand-accent-soft) !important;
   box-shadow: 0 1px 2px rgba(26, 55, 86, .03) !important;
 }
 .dashboard-content .executive-band {
