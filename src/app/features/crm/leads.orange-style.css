@@ -1,10 +1,10 @@
-:host{display:block;min-width:0;width:100%;color:#202124;background:#fff}
+:host{display:block;min-width:0;width:100%;color:#202124;background:#f5f7fb}
 .leads-page-header{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px;padding:17px 28px 15px;border-bottom:1px solid #e1e5e9;background:#fff}.leads-page-header .title{min-width:0}.leads-page-header h1{margin:0;color:#202124;font-size:20px;line-height:1.15;font-weight:650;letter-spacing:-.025em}.leads-page-header .count{color:#8b9097;font-weight:500}.leads-page-header p{margin:5px 0 0;color:#858a91;font-size:10px;line-height:1.4}.leads-page-header .actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}.leads-page-header button{height:34px;min-height:34px;padding:0 13px;border:1px solid #d8dce1;border-radius:3px;background:#fff;color:#555b63;font-size:10px;font-weight:650;white-space:nowrap}.leads-page-header button.primary{border-color:#f97316;background:#f97316;color:#fff}.leads-page-header button.primary:hover{background:#ea580c;border-color:#ea580c}
 .leads-page-header button.primary,.lead-workspace button.primary,.lead-workspace .small.primary{background:#f97316!important;border-color:#f97316!important;color:#fff!important}.lead-workspace button.primary:hover,.lead-workspace .small.primary:hover{background:#ea580c!important;border-color:#ea580c!important}
 .lead-grid-toolbar select{accent-color:#f97316!important;color:#4f555d!important;background:#fff!important;border-color:#d8dce1!important}.lead-grid-toolbar select:focus{outline:0;border-color:#f97316!important;box-shadow:0 0 0 2px rgba(249,115,22,.12)!important}
 .lead-workspace input[type="checkbox"]{accent-color:#f97316!important}
 /* Reference geometry: the workspace owns the full available content width; no artificial card margins. */
-.lead-workspace{width:100%;max-width:none;margin:0;padding:0 0 40px;background:#fff}
+.lead-workspace{width:100%;max-width:none;margin:0;padding:0 0 40px;background:#f5f7fb}
 /* Force the five KPI cells to remain one continuous inline band. */
 .lead-workspace qai-kpi-strip{display:block;width:100%;margin:0}.lead-workspace qai-kpi-strip .refined-kpi-strip{grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;margin:0!important;border-left:0!important;border-right:0!important}
 /* Tabs span the same content width as the grid and are not pill buttons. */
