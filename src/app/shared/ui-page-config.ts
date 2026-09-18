@@ -9,6 +9,18 @@ export type UiTemplateId =
   | 'button-01' | 'button-02' | 'button-03' | 'button-04';
 
 export interface UiBinding { source: string; fallback?: string | number; }
+
+export interface UiAppearance {
+  surfaceColor?: string;
+  headerColor?: string;
+  borderColor?: string;
+  titleColor?: string;
+  textColor?: string;
+  mutedTextColor?: string;
+  accentColor?: string;
+  height?: number;
+  radius?: number;
+}
 export interface UiPageAction {
   id?: string;
   label: string;
