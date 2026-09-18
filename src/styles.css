@@ -875,3 +875,70 @@ a,.text-primary,.link-primary{color:var(--brand-primary)!important}
 }
 .pipeline-kpis article:nth-child(2) .kpi-icon,.golden-kpis article:nth-child(2) .kpi-icon{background:var(--brand-accent-soft)!important;color:var(--brand-accent)!important}
 .score-pill,.intent-score,.signal-action,.event-name,.profile-option.selected .profile-state{background:var(--brand-primary-soft)!important;color:var(--brand-primary)!important}
+
+
+/* Prospect Discovery — White Label component palette is the final source of truth. */
+:root{
+  --brand-button-primary:var(--brand-primary,#f97316);
+  --brand-button-primary-hover:var(--brand-primary-hover,#ea580c);
+  --brand-button-primary-text:#fff;
+  --brand-button-secondary:#fff;
+  --brand-button-secondary-hover:#f8fafc;
+  --brand-button-secondary-text:#172033;
+  --brand-button-secondary-border:#dfe5ed;
+  --brand-card-header:#fff;
+  --brand-card-header-text:#172033;
+  --brand-card-header-border:#edf0f4;
+  --brand-kpi-1:#2563eb;--brand-kpi-1-soft:#eaf2ff;
+  --brand-kpi-2:#7c3aed;--brand-kpi-2-soft:#f0eaff;
+  --brand-kpi-3:#059669;--brand-kpi-3-soft:#eaf9f1;
+  --brand-kpi-4:#d97706;--brand-kpi-4-soft:#fff5df;
+  --brand-kpi-5:#e11d48;--brand-kpi-5-soft:#ffedf1;
+  --brand-kpi-6:#0891b2;--brand-kpi-6-soft:#ecfeff;
+}
+
+.app-main:has(.discovery-hero) qai-page-header .page-header{background:#fff!important}
+.app-main:has(.discovery-hero) qai-page-header button{
+  background:var(--brand-button-secondary)!important;
+  color:var(--brand-button-secondary-text)!important;
+  border-color:var(--brand-button-secondary-border)!important;
+}
+.app-main:has(.discovery-hero) qai-page-header button:hover:not(:disabled){
+  background:var(--brand-button-secondary-hover)!important;
+  border-color:var(--brand-button-secondary-border)!important;
+}
+.app-main:has(.discovery-hero) qai-page-header button.primary{
+  background:var(--brand-button-primary)!important;
+  border-color:var(--brand-button-primary)!important;
+  color:var(--brand-button-primary-text)!important;
+}
+.app-main:has(.discovery-hero) qai-page-header button.primary:hover:not(:disabled){
+  background:var(--brand-button-primary-hover)!important;
+  border-color:var(--brand-button-primary-hover)!important;
+}
+.app-main:has(.discovery-hero) .workspace-header,
+.app-main:has(.discovery-hero) .prospect-header{
+  background:var(--brand-card-header)!important;
+  border-bottom-color:var(--brand-card-header-border)!important;
+}
+.app-main:has(.discovery-hero) .workspace-header h3,
+.app-main:has(.discovery-hero) .prospect-header h3{color:var(--brand-card-header-text)!important}
+.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card{
+  background:#fff!important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(1)::before{background:var(--brand-kpi-1)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)::before{background:var(--brand-kpi-2)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3)::before{background:var(--brand-kpi-3)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4)::before{background:var(--brand-kpi-4)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5)::before{background:var(--brand-kpi-5)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(6)::before{background:var(--brand-kpi-6)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(1)>i{background:var(--brand-kpi-1-soft)!important;color:var(--brand-kpi-1)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)>i{background:var(--brand-kpi-2-soft)!important;color:var(--brand-kpi-2)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(3)>i{background:var(--brand-kpi-3-soft)!important;color:var(--brand-kpi-3)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(4)>i{background:var(--brand-kpi-4-soft)!important;color:var(--brand-kpi-4)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(5)>i{background:var(--brand-kpi-5-soft)!important;color:var(--brand-kpi-5)!important}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(6)>i{background:var(--brand-kpi-6-soft)!important;color:var(--brand-kpi-6)!important}
+@media(max-width:1100px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:480px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:1fr!important}}
