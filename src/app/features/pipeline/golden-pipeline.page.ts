@@ -33,7 +33,7 @@ import { PageHeader } from '../../shared/ui';
           <article class="golden-card" *ngFor="let item of stage.opportunities" draggable="true" (dragstart)="drag(item.id)">
             <div class="golden-card-top"><span class="golden-icon">↗</span><span class="score-pill">{{ item.amount > 30000 ? 93 : item.amount > 15000 ? 84 : 71 }}</span></div>
             <strong>{{ item.name }}</strong>
-            <b>{{ item.amount | currency }}</b>
+            <b>{{ money(item.amount) }}</b>
             <small>{{ item.expectedCloseUtc | date:'mediumDate' }}</small>
           </article>
           <div class="golden-drop">Drop opportunity here</div>
