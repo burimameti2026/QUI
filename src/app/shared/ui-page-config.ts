@@ -1,5 +1,5 @@
 export type UiPageComponentType =
-  | 'header' | 'steps' | 'metrics' | 'card' | 'list-card' | 'table-card' | 'grid' | 'text';
+  | 'header' | 'steps' | 'metrics' | 'card' | 'list-card' | 'table-card' | 'grid' | 'text' | 'button';
 
 export type UiTemplateId =
   | 'header-01' | 'header-02' | 'steps-01'
@@ -69,7 +69,8 @@ export const UI_COMPONENT_REGISTRY: Record<UiPageComponentType, {
   'list-card': { templates: ['list-01'], configurable: ['title', 'items', 'actions', 'bindings'] },
   'table-card': { templates: ['table-01'], configurable: ['title', 'columns', 'rows', 'actions', 'bindings'] },
   grid: { templates: ['grid-01', 'grid-02'], configurable: ['columns', 'children'] },
-  text: { templates: ['text-01', 'text-02'], configurable: ['title', 'text'] }
+  text: { templates: ['text-01', 'text-02'], configurable: ['title', 'text'] },
+  button: { templates: ['button-01', 'button-02', 'button-03', 'button-04'], configurable: ['label', 'route', 'command', 'variant'] }
 };
 
 export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
