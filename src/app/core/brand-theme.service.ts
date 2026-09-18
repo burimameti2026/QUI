@@ -8,6 +8,15 @@ export interface BrandTheme {
   supportEmail: string;
   primaryColor: string;
   accentColor: string;
+  buttonPrimaryColor: string;
+  buttonSecondaryColor: string;
+  cardHeaderColor: string;
+  kpi1Color: string;
+  kpi2Color: string;
+  kpi3Color: string;
+  kpi4Color: string;
+  kpi5Color: string;
+  kpi6Color: string;
 }
 
 const DEFAULT_BRAND: BrandTheme = {
@@ -15,6 +24,15 @@ const DEFAULT_BRAND: BrandTheme = {
   supportEmail: "support@company.com",
   primaryColor: "#f97316",
   accentColor: "#2563eb",
+  buttonPrimaryColor: "#f97316",
+  buttonSecondaryColor: "#ffffff",
+  cardHeaderColor: "#ffffff",
+  kpi1Color: "#2563eb",
+  kpi2Color: "#7c3aed",
+  kpi3Color: "#059669",
+  kpi4Color: "#d97706",
+  kpi5Color: "#e11d48",
+  kpi6Color: "#0891b2",
 };
 
 @Injectable({ providedIn: "root" })
@@ -27,7 +45,9 @@ export class BrandThemeService {
     try {
       const cached = localStorage.getItem("qui-branding");
       if (cached) {
-        this.apply(this.normalize(JSON.parse(cached)));
+        const cachedBrand = this.normalize(JSON.parse(cached));
+        this.brand.set(cachedBrand);
+        this.apply(cachedBrand);
       }
     } catch {
       // Ignore malformed local branding cache.
@@ -74,6 +94,15 @@ export class BrandThemeService {
       supportEmail: String(value.supportEmail || DEFAULT_BRAND.supportEmail),
       primaryColor: this.validHex(value.primaryColor) ? String(value.primaryColor) : DEFAULT_BRAND.primaryColor,
       accentColor: this.validHex(value.accentColor) ? String(value.accentColor) : DEFAULT_BRAND.accentColor,
+      buttonPrimaryColor: this.validHex(value.buttonPrimaryColor) ? String(value.buttonPrimaryColor) : DEFAULT_BRAND.buttonPrimaryColor,
+      buttonSecondaryColor: this.validHex(value.buttonSecondaryColor) ? String(value.buttonSecondaryColor) : DEFAULT_BRAND.buttonSecondaryColor,
+      cardHeaderColor: this.validHex(value.cardHeaderColor) ? String(value.cardHeaderColor) : DEFAULT_BRAND.cardHeaderColor,
+      kpi1Color: this.validHex(value.kpi1Color) ? String(value.kpi1Color) : DEFAULT_BRAND.kpi1Color,
+      kpi2Color: this.validHex(value.kpi2Color) ? String(value.kpi2Color) : DEFAULT_BRAND.kpi2Color,
+      kpi3Color: this.validHex(value.kpi3Color) ? String(value.kpi3Color) : DEFAULT_BRAND.kpi3Color,
+      kpi4Color: this.validHex(value.kpi4Color) ? String(value.kpi4Color) : DEFAULT_BRAND.kpi4Color,
+      kpi5Color: this.validHex(value.kpi5Color) ? String(value.kpi5Color) : DEFAULT_BRAND.kpi5Color,
+      kpi6Color: this.validHex(value.kpi6Color) ? String(value.kpi6Color) : DEFAULT_BRAND.kpi6Color,
     };
   }
 
@@ -97,6 +126,27 @@ export class BrandThemeService {
     root.style.setProperty("--brand-accent-soft", accentSoft);
     root.style.setProperty("--brand-accent-border", this.mix(accent, "#ffffff", 0.68));
 
+    root.style.setProperty("--brand-button-primary", brand.buttonPrimaryColor);
+    root.style.setProperty("--brand-button-primary-hover", this.mix(brand.buttonPrimaryColor, "#000000", 0.12));
+    root.style.setProperty("--brand-button-primary-text", this.contrast(brand.buttonPrimaryColor));
+    root.style.setProperty("--brand-button-secondary", brand.buttonSecondaryColor);
+    root.style.setProperty("--brand-button-secondary-hover", this.mix(brand.buttonSecondaryColor, "#000000", 0.06));
+    root.style.setProperty("--brand-button-secondary-text", this.contrast(brand.buttonSecondaryColor));
+    root.style.setProperty("--brand-button-secondary-border", this.mix(brand.buttonSecondaryColor, "#000000", 0.12));
+
+    root.style.setProperty("--brand-card-header", brand.cardHeaderColor);
+    root.style.setProperty("--brand-card-header-text", this.contrast(brand.cardHeaderColor));
+    root.style.setProperty("--brand-card-header-border", this.mix(brand.cardHeaderColor, "#000000", 0.08));
+
+    const kpis = [
+      brand.kpi1Color, brand.kpi2Color, brand.kpi3Color,
+      brand.kpi4Color, brand.kpi5Color, brand.kpi6Color,
+    ];
+    kpis.forEach((color, index) => {
+      root.style.setProperty(`--brand-kpi-${index + 1}`, color);
+      root.style.setProperty(`--brand-kpi-${index + 1}-soft`, this.mix(color, "#ffffff", 0.90));
+    });
+
     root.style.setProperty("--ui-accent", "var(--brand-primary)");
     root.style.setProperty("--ui-accent-soft", "var(--brand-primary-soft)");
     root.style.setProperty("--ref-blue", "var(--brand-accent)");
@@ -116,6 +166,12 @@ export class BrandThemeService {
     const g = Math.round(a.g * (1 - w) + b.g * w);
     const bl = Math.round(a.b * (1 - w) + b.b * w);
     return "#" + [r, g, bl].map(x => x.toString(16).padStart(2, "0")).join("");
+  }
+
+  private contrast(hex: string): string {
+    const { r, g, b } = this.rgb(hex);
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance > 0.62 ? "#172033" : "#ffffff";
   }
 
   private rgb(hex: string) {
