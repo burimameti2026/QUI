@@ -16,8 +16,14 @@ import { MeetingsService } from "./meetings.service";
       ><button (click)="load()">↻ Refresh</button
       ><button class="primary" (click)="open()">
         + Schedule meeting
-      </button></qai-page-header
+      </button></qai-page-header>
     >
+    <section class="meeting-metrics">
+      <article><span class="metric-icon orange">◷</span><div><small>Total meetings</small><strong>{{ rows.length }}</strong><em>All scheduled activity</em></div></article>
+      <article><span class="metric-icon blue">↗</span><div><small>Booked</small><strong>{{ bookedCount }}</strong><em>Upcoming or pending calls</em></div></article>
+      <article><span class="metric-icon green">✓</span><div><small>Completed</small><strong>{{ completedCount }}</strong><em>Finished meetings</em></div></article>
+      <article><span class="metric-icon violet">◎</span><div><small>Calendars</small><strong>{{ syncedCount }}</strong><em>Externally synced</em></div></article>
+    </section>
     <div class="callout warning" *ngIf="error">
       <span class="callout-icon">!</span>
       <div>
@@ -67,6 +73,7 @@ export class MeetingsPage implements OnInit {
   }
   get visible() { const term = this.query.trim().toLowerCase(); return this.rows.filter(row => (!term || `${this.contactName(row.contactId)} ${row.status}`.toLowerCase().includes(term)) && (!this.statusFilter || String(row.status).toLowerCase() === this.statusFilter)); }
   get bookedCount() { return this.rows.filter(row => String(row.status).toLowerCase() === "booked").length; }
+  get syncedCount() { return this.rows.filter(row => !!row.externalEventId).length; }
   get completedCount() { return this.rows.filter(row => String(row.status).toLowerCase() === "completed").length; }
   statusClass(value: unknown) { const status = String(value).toLowerCase(); return status === "booked" ? "status-pending" : status === "completed" ? "status-success" : status === "cancelled" || status === "no-show" ? "status-failed" : ""; }
   open(row?: any, contactId?: string) { this.form = row ? { ...row } : { status: "booked", contactId: contactId || this.contacts[0]?.id || "", meetingTypeId: this.types[0]?.id || "" }; const starts = row?.startsAtUtc ? new Date(row.startsAtUtc) : new Date(Date.now() + 86400000); this.date = starts.toISOString().slice(0, 10); this.time = `${String(starts.getHours()).padStart(2, "0")}:${String(starts.getMinutes()).padStart(2, "0")}`; this.show = true; }
