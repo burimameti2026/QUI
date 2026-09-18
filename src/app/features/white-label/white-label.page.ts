@@ -200,7 +200,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: true,
       columns: 1,
       items: [
-        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true },
+        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
@@ -211,10 +211,10 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 4,
       items: [
-        { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true },
-        { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true },
-        { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true },
-        { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true },
+        { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
@@ -225,8 +225,8 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "card-1", label: "Acquisition engine", value: "acquisition.latestRun", template: "card-03", enabled: true },
-        { id: "card-2", label: "Active outreach", value: "campaigns.active", template: "card-01", enabled: true },
+        { id: "card-1", label: "Acquisition engine", value: "acquisition.latestRun", template: "card-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "card-2", label: "Active outreach", value: "campaigns.active", template: "card-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
@@ -237,7 +237,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "grid-1", label: "Operations grid", value: "operations", template: "grid-01", enabled: true },
+        { id: "grid-1", label: "Operations grid", value: "operations", template: "grid-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
@@ -248,8 +248,8 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true },
-        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true },
+        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
@@ -260,7 +260,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 1,
       items: [
-        { id: "text-1", label: "Operating picture", value: "workspace.operatingPicture", template: "text-01", enabled: true },
+        { id: "text-1", label: "Operating picture", value: "workspace.operatingPicture", template: "text-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
   ];
@@ -293,6 +293,7 @@ export class WhiteLabelPage implements OnInit {
       value: "",
       template: first?.id || "text-01",
       enabled: true,
+      appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 },
     });
   }
 
@@ -309,7 +310,20 @@ export class WhiteLabelPage implements OnInit {
     if (!raw) return;
     try {
       const saved = JSON.parse(raw) as LayoutSection[];
-      if (Array.isArray(saved) && saved.length) this.layoutSections = saved;
+      if (Array.isArray(saved) && saved.length) {
+        this.layoutSections = saved;
+        this.layoutSections.forEach(section => section.items.forEach(item => item.appearance = {
+          surfaceColor: item.appearance?.surfaceColor || "#ffffff",
+          headerColor: item.appearance?.headerColor || "#d6e8ff",
+          borderColor: item.appearance?.borderColor || "#d6e0ec",
+          titleColor: item.appearance?.titleColor || "#173f7a",
+          textColor: item.appearance?.textColor || "#26364d",
+          mutedTextColor: item.appearance?.mutedTextColor || "#68778d",
+          accentColor: item.appearance?.accentColor || "#1769e0",
+          height: item.appearance?.height || 0,
+          radius: item.appearance?.radius || 14,
+        }));
+      }
     } catch {
       // Keep the safe default configuration.
     }
