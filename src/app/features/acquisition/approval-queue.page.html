@@ -93,7 +93,7 @@
             <small>{{ message.contactName || 'Contact' }} · {{ message.email || 'No recipient' }}</small>
           </div>
         </div>
-        <span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && ['sent','delivered'].includes(String(message.status).toLowerCase())">
+        <span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && isProcessed(message)">
           {{ statusLabel(message) }}
         </span>
       </header>
