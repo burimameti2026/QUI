@@ -6,9 +6,9 @@
 }
 
 .promotion-shell {
-  width: min(100%, 1440px);
-  margin: 0 auto;
-  padding: 24px 28px 40px;
+  width: 100%;
+  margin: 0;
+  padding: 0 28px 40px;
   box-sizing: border-box;
 }
 
