@@ -849,3 +849,29 @@
   .app-main:has(.leads-page-header) .lead-grid-toolbar { margin-left: 12px !important; margin-right: 12px !important; }
 }
 
+
+/* Runtime branding bridge — White Label is the single source for application brand colors. */
+:root{
+  --brand-primary:#f97316;--brand-primary-hover:#ea580c;--brand-primary-soft:#fff7ed;
+  --brand-accent:#2563eb;--brand-accent-hover:#1d4ed8;--brand-accent-soft:#edf4ff;
+}
+button.primary,.primary,.primary-action,.btn-primary,.page-actions button.primary,.header-actions button.primary{
+  background:var(--brand-primary)!important;border-color:var(--brand-primary)!important;color:#fff!important;
+}
+button.primary:hover:not(:disabled),.primary:hover:not(:disabled),.primary-action:hover:not(:disabled),.btn-primary:hover:not(:disabled){
+  background:var(--brand-primary-hover)!important;border-color:var(--brand-primary-hover)!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--brand-primary)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--brand-primary) 12%,transparent)!important;
+}
+a,.text-primary,.link-primary{color:var(--brand-primary)!important}
+.menu-item.active:before,.context-dot,.notification-dot,.child-item.active .child-dot{background:var(--brand-primary)!important}
+.menu-item.active .nav-icon,.menu-item:hover .nav-icon,.menu-item:hover .nav-chevron,.menu-item.active .nav-chevron{color:var(--brand-primary)!important}
+.brand-logo,.admin-avatar,.hub-brand-logo{background:var(--brand-primary)!important}
+.pipeline-kpis article:before,.golden-kpis article:before,.lead-workspace qai-kpi-strip .refined-kpi-strip>article:before,.app-main:has(.discovery-hero) .discovery-metrics .metric-card::before{background:var(--brand-primary)!important}
+.pipeline-kpis article:nth-child(2):before,.golden-kpis article:nth-child(2):before,.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(2):before,.app-main:has(.discovery-hero) .discovery-metrics .metric-card:nth-child(2)::before{background:var(--brand-accent)!important}
+.pipeline-kpis .kpi-icon,.golden-kpis .kpi-icon,.brand-metrics .metric-icon.orange,.lead-workspace qai-kpi-strip .refined-kpi-strip .kpi-icon,.app-main:has(.discovery-hero) .selection-count,.app-main:has(.discovery-hero) .create-list,.app-main:has(.discovery-hero) .profile-option.selected .profile-mark{
+  background:var(--brand-primary)!important;color:#fff!important;
+}
+.pipeline-kpis article:nth-child(2) .kpi-icon,.golden-kpis article:nth-child(2) .kpi-icon{background:var(--brand-accent-soft)!important;color:var(--brand-accent)!important}
+.score-pill,.intent-score,.signal-action,.event-name,.profile-option.selected .profile-state{background:var(--brand-primary-soft)!important;color:var(--brand-primary)!important}
