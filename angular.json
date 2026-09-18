@@ -21,7 +21,8 @@
             "styles": [
               "src/styles.css",
               "src/styles/_design-system.css",
-              "src/styles/_refined-leads.css"
+              "src/styles/_refined-leads.css",
+              "src/styles/_canonical-final.css"
             ]
           },
           "configurations": {
