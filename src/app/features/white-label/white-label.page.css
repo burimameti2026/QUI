@@ -9,3 +9,9 @@ qai-page-header .page-header h1{color:#202124!important;font-size:22px!important
 .widget-preview button:disabled{opacity:1!important}.settings-grid>.panel:not(.form):after{content:"Preview only • changes appear here from the saved brand configuration";display:block;margin:0 16px 16px;padding:9px 10px;border:1px dashed #dfe5ed;border-radius:8px;background:#f8fafc;color:#8293a7;font-size:8px;line-height:1.4;text-align:center}
 @media(max-width:900px){qai-page-header .page-header,.brand-metrics,.settings-grid{margin-left:16px!important;margin-right:16px!important}.brand-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}.settings-grid{grid-template-columns:1fr!important}}
 @media(max-width:600px){qai-page-header .page-header,.brand-metrics,.settings-grid{margin-left:12px!important;margin-right:12px!important}.brand-metrics{grid-template-columns:1fr!important}.panel.form>.form2{grid-template-columns:1fr!important}.widget-preview{min-height:280px!important}}
+/* Runtime brand source — semantic colors come from White Label settings. */
+:host,
+.settings-grid>.panel,
+.brand-metrics article,
+.widget-preview{color:var(--ui-ink)}
+.theme-help{margin:-2px 16px 2px;color:#8293a7;font-size:9px;line-height:1.45}
