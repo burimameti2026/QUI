@@ -20,8 +20,8 @@ function translateValue(i18n: AdminI18nService, value: string): string {
   </div>`,
   styles: [`
     :host { display:block; min-width:0; }
-    :host .page-header--orange .primary { border-color:#f97316!important; background:#f97316!important; color:#fff!important; }
-    :host .page-header--orange .primary:hover { border-color:#ea580c!important; background:#ea580c!important; }
+    :host .page-header--orange .primary { border-color:var(--brand-button-primary, var(--brand-primary))!important; background:var(--brand-button-primary, var(--brand-primary))!important; color:var(--brand-button-primary-text, #fff)!important; }
+    :host .page-header--orange .primary:hover { border-color:var(--brand-button-primary-hover, var(--brand-primary-hover))!important; background:var(--brand-button-primary-hover, var(--brand-primary-hover))!important; }
   `]
 })
 export class PageHeader {
