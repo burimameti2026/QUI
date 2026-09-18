@@ -1500,3 +1500,58 @@ qai-page-header button.quiet-action{background:#fff!important;border-color:#d8dc
   }
 }
 
+
+/* Dashboard top three sections — align exactly to the KPI card geometry. */
+.dashboard-content > qai-page-header {
+  display: block !important;
+  margin: 0 20px 14px !important;
+  width: auto !important;
+}
+.dashboard-content > qai-page-header .page-header {
+  min-height: 76px !important;
+  padding: 18px 20px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 2px 10px rgba(16,24,40,.055) !important;
+}
+.dashboard-content .journey-timeline,
+.dashboard-content .executive-band {
+  width: auto !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: 0 2px 10px rgba(16,24,40,.055) !important;
+}
+.dashboard-content .journey-timeline {
+  margin-bottom: 14px !important;
+  padding: 20px 22px 18px !important;
+}
+.dashboard-content .executive-band {
+  margin-bottom: 14px !important;
+  padding: 18px 20px !important;
+}
+.dashboard-content .metric-grid {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+@media(max-width:820px) {
+  .dashboard-content > qai-page-header,
+  .dashboard-content .journey-timeline,
+  .dashboard-content .executive-band,
+  .dashboard-content .metric-grid {
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
+}
+@media(max-width:600px) {
+  .dashboard-content > qai-page-header,
+  .dashboard-content .journey-timeline,
+  .dashboard-content .executive-band,
+  .dashboard-content .metric-grid {
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
+}
