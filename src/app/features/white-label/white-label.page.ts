@@ -275,8 +275,8 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#f97316", buttonBackgroundColor: "#f97316", buttonTextColor: "#ffffff", buttonBorderColor: "#f97316", buttonHoverBackgroundColor: "#ea580c", height: 0, radius: 14 } },
+        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#fff7ed", buttonBackgroundColor: "#fff7ed", buttonTextColor: "#c2410c", buttonBorderColor: "#fed7aa", buttonHoverBackgroundColor: "#ffedd5", height: 0, radius: 14 } },
       ],
     },
     {
