@@ -259,3 +259,104 @@
   .leads-page-header{margin-left:12px!important;margin-right:12px!important}
   .lead-workspace{margin-left:12px!important;margin-right:12px!important}
 }
+
+
+/* Final Leads alignment — transparent header and KPI cards sharing the same content edges. */
+.leads-page-header{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  border-radius:0!important;
+  margin:0 20px 14px!important;
+  padding:20px 0 16px!important;
+}
+.leads-page-header .title h1{color:#202124!important}
+.leads-page-header .title p{color:#667085!important}
+
+.lead-workspace{
+  margin:0 20px!important;
+  padding:0 0 36px!important;
+  background:transparent!important;
+}
+.lead-workspace qai-kpi-strip{
+  display:block!important;
+  width:100%!important;
+  margin:0 0 14px!important;
+  overflow:visible!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:10px!important;
+  width:100%!important;
+  min-width:0!important;
+  border:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article{
+  height:118px!important;
+  min-width:0!important;
+  padding:16px 17px!important;
+  border:1px solid #e3e8ef!important;
+  border-right:1px solid #e3e8ef!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  box-shadow:0 2px 5px rgba(16,24,40,.035),0 7px 18px rgba(36,60,88,.05)!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:before{
+  top:0!important;
+  bottom:auto!important;
+  left:0!important;
+  width:100%!important;
+  height:3px!important;
+  border-radius:10px 10px 0 0!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(1):before{background:#f97316!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(2):before{background:#7c3aed!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(3):before{background:#059669!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(4):before{background:#d97706!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(5):before{background:#e11d48!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article>span:not(.kpi-icon){
+  color:#667085!important;
+  font-size:10px!important;
+  line-height:18px!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip strong{
+  margin-top:12px!important;
+  color:#172033!important;
+  font-size:28px!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip small{
+  color:#8293a7!important;
+  font-size:9px!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip .kpi-icon{
+  top:14px!important;
+  right:14px!important;
+  width:30px!important;
+  height:30px!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:#edf4ff!important;
+  color:#2563eb!important;
+}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(2) .kpi-icon{background:#f2edff!important;color:#7c3aed!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(3) .kpi-icon{background:#eaf9f1!important;color:#059669!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(4) .kpi-icon{background:#fff5df!important;color:#d97706!important}
+.lead-workspace qai-kpi-strip .refined-kpi-strip>article:nth-child(5) .kpi-icon{background:#ffedf1!important;color:#e11d48!important}
+
+.lead-workspace qai-refined-tabs,
+.lead-workspace qai-data-grid{
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+@media(max-width:900px){
+  .leads-page-header,.lead-workspace{margin-left:16px!important;margin-right:16px!important}
+  .lead-workspace qai-kpi-strip .refined-kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+  .leads-page-header,.lead-workspace{margin-left:12px!important;margin-right:12px!important}
+  .lead-workspace qai-kpi-strip .refined-kpi-strip{grid-template-columns:1fr!important}
+}
