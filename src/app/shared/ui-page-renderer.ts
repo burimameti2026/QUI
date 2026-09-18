@@ -17,7 +17,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
         <button type="button"
           [class.primary]="action.variant === 'primary'"
           [class.quiet-action]="action.variant !== 'primary'"
-          (click)="action.emit(action)">
+          (click)="emitAction(action)">
           {{ action.label }}
         </button>
       </ng-container>
@@ -126,6 +126,8 @@ export class UiPageRenderer {
     const a = component.actions?.[0];
     return a ? { label: a.label, route: a.route || a.command || '' } : null;
   }
+
+  emitAction(action: UiPageAction) { this.action.emit(action); }
 
   emitRoute(route: string) {
     if (route) this.action.emit({ label: route, route });
