@@ -30,10 +30,10 @@
   left:0!important;
   right:0!important;
   height:3px!important;
-  background:#f97316!important;
+  background:var(--brand-primary)!important;
 }
 .dashboard-content .card-heading .eyebrow {
-  color:#f97316!important;
+  color:var(--brand-primary)!important;
   font-size:8px!important;
   font-weight:850!important;
   letter-spacing:.12em!important;
@@ -41,7 +41,7 @@
 .dashboard-content .card-heading h3,
 .dashboard-content .card-heading b {
   margin:4px 0 0!important;
-  color:#d95f0a!important;
+  color:var(--brand-primary)!important;
   font-size:15px!important;
   line-height:1.2!important;
   font-weight:750!important;
@@ -60,9 +60,9 @@
 }
 .dashboard-content .card-heading button:hover,
 .dashboard-content .card-heading a:hover {
-  border-color:#fdba74!important;
+  border-color:var(--brand-primary-border)!important;
   background:#fffaf6!important;
-  color:#c2410c!important;
+  color:var(--brand-primary)!important;
 }
 .dashboard-content .engine-highlight {
   border:1px solid #e5eaf0!important;
@@ -98,7 +98,7 @@
 }
 .dashboard-content .opportunity-main strong,
 .dashboard-content .knowledge-gap .gap-copy strong {
-  color:#d95f0a!important;
+  color:var(--brand-primary)!important;
   font-size:11px!important;
   font-weight:750!important;
 }
@@ -121,7 +121,7 @@
   background:#fafbfc!important;
 }
 .dashboard-content .card-footer strong {
-  color:#d95f0a!important;
+  color:var(--brand-primary)!important;
 }
 .dashboard-content .renova-band {
   border:1px solid #e0e6ee!important;
