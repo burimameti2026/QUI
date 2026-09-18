@@ -318,3 +318,141 @@ body:not(:has(.leads-page-header)) .kicker {
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* Remaining-page consistency pass — canonical reference, non-Leads only.
+   Keeps existing page geometry/content while removing legacy visual treatment. */
+body:not(:has(.leads-page-header)) .analytics-grid,
+body:not(:has(.leads-page-header)) .automation-workspace,
+body:not(:has(.leads-page-header)) .conversion-guide,
+body:not(:has(.leads-page-header)) .table-wrap,
+body:not(:has(.leads-page-header)) .pipeline-explainer,
+body:not(:has(.leads-page-header)) .pipeline-summary,
+body:not(:has(.leads-page-header)) .unassigned-deals,
+body:not(:has(.leads-page-header)) .pipeline-config,
+body:not(:has(.leads-page-header)) .language-bar,
+body:not(:has(.leads-page-header)) .subscription-hero {
+  border-radius:12px!important;
+  border:1px solid var(--canonical-border)!important;
+  background:#fff!important;
+  box-shadow:var(--canonical-shadow)!important;
+}
+
+body:not(:has(.leads-page-header)) .analytics-grid,
+body:not(:has(.leads-page-header)) .automation-workspace {
+  overflow:hidden;
+}
+
+body:not(:has(.leads-page-header)) .analytics-grid {
+  gap:14px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+body:not(:has(.leads-page-header)) .analytics-grid .panel {
+  min-width:0;
+}
+
+body:not(:has(.leads-page-header)) .impact {
+  gap:10px!important;
+  padding:14px!important;
+  background:#f8fafc!important;
+  border-radius:0 0 12px 12px!important;
+}
+
+body:not(:has(.leads-page-header)) .impact>div {
+  min-height:88px!important;
+  padding:14px!important;
+  border:1px solid #edf0f4!important;
+  border-radius:10px!important;
+  background:#fff!important;
+}
+
+body:not(:has(.leads-page-header)) .automation-workspace .panel,
+body:not(:has(.leads-page-header)) .automation-workspace .directory-card {
+  border-radius:12px!important;
+  box-shadow:var(--canonical-shadow)!important;
+}
+
+body:not(:has(.leads-page-header)) .event-name {
+  border:0!important;
+  border-radius:7px!important;
+  background:var(--canonical-accent-soft)!important;
+  color:#c2410c!important;
+}
+
+body:not(:has(.leads-page-header)) .conversion-guide {
+  margin-bottom:14px!important;
+}
+
+body:not(:has(.leads-page-header)) .conversion-guide li {
+  border:1px solid #edf0f4!important;
+  border-radius:8px!important;
+  background:#f8fafc!important;
+}
+
+body:not(:has(.leads-page-header)) .pipeline-summary {
+  overflow:hidden;
+}
+
+body:not(:has(.leads-page-header)) .pipeline-summary>div {
+  border-color:#edf0f4!important;
+}
+
+body:not(:has(.leads-page-header)) .pipeline-board {
+  border:0!important;
+  border-radius:12px!important;
+  background:#eef2f7!important;
+}
+
+body:not(:has(.leads-page-header)) .pipeline-board>section {
+  border:1px solid #e7ebf0!important;
+  border-radius:10px!important;
+  background:#f8fafc!important;
+}
+
+body:not(:has(.leads-page-header)) .pipeline-board>section>article {
+  border-color:#e8ebef!important;
+  border-radius:9px!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.025)!important;
+}
+
+body:not(:has(.leads-page-header)) .subscription-hero {
+  border:0!important;
+  background:#fff!important;
+  box-shadow:var(--canonical-shadow)!important;
+}
+
+body:not(:has(.leads-page-header)) .subscription-hero h2 {
+  color:var(--canonical-text)!important;
+}
+
+body:not(:has(.leads-page-header)) .subscription-hero p,
+body:not(:has(.leads-page-header)) .subscription-price span {
+  color:var(--canonical-muted)!important;
+}
+
+body:not(:has(.leads-page-header)) .language-bar {
+  background:#fff!important;
+  border:1px solid var(--canonical-border)!important;
+  box-shadow:var(--canonical-shadow)!important;
+}
+
+body:not(:has(.leads-page-header)) .language-pills button {
+  border-color:#e4e7ec!important;
+  border-radius:8px!important;
+}
+
+body:not(:has(.leads-page-header)) .language-pills button.active {
+  border-color:var(--canonical-accent)!important;
+  background:var(--canonical-accent)!important;
+}
+
+body:not(:has(.leads-page-header)) .access-notice {
+  border:0!important;
+  border-radius:10px!important;
+  background:#fff7ed!important;
+  color:#9a3412!important;
+  box-shadow:inset 0 0 0 1px #fed7aa!important;
+}
