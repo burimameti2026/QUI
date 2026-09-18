@@ -481,3 +481,51 @@
     flex-direction: column;
   }
 }
+
+/* CANONICAL ENTERPRISE OPERATIONS SURFACE */
+:host{background:var(--enterprise-bg)!important;color:var(--enterprise-text)!important}
+.breadcrumb{margin:0 20px 10px!important;color:#98a2b3!important}
+.breadcrumb a{color:#f97316!important}
+.tabs{margin:0 20px 14px!important;padding:4px!important;border:0!important;border-radius:10px!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important}
+.tabs a{min-height:34px!important;border:0!important;border-radius:8px!important;color:#667085!important;background:transparent!important}
+.tabs a:hover{background:#fff7ed!important;color:#c2410c!important}
+.tabs a.active{background:#fff7ed!important;color:#c2410c!important;box-shadow:inset 0 0 0 1px #fed7aa!important}
+.tab-icon{border:0!important;background:#f8fafc!important;color:#8b949e!important}
+.tabs a.active .tab-icon{background:#f97316!important;color:#fff!important}
+.metric-grid{gap:12px!important;margin:0 20px 14px!important}
+.metric-card{min-height:116px!important;padding:17px 18px!important;border:0!important;border-radius:12px!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important}
+.metric-icon{border:0!important;background:#fff7ed!important;color:#f97316!important}
+.metric-label{color:#667085!important}
+.metric-card>strong{color:#202124!important}
+.metric-card>small{color:#667085!important}
+.list-card{margin:0 20px 14px!important;border:0!important;border-radius:12px!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important;overflow:hidden!important}
+.list-header{padding:18px 20px!important;border-bottom:1px solid #f0f2f5!important;background:#fff!important}
+.list-header .eyebrow{color:#f97316!important}
+.list-header h2{color:#202124!important}
+.list-header p{color:#667085!important}
+.filters{padding:12px 14px!important;border-bottom:1px solid #f0f2f5!important;background:#fafbfc!important}
+.search-box,.select-box,.date-box{border:1px solid #e4e7ec!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important}
+.search-box:focus-within,.select-box:focus-within,.date-box:focus-within{border-color:#f97316!important;box-shadow:0 0 0 3px rgba(249,115,22,.10)!important}
+.search-box input,.select-box select,.date-box input{border:0!important;background:#fff!important;color:#202124!important;outline:0!important}
+.filter-button,.quiet-action,.export-action{border:1px solid #e4e7ec!important;border-radius:8px!important;background:#fff!important;color:#59636d!important}
+.filter-button:hover,.quiet-action:hover,.export-action:hover{background:#fff7ed!important;border-color:#fed7aa!important;color:#c2410c!important}
+.primary-action{border:0!important;border-radius:8px!important;background:#f97316!important;color:#fff!important}
+.table-wrap th{background:#fafbfc!important;border-bottom:1px solid #f0f2f5!important;color:#667085!important}
+.table-wrap td{border-bottom:1px solid #f0f2f5!important;color:#344054!important}
+.table-wrap tbody tr:hover{background:#fafbfc!important}
+.status-chip,.pill{border:0!important;background:#f8fafc!important;color:#59636d!important}
+.status-chip.green{background:#ecfdf3!important;color:#067647!important}
+.status-chip.amber{background:#fffaeb!important;color:#b54708!important}
+.status-chip.rose{background:#fff1f3!important;color:#c01048!important}
+.status-chip.violet{background:#f4f3ff!important;color:#6941c6!important}
+.status-chip.blue{background:#eff8ff!important;color:#175cd3!important}
+.table-link{color:#ea580c!important}
+.dots{border:1px solid #e4e7ec!important;border-radius:8px!important;background:#fff!important;color:#667085!important}
+.state-icon{background:#fff7ed!important;color:#f97316!important}
+.spinner{border-color:#fed7aa!important;border-top-color:#f97316!important}
+.table-footer{border-top:1px solid #f0f2f5!important}
+.pagination button{border:1px solid #e4e7ec!important;border-radius:7px!important}
+.pagination button.page-active{border-color:#f97316!important;background:#f97316!important}
+.alert-error{margin:10px 14px!important;border:0!important;background:#fff1f3!important}
+@media(max-width:1100px){.metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.list-card,.tabs,.metric-grid,.breadcrumb{margin-left:12px!important;margin-right:12px!important}}

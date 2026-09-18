@@ -7,14 +7,38 @@ import { PageHeader } from '../../shared/ui';
 interface Overview { facilities:number; customers:number; orders:number; pendingOrders:number; stockItems:number; movementsInTransit:number; shipments:number; unpaidPayments:number; }
 
 @Component({standalone:true,imports:[CommonModule,RouterLink,PageHeader],template:`
-<qai-page-header title=" Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="refresh" (click)="load()">↻ Refresh</button></qai-page-header>
-<section class="tenant-bar"><div><span>WORKSPACE</span><strong></strong></div><small>Tenant-isolated operational data · Promotions</small></section>
+<qai-page-header title="Enterprise Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="refresh" (click)="load()">↻ Refresh</button></qai-page-header>
+<section class="tenant-bar"><div><span>WORKSPACE</span><strong>Renova Workspace</strong></div><small>Tenant-isolated operational data · Enterprise operations</small></section>
 <section class="metrics"><article *ngFor="let m of metrics"><span>{{m.label}}</span><strong>{{m.value}}</strong><small>{{m.note}}</small></article></section>
 <section class="flow"><div><b>01 · COMMERCIAL</b><span>Customer → Order → Pricing → Fulfillment</span></div><i>→</i><div><b>02 · PHYSICAL</b><span>Stock → Warehouse → Shipment → Delivery</span></div><i>→</i><div><b>03 · FINANCIAL</b><span>Proforma → Invoice → Payment → Reconciliation</span></div></section>
 <section class="grid"><a *ngFor="let m of modules" [routerLink]="m.route" class="card"><div class="icon" [class]="m.tone">{{m.icon}}</div><div><b>{{m.title}}</b><span>{{m.text}}</span></div><strong>→</strong></a></section>
 <div *ngIf="error" class="error">{{error}}</div>
-`,styles:[`:host{display:block;color:#172033}.refresh{border:1px solid #d8e0ea;background:#fff;border-radius:8px;padding:8px 12px;color:#315fbd;font-size:10px}.tenant-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;margin:0 0 14px;border:1px solid #dfe5ed;border-radius:13px;background:linear-gradient(110deg,#fff,#f2f5f8)}.tenant-bar span{display:block;font-size:8px;color:#7b8798;letter-spacing:1px}.tenant-bar strong{display:block;margin-top:4px;font-size:17px;letter-spacing:.5px}.tenant-bar small{color:#718096;font-size:9px}.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}.metrics article{padding:14px;border:1px solid #dfe5ed;border-radius:11px;background:#fff;box-shadow:0 5px 16px #1720330a}.metrics span,.metrics small{display:block;color:#718096;font-size:8px}.metrics strong{display:block;margin:10px 0 6px;font-size:22px}.flow{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:center;padding:13px;margin-bottom:14px;border:1px solid #dfe5ed;border-radius:12px;background:#f5f7f9}.flow div{padding:7px 10px}.flow b,.flow span{display:block}.flow b{font-size:9px;letter-spacing:.5px}.flow span{margin-top:5px;color:#718096;font-size:8px}.flow i{text-align:center;color:#a0aec0;font-style:normal}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{display:flex;align-items:center;gap:10px;min-height:72px;padding:12px;border:1px solid #dfe5ed;border-radius:11px;background:#fff;color:inherit;text-decoration:none;transition:.16s}.card:hover{transform:translateY(-2px);border-color:#c6d2df;box-shadow:0 8px 20px #17203312}.icon{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:#edf4ff;color:#2563eb;font-weight:800}.icon.green{background:#e3f8ed;color:#059669}.icon.red{background:#fff0f0;color:#c62828}.icon.violet{background:#f0ebff;color:#7c3aed}.icon.amber{background:#fff7df;color:#b7791f}.card div:nth-child(2){flex:1;min-width:0}.card b,.card span{display:block}.card b{font-size:10px}.card span{margin-top:3px;color:#718096;font-size:8px;line-height:1.4}.card>strong{color:#315fbd}.error{margin-top:14px;padding:12px;border:1px solid #fecdd3;background:#fff1f2;color:#9f1239;border-radius:9px;font-size:9px}@media(max-width:1050px){.metrics{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.tenant-bar{display:block}.tenant-bar small{display:block;margin-top:7px}.metrics{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr;gap:4px}.flow i{transform:rotate(90deg)}.grid{grid-template-columns:1fr}}`]
-})
+`,styles:[`:host{display:block;color:var(--enterprise-text)!important;background:var(--enterprise-bg)!important}
+.tenant-bar,.metrics article,.flow,.card{border:0!important;border-radius:var(--enterprise-radius)!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important}
+.tenant-bar{margin:0 20px 14px!important;padding:18px 22px!important}
+.tenant-bar span{color:#98a2b3!important;font-weight:800!important;letter-spacing:.12em!important}
+.tenant-bar strong{color:#202124!important}
+.tenant-bar small{color:#667085!important}
+.metrics{gap:12px!important;margin:0 20px 14px!important}
+.metrics article{min-height:116px!important;padding:17px 18px!important}
+.metrics span,.metrics small{color:#667085!important}
+.metrics strong{color:#202124!important;font-size:24px!important}
+.flow{margin:0 20px 14px!important;padding:16px!important;background:linear-gradient(110deg,#f1f6ff 0%,#f7f4ff 58%,#fff7ed 100%)!important}
+.flow b{color:#202124!important;letter-spacing:.08em!important}
+.flow span{color:#667085!important}
+.flow i{color:#98a2b3!important}
+.grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;margin:0 20px!important}
+.card{min-height:104px!important;padding:16px!important;gap:12px!important}
+.card:hover{transform:translateY(-1px)!important;box-shadow:0 8px 24px rgba(16,24,40,.08)!important}
+.icon,.icon.green,.icon.red,.icon.violet,.icon.amber{border:0!important;border-radius:9px!important;background:#fff7ed!important;color:#f97316!important}
+.card b{color:#202124!important;font-size:12px!important}
+.card span{color:#667085!important}
+.card>strong{color:#f97316!important}
+.refresh{border:0!important;border-radius:8px!important;background:#f97316!important;color:#fff!important;font-weight:700!important}
+.error{margin:14px 20px 0!important;border:0!important;border-radius:9px!important;background:#fff1f2!important;color:#9f1239!important}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:700px){.grid{grid-template-columns:1fr!important}.metrics{grid-template-columns:repeat(2,1fr)!important}}
+`]})
 export class EnterprisePage implements OnInit {
  private readonly api=inject(ApiService); data:Overview={facilities:0,customers:0,orders:0,pendingOrders:0,stockItems:0,movementsInTransit:0,shipments:0,unpaidPayments:0}; error='';
  readonly modules=[
