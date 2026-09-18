@@ -12,10 +12,10 @@
   </header>
 
   <div class="metrics">
-    <article><strong>{{ products.length }}</strong><span>Total products</span></article>
-    <article><strong>{{ publishedCount }}</strong><span>Published</span></article>
-    <article><strong>{{ draftCount }}</strong><span>Draft / review</span></article>
-    <article><strong>{{ languageCount }}</strong><span>Languages in use</span></article>
+    <article><span class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Total products</span></span><strong>{{ products.length }}</strong><small>catalog records</small></article>
+    <article><span class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Published</span></span><strong>{{ publishedCount }}</strong><small>publications live</small></article>
+    <article><span class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Draft / review</span></span><strong>{{ draftCount }}</strong><small>awaiting publication</small></article>
+    <article><span class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Languages in use</span></span><strong>{{ languageCount }}</strong><small>localized catalog content</small></article>
   </div>
 
   <div class="toolbar">
