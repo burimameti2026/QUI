@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { ApiService } from "../../core/api.service";
+import { BrandThemeService } from "../../core/brand-theme.service";
 import { PageHeader } from "../../shared/ui";
 @Component({
   standalone: true,
@@ -19,7 +19,7 @@ import { PageHeader } from "../../shared/ui";
     </section>
     <div class="settings-grid">
       <section class="panel form">
-        <h3>Brand identity</h3>
+        <h3>Application branding</h3>
         <label>Product name<input [(ngModel)]="brand.productName" /></label
         ><label>Support email<input [(ngModel)]="brand.supportEmail" /></label>
         <div class="form2">
@@ -31,7 +31,7 @@ import { PageHeader } from "../../shared/ui";
             >Accent color<input type="color" [(ngModel)]="brand.accentColor"
           /></label>
         </div>
-        <button class="primary" (click)="saveBrand()">Save branding</button>
+        <p class="theme-help">These two values are the source of truth for application actions, active navigation, focus states, highlights and brand accents across the workspace. Individual pages do not define their own brand colors.</p><button class="primary" (click)="saveBrand()">Save branding</button>
       </section>
       <section class="panel">
         <h3>Widget preview</h3>
@@ -46,20 +46,13 @@ import { PageHeader } from "../../shared/ui";
     </div>`,
 })
 export class WhiteLabelPage implements OnInit {
-  brand: any = {
-    productName: "QualifyAI",
-    supportEmail: "support@company.com",
-    primaryColor: "#2563eb",
-    accentColor: "#0f172a",
-  };
-  constructor(private api: ApiService) {}
+  brand = this.theme.defaults();
+  constructor(private theme: BrandThemeService) {}
   ngOnInit() {
-    this.api.get<any>("white-label/branding").subscribe((r) => {
-      if (r) this.brand = r;
-    });
+    this.theme.load().subscribe(r => this.brand = { ...this.brand, ...r });
   }
   saveBrand() {
-    this.api.put<any>("white-label/branding", this.brand).subscribe({
+    this.theme.save(this.brand).subscribe({
       next: (r) => {
         this.brand = r;
         alert("Branding saved.");
