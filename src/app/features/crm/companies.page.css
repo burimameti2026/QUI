@@ -116,7 +116,7 @@ tr:hover td { background:#fcfcff; }
 }
 
 .directory-toolbar label:focus-within {
-  border-color:#f97316!important;
+  border-color:var(--brand-primary)!important;
   background:#fff!important;
   box-shadow:0 0 0 2px rgba(249,115,22,.10)!important;
 }
@@ -130,8 +130,8 @@ tr:hover td { background:#fcfcff; }
   min-height:30px!important;
   border:0!important;
   border-radius:7px!important;
-  background:#fff7ed!important;
-  color:#c2410c!important;
+  background:var(--brand-primary-soft)!important;
+  color:var(--brand-primary)!important;
   font-size:9px!important;
 }
 
@@ -176,10 +176,10 @@ tbody tr:hover td {
 .directory-identity>i {
   width:30px!important;
   height:30px!important;
-  border:1px solid #fed7aa!important;
+  border:1px solid var(--brand-primary-border)!important;
   border-radius:8px!important;
-  background:#fff7ed!important;
-  color:#c2410c!important;
+  background:var(--brand-primary-soft)!important;
+  color:var(--brand-primary)!important;
   font-size:9px!important;
 }
 
@@ -195,7 +195,7 @@ tbody tr:hover td {
 }
 
 .domain-link {
-  color:#ea580c!important;
+  color:var(--brand-primary-hover)!important;
   font-size:10px;
 }
 
@@ -214,14 +214,14 @@ tbody tr:hover td {
 }
 
 .directory-actions button:hover {
-  border-color:#f97316!important;
-  background:#fff7ed!important;
-  color:#c2410c!important;
+  border-color:var(--brand-primary)!important;
+  background:var(--brand-primary-soft)!important;
+  color:var(--brand-primary)!important;
 }
 
 .directory-actions .primary {
-  border-color:#f97316!important;
-  background:#f97316!important;
+  border-color:var(--brand-primary)!important;
+  background:var(--brand-primary)!important;
   color:#fff!important;
 }
 
@@ -239,10 +239,10 @@ tbody tr:hover td {
 .directory-empty i {
   width:38px!important;
   height:38px!important;
-  border:1px solid #fed7aa!important;
+  border:1px solid var(--brand-primary-border)!important;
   border-radius:10px!important;
-  background:#fff7ed!important;
-  color:#c2410c!important;
+  background:var(--brand-primary-soft)!important;
+  color:var(--brand-primary)!important;
 }
 
 @media (max-width:900px) {
