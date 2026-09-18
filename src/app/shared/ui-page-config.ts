@@ -18,6 +18,10 @@ export interface UiAppearance {
   textColor?: string;
   mutedTextColor?: string;
   accentColor?: string;
+  buttonBackgroundColor?: string;
+  buttonTextColor?: string;
+  buttonBorderColor?: string;
+  buttonHoverBackgroundColor?: string;
   height?: number;
   radius?: number;
 }
