@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrandThemeService } from "../../core/brand-theme.service";
+import { WhiteLabelConfigService, WhiteLabelSection } from "../../core/white-label-config.service";
 import { PageHeader } from "../../shared/ui";
 
 type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text";
@@ -15,7 +16,7 @@ interface LayoutItem {
   appearance: {
     surfaceColor: string; headerColor: string; borderColor: string;
     titleColor: string; textColor: string; mutedTextColor: string;
-    accentColor: string; height: number; radius: number;
+    accentColor: string; buttonBackgroundColor: string; buttonTextColor: string; buttonBorderColor: string; buttonHoverBackgroundColor: string; height: number; radius: number;
   };
 }
 
@@ -145,6 +146,10 @@ interface LayoutSection {
                     <label>Body text<input type="color" [(ngModel)]="item.appearance.textColor" /></label>
                     <label>Muted text<input type="color" [(ngModel)]="item.appearance.mutedTextColor" /></label>
                     <label>Accent<input type="color" [(ngModel)]="item.appearance.accentColor" /></label>
+                    <label *ngIf="section.kind === 'buttons'">Button background<input type="color" [(ngModel)]="item.appearance.buttonBackgroundColor" /></label>
+                    <label *ngIf="section.kind === 'buttons'">Button text<input type="color" [(ngModel)]="item.appearance.buttonTextColor" /></label>
+                    <label *ngIf="section.kind === 'buttons'">Button border<input type="color" [(ngModel)]="item.appearance.buttonBorderColor" /></label>
+                    <label *ngIf="section.kind === 'buttons'">Button hover<input type="color" [(ngModel)]="item.appearance.buttonHoverBackgroundColor" /></label>
                     <label>Height (px)<input type="number" min="0" max="1200" step="1" [(ngModel)]="item.appearance.height" /></label>
                     <label>Radius (px)<input type="number" min="0" max="40" step="1" [(ngModel)]="item.appearance.radius" /></label>
                   </div>
@@ -222,7 +227,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: true,
       columns: 1,
       items: [
-        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#f97316", buttonBackgroundColor: "#f97316", buttonTextColor: "#ffffff", buttonBorderColor: "#f97316", buttonHoverBackgroundColor: "#ea580c", height: 0, radius: 14 } },
       ],
     },
     {
@@ -287,7 +292,7 @@ export class WhiteLabelPage implements OnInit {
     },
   ];
 
-  constructor(private theme: BrandThemeService) {}
+  constructor(private theme: BrandThemeService, private whiteLabel: WhiteLabelConfigService) {}
 
   ngOnInit() {
     this.theme.load().subscribe(r => this.brand = { ...this.brand, ...r });
@@ -324,31 +329,28 @@ export class WhiteLabelPage implements OnInit {
   }
 
   saveLayout() {
-    localStorage.setItem("qai-white-label-page-layout", JSON.stringify(this.layoutSections));
+    this.whiteLabel.save(this.layoutSections as WhiteLabelSection[]);
   }
 
   loadLayout() {
-    const raw = localStorage.getItem("qai-white-label-page-layout");
-    if (!raw) return;
-    try {
-      const saved = JSON.parse(raw) as LayoutSection[];
-      if (Array.isArray(saved) && saved.length) {
-        this.layoutSections = saved;
-        this.layoutSections.forEach(section => section.items.forEach(item => item.appearance = {
-          surfaceColor: item.appearance?.surfaceColor || "#ffffff",
-          headerColor: item.appearance?.headerColor || "#d6e8ff",
-          borderColor: item.appearance?.borderColor || "#d6e0ec",
-          titleColor: item.appearance?.titleColor || "#173f7a",
-          textColor: item.appearance?.textColor || "#26364d",
-          mutedTextColor: item.appearance?.mutedTextColor || "#68778d",
-          accentColor: item.appearance?.accentColor || "#1769e0",
-          height: item.appearance?.height || 0,
-          radius: item.appearance?.radius || 14,
-        }));
-      }
-    } catch {
-      // Keep the safe default configuration.
-    }
+    const saved = this.whiteLabel.load();
+    if (!saved.length) return;
+    this.layoutSections = saved as LayoutSection[];
+    this.layoutSections.forEach(section => section.items.forEach(item => item.appearance = {
+      surfaceColor: item.appearance?.surfaceColor || "#ffffff",
+      headerColor: item.appearance?.headerColor || "#ffffff",
+      borderColor: item.appearance?.borderColor || "#e7ebf0",
+      titleColor: item.appearance?.titleColor || "#202124",
+      textColor: item.appearance?.textColor || "#26364d",
+      mutedTextColor: item.appearance?.mutedTextColor || "#667085",
+      accentColor: item.appearance?.accentColor || "#f97316",
+      buttonBackgroundColor: item.appearance?.buttonBackgroundColor || item.appearance?.accentColor || "#f97316",
+      buttonTextColor: item.appearance?.buttonTextColor || "#ffffff",
+      buttonBorderColor: item.appearance?.buttonBorderColor || item.appearance?.accentColor || "#f97316",
+      buttonHoverBackgroundColor: item.appearance?.buttonHoverBackgroundColor || "#ea580c",
+      height: item.appearance?.height || 0,
+      radius: item.appearance?.radius || 12,
+    }));
   }
 
   resetLayout() {
