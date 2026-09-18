@@ -4,12 +4,12 @@ import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import { PageHeader } from '../../shared/ui';
-import { UiCard, UiListCard, UiMetric, UiMetrics, UiSection, UiStep, UiSteps, UiTableCard, UiCardModel } from '../../shared/enterprise-ui';
+import { DEFAULT_DASHBOARD_PAGE_CONFIG, UiPageAction, UiPageConfig } from '../../shared/ui-page-config';
+import { UiPageRenderer } from '../../shared/ui-page-renderer';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader, UiSection, UiSteps, UiMetrics, UiCard, UiListCard, UiTableCard],
+  imports: [CommonModule, UiPageRenderer],
   templateUrl: './dashboard.page.html'
 })
 export class DashboardPage implements OnInit {
@@ -34,7 +34,7 @@ export class DashboardPage implements OnInit {
   get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
   get qualifiedProspects() { return Number(this.acquisition.hot || 0); }
 
-  readonly workflowSteps: UiStep[] = [
+  readonly workflowSteps = [
     { number:'01', category:'PRODUCT', title:'Product readiness', subtitle:'Catalog & localization', active:true },
     { number:'02', category:'MARKET', title:'Promotion plan', subtitle:'Target markets & positioning' },
     { number:'03', category:'ACQUISITION', title:'Autonomous discovery', subtitle:'Find & qualify prospects' },
@@ -42,50 +42,51 @@ export class DashboardPage implements OnInit {
     { number:'05', category:'DEMAND', title:'Qualified demand', subtitle:'Commercial handoff' }
   ];
 
-  get metrics(): UiMetric[] {
-    return [
+  get pageConfig(): UiPageConfig {
+    const base = structuredClone(DEFAULT_DASHBOARD_PAGE_CONFIG);
+    const byId = (id: string) => base.sections.flatMap(s => s.components).find(c => c.id === id);
+    const workflow = byId('workflow-steps');
+    const picture = byId('operating-picture');
+    const kpis = byId('operating-kpis');
+    const acquisition = byId('acquisition-engine');
+    const outreach = byId('active-outreach');
+    const programs = byId('program-table');
+    const publicExperience = byId('public-experience');
+    const review = byId('human-review');
+    const handoff = byId('fusionfleet-handoff');
+
+    if (workflow) workflow.data = { steps: this.workflowSteps };
+    if (picture) picture.data = { text: 'The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.' };
+    if (kpis) kpis.data = { items: [
       { label:'Product catalog', value:this.products.length, subtitle:`${this.publishedProducts} public publications live`, icon:'▦', tone:'blue', action:{label:'Open',route:'/catalog'} },
       { label:'Promotion plans', value:this.activePlans, subtitle:'active market programs', icon:'✦', tone:'violet', action:{label:'Open',route:'/renova/promotion'} },
       { label:'Autonomous agents', value:this.activeAgentCount, subtitle:'running acquisition engines', icon:'↯', tone:'green', action:{label:'Open',route:'/acquisition/autonomous'} },
       { label:'Prospects discovered', value:this.acquisition.discovered || 0, subtitle:`${this.qualifiedProspects} high-fit prospects`, icon:'⌕', tone:'amber', action:{label:'Open',route:'/discover'} },
       { label:'Awaiting delivery', value:this.queuedMessages, subtitle:'review the approval queue', icon:'✓', tone:'rose', action:{label:'Open',route:'/acquisition/approval-queue'} }
-    ];
-  }
-
-  get acquisitionCard(): UiCardModel {
-    return {
-      eyebrow:'AUTONOMOUS LOOP',
-      title:'Acquisition engine',
-      badge:this.recentRun ? (this.recentRun.status || 'Run ready') : 'Ready',
-      rows:[
-        {label:'Latest discovery run',value:`${this.recentRun?.discoveredCount || 0} prospects`},
-        {label:'Qualified',detail:'Passed autonomous scoring threshold',value:this.recentRun?.qualifiedCount || 0},
-        {label:'High score',detail:'Ready for targeted sales action',value:this.recentRun?.highScoreCount || 0}
-      ],
-      action:{label:'Open agent',route:'/acquisition/autonomous'}
-    };
-  }
-
-  get outreachCard(): UiCardModel {
-    return {
-      eyebrow:'CAMPAIGN CONTROL',
-      title:'Active outreach',
-      rows:[
-        {label:'Running campaigns',value:this.campaigns.length},
-        {label:'Queued messages',value:this.queuedMessages},
-        {label:'Replies',value:this.acquisition.replies || 0}
-      ],
-      text:'Guardrail: approval before delivery',
-      action:{label:'View campaigns',route:'/campaigns'}
-    };
+    ]};
+    if (acquisition) acquisition.data = { badge:this.recentRun ? (this.recentRun.status || 'Run ready') : 'Ready', rows:[
+      {label:'Latest discovery run',value:`${this.recentRun?.discoveredCount || 0} prospects`},
+      {label:'Qualified',detail:'Passed autonomous scoring threshold',value:this.recentRun?.qualifiedCount || 0},
+      {label:'High score',detail:'Ready for targeted sales action',value:this.recentRun?.highScoreCount || 0}
+    ]}; acquisition!.actions=[{label:'Open agent',route:'/acquisition/autonomous'}];
+    if (outreach) outreach.data = { rows:[
+      {label:'Running campaigns',value:this.campaigns.length},
+      {label:'Queued messages',value:this.queuedMessages},
+      {label:'Replies',value:this.acquisition.replies || 0}
+    ], text:'Guardrail: approval before delivery'}; outreach!.actions=[{label:'View campaigns',route:'/campaigns'}];
+    if (programs) programs.data = { columns:[
+      {key:'program',label:'Program'},{key:'language',label:'Language'},{key:'status',label:'Status'},{key:'automation',label:'Automation'}
+    ], rows:this.programRows, emptyText:'No promotion plans have been created.'}; programs.actions=[{label:'Manage plans',route:'/renova/promotion'}];
+    if (publicExperience) publicExperience.data = { items:this.publicExperience }; publicExperience!.actions=[{label:'Open portal',route:'/renova/portal'}];
+    if (review) { review.data={text:'Use the approval queue to review the exact subject, body and destination before delivery. The backend still enforces sender verification, suppression and provider controls.'}; review.actions=[{label:'Open queue',route:'/acquisition/approval-queue'}]; }
+    if (handoff) handoff.data={text:'LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.'};
+    return base;
   }
 
   get programRows(): Array<Record<string, unknown>> {
     return this.plans.map(plan => ({
-      program:plan.name || '',
-      language:String(plan.campaignLanguage || '').toUpperCase(),
-      status:plan.status || '',
-      automation:plan.enableAutonomousProspecting ? 'Autonomous' : 'Manual'
+      program:plan.name || '', language:String(plan.campaignLanguage || '').toUpperCase(),
+      status:plan.status || '', automation:plan.enableAutonomousProspecting ? 'Autonomous' : 'Manual'
     }));
   }
 
@@ -115,6 +116,8 @@ export class DashboardPage implements OnInit {
       this.error = error?.error?.detail || 'Renova command center could not load live workspace data.';
     } finally { this.loaded = true; }
   }
+
+  handleAction(action: UiPageAction) { if (action.command === 'refresh') { void this.refresh(); return; } if (action.route) this.go(action.route); }
 
   go(path: string) { void this.router.navigateByUrl(path); }
 }
