@@ -19,3 +19,191 @@
 .selection-bar{position:sticky;bottom:14px;z-index:4;display:flex;align-items:center;gap:4px;width:max-content;max-width:calc(100% - 24px);margin:10px auto 0;padding:6px 7px;border:1px solid #34383d;border-radius:5px;background:#22262a;box-shadow:0 8px 24px rgba(20,24,28,.16);color:#fff;font-size:9px}.selection-bar span{padding:0 8px;color:#e5e7eb;font-weight:600}.selection-bar button{height:28px;padding:0 9px;border:0;border-radius:3px;background:transparent;color:#fff;font-size:9px;font-weight:600}.selection-bar button:hover{background:#343a40}.selection-bar .discard{background:#fff;color:#34383d}.selection-bar .discard:hover{background:#f3f4f6}
 .grid-tools .view-toggle button{width:32px;height:32px}.grid-tools .view-toggle button.active{color:#ea580c;border-color:#aeb3ba}
 @media(max-width:900px){.lead-grid-toolbar{flex-wrap:wrap}.lead-search{width:min(100%,420px)}}
+
+
+/* Leads grid final refinement — clear container, structured header and readable cells. */
+.lead-workspace qai-data-grid{
+  display:block!important;
+  margin:14px 28px 18px!important;
+  width:calc(100% - 56px)!important;
+  overflow:hidden!important;
+  border:1px solid #e3e8ef!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  box-shadow:0 2px 5px rgba(16,24,40,.035),0 8px 20px rgba(36,60,88,.055)!important;
+}
+.lead-workspace qai-data-grid .refined-grid{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.lead-grid-toolbar{
+  min-height:60px!important;
+  padding:10px 12px!important;
+  border-bottom:1px solid #e6ebf1!important;
+  background:#fff!important;
+}
+.lead-search{
+  width:min(390px,38vw)!important;
+  height:36px!important;
+  border:1px solid #dfe5ed!important;
+  border-radius:8px!important;
+  background:#f8fafc!important;
+}
+.toolbar-button,.lead-grid-toolbar select,.grid-tools>button,.view-toggle button{
+  border:1px solid #dfe5ed!important;
+  border-radius:7px!important;
+  background:#fff!important;
+  color:#475467!important;
+}
+.toolbar-button:hover,.lead-grid-toolbar select:hover,.grid-tools>button:hover{
+  border-color:#cfd8e4!important;
+  background:#f8fafc!important;
+  color:#c2410c!important;
+}
+.view-toggle button{
+  width:32px!important;height:32px!important;
+}
+.view-toggle button.active{
+  background:#fff7ed!important;
+  border-color:#fdba74!important;
+  color:#ea580c!important;
+}
+
+.lead-workspace qai-data-grid table{
+  width:100%!important;
+  min-width:1080px!important;
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  background:#fff!important;
+}
+.lead-workspace qai-data-grid thead th{
+  height:44px!important;
+  padding:0 13px!important;
+  border-bottom:1px solid #e5e9f0!important;
+  background:#f8fafc!important;
+  color:#7a8799!important;
+  font-size:8px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+  vertical-align:middle!important;
+}
+.lead-workspace qai-data-grid tbody td{
+  height:60px!important;
+  padding:9px 13px!important;
+  border-bottom:1px solid #edf0f4!important;
+  background:#fff!important;
+  color:#475467!important;
+  font-size:10px!important;
+  vertical-align:middle!important;
+}
+.lead-workspace qai-data-grid tbody tr:last-child td{border-bottom:0!important}
+.lead-workspace qai-data-grid tbody tr:hover td{background:#fafbfc!important}
+.lead-workspace qai-data-grid tbody tr:has(input[type="checkbox"]:checked) td{background:#fffaf6!important}
+
+.lead-workspace .lead-person{
+  min-width:200px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+.lead-workspace .lead-person:before{
+  content:""!important;
+  display:grid!important;
+  width:30px!important;
+  height:30px!important;
+  flex:0 0 30px!important;
+  place-items:center!important;
+  border-radius:8px!important;
+  background:#fff7ed!important;
+  box-shadow:inset 0 0 0 1px #fed7aa!important;
+}
+.lead-workspace .lead-person b{
+  color:#d95f0a!important;
+  font-size:10px!important;
+  font-weight:750!important;
+}
+.lead-workspace qai-data-grid tbody td:nth-child(2),
+.lead-workspace qai-data-grid tbody td:nth-child(3),
+.lead-workspace qai-data-grid tbody td:nth-child(4),
+.lead-workspace qai-data-grid tbody td:nth-child(6),
+.lead-workspace qai-data-grid tbody td:nth-child(7){
+  color:#475467!important;
+  font-size:9px!important;
+}
+.lead-workspace .lead-status{
+  min-height:24px!important;
+  padding:0 8px!important;
+  border:1px solid #e5e9f0!important;
+  border-radius:999px!important;
+  background:#f8fafc!important;
+  color:#667085!important;
+  font-size:8px!important;
+  font-weight:800!important;
+}
+.lead-workspace .lead-status.hot{
+  border-color:#fed7aa!important;
+  background:#fff7ed!important;
+  color:#c2410c!important;
+}
+.lead-workspace qai-data-grid tbody td:nth-child(8){
+  color:#172033!important;
+  font-size:10px!important;
+  font-weight:750!important;
+}
+.lead-workspace .directory-actions{gap:5px!important}
+.lead-workspace .small{
+  height:29px!important;
+  min-height:29px!important;
+  padding:0 9px!important;
+  border:1px solid #dfe5ed!important;
+  border-radius:7px!important;
+  background:#fff!important;
+  color:#475467!important;
+  font-size:8px!important;
+}
+.lead-workspace .small:hover{background:#f8fafc!important;border-color:#cfd8e4!important}
+.lead-workspace .small.primary{
+  border:0!important;
+  background:#f97316!important;
+  color:#fff!important;
+}
+.lead-workspace .small.primary:hover{background:#ea580c!important}
+
+.lead-workspace .grid-empty-row td{
+  height:190px!important;
+  padding:28px 20px!important;
+  background:#fff!important;
+  text-align:center!important;
+}
+.lead-workspace .grid-empty-row strong{
+  display:block!important;
+  color:#d95f0a!important;
+  font-size:12px!important;
+  font-weight:750!important;
+  line-height:1.35!important;
+}
+.lead-workspace .grid-empty-row span{
+  display:block!important;
+  margin-top:5px!important;
+  color:#8293a7!important;
+  font-size:9px!important;
+  line-height:1.5!important;
+}
+
+@media(max-width:900px){
+  .lead-workspace qai-data-grid{
+    margin-left:16px!important;
+    margin-right:16px!important;
+    width:calc(100% - 32px)!important;
+  }
+}
+@media(max-width:600px){
+  .lead-workspace qai-data-grid{
+    margin-left:12px!important;
+    margin-right:12px!important;
+    width:calc(100% - 24px)!important;
+  }
+  .lead-grid-toolbar{flex-wrap:wrap!important}
+  .lead-search{width:100%!important}
+}
