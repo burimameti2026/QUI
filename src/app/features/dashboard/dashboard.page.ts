@@ -97,6 +97,7 @@ export class DashboardPage implements OnInit {
         config.header = config.header || {};
         if (header.label) config.header.title = header.label;
         if (header.template) (config as any).headerTemplate = header.template;
+        if (header.appearance) config.header.appearance = header.appearance;
       }
 
       const componentMap: Record<string, string> = {
