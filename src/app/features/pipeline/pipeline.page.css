@@ -206,3 +206,25 @@
     border-radius:0!important;
   }
 }
+
+/* Final pipeline workspace refinement — align with Dashboard / Leads enterprise rhythm. */
+:host{display:block;min-width:0;background:#f5f7fb!important;color:#101828!important}
+.pipeline-kpis{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important;margin:0 20px 14px!important}
+.pipeline-kpis article{position:relative!important;min-height:112px!important;overflow:hidden!important;padding:15px 16px!important;border:1px solid #e3e8ef!important;border-radius:10px!important;background:#fff!important;box-shadow:0 2px 5px rgba(16,24,40,.035),0 7px 18px rgba(36,60,88,.05)!important}
+.pipeline-kpis article:before{content:""!important;position:absolute!important;top:0!important;left:0!important;right:0!important;height:3px!important;background:#f97316!important;border-radius:10px 10px 0 0!important}
+.pipeline-kpis article:nth-child(2):before{background:#7c3aed!important}.pipeline-kpis article:nth-child(3):before{background:#059669!important}.pipeline-kpis article:nth-child(4):before{background:#d97706!important}.pipeline-kpis article:nth-child(5):before{background:#2563eb!important}
+.pipeline-kpis .kpi-kicker{display:block!important;margin-top:2px!important;color:#667085!important;font-size:9px!important;font-weight:800!important;letter-spacing:.08em!important}
+.pipeline-kpis strong{display:block!important;margin-top:11px!important;color:#172033!important;font-size:26px!important;line-height:1!important}
+.pipeline-kpis small{display:block!important;margin-top:7px!important;color:#8293a7!important;font-size:9px!important}
+.pipeline-kpis i{position:absolute!important;top:14px!important;right:14px!important;display:grid!important;place-items:center!important;width:29px!important;height:29px!important;border-radius:8px!important;background:#fff1e6!important;color:#c2410c!important;font-size:11px!important;font-style:normal!important;font-weight:800!important}
+.pipeline-kpis article:nth-child(2) i{background:#f2edff!important;color:#7c3aed!important}.pipeline-kpis article:nth-child(3) i{background:#eaf9f1!important;color:#059669!important}.pipeline-kpis article:nth-child(4) i{background:#fff5df!important;color:#d97706!important}.pipeline-kpis article:nth-child(5) i{background:#edf4ff!important;color:#2563eb!important}
+.pipeline-explainer{margin:0 20px!important;border-radius:10px 10px 0 0!important;background:#fff!important;border-color:#e5e9f0!important}
+.pipeline-summary{margin:0 20px!important}.unassigned-deals,.pipeline-board,.pipeline-config{margin-left:20px!important;margin-right:20px!important}.directory-card{margin-left:20px!important;margin-right:20px!important}
+.directory-toolbar{justify-content:flex-start!important}.directory-toolbar>strong{margin-left:0!important}.directory-actions{justify-content:flex-start!important}
+.pipeline-board>section>article{cursor:grab!important}.pipeline-board>section>article:active{cursor:grabbing!important}
+.directory-actions button.primary,.stage-list button.primary,.add-stage button.primary,.opportunity-detail footer button.primary{background:#f97316!important;border-color:#f97316!important}
+.directory-actions button.primary:hover,.stage-list button.primary:hover,.add-stage button.primary:hover,.opportunity-detail footer button.primary:hover{background:#ea580c!important;border-color:#ea580c!important}
+@media(max-width:1100px){.pipeline-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:900px){.pipeline-kpis,.directory-card,.pipeline-explainer,.pipeline-summary,.unassigned-deals,.pipeline-board,.pipeline-config{margin-left:16px!important;margin-right:16px!important}}
+@media(max-width:680px){.pipeline-kpis{grid-template-columns:1fr 1fr!important;margin-left:12px!important;margin-right:12px!important}}
+@media(max-width:480px){.pipeline-kpis{grid-template-columns:1fr!important}}
