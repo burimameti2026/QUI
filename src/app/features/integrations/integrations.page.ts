@@ -40,6 +40,12 @@ import { IntegrationsService } from "./integrations.service";
         [current]="senderStep"
       />
     </section>
+    <section class="integration-metrics">
+      <article><span class="metric-icon">✓</span><div><small>Connected</small><strong>{{ connectedCount }}</strong><em>Configured providers</em></div></article>
+      <article><span class="metric-icon">◈</span><div><small>Available</small><strong>{{ providers.length }}</strong><em>Provider adapters</em></div></article>
+      <article><span class="metric-icon">✉</span><div><small>Verified senders</small><strong>{{ verifiedSenderCount }}</strong><em>Ready identities</em></div></article>
+      <article><span class="metric-icon">!</span><div><small>Suppression</small><strong>Active</strong><em>Opt-out protection</em></div></article>
+    </section>
     <div class="grid2">
       <section class="panel">
         <header>
@@ -327,6 +333,8 @@ export class IntegrationsPage implements OnInit {
     this.advanced = false;
     this.show = true;
   }
+  get connectedCount() { return this.connections.filter(x => x?.enabled !== false || String(x?.status).toLowerCase() === 'connected' || String(x?.status).toLowerCase() === 'configured').length; }
+  get verifiedSenderCount() { return this.senders.filter(x => x.status === 1).length; }
   get senderStep() {
     if (!this.senders.length) return 1;
     if (!this.senders.some((s) => s.status === 1)) return 2;
