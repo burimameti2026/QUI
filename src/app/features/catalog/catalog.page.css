@@ -44,8 +44,8 @@
 }
 
 .primary:hover {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
 }
 
 .secondary:hover:not(:disabled) {
@@ -84,7 +84,7 @@
   right: 0;
   top: 0;
   height: 3px;
-  background: #f97316;
+  background: var(--brand-primary);
 }
 
 .metrics article:nth-child(2)::before { background: #7c3aed; }
@@ -105,8 +105,8 @@
   flex: 0 0 31px;
   place-items: center;
   border-radius: 8px;
-  background: #edf4ff;
-  color: #2563eb;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
   font-size: 13px;
 }
 
@@ -241,7 +241,7 @@
 }
 
 .manage {
-  color: #ea580c;
+  color: var(--brand-primary-hover);
   font-size: 9px;
   font-weight: 700;
   text-decoration: none;
@@ -393,7 +393,7 @@
   letter-spacing:-.02em!important;
 }
 .catalog-hero p{margin:0!important;color:#667085!important;font-size:10px!important;line-height:1.5!important}
-.catalog-hero .eyebrow{color:#f97316!important;font-size:9px!important;font-weight:800!important;letter-spacing:.11em!important}
+.catalog-hero .eyebrow{color:var(--brand-primary)!important;font-size:9px!important;font-weight:800!important;letter-spacing:.11em!important}
 .hero-actions{gap:8px!important}
 .hero-actions .secondary{
   height:34px!important;min-height:34px!important;padding:0 12px!important;
@@ -402,11 +402,11 @@
 }
 .hero-actions .primary{
   height:34px!important;min-height:34px!important;padding:0 13px!important;
-  border:0!important;border-radius:8px!important;background:#f97316!important;color:#fff!important;
+  border:0!important;border-radius:8px!important;background:var(--brand-primary)!important;color:#fff!important;
   font-size:10px!important;font-weight:750!important;text-decoration:none!important;
   box-shadow:none!important;
 }
-.hero-actions .primary:hover{background:#ea580c!important}
+.hero-actions .primary:hover{background:var(--brand-primary-hover)!important}
 
 .metrics{
   display:grid!important;
@@ -427,7 +427,7 @@
   height:3px!important;
   border-radius:10px 10px 0 0!important;
 }
-.metrics article:nth-child(1):before{background:#f97316!important}
+.metrics article:nth-child(1):before{background:var(--brand-primary)!important}
 .metrics article:nth-child(2):before{background:#7c3aed!important}
 .metrics article:nth-child(3):before{background:#059669!important}
 .metrics article:nth-child(4):before{background:#d97706!important}
@@ -435,7 +435,7 @@
 .metric-icon{
   width:31px!important;height:31px!important;flex:0 0 31px!important;
   border-radius:8px!important;border:0!important;
-  background:#edf4ff!important;color:#2563eb!important;
+  background:var(--brand-accent-soft)!important;color:var(--brand-accent)!important;
 }
 .metrics article:nth-child(2) .metric-icon{background:#f2edff!important;color:#7c3aed!important}
 .metrics article:nth-child(3) .metric-icon{background:#eaf9f1!important;color:#059669!important}
@@ -460,7 +460,7 @@
   font-size:10px!important;
 }
 .toolbar input:focus,.toolbar select:focus{
-  border-color:#f97316!important;
+  border-color:var(--brand-primary)!important;
   box-shadow:0 0 0 3px rgba(249,115,22,.08)!important;
 }
 
@@ -492,7 +492,7 @@
 }
 .row:hover:not(.header){background:#fafbfc!important}
 .row strong{
-  color:#d95f0a!important;
+  color:var(--brand-primary)!important;
   font-size:10px!important;
   font-weight:750!important;
 }
@@ -515,15 +515,15 @@
   align-items:center!important;
   min-height:29px!important;
   padding:0 9px!important;
-  border:1px solid #fed7aa!important;
+  border:1px solid var(--brand-primary-border)!important;
   border-radius:7px!important;
-  background:#fff7ed!important;
-  color:#c2410c!important;
+  background:var(--brand-primary-soft)!important;
+  color:var(--brand-primary)!important;
   font-size:8px!important;
   font-weight:750!important;
   text-decoration:none!important;
 }
-.manage:hover{background:#ffedd5!important;color:#9a3412!important}
+.manage:hover{background:var(--brand-primary-soft)!important;color:#9a3412!important}
 .empty{
   min-height:150px!important;
   padding:30px 22px!important;
