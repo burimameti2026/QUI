@@ -3,3 +3,119 @@
 .hero{align-items:center;background:linear-gradient(135deg,#f3f7ff,#f8f7ff)!important;border:1px solid #dbe5f5!important;border-radius:11px!important;box-shadow:var(--ui-shadow);color:var(--ui-ink);display:flex;justify-content:space-between;gap:24px;margin:0 28px 18px!important;padding:20px 22px!important}.hero>div,.hero ol{position:relative;z-index:1}.hero>div>span{color:var(--ui-accent);font-size:10px;font-weight:800;letter-spacing:.12em}.hero h2{font-size:20px!important;margin:7px 0}.hero p{color:var(--ui-muted);font-size:12px!important;line-height:1.5}.hero ol{display:flex;gap:7px;list-style:none;margin:0;padding:0}.hero li button{align-items:center;background:#fff;border:1px solid var(--ui-border);border-radius:8px!important;color:var(--ui-ink-soft);display:flex;flex-direction:column;font-size:10px;font-weight:700;gap:3px;min-width:82px;padding:10px 11px}.hero li button b{color:var(--ui-muted);font-size:9px}.hero li.done button,.hero li button:hover{background:var(--ui-accent-soft);border-color:#bcd1ff;color:var(--ui-accent)}
 .notice{border-radius:8px!important;margin:0 28px 12px;padding:10px 12px}.success{background:#eef9f2}.error{background:#fff5f4}.layout{display:grid;gap:16px;grid-template-columns:minmax(0,1fr) 320px;margin:0 28px 18px}.campaigns,.safety{background:#fff;border:1px solid var(--ui-border);border-radius:10px!important;box-shadow:var(--ui-shadow);overflow:hidden}.campaigns>header,.safety>header{background:#fff;border-bottom:1px solid var(--ui-border);padding:16px 18px}.campaigns>header{align-items:center;display:flex;justify-content:space-between}.campaigns>header h3,.safety h3{color:var(--ui-ink);margin:4px 0 3px;font-size:14px}.campaigns>header p{color:var(--ui-muted);font-size:11px;margin:0}.campaign-count{background:var(--ui-accent-soft);border:1px solid #d5e2ff;border-radius:7px;color:var(--ui-accent);font-size:10px;font-weight:800;padding:6px 9px}.campaign-list{display:grid}.campaigns article{align-items:center;background:#fff;border-bottom:1px solid var(--ui-border);display:grid;gap:12px;grid-template-columns:40px minmax(0,1fr) auto auto;padding:15px 16px}.campaigns article:hover{background:#f8fbff}.campaigns article.is-running{border-left:3px solid var(--ui-positive)}.campaign-icon{align-items:center;background:var(--ui-accent-soft);border:1px solid #d5e2ff;border-radius:9px;color:var(--ui-accent);display:flex;font-size:16px;height:38px;justify-content:center;width:38px}.campaign-main header{align-items:center;display:flex;gap:8px}.campaign-main header strong{color:var(--ui-ink);font-size:12px}.campaign-data{display:grid;gap:6px;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:9px}.campaign-data>span{background:var(--ui-surface-subtle);border:1px solid var(--ui-border);border-radius:7px;display:flex;flex-direction:column;min-width:0;padding:7px 8px}.campaign-data small{color:var(--ui-faint);font-size:8px;text-transform:uppercase}.campaign-data b{color:var(--ui-ink-soft);font-size:10px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.campaign-data em{color:var(--ui-faint);font-size:9px;font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.activity-action,.queue-action{background:#fff;border:1px solid var(--ui-border-strong);border-radius:7px;color:var(--ui-ink-soft);font-size:10px;font-weight:700}.campaign-action{font-size:10px;font-weight:800}.running-label{background:#eef9f2;border:1px solid #cce8d6;border-radius:7px;color:var(--ui-positive);font-size:10px;font-weight:800;padding:6px 9px}.safety{padding-bottom:8px}.safety>header{padding-bottom:12px}.safety>header .eyebrow,.approval-panel .eyebrow{color:var(--ui-accent)}.safety ul{list-style:none;margin:0;padding:8px}.safety li+li{border-top:1px solid var(--ui-border)}.safety li button{align-items:center;background:transparent;border:0;border-radius:7px;display:grid;gap:10px;grid-template-columns:30px 1fr 12px;padding:11px 8px;text-align:left;width:100%}.safety li button:hover{background:var(--ui-surface-subtle)}.safety li button>b{align-items:center;background:var(--ui-accent-soft);border:1px solid #d5e2ff;border-radius:8px;color:var(--ui-accent);display:flex;height:30px;justify-content:center;width:30px}.safety li strong{color:var(--ui-ink-soft);font-size:10px}.safety li small{color:var(--ui-muted);font-size:9px;margin-top:2px}.campaign-activity,.approval-panel{background:#fff;border:1px solid var(--ui-border);border-radius:10px!important;box-shadow:var(--ui-shadow);margin:0 28px 18px;overflow:hidden;padding:0}.campaign-activity>header,.approval-panel>header{align-items:center;background:#fff;border-bottom:1px solid var(--ui-border);display:flex;justify-content:space-between;padding:14px 18px}.campaign-activity h3,.approval-panel>header b{color:var(--ui-ink);margin:3px 0 0}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px}.metrics article{border:1px solid var(--ui-border);border-radius:9px;background:#fff;padding:10px 12px}.metrics article span{color:var(--ui-muted);display:block;font-size:9px}.metrics article strong{color:var(--ui-ink);font-size:16px}.activity-list{display:grid;gap:0;margin:0 14px 14px}.activity-list article{background:#fff;border-bottom:1px solid var(--ui-border);padding:11px}.approval-panel table{border-collapse:collapse;width:100%}.approval-panel th{background:var(--ui-surface-subtle);border-bottom:1px solid var(--ui-border);color:var(--ui-muted);font-size:9px;padding:10px 12px;text-transform:uppercase}.approval-panel td{border-bottom:1px solid var(--ui-border);font-size:10px;padding:11px 12px}.approval-panel tbody tr.awaiting{box-shadow:inset 3px 0 var(--ui-accent)}.steps{display:grid;grid-template-columns:repeat(4,1fr);margin:0 28px 18px}.steps button{background:#fff;border:0;border-bottom:2px solid var(--ui-border);border-radius:0;color:var(--ui-muted);padding:11px}.steps button.active{border-color:var(--ui-accent);color:var(--ui-accent)}.sequence{background:var(--ui-surface-subtle);border:1px solid var(--ui-border);border-radius:9px;margin:10px 0;padding:14px}.review dl{border:1px solid var(--ui-border);border-radius:9px}.guardrail-detail{background:var(--ui-surface-subtle);border-bottom:1px solid var(--ui-border);padding:18px 20px}.guardrail-number{background:var(--ui-accent-soft);border:1px solid #d5e2ff;border-radius:9px;color:var(--ui-accent)}.guardrail-check{background:#eef9f2;border:1px solid #cce8d6;border-radius:9px}.guardrail-footer{border-top:1px solid var(--ui-border)}
 @media(max-width:1100px){.hero,.layout,.campaign-activity,.approval-panel,.notice{margin-left:16px!important;margin-right:16px!important}.hero{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}.campaigns article{grid-template-columns:40px minmax(0,1fr) auto}.campaign-data{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.hero ol,.steps{grid-template-columns:1fr 1fr}.hero ol{display:grid;width:100%}.campaigns article{grid-template-columns:40px 1fr}.campaigns article>button,.running-label{grid-column:2;justify-self:start}.campaign-data{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.steps{display:grid}}
+
+/* Campaigns — align with the rounded Prospect Discovery card system. */
+:host { background: #f7f8fc !important; }
+.hero {
+  margin: 0 20px 14px !important;
+  padding: 24px 28px !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(110deg,#f1f6ff 0%,#f7f4ff 58%,#fff7ed 100%) !important;
+  box-shadow: 0 2px 10px rgba(16,24,40,.055) !important;
+}
+.hero h2 { letter-spacing: -.025em !important; }
+.hero li button.pipeline-step {
+  border: 0 !important;
+  border-radius: 9px !important;
+  box-shadow: 0 1px 4px rgba(16,24,40,.05) !important;
+}
+.hero li.done button.pipeline-step,
+.hero li button.pipeline-step:hover {
+  background: #fff7ed !important;
+  border: 0 !important;
+  color: #c2410c !important;
+}
+.hero li.done button.pipeline-step b,
+.hero li button.pipeline-step:hover b {
+  border-color: #f97316 !important;
+  background: #f97316 !important;
+}
+.layout {
+  gap: 14px !important;
+  margin: 0 20px 14px !important;
+}
+.campaigns,.safety,.campaign-activity,.approval-panel {
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 10px rgba(16,24,40,.055) !important;
+}
+.campaigns > header,.safety > header,.approval-panel > header,.campaign-activity > header {
+  border-bottom: 1px solid #f0f2f5 !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: #fff !important;
+  color: #202124 !important;
+}
+.campaigns > header h3,.safety > header h3,.approval-panel > header b {
+  color: #202124 !important;
+}
+.campaigns > header .eyebrow,.safety > header .eyebrow,.approval-panel > header .eyebrow {
+  color: #98a2b3 !important;
+}
+.campaigns article {
+  border-bottom: 1px solid #f3f4f6 !important;
+  border-left: 0 !important;
+  padding: 16px !important;
+}
+.campaigns article:last-child { border-bottom: 0 !important; }
+.campaigns article:hover { background: #fafbfc !important; }
+.campaign-icon {
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: #fff7ed !important;
+  color: #f97316 !important;
+}
+.campaign-data > span {
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #f8fafc !important;
+  box-shadow: inset 0 0 0 1px #f0f2f5 !important;
+}
+.activity-action,.queue-action {
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #f8fafc !important;
+}
+.campaign-action {
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #f97316 !important;
+  color: #fff !important;
+}
+.running-label {
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #ecfdf3 !important;
+}
+.safety li button {
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: #f8fafc !important;
+}
+.safety li button > b {
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: #fff7ed !important;
+  color: #f97316 !important;
+}
+.metrics {
+  gap: 12px !important;
+  margin: 14px !important;
+}
+.metrics article {
+  border: 0 !important;
+  border-radius: 9px !important;
+  background: #f8fafc !important;
+  box-shadow: inset 0 0 0 1px #f0f2f5 !important;
+}
+.steps {
+  border: 0 !important;
+  background: transparent !important;
+}
+@media(max-width:1100px) {
+  .hero,.layout,.campaign-activity,.approval-panel,.notice {
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
+}
+
