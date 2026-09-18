@@ -1,0 +1,112 @@
+/* White Label runtime tokens — single application-wide source of truth. */
+:root{
+  --wl-app-surface:#ffffff;
+  --wl-header-bg:#ffffff;
+  --wl-header-border:#e7ebf0;
+  --wl-header-title:#202124;
+  --wl-header-text:#26364d;
+  --wl-header-muted:#667085;
+  --wl-card-bg:#ffffff;
+  --wl-card-header-bg:#ffffff;
+  --wl-card-border:#e7ebf0;
+  --wl-card-title:#202124;
+  --wl-card-text:#26364d;
+  --wl-card-muted:#667085;
+  --wl-card-accent:#f97316;
+  --wl-card-radius:12px;
+  --wl-button-1-bg:#f97316; --wl-button-1-text:#ffffff; --wl-button-1-border:#f97316; --wl-button-1-hover:#ea580c;
+  --wl-button-2-bg:#ffffff; --wl-button-2-text:#202124; --wl-button-2-border:#dfe5ed; --wl-button-2-hover:#f8fafc;
+  --wl-button-3-bg:#fff7ed; --wl-button-3-text:#c2410c; --wl-button-3-border:#fed7aa; --wl-button-3-hover:#ffedd5;
+  --wl-button-4-bg:#ffffff; --wl-button-4-text:#202124; --wl-button-4-border:#dfe5ed; --wl-button-4-hover:#f8fafc;
+}
+
+qai-page-header .page-header{
+  background:var(--wl-header-bg)!important;
+  border-bottom-color:var(--wl-header-border)!important;
+}
+qai-page-header .page-header h1{color:var(--wl-header-title)!important}
+qai-page-header .page-header p{color:var(--wl-header-muted)!important}
+qai-page-header .page-actions button,
+qai-page-header .header-actions button{
+  border-color:var(--wl-button-2-border)!important;
+  background:var(--wl-button-2-bg)!important;
+  color:var(--wl-button-2-text)!important;
+}
+qai-page-header .page-actions button.primary,
+qai-page-header .header-actions button.primary{
+  border-color:var(--wl-button-1-border)!important;
+  background:var(--wl-button-1-bg)!important;
+  color:var(--wl-button-1-text)!important;
+}
+qai-page-header .page-actions button.primary:hover:not(:disabled),
+qai-page-header .header-actions button.primary:hover:not(:disabled){
+  background:var(--wl-button-1-hover)!important;
+}
+qai-page-header .page-actions button:hover:not(:disabled),
+qai-page-header .header-actions button:hover:not(:disabled){
+  background:var(--wl-button-2-hover)!important;
+}
+
+/* Shared application buttons consume the configured variants. */
+button.primary,.primary,.primary-action,.btn-primary,.header-action{
+  background:var(--wl-button-1-bg)!important;
+  border-color:var(--wl-button-1-border)!important;
+  color:var(--wl-button-1-text)!important;
+}
+button.primary:hover:not(:disabled),.primary:hover:not(:disabled),.primary-action:hover:not(:disabled),.btn-primary:hover:not(:disabled),.header-action:hover:not(:disabled){
+  background:var(--wl-button-1-hover)!important;
+}
+button.secondary,.secondary,.btn-secondary{
+  background:var(--wl-button-2-bg)!important;
+  border-color:var(--wl-button-2-border)!important;
+  color:var(--wl-button-2-text)!important;
+}
+button.secondary:hover:not(:disabled),.secondary:hover:not(:disabled),.btn-secondary:hover:not(:disabled){
+  background:var(--wl-button-2-hover)!important;
+}
+button.quiet,.quiet,.quiet-action,.btn-quiet{
+  background:var(--wl-button-3-bg)!important;
+  border-color:var(--wl-button-3-border)!important;
+  color:var(--wl-button-3-text)!important;
+}
+button.quiet:hover:not(:disabled),.quiet:hover:not(:disabled),.quiet-action:hover:not(:disabled),.btn-quiet:hover:not(:disabled){
+  background:var(--wl-button-3-hover)!important;
+}
+
+/* Shared card surfaces and headers consume the configured card tokens. */
+qai-ui-card .card,qai-ui-list-card .card,qai-ui-table-card .card,
+.card,.panel,.section-card,.content-card,.data-card,.workspace-card,.settings-card,.config-card,.detail-card{
+  background:var(--wl-card-bg)!important;
+  border-color:var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+}
+qai-ui-card .card>header,qai-ui-list-card .card>header,qai-ui-table-card .card>header,
+.card>header,.panel>header,.section-card>header,.content-card>header,.card-header,.workspace-header,.prospect-header,.section-header{
+  background:var(--wl-card-header-bg)!important;
+  border-bottom-color:var(--wl-card-border)!important;
+}
+qai-ui-card h3,qai-ui-list-card h3,qai-ui-table-card h3,
+.card h1,.card h2,.card h3,.panel h1,.panel h2,.panel h3{
+  color:var(--wl-card-title)!important;
+}
+qai-ui-card p,qai-ui-list-card p,qai-ui-table-card p,
+.card p,.panel p,.card span,.panel span{
+  color:var(--wl-card-text);
+}
+
+/* Renderer-level component overrides still win because they set --ui-* on the instance. */
+qai-ui-card footer button{
+  background:var(--ui-button-bg,var(--wl-button-1-bg))!important;
+  border-color:var(--ui-button-border,var(--wl-button-1-border))!important;
+  color:var(--ui-button-text,var(--wl-button-1-text))!important;
+}
+qai-ui-list-card header button,qai-ui-table-card header button{
+  background:var(--ui-button-bg,var(--wl-button-2-bg))!important;
+  border-color:var(--ui-button-border,var(--wl-button-2-border))!important;
+  color:var(--ui-button-text,var(--wl-button-2-text))!important;
+}
+qai-ui-metrics .metric{
+  --accent:var(--wl-card-accent);
+  border-color:var(--wl-card-border)!important;
+  background:var(--wl-card-bg)!important;
+}
