@@ -32,7 +32,7 @@
   width: 34px;
   height: 3px;
   border-radius: 0 0 3px 3px;
-  background: #f97316;
+  background: var(--brand-primary);
 }
 
 .eyebrow {
@@ -68,10 +68,10 @@ h1 {
   align-items: center;
   min-height: 32px;
   padding: 0 11px;
-  border: 1px solid #fed7aa;
+  border: 1px solid var(--brand-primary-border);
   border-radius: 8px;
-  background: #fff7ed;
-  color: #c2410c;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   font-size: 9px;
   font-weight: 750;
   white-space: nowrap;
@@ -145,7 +145,7 @@ select:hover:not(:disabled) {
 }
 
 select:focus {
-  border-color: #f97316;
+  border-color: var(--brand-primary);
   box-shadow: 0 0 0 3px rgba(249, 115, 22, .10);
 }
 
@@ -178,7 +178,7 @@ select:disabled {
 }
 
 .switches label:hover {
-  border-color: #fed7aa;
+  border-color: var(--brand-primary-border);
   background: #fffaf5;
 }
 
@@ -186,7 +186,7 @@ select:disabled {
   width: 14px;
   height: 14px;
   margin: 0;
-  accent-color: #f97316;
+  accent-color: var(--brand-primary);
 }
 
 .primary {
@@ -195,9 +195,9 @@ select:disabled {
   min-height: 36px;
   margin: 0 18px 17px;
   padding: 0 13px;
-  border: 1px solid #f97316;
+  border: 1px solid var(--brand-primary);
   border-radius: 8px;
-  background: #f97316;
+  background: var(--brand-primary);
   color: #fff;
   font: inherit;
   font-size: 10px;
@@ -208,8 +208,8 @@ select:disabled {
 }
 
 .primary:hover:not(:disabled) {
-  background: #ea580c;
-  border-color: #ea580c;
+  background: var(--brand-primary-hover);
+  border-color: var(--brand-primary-hover);
   transform: translateY(-1px);
   box-shadow: 0 7px 14px rgba(249, 115, 22, .18);
 }
@@ -292,10 +292,10 @@ select:disabled {
   width: 30px;
   height: 30px;
   place-items: center;
-  border: 1px solid #fed7aa;
+  border: 1px solid var(--brand-primary-border);
   border-radius: 8px;
-  background: #fff7ed;
-  color: #c2410c;
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
   font-size: 9px;
   font-weight: 800;
 }
