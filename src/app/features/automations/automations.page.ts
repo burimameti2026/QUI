@@ -10,7 +10,6 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrl: "./automations.page.css",
-  styles: [`.automation-explainer{align-items:center;background:linear-gradient(105deg,#eff6ff,#f8fafc);border-color:#cfe0ff;display:flex;gap:24px;justify-content:space-between;margin-bottom:16px;padding:18px 21px}.automation-explainer .eyebrow{color:#2563eb;font-size:.66rem;font-weight:800;letter-spacing:.11em}.automation-explainer h2{font-size:1rem;margin:4px 0}.automation-explainer p{color:#526278;font-size:.77rem;line-height:1.48;margin:0;max-width:680px}.automation-explainer ol{display:grid;gap:7px;grid-template-columns:repeat(4,1fr);list-style:none;margin:0;min-width:370px;padding:0}.automation-explainer li{align-items:center;color:#334155;display:flex;flex-direction:column;font-size:.66rem;font-weight:750;gap:4px;text-align:center}.automation-explainer li b{align-items:center;background:#dbeafe;border-radius:50%;color:#1d4ed8;display:flex;height:24px;justify-content:center;width:24px}.trigger-detail{color:#64748b;display:block;font-size:.67rem;line-height:1.3;margin-top:5px}.notice{border-radius:10px;margin:0 0 14px;padding:11px 14px}.notice.success{background:#ecfdf5;color:#047857}.discovery-template{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;margin:10px 0;padding:12px}.discovery-template b,.discovery-template small{display:block}.discovery-template b{color:#1e3a8a;font-size:.78rem}.discovery-template small{color:#526278;font-size:.68rem;line-height:1.45;margin:4px 0 9px}.discovery-template div{align-items:end;display:flex;gap:8px}.discovery-template label{flex:1;margin:0}@media(max-width:900px){.automation-explainer{align-items:stretch;flex-direction:column}.automation-explainer ol{min-width:0;width:100%}}`],
   template: `<qai-page-header
       title="Automations"
       subtitle="Turn customer and sales signals into automated revenue actions."
@@ -24,6 +23,12 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
       <ol><li><b>1</b>Business signal</li><li><b>2</b>Active rule</li><li><b>3</b>Actions & controls</li><li><b>4</b>Run log / retry</li></ol>
     </section>
     <p class="notice success" *ngIf="publishedMessage">{{publishedMessage}}</p>
+    <section class="automation-metrics">
+      <article><span class="metric-icon">⚡</span><div><small>Total automations</small><strong>{{ rows.length }}</strong><em>Configured business rules</em></div></article>
+      <article><span class="metric-icon">✓</span><div><small>Active</small><strong>{{ activeCount }}</strong><em>Rules currently enabled</em></div></article>
+      <article><span class="metric-icon">!</span><div><small>Failed runs</small><strong>{{ failedCount }}</strong><em>Needs attention</em></div></article>
+      <article><span class="metric-icon">◷</span><div><small>Last run</small><strong>{{ lastRun === 'Never' ? '—' : 'Live' }}</strong><em>{{ lastRun }}</em></div></article>
+    </section>
     <section class="directory-card automation-workspace">
       <header>
         <div><span class="eyebrow">Revenue automation</span><h2>Automation rules</h2><p>Review triggers, business actions and execution controls in one workspace.</p></div>
