@@ -360,3 +360,36 @@
   .leads-page-header,.lead-workspace{margin-left:12px!important;margin-right:12px!important}
   .lead-workspace qai-kpi-strip .refined-kpi-strip{grid-template-columns:1fr!important}
 }
+
+
+/* Final toolbar alignment — keep every grid control grouped from the top-left. */
+.lead-workspace .lead-grid-toolbar{
+  justify-content:flex-start!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:10px 12px!important;
+}
+.lead-workspace .lead-grid-toolbar .lead-search{
+  flex:0 0 390px!important;
+}
+.lead-workspace .lead-grid-toolbar .grid-tools{
+  margin-left:0!important;
+  flex:0 0 auto!important;
+}
+.lead-workspace .lead-grid-toolbar .view-toggle{
+  margin-left:4px!important;
+}
+@media(max-width:900px){
+  .lead-workspace .lead-grid-toolbar .lead-search{
+    flex:1 1 360px!important;
+  }
+}
+@media(max-width:600px){
+  .lead-workspace .lead-grid-toolbar .lead-search{
+    flex:1 1 100%!important;
+  }
+  .lead-workspace .lead-grid-toolbar .grid-tools{
+    width:100%!important;
+    justify-content:flex-start!important;
+  }
+}
