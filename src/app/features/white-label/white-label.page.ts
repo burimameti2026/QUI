@@ -6,10 +6,17 @@ import { PageHeader } from "../../shared/ui";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, PageHeader],
+  styleUrl: './white-label.page.css',
   template: `<qai-page-header
       title="White Label"
       subtitle="Customize product identity, widget branding and customer-facing domains."
     ></qai-page-header>
+    <section class="brand-metrics">
+      <article><span class="metric-icon violet">A</span><div><small>Product identity</small><strong>{{ brand.productName || 'Unnamed' }}</strong><em>Customer-facing brand</em></div></article>
+      <article><span class="metric-icon green">✓</span><div><small>Support channel</small><strong>{{ brand.supportEmail ? 'Configured' : 'Missing' }}</strong><em>{{ brand.supportEmail || 'Add support email' }}</em></div></article>
+      <article><span class="metric-icon orange">●</span><div><small>Primary color</small><strong>{{ brand.primaryColor | uppercase }}</strong><em>Brand theme token</em></div></article>
+      <article><span class="metric-icon dark">◉</span><div><small>Preview</small><strong>Live</strong><em>Widget updates from branding</em></div></article>
+    </section>
     <div class="settings-grid">
       <section class="panel form">
         <h3>Brand identity</h3>
