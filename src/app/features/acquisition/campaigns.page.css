@@ -119,3 +119,192 @@
   }
 }
 
+
+
+/* Final campaign workspace refinement — structured badges, headers and empty states. */
+.hero ol { align-items:stretch; gap:10px !important; }
+.hero ol li { display:block; }
+.hero li button.pipeline-step {
+  position:relative !important;
+  min-width:92px !important;
+  min-height:72px !important;
+  justify-content:center !important;
+  padding:10px 12px 9px !important;
+  border:1px solid #e5e9f0 !important;
+  border-radius:10px !important;
+  background:#fff !important;
+  color:#475467 !important;
+  box-shadow:0 1px 2px rgba(16,24,40,.04) !important;
+}
+.hero li button.pipeline-step b {
+  display:grid !important;
+  place-items:center !important;
+  width:28px !important;
+  height:28px !important;
+  margin-bottom:2px !important;
+  border:0 !important;
+  border-radius:8px !important;
+  background:#fff7ed !important;
+  color:#f97316 !important;
+  font-size:9px !important;
+}
+.hero li button.pipeline-step:hover,
+.hero li.done button.pipeline-step {
+  border-color:#fdba74 !important;
+  background:#fffaf6 !important;
+  color:#c2410c !important;
+}
+.hero li button.pipeline-step:hover b,
+.hero li.done button.pipeline-step b {
+  background:#f97316 !important;
+  color:#fff !important;
+}
+
+.campaigns > header h3,
+.safety > header h3,
+.campaign-activity > header h3,
+.approval-panel > header b {
+  color:#d95f0a !important;
+}
+.campaign-main header {
+  padding:0 !important;
+  margin:0 0 8px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+.campaign-main header strong {
+  color:#d95f0a !important;
+  font-size:12px !important;
+  font-weight:750 !important;
+}
+.campaigns article {
+  background:#fff !important;
+  padding:16px 17px !important;
+  border-bottom:1px solid #edf0f4 !important;
+}
+.campaigns article:last-child { border-bottom:0 !important; }
+.campaign-data > span {
+  padding:8px 9px !important;
+}
+
+.safety > header {
+  padding:16px 18px !important;
+}
+.safety li + li { border-top:1px solid #f0f2f5 !important; }
+.safety li button {
+  margin:4px 0 !important;
+  padding:10px !important;
+  background:#f8fafc !important;
+  border:1px solid #f0f2f5 !important;
+}
+.safety li button span strong {
+  color:#d95f0a !important;
+}
+.safety li button span small {
+  display:block !important;
+  padding-top:2px !important;
+}
+
+.campaign-activity > header,
+.approval-panel > header,
+.campaigns > header,
+.safety > header {
+  min-height:62px !important;
+  padding:15px 18px !important;
+}
+.campaign-activity > header button,
+.approval-panel > header > strong {
+  flex:0 0 auto;
+}
+
+.empty,
+.queue-empty {
+  margin:14px !important;
+  padding:22px 20px !important;
+  border:1px dashed #dfe5ed !important;
+  border-radius:10px !important;
+  background:#f8fafc !important;
+  text-align:center !important;
+  color:#667085 !important;
+}
+.empty h3 {
+  margin:0 0 5px !important;
+  color:#d95f0a !important;
+  font-size:13px !important;
+}
+.empty p {
+  margin:0 auto 13px !important;
+  max-width:520px !important;
+  color:#8293a7 !important;
+  font-size:9px !important;
+  line-height:1.5 !important;
+}
+.queue-empty {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:10px !important;
+  min-height:92px !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:#fff !important;
+}
+.queue-empty b {
+  display:grid !important;
+  width:28px !important;
+  height:28px !important;
+  place-items:center !important;
+  border-radius:8px !important;
+  background:#ecfdf3 !important;
+  color:#15803d !important;
+}
+.queue-empty span {
+  padding:0 2px !important;
+  color:#667085 !important;
+  font-size:10px !important;
+}
+
+.approval-panel th { padding:11px 13px !important; }
+.approval-panel td { padding:12px 13px !important; }
+.approval-panel td b {
+  color:#d95f0a !important;
+}
+.sequence {
+  background:#f8fafc !important;
+  border:1px solid #e5e9f0 !important;
+  border-radius:10px !important;
+  padding:15px !important;
+}
+.sequence > b {
+  color:#d95f0a !important;
+  font-size:10px !important;
+}
+.review dl {
+  margin:14px 0 !important;
+  overflow:hidden !important;
+}
+.guardrail-detail {
+  padding:20px !important;
+}
+.guardrail-detail h3 {
+  color:#d95f0a !important;
+}
+.guardrail-detail p {
+  padding-right:8px !important;
+  line-height:1.55 !important;
+}
+.guardrail-check {
+  margin:14px 20px !important;
+  padding:12px 13px !important;
+}
+.guardrail-footer {
+  padding:12px 20px !important;
+}
+
+@media(max-width:720px) {
+  .hero li button.pipeline-step {
+    min-width:0 !important;
+    width:100% !important;
+  }
+}
