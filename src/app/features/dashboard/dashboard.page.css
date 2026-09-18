@@ -1,1 +1,129 @@
 /* Dashboard styling is centralized in src/styles/_design-system.css. */
+
+/* Dashboard card hierarchy — restore depth and make section titles unmistakable. */
+.dashboard-content .data-card,
+.dashboard-content .next-card,
+.dashboard-content .opportunity-card,
+.dashboard-content .knowledge-card,
+.dashboard-content .engine-card,
+.dashboard-content .outreach-card {
+  position:relative!important;
+  border:1px solid #e3e8ef!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  box-shadow:0 2px 4px rgba(16,24,40,.035),0 8px 22px rgba(36,60,88,.065)!important;
+}
+.dashboard-content .data-card:hover {
+  box-shadow:0 4px 8px rgba(16,24,40,.045),0 12px 28px rgba(36,60,88,.075)!important;
+}
+.dashboard-content .card-heading {
+  position:relative!important;
+  min-height:72px!important;
+  padding:15px 18px 14px!important;
+  border-bottom:1px solid #e6ebf1!important;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%)!important;
+}
+.dashboard-content .card-heading::before {
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  height:3px!important;
+  background:#f97316!important;
+}
+.dashboard-content .card-heading .eyebrow {
+  color:#f97316!important;
+  font-size:8px!important;
+  font-weight:850!important;
+  letter-spacing:.12em!important;
+}
+.dashboard-content .card-heading h3,
+.dashboard-content .card-heading b {
+  margin:4px 0 0!important;
+  color:#d95f0a!important;
+  font-size:15px!important;
+  line-height:1.2!important;
+  font-weight:750!important;
+  letter-spacing:-.015em!important;
+}
+.dashboard-content .card-heading button,
+.dashboard-content .card-heading a {
+  min-height:30px!important;
+  height:30px!important;
+  padding:0 10px!important;
+  border:1px solid #e1e6ed!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:#475467!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.03)!important;
+}
+.dashboard-content .card-heading button:hover,
+.dashboard-content .card-heading a:hover {
+  border-color:#fdba74!important;
+  background:#fffaf6!important;
+  color:#c2410c!important;
+}
+.dashboard-content .engine-highlight {
+  border:1px solid #e5eaf0!important;
+  box-shadow:none!important;
+  background:#f8fafc!important;
+}
+.dashboard-content .impact-grid > div {
+  border:1px solid #e5eaf0!important;
+  background:#f8fafc!important;
+  box-shadow:none!important;
+}
+.dashboard-content .engine-row {
+  border-top:1px solid #e9edf2!important;
+}
+.dashboard-content .engine-row small,
+.dashboard-content .impact-grid small {
+  color:#7a8799!important;
+  font-size:9px!important;
+}
+.dashboard-content .engine-row strong,
+.dashboard-content .impact-grid strong {
+  color:#172033!important;
+  font-size:15px!important;
+  font-weight:750!important;
+}
+.dashboard-content .opportunity-table,
+.dashboard-content .knowledge-list {
+  border:1px solid #e5e9f0!important;
+  box-shadow:none!important;
+}
+.dashboard-content .opportunity-columns {
+  background:#f8fafc!important;
+}
+.dashboard-content .opportunity-main strong,
+.dashboard-content .knowledge-gap .gap-copy strong {
+  color:#d95f0a!important;
+  font-size:11px!important;
+  font-weight:750!important;
+}
+.dashboard-content .knowledge-gap em {
+  border:1px solid #ccebd9!important;
+  border-radius:999px!important;
+  background:#f0faf4!important;
+  color:#15803d!important;
+  padding:4px 7px!important;
+  font-size:8px!important;
+  font-weight:800!important;
+}
+.dashboard-content .large-copy {
+  color:#667085!important;
+  font-size:10px!important;
+  line-height:1.55!important;
+}
+.dashboard-content .card-footer {
+  border-top:1px solid #e9edf2!important;
+  background:#fafbfc!important;
+}
+.dashboard-content .card-footer strong {
+  color:#d95f0a!important;
+}
+.dashboard-content .renova-band {
+  border:1px solid #e0e6ee!important;
+  box-shadow:0 2px 5px rgba(16,24,40,.035),0 8px 20px rgba(36,60,88,.05)!important;
+}
