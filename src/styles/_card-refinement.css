@@ -1,0 +1,236 @@
+/* Canonical card refinement — all non-Leads application surfaces.
+   Keeps page-specific layouts intact while standardising card surfaces, hierarchy,
+   spacing and depth. Leads is explicitly excluded. */
+
+body:not(:has(.leads-page-header)) {
+  --card-bg:#fff;
+  --card-border:#e7ebf0;
+  --card-shadow:0 1px 2px rgba(16,24,40,.025),0 6px 18px rgba(16,24,40,.045);
+  --card-shadow-hover:0 3px 14px rgba(16,24,40,.075);
+  --card-radius:12px;
+  --card-muted:#667085;
+  --card-ink:#202124;
+}
+
+/* Core card surfaces */
+body:not(:has(.leads-page-header)) .card,
+body:not(:has(.leads-page-header)) .panel,
+body:not(:has(.leads-page-header)) .section-card,
+body:not(:has(.leads-page-header)) .content-card,
+body:not(:has(.leads-page-header)) .data-card,
+body:not(:has(.leads-page-header)) .directory-card,
+body:not(:has(.leads-page-header)) .list-card,
+body:not(:has(.leads-page-header)) .workspace-card,
+body:not(:has(.leads-page-header)) .prospect-card,
+body:not(:has(.leads-page-header)) .settings-card,
+body:not(:has(.leads-page-header)) .settings-panel,
+body:not(:has(.leads-page-header)) .config-card,
+body:not(:has(.leads-page-header)) .detail-card,
+body:not(:has(.leads-page-header)) .form-card,
+body:not(:has(.leads-page-header)) .table-card,
+body:not(:has(.leads-page-header)) .revenue-card,
+body:not(:has(.leads-page-header)) .automation-card,
+body:not(:has(.leads-page-header)) .feature-card,
+body:not(:has(.leads-page-header)) .summary-card,
+body:not(:has(.leads-page-header)) .metric-card,
+body:not(:has(.leads-page-header)) .stat-card,
+body:not(:has(.leads-page-header)) .kpi-card,
+body:not(:has(.leads-page-header)) .engine-card,
+body:not(:has(.leads-page-header)) .outreach-card,
+body:not(:has(.leads-page-header)) .opportunity-card,
+body:not(:has(.leads-page-header)) .knowledge-card,
+body:not(:has(.leads-page-header)) .next-card,
+body:not(:has(.leads-page-header)) .agent-card,
+body:not(:has(.leads-page-header)) .integration-card,
+body:not(:has(.leads-page-header)) .workflow-card,
+body:not(:has(.leads-page-header)) .package-card,
+body:not(:has(.leads-page-header)) .tenant-card,
+body:not(:has(.leads-page-header)) .process,
+body:not(:has(.leads-page-header)) .journey,
+body:not(:has(.leads-page-header)) .designer>aside {
+  background:var(--card-bg)!important;
+  border:1px solid var(--card-border)!important;
+  border-radius:var(--card-radius)!important;
+  box-shadow:var(--card-shadow)!important;
+}
+
+/* Do not turn split-view shells into floating cards */
+body:not(:has(.leads-page-header)) .inbox,
+body:not(:has(.leads-page-header)) .conversation,
+body:not(:has(.leads-page-header)) .conv-list,
+body:not(:has(.leads-page-header)) .customer,
+body:not(:has(.leads-page-header)) .messages {
+  box-shadow:none!important;
+}
+
+/* Card hover: restrained, never a layout shift */
+body:not(:has(.leads-page-header)) .card:hover,
+body:not(:has(.leads-page-header)) .panel:hover,
+body:not(:has(.leads-page-header)) .section-card:hover,
+body:not(:has(.leads-page-header)) .content-card:hover,
+body:not(:has(.leads-page-header)) .data-card:hover,
+body:not(:has(.leads-page-header)) .directory-card:hover,
+body:not(:has(.leads-page-header)) .list-card:hover,
+body:not(:has(.leads-page-header)) .workspace-card:hover,
+body:not(:has(.leads-page-header)) .prospect-card:hover,
+body:not(:has(.leads-page-header)) .settings-card:hover,
+body:not(:has(.leads-page-header)) .settings-panel:hover,
+body:not(:has(.leads-page-header)) .config-card:hover,
+body:not(:has(.leads-page-header)) .detail-card:hover,
+body:not(:has(.leads-page-header)) .form-card:hover,
+body:not(:has(.leads-page-header)) .table-card:hover,
+body:not(:has(.leads-page-header)) .revenue-card:hover,
+body:not(:has(.leads-page-header)) .automation-card:hover,
+body:not(:has(.leads-page-header)) .feature-card:hover,
+body:not(:has(.leads-page-header)) .summary-card:hover,
+body:not(:has(.leads-page-header)) .metric-card:hover,
+body:not(:has(.leads-page-header)) .stat-card:hover,
+body:not(:has(.leads-page-header)) .kpi-card:hover,
+body:not(:has(.leads-page-header)) .engine-card:hover,
+body:not(:has(.leads-page-header)) .outreach-card:hover,
+body:not(:has(.leads-page-header)) .opportunity-card:hover,
+body:not(:has(.leads-page-header)) .knowledge-card:hover,
+body:not(:has(.leads-page-header)) .next-card:hover,
+body:not(:has(.leads-page-header)) .agent-card:hover,
+body:not(:has(.leads-page-header)) .integration-card:hover,
+body:not(:has(.leads-page-header)) .workflow-card:hover,
+body:not(:has(.leads-page-header)) .package-card:hover,
+body:not(:has(.leads-page-header)) .tenant-card:hover {
+  border-color:#dfe4ea!important;
+  box-shadow:var(--card-shadow-hover)!important;
+}
+
+/* Consistent card headers */
+body:not(:has(.leads-page-header)) .card>header,
+body:not(:has(.leads-page-header)) .panel>header,
+body:not(:has(.leads-page-header)) .section-card>header,
+body:not(:has(.leads-page-header)) .content-card>header,
+body:not(:has(.leads-page-header)) .directory-card>header,
+body:not(:has(.leads-page-header)) .list-header,
+body:not(:has(.leads-page-header)) .card-header,
+body:not(:has(.leads-page-header)) .workspace-header,
+body:not(:has(.leads-page-header)) .prospect-header,
+body:not(:has(.leads-page-header)) .section-header {
+  min-height:58px!important;
+  padding:14px 17px!important;
+  border-bottom:1px solid #edf0f4!important;
+  background:#fff!important;
+  border-radius:0!important;
+}
+
+/* Consistent card body rhythm */
+body:not(:has(.leads-page-header)) .card-body,
+body:not(:has(.leads-page-header)) .panel-body,
+body:not(:has(.leads-page-header)) .section-body,
+body:not(:has(.leads-page-header)) .card-content,
+body:not(:has(.leads-page-header)) .directory-body {
+  background:#fff!important;
+}
+
+/* KPI/stat cards: clean enterprise hierarchy, no gradients */
+body:not(:has(.leads-page-header)) .metric-card,
+body:not(:has(.leads-page-header)) .stat-card,
+body:not(:has(.leads-page-header)) .kpi-card,
+body:not(:has(.leads-page-header)) .summary-card {
+  min-height:116px;
+  padding:17px 18px!important;
+  overflow:hidden;
+}
+
+/* KPI text hierarchy */
+body:not(:has(.leads-page-header)) .metric-card strong,
+body:not(:has(.leads-page-header)) .stat-card strong,
+body:not(:has(.leads-page-header)) .kpi-card strong,
+body:not(:has(.leads-page-header)) .summary-card strong {
+  color:var(--card-ink);
+  font-weight:750;
+  letter-spacing:-.035em;
+}
+
+body:not(:has(.leads-page-header)) .metric-card span,
+body:not(:has(.leads-page-header)) .stat-card span,
+body:not(:has(.leads-page-header)) .kpi-card span,
+body:not(:has(.leads-page-header)) .summary-card span {
+  color:var(--card-muted);
+}
+
+/* Small icon blocks inside cards */
+body:not(:has(.leads-page-header)) .metric-card i,
+body:not(:has(.leads-page-header)) .stat-card i,
+body:not(:has(.leads-page-header)) .kpi-card i,
+body:not(:has(.leads-page-header)) .summary-card i {
+  border-radius:8px!important;
+}
+
+/* Card grids should breathe consistently */
+body:not(:has(.leads-page-header)) .metric-grid,
+body:not(:has(.leads-page-header)) .metrics,
+body:not(:has(.leads-page-header)) .stats-grid,
+body:not(:has(.leads-page-header)) .kpi-grid,
+body:not(:has(.leads-page-header)) .workspace-grid,
+body:not(:has(.leads-page-header)) .detail-grid,
+body:not(:has(.leads-page-header)) .command-grid,
+body:not(:has(.leads-page-header)) .cards-grid,
+body:not(:has(.leads-page-header)) .card-grid {
+  gap:14px!important;
+}
+
+/* Nested mini-cards */
+body:not(:has(.leads-page-header)) .tile,
+body:not(:has(.leads-page-header)) .info-tile,
+body:not(:has(.leads-page-header)) .summary-tile,
+body:not(:has(.leads-page-header)) .option-card,
+body:not(:has(.leads-page-header)) .action-card,
+body:not(:has(.leads-page-header)) .step-card {
+  background:#fff!important;
+  border:1px solid #e8ebef!important;
+  border-radius:10px!important;
+  box-shadow:none!important;
+}
+
+body:not(:has(.leads-page-header)) .tile:hover,
+body:not(:has(.leads-page-header)) .info-tile:hover,
+body:not(:has(.leads-page-header)) .summary-tile:hover,
+body:not(:has(.leads-page-header)) .option-card:hover,
+body:not(:has(.leads-page-header)) .action-card:hover,
+body:not(:has(.leads-page-header)) .step-card:hover {
+  border-color:#dfe4ea!important;
+  box-shadow:0 3px 10px rgba(16,24,40,.045)!important;
+}
+
+/* Empty/loading states remain inside the same card language */
+body:not(:has(.leads-page-header)) .empty-state,
+body:not(:has(.leads-page-header)) .empty,
+body:not(:has(.leads-page-header)) .loading-state,
+body:not(:has(.leads-page-header)) .data-state,
+body:not(:has(.leads-page-header)) .directory-empty {
+  border-radius:10px!important;
+}
+
+/* Responsive card spacing */
+@media(max-width:760px){
+  body:not(:has(.leads-page-header)) .card,
+  body:not(:has(.leads-page-header)) .panel,
+  body:not(:has(.leads-page-header)) .section-card,
+  body:not(:has(.leads-page-header)) .content-card,
+  body:not(:has(.leads-page-header)) .data-card,
+  body:not(:has(.leads-page-header)) .directory-card,
+  body:not(:has(.leads-page-header)) .list-card,
+  body:not(:has(.leads-page-header)) .workspace-card,
+  body:not(:has(.leads-page-header)) .prospect-card,
+  body:not(:has(.leads-page-header)) .settings-card,
+  body:not(:has(.leads-page-header)) .settings-panel,
+  body:not(:has(.leads-page-header)) .config-card,
+  body:not(:has(.leads-page-header)) .detail-card,
+  body:not(:has(.leads-page-header)) .form-card,
+  body:not(:has(.leads-page-header)) .table-card,
+  body:not(:has(.leads-page-header)) .revenue-card,
+  body:not(:has(.leads-page-header)) .automation-card,
+  body:not(:has(.leads-page-header)) .feature-card,
+  body:not(:has(.leads-page-header)) .summary-card,
+  body:not(:has(.leads-page-header)) .metric-card,
+  body:not(:has(.leads-page-header)) .stat-card,
+  body:not(:has(.leads-page-header)) .kpi-card {
+    border-radius:10px!important;
+  }
+}
