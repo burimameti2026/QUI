@@ -9,7 +9,7 @@ import { MeetingsService } from "./meetings.service";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  styleUrl: "./meetings.page.css",
+  styleUrl: "./meetings.page.refined.css",
   template: `<qai-page-header
       title="Demos & Meetings"
       subtitle="Schedule discovery calls and retain the booking against the real CRM contact."
