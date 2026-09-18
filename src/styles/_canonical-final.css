@@ -26,7 +26,7 @@ body:not(:has(.leads-page-header)) main {
 
 body:not(:has(.leads-page-header)) .page-header,
 body:not(:has(.leads-page-header)) qai-page-header .page-header {
-  background:#fff!important;
+  background:transparent!important;
   border:0!important;
   border-bottom:1px solid var(--canonical-border)!important;
   border-radius:0!important;
