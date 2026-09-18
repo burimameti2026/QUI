@@ -69,13 +69,13 @@
   padding: 16px 18px;
   border: 1px solid #dbe3ed;
   border-radius: 12px;
-  background: linear-gradient(145deg, #f8fbff 0%, #eef4fb 100%);
+  background: #fff;
   box-shadow: 0 5px 15px rgba(20, 39, 72, .045);
 }
 
 .metrics strong {
   display: block;
-  color: #173f7a;
+  color: #202124;
   font-size: 26px;
   font-weight: 650;
   letter-spacing: -.6px;
@@ -142,8 +142,8 @@
 
 .row.header {
   min-height: 40px;
-  background: #dbeafe;
-  color: #315fbd;
+  background: #fafbfc;
+  color: #667085;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: .08em;
@@ -194,7 +194,7 @@
 }
 
 .manage {
-  color: #315fbd;
+  color: #ea580c;
   font-size: 9px;
   font-weight: 700;
   text-decoration: none;
