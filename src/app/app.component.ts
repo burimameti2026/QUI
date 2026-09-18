@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { BrandThemeService } from './core/brand-theme.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   template: '<router-outlet />'
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  constructor(private brandTheme: BrandThemeService) {}
+
+  ngOnInit() {
+    this.brandTheme.load().subscribe();
+  }
+}
