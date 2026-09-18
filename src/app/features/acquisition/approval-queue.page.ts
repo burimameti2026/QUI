@@ -40,6 +40,9 @@ export class ApprovalQueuePage implements OnInit {
   setFilter(filter: 'all' | 'pending' | 'requested' | 'processed') {
     this.filter = filter;
   }
+  isProcessed(message: any) {
+    return ['sent', 'delivered'].includes(String(message?.status || '').toLowerCase());
+  }
 
   ngOnInit(): void { void this.load(); }
 
