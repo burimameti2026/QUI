@@ -12,7 +12,8 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
     <qai-page-header
       *ngIf="config.shell.header"
       [title]="config.header?.title || config.name"
-      [subtitle]="config.header?.subtitle || ''">
+      [subtitle]="config.header?.subtitle || ''"
+      [style]="headerStyle()">
       <ng-container *ngFor="let action of config.header?.actions || []">
         <button type="button"
           [class.primary]="action.variant === 'primary'"
@@ -139,8 +140,20 @@ export class UiPageRenderer {
       '--ui-text': a.textColor || '#26364d',
       '--ui-muted': a.mutedTextColor || '#68778d',
       '--ui-accent': a.accentColor || '#1769e0',
+      '--ui-button-bg': a.buttonBackgroundColor || a.accentColor || '#1769e0',
+      '--ui-button-text': a.buttonTextColor || '#ffffff',
+      '--ui-button-border': a.buttonBorderColor || a.accentColor || '#1769e0',
+      '--ui-button-hover': a.buttonHoverBackgroundColor || a.accentColor || '#1769e0',
       ...(a.height ? { 'min-height': a.height + 'px' } : {}),
       ...(a.radius ? { '--ui-radius': a.radius + 'px' } : {})
+    };
+  }
+
+  headerStyle(): Record<string,string> {
+    const a = (this.config?.header as any)?.appearance || {};
+    return {
+      '--wl-header-bg': a.headerColor || '', '--wl-header-border': a.borderColor || '',
+      '--wl-header-title': a.titleColor || '', '--wl-header-text': a.textColor || '', '--wl-header-muted': a.mutedTextColor || '',
     };
   }
 
