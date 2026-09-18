@@ -75,12 +75,16 @@ const i = (
                   [routerLink]="item.url"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: !hasChildren(item) }"
+                  (click)="toggleItem(item)"
                   ><span class="nav-icon">{{ item.icon }}</span
-                  ><span class="nav-label">{{ navLabel(item.label) }}</span></a
+                  ><span class="nav-label">{{ navLabel(item.label) }}</span
+                  ><span class="nav-chevron" *ngIf="hasChildren(item)">{{
+                    isExpanded(item) ? "⌃" : "⌄"
+                  }}</span></a
                 >
                 <div
                   class="child-items"
-                  *ngIf="hasChildren(item) && isItemActive(item)"
+                  *ngIf="hasChildren(item) && isExpanded(item)"
                 >
                   <a
                     *ngFor="let child of item.children"
@@ -167,6 +171,7 @@ export class ShellComponent {
   query = "";
   collapsed = false;
   adminMenuOpen = false;
+  private readonly expandedItems = new Set<string>();
   readonly navigationGroups: Group[] = [
     { label: "COMMAND CENTER", items: [
       i("Dashboard", "/dashboard", "⌂"),
@@ -253,6 +258,17 @@ export class ShellComponent {
   }
   hasChildren(x: Item) {
     return !!x.children?.length;
+  }
+  isExpanded(x: Item) {
+    return this.expandedItems.has(x.url);
+  }
+  toggleItem(x: Item) {
+    if (!this.hasChildren(x)) return;
+    if (this.expandedItems.has(x.url)) {
+      this.expandedItems.delete(x.url);
+    } else {
+      this.expandedItems.add(x.url);
+    }
   }
   private currentUrl() {
     return this.router.url.split("?")[0].split("#")[0];

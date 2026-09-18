@@ -643,3 +643,14 @@
 .child-item.active .child-dot{border-color:#f97316!important;background:#f97316!important}
 .child-dot{width:5px!important;height:5px!important;flex-basis:5px!important;border-color:#b5bdc5!important}
 .shell.collapsed .menu-item.active:before{display:none!important}
+
+
+/* Submenus are collapsed by default and explicitly expandable. */
+.menu-item .nav-chevron{
+  margin-left:auto!important;
+  color:#a0a8b0!important;
+  font-size:10px!important;
+  line-height:1!important;
+}
+.menu-item:hover .nav-chevron,
+.menu-item.active .nav-chevron{color:#f97316!important}
