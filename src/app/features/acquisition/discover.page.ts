@@ -46,6 +46,7 @@ import { AcquisitionService } from "./acquisition.service";
       <article class="metric-card violet"><i>◈</i><div><span>Active campaigns</span><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></div></article>
       <article class="metric-card amber"><i>↩</i><div><span>Replies</span><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></div></article>
       <article class="metric-card green"><i>✓</i><div><span>Demo ready</span><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></div></article>
+      <article class="metric-card teal"><i>◎</i><div><span>Selected</span><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></div></article>
     </section>
 
     <div class="notice error-notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
