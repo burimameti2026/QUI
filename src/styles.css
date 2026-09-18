@@ -407,3 +407,25 @@
 .app-main:has(.discovery-hero) .discovery-metrics .metric-card strong {
   margin: 6px 0 4px !important;
 }
+
+
+/* Discover — remove visible borders for a cleaner, more accurate reference look. */
+.app-main:has(.discovery-hero) .discovery-hero,
+.app-main:has(.discovery-hero) .discovery-metrics,
+.app-main:has(.discovery-hero) .workspace-card,
+.app-main:has(.discovery-hero) .prospect-card,
+.app-main:has(.discovery-hero) .notice {
+  border: 0 !important;
+}
+.app-main:has(.discovery-hero) .journey-panel,
+.app-main:has(.discovery-hero) .workspace-header,
+.app-main:has(.discovery-hero) .prospect-header,
+.app-main:has(.discovery-hero) .prospect-toolbar {
+  border-color: transparent !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card {
+  border: 0 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card:last-child {
+  border-right: 0 !important;
+}
