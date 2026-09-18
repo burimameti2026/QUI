@@ -373,3 +373,37 @@
   border-right: 0 !important;
   border-radius: 0 !important;
 }
+
+
+/* Discover KPI alignment — center each KPI cell consistently with the reference surface. */
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  text-align: center !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card > i {
+  position: absolute !important;
+  top: 14px !important;
+  right: 16px !important;
+  margin: 0 !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card > div {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  text-align: center !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card span,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card strong,
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card small {
+  text-align: center !important;
+}
+.app-main:has(.discovery-hero) .discovery-metrics .metric-card strong {
+  margin: 6px 0 4px !important;
+}
