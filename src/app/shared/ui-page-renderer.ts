@@ -152,8 +152,11 @@ export class UiPageRenderer {
   headerStyle(): Record<string,string> {
     const a = (this.config?.header as any)?.appearance || {};
     return {
-      '--wl-header-bg': a.headerColor || '', '--wl-header-border': a.borderColor || '',
-      '--wl-header-title': a.titleColor || '', '--wl-header-text': a.textColor || '', '--wl-header-muted': a.mutedTextColor || '',
+      ...(a.headerColor ? {'--wl-header-bg': a.headerColor} : {}),
+      ...(a.borderColor ? {'--wl-header-border': a.borderColor} : {}),
+      ...(a.titleColor ? {'--wl-header-title': a.titleColor} : {}),
+      ...(a.textColor ? {'--wl-header-text': a.textColor} : {}),
+      ...(a.mutedTextColor ? {'--wl-header-muted': a.mutedTextColor} : {}),
     };
   }
 
