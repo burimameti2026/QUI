@@ -8,11 +8,11 @@ import { AnalyticsService } from './analytics.service';
   imports: [CommonModule, PageHeader],
   template: `<qai-page-header title="Analytics & ROI" subtitle="Measure support efficiency, pipeline creation and Automation-influenced revenue."><button (click)="load()">↻ Refresh</button></qai-page-header>
     <div class="metrics">
-      <article><span>Qualified leads</span><strong>{{d.qualified||0}}</strong><small>{{d.hot||0}} hot</small></article>
-      <article><span>Open pipeline</span><strong>{{money(d.pipeline||0)}}</strong><small>Automation influenced</small></article>
-      <article><span>Won revenue</span><strong>{{money(d.won||0)}}</strong></article>
-      <article><span>Automated conversations</span><strong>{{d.aiConversations||0}}</strong></article>
-      <article><span>Tickets</span><strong>{{d.tickets||0}}</strong></article>
+      <article><span class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Qualified leads</span></span><strong>{{d.qualified||0}}</strong><small>{{d.hot||0}} hot</small></article>
+      <article><span class="metric-top"><span class="metric-icon">◇</span><span class="metric-label">Open pipeline</span></span><strong>{{money(d.pipeline||0)}}</strong><small>Automation influenced</small></article>
+      <article><span class="metric-top"><span class="metric-icon">↗</span><span class="metric-label">Won revenue</span></span><strong>{{money(d.won||0)}}</strong><small>closed commercial value</small></article>
+      <article><span class="metric-top"><span class="metric-icon">✦</span><span class="metric-label">Automated conversations</span></span><strong>{{d.aiConversations||0}}</strong><small>AI-assisted activity</small></article>
+      <article><span class="metric-top"><span class="metric-icon">▱</span><span class="metric-label">Tickets</span></span><strong>{{d.tickets||0}}</strong><small>support workload</small></article>
     </div>
     <div class="analytics-grid">
       <section class="panel"><header><b>Revenue attribution</b><span>{{attribution.length}} records</span></header>
