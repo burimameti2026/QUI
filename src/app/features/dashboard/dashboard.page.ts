@@ -80,7 +80,75 @@ export class DashboardPage implements OnInit {
     if (publicExperience) publicExperience.data = { items:this.publicExperience }; publicExperience!.actions=[{label:'Open portal',route:'/renova/portal'}];
     if (review) { review.data={text:'Use the approval queue to review the exact subject, body and destination before delivery. The backend still enforces sender verification, suppression and provider controls.'}; review.actions=[{label:'Open queue',route:'/acquisition/approval-queue'}]; }
     if (handoff) handoff.data={text:'LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.'};
+
+    this.applyWhiteLabelLayout(base);
     return base;
+  }
+
+  private applyWhiteLabelLayout(config: UiPageConfig) {
+    const raw = localStorage.getItem('qai-white-label-page-layout');
+    if (!raw) return;
+    try {
+      const layout = JSON.parse(raw) as Array<any>;
+      const bySection = new Map(layout.map(section => [section.id, section]));
+
+      const header = bySection.get('header')?.items?.find((item: any) => item.enabled);
+      if (header) {
+        config.header = config.header || {};
+        if (header.label) config.header.title = header.label;
+        if (header.template) (config as any).headerTemplate = header.template;
+      }
+
+      const componentMap: Record<string, string> = {
+        'kpi-1':'operating-kpis','kpi-2':'operating-kpis','kpi-3':'operating-kpis','kpi-4':'operating-kpis',
+        'card-1':'acquisition-engine','card-2':'active-outreach'
+      };
+
+      for (const section of config.sections) {
+        const saved = bySection.get(section.id);
+        if (!saved) continue;
+
+        const savedItems = (saved.items || []).filter((item: any) => item.enabled !== false);
+        if (!savedItems.length && saved.items?.length) {
+          section.components = [];
+          continue;
+        }
+
+        section.columns = saved.columns || section.columns;
+        for (const item of savedItems) {
+          const targetId = componentMap[item.id] || item.id;
+          const target = section.components.find(component => component.id === targetId);
+          if (!target) continue;
+          if (item.template) target.template = item.template as any;
+          if (item.label && target.type !== 'metrics') target.title = item.label;
+          if (item.appearance) target.appearance = item.appearance;
+        }
+      }
+
+      const kpiSection = bySection.get('kpis');
+      const kpiComponent = config.sections.flatMap(s => s.components).find(c => c.id === 'operating-kpis');
+      if (kpiSection && kpiComponent) {
+        const configured = (kpiSection.items || []).filter((item: any) => item.enabled !== false);
+        const current = this.valueFromConfig(kpiComponent, 'items');
+        if (Array.isArray(current)) {
+          kpiComponent.data = {
+            ...(kpiComponent.data || {}),
+            items: current.map((metric: any, index: number) => {
+              const item = configured[index];
+              return item ? { ...metric, label: item.label || metric.label } : metric;
+            })
+          };
+        }
+        const appearances = configured.map((item: any) => item.appearance).filter(Boolean);
+        if (appearances.length) (kpiComponent as any).itemAppearances = appearances;
+      }
+    } catch {
+      // Ignore invalid white-label overrides and keep the safe runtime configuration.
+    }
+  }
+
+  private valueFromConfig(component: any, key: string): unknown {
+    return component?.data?.[key];
   }
 
   get programRows(): Array<Record<string, unknown>> {
