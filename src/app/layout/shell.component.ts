@@ -168,64 +168,65 @@ export class ShellComponent {
   collapsed = false;
   adminMenuOpen = false;
   readonly navigationGroups: Group[] = [
-    { label: "COMMAND CENTER", items: [i("Dashboard", "/dashboard", "⌂")] },
-    {
-      label: "SALES & ACQUISITION",
-      items: [
-        i("Leads", "/crm/leads", "▣"),
-        i("CRM", "/crm/companies", "▧", [
-          i("Companies", "/crm/companies", "▦"),
-          i("Contacts", "/crm/contacts", "◎"),
-          i("Opportunities", "/crm/opportunities", "♡"),
-        ]),
-        i("Prospect Discovery", "/discover", "⌕"),
-        i("Autonomous Acquisition", "/acquisition/autonomous", "✦"),
-        i("Campaigns", "/campaigns", "↗"),
-        i("Qualified Leads", "/crm/leads", "✓"),
-        i("Sales Pipelines", "/pipeline", "▤"),
-        i("Golden Pipeline", "/golden-pipeline", "◇"),
-        i("Demos & Meetings", "/meetings", "◷"),
-        i("Replies & Inbox", "/inbox", "▱"),
-      ],
-    },
-    {
-      label: "CONTENT & KNOWLEDGE",
-      items: [
-        i("CMS — Renova Content", "/renova/content", "▤"),
-        i("Knowledge", "/knowledge", "▥", [
-          i("Knowledge Gaps", "/knowledge/gaps", "◇"),
-          i("Knowledge Improvement", "/knowledge", "✦"),
-        ]),
-        i("Renova Product Catalog", "/catalog", "▦", [
-          i("Promotion Automation", "/renova/promotion", "✦"),
-        ]),
-      ],
-    },
-    {
-      label: "ORDERING & DISPATCH",
-      items: [
-        i("Enterprise Operations", "/enterprise", "◉"),
-        i("Invoices", "/billing", "▤"),
-      ],
-    },
-    { label: "FINANCE", items: [i("Finance", "/enterprise/finance", "€")] },
-    {
-      label: "AUTOMATION & IMPROVE",
-      items: [
-        i("Reports", "/analytics", "▧"),
-        i("Automation", "/automations", "✣"),
-      ],
-    },
-    {
-      label: "ADMINISTRATION",
-      items: [
-        i("Platform Management", "/platform", "⚙", [
-          i("Prepare Real Workspace", "/platform/prepare-workspace", "＋"),
-          i("Users & Roles", "/users", "◎"),
-          i("Audit & Governance", "/audit", "▤"),
-        ]),
-      ],
-    },
+    { label: "COMMAND CENTER", items: [
+      i("Dashboard", "/dashboard", "⌂"),
+    ]},
+    { label: "ACQUISITION", items: [
+      i("Prospect Discovery", "/discover", "⌕"),
+      i("Autonomous Acquisition", "/acquisition/autonomous", "✦"),
+      i("Campaigns", "/campaigns", "↗"),
+      i("Approval Queue", "/acquisition/approval-queue", "◌"),
+    ]},
+    { label: "CRM & SALES", items: [
+      i("Leads", "/crm/leads", "▣"),
+      i("Companies", "/crm/companies", "▦"),
+      i("Contacts", "/crm/contacts", "◎"),
+      i("Opportunities", "/crm/opportunities", "◇"),
+      i("Sales Pipelines", "/pipeline", "▤"),
+      i("Golden Pipeline", "/golden-pipeline", "◆"),
+      i("Demos & Meetings", "/meetings", "◷"),
+      i("Replies & Inbox", "/inbox", "▱"),
+    ]},
+    { label: "CATALOG & PROMOTIONS", items: [
+      i("Product Catalog", "/catalog", "▦"),
+      i("Promotion Automation", "/renova/promotion", "✦"),
+      i("Renova Content", "/renova/content", "▤"),
+    ]},
+    { label: "OPERATIONS", items: [
+      i("Enterprise Operations", "/enterprise", "◉", [
+        i("Ordering", "/enterprise/ordering", "＋"),
+        i("Inventory", "/enterprise/inventory", "▥"),
+        i("Warehousing", "/enterprise/warehousing", "□"),
+        i("Logistics", "/enterprise/logistics", "↗"),
+      ]),
+    ]},
+    { label: "FINANCE", items: [
+      i("Billing & Invoices", "/billing", "€"),
+      i("Finance", "/enterprise/finance", "◫"),
+    ]},
+    { label: "AUTOMATION & INTELLIGENCE", items: [
+      i("AI Agents", "/ai/agents", "✦"),
+      i("Knowledge", "/knowledge", "▥", [
+        i("Knowledge Gaps", "/knowledge/gaps", "◇"),
+      ]),
+      i("Workflows", "/workflows", "⌁"),
+      i("Automations", "/automations", "✣"),
+      i("Evaluations", "/evaluations", "✓"),
+      i("Analytics", "/analytics", "▧"),
+      i("Integrations", "/integrations", "⊕"),
+    ]},
+    { label: "ADMINISTRATION", items: [
+      i("Platform Management", "/platform", "⚙", [
+        i("Prepare Real Workspace", "/platform/prepare-workspace", "＋"),
+        i("Workspace Packages", "/platform/packages", "▦"),
+      ]),
+      i("Users & Roles", "/users", "◎"),
+      i("Security", "/security", "◇"),
+      i("White Label", "/white-label", "□"),
+      i("Industry Packs", "/industry-packs", "▤"),
+      i("Audit & Governance", "/audit", "▤"),
+      i("Module Administration", "/admin/modules", "⚙"),
+    ]},
   ];
   get session() {
     return this.auth.session();
