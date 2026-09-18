@@ -23,7 +23,6 @@ interface PipelineStage {
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   templateUrl: "./pipeline.page.html",
   styleUrl: "./pipeline.page.css",
-  styles: [`.pipeline-explainer{align-items:center;background:linear-gradient(100deg,#eff6ff,#f8fafc);border:1px solid #cfe0ff;border-radius:15px;display:flex;justify-content:space-between;margin-bottom:14px;padding:14px 17px}.pipeline-explainer .eyebrow,.unassigned-deals .eyebrow{color:#2563eb;display:block;font-size:.65rem;font-weight:800;letter-spacing:.1em;margin-bottom:3px}.pipeline-explainer b{color:#172554;font-size:.9rem}.pipeline-explainer p{color:#526278;font-size:.75rem;margin:3px 0 0;max-width:690px}.unassigned-deals{background:#fffaf0;border:1px solid #fed7aa;border-radius:15px;margin:16px 0;padding:16px}.unassigned-deals header h3{color:#7c2d12;font-size:.93rem;margin:2px 0}.unassigned-deals header p{color:#9a3412;font-size:.76rem;margin:3px 0 12px}.unassigned-deals article{align-items:center;background:#fff;border:1px solid #fde7be;border-radius:10px;display:grid;gap:11px;grid-template-columns:1fr 190px auto;margin-top:8px;padding:10px 11px}.unassigned-deals article div{display:flex;flex-direction:column}.unassigned-deals article b{font-size:.8rem}.unassigned-deals article span{color:#64748b;font-size:.72rem;margin-top:3px}.unassigned-deals select{border:1px solid #f3c980;border-radius:8px;height:34px;padding:0 8px}@media(max-width:760px){.pipeline-explainer,.unassigned-deals article{align-items:stretch;flex-direction:column;grid-template-columns:1fr}.pipeline-explainer{display:flex}}`],
 })
 export class PipelinePage implements OnInit {
   pipelines: SalesPipeline[] = [];
@@ -269,6 +268,30 @@ export class PipelinePage implements OnInit {
   }
   scoreFor(x: Opportunity) {
     return x.amount > 30000 ? 93 : x.amount > 15000 ? 84 : 71;
+  }
+  get openOpportunities() {
+    return this.opps.filter((x) => this.opportunityStatus(x.status) === "Open");
+  }
+  get openValue() {
+    return this.openOpportunities.reduce((sum, x) => sum + Number(x.amount || 0), 0);
+  }
+  get wonValue() {
+    return this.opps
+      .filter((x) => this.opportunityStatus(x.status) === "Won")
+      .reduce((sum, x) => sum + Number(x.amount || 0), 0);
+  }
+  get weightedValue() {
+    const stageProbabilities = new Map(
+      this.stages.map((stage) => [stage.id, Number(stage.probability || 0)]),
+    );
+    return this.openOpportunities.reduce(
+      (sum, x) =>
+        sum +
+        Number(x.amount || 0) *
+          (stageProbabilities.get(x.pipelineStageId || "") || 0) /
+          100,
+      0,
+    );
   }
   private apiError(error: any, fallback: string) {
     return (
