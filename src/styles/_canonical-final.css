@@ -456,3 +456,86 @@ body:not(:has(.leads-page-header)) .access-notice {
   color:#9a3412!important;
   box-shadow:inset 0 0 0 1px #fed7aa!important;
 }
+
+
+/* Shared card composition — keep semantic text blocks separated and readable. */
+body:not(:has(.leads-page-header)) .card > header > div,
+body:not(:has(.leads-page-header)) .panel > header > div,
+body:not(:has(.leads-page-header)) .workspace-header > div,
+body:not(:has(.leads-page-header)) .section-header > div,
+body:not(:has(.leads-page-header)) .list-header > div,
+body:not(:has(.leads-page-header)) .card-header > div {
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  gap:3px!important;
+}
+body:not(:has(.leads-page-header)) .card > header h2,
+body:not(:has(.leads-page-header)) .card > header h3,
+body:not(:has(.leads-page-header)) .panel > header h2,
+body:not(:has(.leads-page-header)) .panel > header h3,
+body:not(:has(.leads-page-header)) .workspace-header h2,
+body:not(:has(.leads-page-header)) .workspace-header h3,
+body:not(:has(.leads-page-header)) .section-header h2,
+body:not(:has(.leads-page-header)) .section-header h3 {
+  margin:2px 0 0!important;
+  color:#d95f0a!important;
+  line-height:1.25!important;
+}
+body:not(:has(.leads-page-header)) .card > header p,
+body:not(:has(.leads-page-header)) .panel > header p,
+body:not(:has(.leads-page-header)) .workspace-header p,
+body:not(:has(.leads-page-header)) .section-header p,
+body:not(:has(.leads-page-header)) .list-header p {
+  margin:0!important;
+  color:#8293a7!important;
+  font-size:9px!important;
+  line-height:1.45!important;
+}
+body:not(:has(.leads-page-header)) .empty-state {
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:150px!important;
+  padding:28px 22px!important;
+  margin:0!important;
+  text-align:center!important;
+  white-space:normal!important;
+}
+body:not(:has(.leads-page-header)) .empty-state > i,
+body:not(:has(.leads-page-header)) .empty-state > strong,
+body:not(:has(.leads-page-header)) .empty-state > span,
+body:not(:has(.leads-page-header)) .empty-state > p,
+body:not(:has(.leads-page-header)) .empty-state > button {
+  display:block!important;
+  max-width:100%!important;
+}
+body:not(:has(.leads-page-header)) .empty-state > i {
+  flex:0 0 auto!important;
+  margin:0 0 2px!important;
+}
+body:not(:has(.leads-page-header)) .empty-state > strong {
+  color:#d95f0a!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+}
+body:not(:has(.leads-page-header)) .empty-state > span,
+body:not(:has(.leads-page-header)) .empty-state > p {
+  color:#8293a7!important;
+  font-size:9px!important;
+  line-height:1.5!important;
+}
+body:not(:has(.leads-page-header)) .empty-state > button {
+  margin-top:4px!important;
+}
+body:not(:has(.leads-page-header)) .workspace-card:has(.empty-state) {
+  display:flex!important;
+  flex-direction:column!important;
+}
+body:not(:has(.leads-page-header)) .workspace-card:has(.empty-state) .empty-state {
+  flex:1 1 auto!important;
+}
