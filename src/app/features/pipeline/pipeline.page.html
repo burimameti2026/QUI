@@ -29,9 +29,17 @@
     <p>{{ error }}</p>
   </div>
 </div>
+
+  <section class="pipeline-kpis" *ngIf="view === 'overview'">
+    <article><span class="kpi-kicker">PIPELINES</span><strong>{{pipelines.length}}</strong><small>Sales processes configured</small><i>↗</i></article>
+    <article><span class="kpi-kicker">OPEN DEALS</span><strong>{{openOpportunities.length}}</strong><small>Active opportunities</small><i>◎</i></article>
+    <article><span class="kpi-kicker">OPEN VALUE</span><strong>{{money(openValue)}}</strong><small>Current active pipeline</small><i>€</i></article>
+    <article><span class="kpi-kicker">WEIGHTED VALUE</span><strong>{{money(weightedValue)}}</strong><small>Stage probability adjusted</small><i>◷</i></article>
+    <article><span class="kpi-kicker">WON VALUE</span><strong>{{money(wonValue)}}</strong><small>Closed-won opportunities</small><i>✓</i></article>
+  </section>
 <ng-container *ngIf="view === 'overview'">
   <section class="directory-card">
-    <header><div><span class="eyebrow">SALES OPERATIONS</span><h2>Pipeline workspace</h2><p>Compare every sales process, its stages, deals and open value.</p></div><div class="directory-summary"><span><b>{{pipelines.length}}</b>Pipelines</span><span><b>{{opps.length}}</b>Deals</span><span><b>{{money(total)}}</b>Open value</span></div></header>
+    <header><div><span class="eyebrow">SALES OPERATIONS</span><h2>Pipeline workspace</h2><p>Compare every sales process, its stages, deals and open value.</p></div><div class="directory-summary"><span><b>{{pipelines.length}}</b>Pipelines</span><span><b>{{opps.length}}</b>Deals</span><span><b>{{money(openValue)}}</b>Open value</span></div></header>
     <div class="directory-toolbar"><label><span>⌕</span><input [(ngModel)]="pipelineQuery" placeholder="Search pipelines" /></label><strong>{{visiblePipelines.length}} shown</strong></div>
     <div class="directory-empty" *ngIf="!visiblePipelines.length && !loading"><i>↗</i><strong>{{pipelines.length ? 'No matching pipelines' : 'No sales pipeline configured'}}</strong><span>Create a pipeline, define stages and move opportunities through a controlled process.</span><button class="primary" (click)="newPipeline()">Create pipeline</button></div>
     <div class="table-wrap" *ngIf="visiblePipelines.length"><table><thead><tr><th>Pipeline</th><th>Type</th><th>Stages</th><th>Deals</th><th>Open value</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let pipeline of visiblePipelines" (click)="open(pipeline)"><td><div class="directory-identity"><i>↗</i><span><b>{{pipeline.name}}</b><small>Sales process</small></span></div></td><td><span class="pill success" *ngIf="pipeline.isDefault">Default</span><span *ngIf="!pipeline.isDefault">Custom</span></td><td>{{pipelineStages(pipeline.id).length}}</td><td>{{pipelineOpps(pipeline.id).length}}</td><td><b>{{money(pipelineValue(pipeline.id))}}</b></td><td><div class="directory-actions"><button (click)="$event.stopPropagation(); open(pipeline, 'configuration')">Configure</button><button class="primary" (click)="$event.stopPropagation(); open(pipeline)">Open board →</button></div></td></tr></tbody></table></div>
