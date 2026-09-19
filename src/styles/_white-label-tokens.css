@@ -388,3 +388,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   border-color:var(--wl-selected-border);
   color:var(--wl-accent);
 }
+
+
+/* Shared enterprise component layout. Visual values remain White Label tokens only. */
+qai-ui-section .ui-section{display:grid;gap:var(--wl-section-gap,14px);margin-bottom:var(--wl-section-margin,14px)}
+qai-ui-metrics .metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--wl-kpi-gap,12px);margin-bottom:var(--wl-section-margin,14px)}
+qai-ui-steps .steps{display:grid;grid-template-columns:1fr 42px 1fr 42px 1fr 42px 1fr 42px 1fr;align-items:start;padding:var(--wl-steps-padding,18px)}
+qai-ui-card .card,qai-ui-list-card .card,qai-ui-table-card .card{display:flex;flex-direction:column;min-width:0;height:100%;overflow:hidden}
+qai-ui-card .body,qai-ui-list-card .list,qai-ui-table-card .table-wrap{display:grid;gap:var(--wl-card-gap);min-width:0}
+qai-ui-card .row,qai-ui-list-card .item{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+qai-ui-list-card .copy{min-width:0;flex:1} qai-ui-table-card .table-wrap{overflow:auto} qai-ui-table-card table{width:100%;border-collapse:separate;border-spacing:0}
+@media(max-width:1100px){qai-ui-metrics .metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.columns-5,.columns-4,.columns-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){qai-ui-steps .steps{grid-template-columns:repeat(5,1fr);gap:8px}qai-ui-steps .connector{display:none}}
+@media(max-width:680px){qai-ui-metrics .metrics,qai-ui-steps .steps,qai-ui-section .ui-section{grid-template-columns:1fr!important}}
