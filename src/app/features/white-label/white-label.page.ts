@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { BrandThemeService } from "../../core/brand-theme.service";
 import { WhiteLabelConfigService, WhiteLabelSection, WhiteLabelStyles } from "../../core/white-label-config.service";
 import { PageHeader } from "../../shared/ui";
 
@@ -13,11 +12,6 @@ interface LayoutItem {
   value?: string;
   template: string;
   enabled: boolean;
-  appearance?: {
-    surfaceColor: string; headerColor: string; borderColor: string;
-    titleColor: string; textColor: string; mutedTextColor: string;
-    accentColor: string; buttonBackgroundColor?: string; buttonTextColor?: string; buttonBorderColor?: string; buttonHoverBackgroundColor?: string; height: number; radius: number;
-  };
 }
 
 interface LayoutSection {
@@ -185,24 +179,9 @@ interface LayoutSection {
       </div>
     </section>
 
-    <section class="brand-section">
-      <div class="brand-heading">
-        <div><span class="eyebrow">BRAND TOKENS</span><h2>Visual identity</h2><p>Brand tokens are separate from page configuration. Components consume these tokens through the design system.</p></div>
-        <button type="button" class="primary" (click)="saveBrand()">Save branding</button>
-      </div>
-      <div class="brand-grid">
-        <label>Product name<input [(ngModel)]="brand.productName" /></label>
-        <label>Support email<input [(ngModel)]="brand.supportEmail" /></label>
-        <label>Primary color<input type="color" [(ngModel)]="brand.primaryColor" /></label>
-        <label>Accent color<input type="color" [(ngModel)]="brand.accentColor" /></label>
-        <label>Primary button<input type="color" [(ngModel)]="brand.buttonPrimaryColor" /></label>
-        <label>Secondary button<input type="color" [(ngModel)]="brand.buttonSecondaryColor" /></label>
-      </div>
-    </section>
-  `,
+`,
 })
 export class WhiteLabelPage implements OnInit {
-  brand = this.theme.defaults();
   styles: WhiteLabelStyles = this.whiteLabel.loadStyles();
   activeStyle: keyof WhiteLabelStyles = "header";
   styleSaveMessage = "";
@@ -297,7 +276,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: true,
       columns: 1,
       items: [
-        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#f97316", buttonBackgroundColor: "#f97316", buttonTextColor: "#ffffff", buttonBorderColor: "#f97316", buttonHoverBackgroundColor: "#ea580c", height: 0, radius: 14 } },
+        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true },
       ],
     },
     {
@@ -308,11 +287,11 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 5,
       items: [
-        { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "kpi-5", label: "Awaiting delivery", value: "acquisition.queuedMessages", template: "kpi-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true },
+        { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true },
+        { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true },
+        { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true },
+        { id: "kpi-5", label: "Awaiting delivery", value: "acquisition.queuedMessages", template: "kpi-01", enabled: true },
       ],
     },
     {
@@ -323,8 +302,8 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "card-1", label: "Acquisition engine", value: "acquisition.latestRun", template: "card-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
-        { id: "card-2", label: "Active outreach", value: "campaigns.active", template: "card-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "card-1", label: "Acquisition engine", value: "acquisition.latestRun", template: "card-03", enabled: true },
+        { id: "card-2", label: "Active outreach", value: "campaigns.active", template: "card-01", enabled: true },
       ],
     },
     {
@@ -335,7 +314,7 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "grid-1", label: "Operations grid", value: "operations", template: "grid-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "grid-1", label: "Operations grid", value: "operations", template: "grid-01", enabled: true },
       ],
     },
     {
@@ -346,8 +325,8 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 2,
       items: [
-        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#f97316", buttonBackgroundColor: "#f97316", buttonTextColor: "#ffffff", buttonBorderColor: "#f97316", buttonHoverBackgroundColor: "#ea580c", height: 0, radius: 14 } },
-        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#fff7ed", buttonBackgroundColor: "#fff7ed", buttonTextColor: "#c2410c", buttonBorderColor: "#fed7aa", buttonHoverBackgroundColor: "#ffedd5", height: 0, radius: 14 } },
+        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true },
+        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true },
       ],
     },
     {
@@ -358,15 +337,14 @@ export class WhiteLabelPage implements OnInit {
       expanded: false,
       columns: 1,
       items: [
-        { id: "text-1", label: "Operating picture", value: "workspace.operatingPicture", template: "text-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "text-1", label: "Operating picture", value: "workspace.operatingPicture", template: "text-01", enabled: true },
       ],
     },
   ];
 
-  constructor(private theme: BrandThemeService, private whiteLabel: WhiteLabelConfigService) {}
+  constructor(private whiteLabel: WhiteLabelConfigService) {}
 
   ngOnInit() {
-    this.theme.load().subscribe(r => this.brand = { ...this.brand, ...r });
     this.styles = this.whiteLabel.loadStyles();
     this.loadLayout();
   }
@@ -418,21 +396,7 @@ export class WhiteLabelPage implements OnInit {
     const saved = this.whiteLabel.load();
     if (!saved.length) return;
     this.layoutSections = saved as LayoutSection[];
-    this.layoutSections.forEach(section => section.items.forEach(item => item.appearance = {
-      surfaceColor: item.appearance?.surfaceColor || "#ffffff",
-      headerColor: item.appearance?.headerColor || "#ffffff",
-      borderColor: item.appearance?.borderColor || "#e7ebf0",
-      titleColor: item.appearance?.titleColor || "#202124",
-      textColor: item.appearance?.textColor || "#26364d",
-      mutedTextColor: item.appearance?.mutedTextColor || "#667085",
-      accentColor: item.appearance?.accentColor || "#f97316",
-      buttonBackgroundColor: item.appearance?.buttonBackgroundColor || item.appearance?.accentColor || "#f97316",
-      buttonTextColor: item.appearance?.buttonTextColor || "#ffffff",
-      buttonBorderColor: item.appearance?.buttonBorderColor || item.appearance?.accentColor || "#f97316",
-      buttonHoverBackgroundColor: item.appearance?.buttonHoverBackgroundColor || "#ea580c",
-      height: item.appearance?.height || 0,
-      radius: item.appearance?.radius || 12,
-    }));
+
   }
 
   resetLayout() {
@@ -441,13 +405,4 @@ export class WhiteLabelPage implements OnInit {
     window.location.reload();
   }
 
-  saveBrand() {
-    this.theme.save(this.brand).subscribe({
-      next: r => {
-        this.brand = r;
-        alert("Branding saved.");
-      },
-      error: () => alert("Branding endpoint unavailable."),
-    });
-  }
 }
