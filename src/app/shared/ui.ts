@@ -20,7 +20,7 @@ function translateValue(i18n: AdminI18nService, value: string): string {
   </div>`,
   styles: [`
     :host { display:block; min-width:0; }
-    :host .page-header--orange .primary { border-color:var(--wl-button-1-border, var(--brand-button-primary, var(--brand-primary)))!important; background:var(--wl-button-1-bg, var(--brand-button-primary, var(--brand-primary)))!important; color:var(--wl-button-1-text, var(--brand-button-primary-text, var(--wl-surface,#fff)))!important; }
+    :host .page-header { background:var(--wl-header-bg,var(--wl-surface,#fff)); border-bottom:1px solid var(--wl-header-border,var(--wl-border,#dbe5f0)); color:var(--wl-header-text,var(--wl-text,#26364d)); min-height:var(--wl-header-height,64px); }\n    :host .page-header h1 { color:var(--wl-header-title,var(--wl-text,#172b4d)); }\n    :host .page-header p { color:var(--wl-header-muted,var(--wl-muted,#667085)); }\n    :host .page-header--orange .primary { border-color:var(--wl-button-1-border, var(--brand-button-primary, var(--brand-primary)))!important; background:var(--wl-button-1-bg, var(--brand-button-primary, var(--brand-primary)))!important; color:var(--wl-button-1-text, var(--brand-button-primary-text, var(--wl-surface,#fff)))!important; }
     :host .page-header--orange .primary:hover { border-color:var(--wl-button-1-hover, var(--brand-button-primary-hover, var(--brand-primary-hover)))!important; background:var(--wl-button-1-hover, var(--brand-button-primary-hover, var(--brand-primary-hover)))!important; }
   `]
 })
