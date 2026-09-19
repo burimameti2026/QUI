@@ -10,7 +10,7 @@
   position:relative!important;
   border:1px solid #e3e8ef!important;
   border-radius:12px!important;
-  background:#fff!important;
+  background:var(--wl-surface,#fff)!important;
   box-shadow:0 2px 4px rgba(16,24,40,.035),0 8px 22px rgba(36,60,88,.065)!important;
 }
 .dashboard-content .data-card:hover {
@@ -21,7 +21,7 @@
   min-height:72px!important;
   padding:15px 18px 14px!important;
   border-bottom:1px solid #e6ebf1!important;
-  background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%)!important;
+  background:linear-gradient(180deg,var(--wl-surface,var(--wl-surface,#fff)fff) 0%,#fbfcfe 100%)!important;
 }
 .dashboard-content .card-heading::before {
   content:""!important;
@@ -54,24 +54,24 @@
   padding:0 10px!important;
   border:1px solid #e1e6ed!important;
   border-radius:8px!important;
-  background:#fff!important;
+  background:var(--wl-surface,#fff)!important;
   color:#475467!important;
   box-shadow:0 1px 2px rgba(16,24,40,.03)!important;
 }
 .dashboard-content .card-heading button:hover,
 .dashboard-content .card-heading a:hover {
   border-color:var(--brand-primary-border)!important;
-  background:#fffaf6!important;
+  background:var(--wl-surface,#fff)af6!important;
   color:var(--brand-primary)!important;
 }
 .dashboard-content .engine-highlight {
   border:1px solid #e5eaf0!important;
   box-shadow:none!important;
-  background:#f8fafc!important;
+  background:var(--wl-surface-muted,#f8fafc)!important;
 }
 .dashboard-content .impact-grid > div {
   border:1px solid #e5eaf0!important;
-  background:#f8fafc!important;
+  background:var(--wl-surface-muted,#f8fafc)!important;
   box-shadow:none!important;
 }
 .dashboard-content .engine-row {
@@ -94,7 +94,7 @@
   box-shadow:none!important;
 }
 .dashboard-content .opportunity-columns {
-  background:#f8fafc!important;
+  background:var(--wl-surface-muted,#f8fafc)!important;
 }
 .dashboard-content .opportunity-main strong,
 .dashboard-content .knowledge-gap .gap-copy strong {
@@ -112,7 +112,7 @@
   font-weight:800!important;
 }
 .dashboard-content .large-copy {
-  color:#667085!important;
+  color:var(--wl-muted,#667085)!important;
   font-size:10px!important;
   line-height:1.55!important;
 }
