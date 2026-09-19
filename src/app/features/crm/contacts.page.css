@@ -36,3 +36,11 @@
   background:var(--wl-surface,var(--wl-surface,#fff))!important;
   color:var(--wl-text,var(--wl-text,#202124))!important;
 }
+
+
+/* Final CRM directory contract — White Label owns surfaces, controls and density. */
+.directory-card{border-color:var(--wl-card-border,var(--wl-border))!important;border-radius:var(--wl-card-radius,12px)!important;background:var(--wl-card-bg,var(--wl-surface))!important;box-shadow:var(--wl-card-shadow)!important}
+.directory-card>header{background:var(--wl-card-header-bg,var(--wl-surface))!important;border-bottom-color:var(--wl-card-border,var(--wl-border))!important}
+.directory-toolbar{background:var(--wl-surface-muted)!important;border-bottom-color:var(--wl-border-soft)!important}
+th{background:var(--wl-table-header,var(--wl-surface-muted))!important;border-color:var(--wl-table-border,var(--wl-border))!important;color:var(--wl-table-muted,var(--wl-muted))!important}
+td{background:var(--wl-table-bg,var(--wl-surface))!important;border-color:var(--wl-table-border,var(--wl-border))!important;color:var(--wl-table-text,var(--wl-text))!important}
