@@ -13,8 +13,8 @@ export interface WhiteLabelSection { id:string; kind:string; label:string; colum
 
 const STORAGE_KEY='qai-white-label-page-layout';
 const STYLE_KEY='qai-white-label-component-styles';
-const DEFAULT_APPEARANCE:WhiteLabelItemAppearance={surfaceColor:'#ffffff',headerColor:'#ffffff',borderColor:'#e7ebf0',titleColor:'#202124',textColor:'#26364d',mutedTextColor:'#667085',accentColor:'#f97316',buttonBackgroundColor:'#f97316',buttonTextColor:'#ffffff',buttonBorderColor:'#f97316',buttonHoverBackgroundColor:'#ea580c',height:0,radius:12};
-const DEFAULT_STYLES:WhiteLabelStyles={header:{...DEFAULT_APPEARANCE,height:64,radius:0},grid:{...DEFAULT_APPEARANCE,height:0,radius:12},kpis:{...DEFAULT_APPEARANCE,height:0,radius:12},cards:{...DEFAULT_APPEARANCE,height:0,radius:12},buttons:{...DEFAULT_APPEARANCE,height:40,radius:9},text:{...DEFAULT_APPEARANCE,height:0,radius:0}};
+const DEFAULT_APPEARANCE:WhiteLabelItemAppearance={surfaceColor:'#ffffff',headerColor:'#edf4ff',borderColor:'#dbe5f0',titleColor:'#172b4d',textColor:'#26364d',mutedTextColor:'#667085',accentColor:'#2563eb',buttonBackgroundColor:'#2563eb',buttonTextColor:'#ffffff',buttonBorderColor:'#2563eb',buttonHoverBackgroundColor:'#1d4ed8',height:0,radius:12};
+const DEFAULT_STYLES:WhiteLabelStyles={header:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:64,radius:0},grid:{...DEFAULT_APPEARANCE,height:0,radius:12},kpis:{...DEFAULT_APPEARANCE,headerColor:'#edf4ff',height:0,radius:12},cards:{...DEFAULT_APPEARANCE,height:0,radius:12},buttons:{...DEFAULT_APPEARANCE,height:40,radius:9},text:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0}};
 
 @Injectable({providedIn:'root'})
 export class WhiteLabelConfigService {
