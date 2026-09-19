@@ -236,12 +236,13 @@ export class WhiteLabelPage implements OnInit {
       label: "KPIs",
       description: "Operational metrics. Each KPI can select its own reusable template.",
       expanded: false,
-      columns: 4,
+      columns: 5,
       items: [
         { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
         { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
         { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
         { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
+        { id: "kpi-5", label: "Awaiting delivery", value: "acquisition.queuedMessages", template: "kpi-01", enabled: true, appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 } },
       ],
     },
     {
