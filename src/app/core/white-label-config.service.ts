@@ -33,9 +33,9 @@ export interface WhiteLabelSection { id:string; kind:string; label:string; colum
 
 const STORAGE_KEY='qai-white-label-page-layout-v2';
 const STYLE_KEY='qai-white-label-component-styles-v2';
-const DEFAULT_GLOBAL_TOKENS:WhiteLabelGlobalTokens={appBackground:'#f5f7fb',surface:'#ffffff',line:'#e5e9f0',text:'#101828',muted:'#667085',accent:'#2563eb',nav:'#0b1220',navPanel:'#111d31',navBorder:'#1e2d46',navMuted:'#8da0bd',navHover:'#18263b',navAccent:'#91b4ff',success:'#15803d',danger:'#dc2626',warning:'#d97706',info:'#2563eb',surfaceMuted:'#f8fafc',inputPlaceholder:'#98a2b3',tableHeader:'#fbfcfe',tableLine:'#edf0f4',accentSoft:'#edf4ff',accentBorder:'#cfe0ff',avatarBg:'#dbeafe',avatarText:'#1d4ed8',pageMaxWidth:1600,pagePaddingX:26,pagePaddingY:22,pagePaddingBottom:40,sidebarWidth:248,sidebarPaddingX:14,sidebarPaddingY:20,headerHeight:58,headerPaddingX:24,headerGap:14,pageHeaderTitleSize:22,pageHeaderGap:18,cardRadius:0,cardPadding:15,cardGap:12,cardShadow:'0 5px 16px rgba(15,23,42,.047)',controlHeight:36,controlRadius:8,modalRadius:12,modalShadow:'0 25px 60px rgba(0,0,0,.20)'};
-const DEFAULT_APPEARANCE:WhiteLabelStyle={surfaceColor:'#ffffff',headerColor:'#ffffff',borderColor:'#e5e9f0',titleColor:'#101828',textColor:'#344054',mutedTextColor:'#667085',accentColor:'#2563eb',buttonBackgroundColor:'#2563eb',buttonTextColor:'#ffffff',buttonBorderColor:'#2563eb',buttonHoverBackgroundColor:'#1d4ed8',height:0,radius:11,padding:15,gap:12,fontSize:13,fontWeight:600,shadow:'0 1px 2px rgba(16,24,40,.03), 0 4px 14px rgba(36,60,88,.045)'};
-const DEFAULT_STYLES:WhiteLabelStyles={global:DEFAULT_GLOBAL_TOKENS,header:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:58,radius:0,padding:24,gap:14,fontSize:16},grid:{...DEFAULT_APPEARANCE,height:0,radius:12},kpis:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},cards:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},buttons:{...DEFAULT_APPEARANCE,height:34,radius:8,padding:13,fontSize:11,fontWeight:650},text:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},steps:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},lists:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},tables:{...DEFAULT_APPEARANCE,headerColor:'#f8fafc',height:0,radius:8},badges:{...DEFAULT_APPEARANCE,headerColor:'#eef2ff',accentColor:'#4f46e5',height:0,radius:999},forms:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:36,radius:8},tabs:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:8},dataGrid:{...DEFAULT_APPEARANCE,headerColor:'#f8fafc',height:0,radius:8},navigation:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:8},modals:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},notices:{...DEFAULT_APPEARANCE,headerColor:'#edf4ff',height:0,radius:8}};
+const DEFAULT_GLOBAL_TOKENS:WhiteLabelGlobalTokens={appBackground:'#f7f7f8',surface:'#ffffff',line:'#e6e8eb',text:'#171717',muted:'#737373',accent:'#f59e0b',nav:'#0b1220',navPanel:'#111d31',navBorder:'#1e2d46',navMuted:'#8da0bd',navHover:'#18263b',navAccent:'#91b4ff',success:'#15803d',danger:'#dc2626',warning:'#f59e0b',info:'#f59e0b',surfaceMuted:'#fafafa',inputPlaceholder:'#a3a3a3',tableHeader:'#fafafa',tableLine:'#eeeeee',accentSoft:'#fff4df',accentBorder:'#ffd08a',avatarBg:'#fff0cf',avatarText:'#b45309',pageMaxWidth:1600,pagePaddingX:26,pagePaddingY:22,pagePaddingBottom:40,sidebarWidth:248,sidebarPaddingX:14,sidebarPaddingY:20,headerHeight:58,headerPaddingX:24,headerGap:14,pageHeaderTitleSize:22,pageHeaderGap:18,cardRadius:0,cardPadding:15,cardGap:12,cardShadow:'0 5px 16px rgba(15,23,42,.047)',controlHeight:36,controlRadius:8,modalRadius:12,modalShadow:'0 25px 60px rgba(0,0,0,.20)'};
+const DEFAULT_APPEARANCE:WhiteLabelStyle={surfaceColor:'#ffffff',headerColor:'#ffffff',borderColor:'#e5e9f0',titleColor:'#101828',textColor:'#344054',mutedTextColor:'#667085',accentColor:'#f59e0b',buttonBackgroundColor:'#f59e0b',buttonTextColor:'#171717',buttonBorderColor:'#f59e0b',buttonHoverBackgroundColor:'#d97706',height:0,radius:11,padding:15,gap:12,fontSize:13,fontWeight:600,shadow:'0 1px 2px rgba(16,24,40,.03), 0 4px 14px rgba(36,60,88,.045)'};
+const DEFAULT_STYLES:WhiteLabelStyles={global:DEFAULT_GLOBAL_TOKENS,header:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:58,radius:0,padding:24,gap:14,fontSize:16},grid:{...DEFAULT_APPEARANCE,height:0,radius:12},kpis:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},cards:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},buttons:{...DEFAULT_APPEARANCE,height:34,radius:8,padding:13,fontSize:11,fontWeight:650},text:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0},steps:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},lists:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},tables:{...DEFAULT_APPEARANCE,headerColor:'#f8fafc',height:0,radius:8},badges:{...DEFAULT_APPEARANCE,headerColor:'#fff4df',accentColor:'#f59e0b',height:0,radius:999},forms:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:36,radius:8},tabs:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:8},dataGrid:{...DEFAULT_APPEARANCE,headerColor:'#f8fafc',height:0,radius:8},navigation:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:8},modals:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:12},notices:{...DEFAULT_APPEARANCE,headerColor:'#fff4df',height:0,radius:8}};
 
 @Injectable({providedIn:'root'})
 export class WhiteLabelConfigService {
@@ -70,6 +70,23 @@ export class WhiteLabelConfigService {
     const source=styles||{};
     const out:any={global:{...DEFAULT_GLOBAL_TOKENS,...(source.global||{})}};
     for(const key of Object.keys(DEFAULT_STYLES)){ out[key]={...DEFAULT_APPEARANCE,...(DEFAULT_STYLES[key as keyof WhiteLabelStyles]||{}),...(source[key]||{})}; }
+    // Migrate the previous blue visual system to the current orange/neutral product language.
+    const ORANGE='#f59e0b'; const ORANGE_HOVER='#d97706'; const ORANGE_SOFT='#fff4df'; const ORANGE_BORDER='#ffd08a';
+    if(out.global.accent==='#2563eb') out.global.accent=ORANGE;
+    if(out.global.info==='#2563eb') out.global.info=ORANGE;
+    if(out.global.accentSoft==='#edf4ff') out.global.accentSoft=ORANGE_SOFT;
+    if(out.global.accentBorder==='#cfe0ff') out.global.accentBorder=ORANGE_BORDER;
+    if(out.global.avatarBg==='#dbeafe') out.global.avatarBg='#fff0cf';
+    if(out.global.avatarText==='#1d4ed8') out.global.avatarText='#b45309';
+    for(const key of Object.keys(DEFAULT_STYLES)){
+      const style=out[key];
+      if(!style) continue;
+      if(style.accentColor==='#2563eb' || style.accentColor==='#4f46e5') style.accentColor=ORANGE;
+      if(style.buttonBackgroundColor==='#2563eb') style.buttonBackgroundColor=ORANGE;
+      if(style.buttonBorderColor==='#2563eb') style.buttonBorderColor=ORANGE;
+      if(style.buttonHoverBackgroundColor==='#1d4ed8') style.buttonHoverBackgroundColor=ORANGE_HOVER;
+      if(style.headerColor==='#edf4ff' && key!=='header') style.headerColor=ORANGE_SOFT;
+    }
     // Migrate the previous visual defaults so existing saved White Label settings follow the current system.
     if(out.global.cardRadius===11) out.global.cardRadius=0;
     if(out.cards?.headerColor==='#e4eaf3' || out.cards?.headerColor==='#f2f5fb') out.cards.headerColor='#ffffff';
