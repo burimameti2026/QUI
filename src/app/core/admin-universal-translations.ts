@@ -6,6 +6,7 @@ import { AdminLanguage } from './admin-i18n.service';
  * for longer copy; this map closes the common gaps consistently.
  */
 export const ADMIN_UNIVERSAL_TRANSLATIONS: Record<string, Record<AdminLanguage, string>> = {
+  'Dashboard': { en: 'Dashboard', mk: 'Контролна табла', sq: 'Paneli kryesor', de: 'Dashboard' },
   'Overview': { en: 'Overview', mk: 'Преглед', sq: 'Përmbledhje', de: 'Übersicht' },
   'Details': { en: 'Details', mk: 'Детали', sq: 'Detajet', de: 'Details' },
   'General': { en: 'General', mk: 'Општо', sq: 'Të përgjithshme', de: 'Allgemein' },
