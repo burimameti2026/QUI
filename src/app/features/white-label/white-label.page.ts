@@ -84,6 +84,11 @@ interface LayoutSection {
             <label *ngIf="activeStyle === 'buttons'">Button hover<input type="color" [(ngModel)]="style.buttonHoverBackgroundColor" /></label>
             <label>Height (px)<input type="number" min="0" max="1200" [(ngModel)]="style.height" /></label>
             <label>Radius (px)<input type="number" min="0" max="40" [(ngModel)]="style.radius" /></label>
+            <label>Padding (px)<input type="number" min="0" max="80" [(ngModel)]="style.padding" /></label>
+            <label>Gap (px)<input type="number" min="0" max="80" [(ngModel)]="style.gap" /></label>
+            <label>Font size (px)<input type="number" min="8" max="72" [(ngModel)]="style.fontSize" /></label>
+            <label>Font weight<input type="number" min="300" max="900" step="100" [(ngModel)]="style.fontWeight" /></label>
+            <label>Shadow<input type="text" [(ngModel)]="style.shadow" placeholder="0 4px 14px rgba(...)" /></label>
           </div>
         </div>
       </section>
@@ -397,7 +402,7 @@ export class WhiteLabelPage implements OnInit {
       value: "",
       template: first?.id || "text-01",
       enabled: true,
-      appearance: { surfaceColor: "#ffffff", headerColor: "#d6e8ff", borderColor: "#d6e0ec", titleColor: "#173f7a", textColor: "#26364d", mutedTextColor: "#68778d", accentColor: "#1769e0", height: 0, radius: 14 },
+      
     });
   }
 
