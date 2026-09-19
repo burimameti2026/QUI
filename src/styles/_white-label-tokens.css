@@ -684,3 +684,316 @@ qai-ui-card header button,qai-ui-list-card header button,qai-ui-table-card heade
 @media(max-width:800px){qai-ui-steps .steps{flex-wrap:wrap!important;gap:12px!important}.connector{display:none!important}qai-ui-steps .step{flex:1 1 42%!important}}
 @media(max-width:680px){qai-page-header .page-header{align-items:flex-start!important;flex-wrap:wrap!important}.page-actions{width:100%!important;justify-content:flex-end!important}.page-actions button{flex:0 0 auto!important}qai-ui-metrics .metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:480px){qai-ui-metrics .metrics{grid-template-columns:1fr!important}.page-actions{overflow:auto!important;justify-content:flex-start!important}}
+
+
+/* ============================================================
+   GLOBAL ENTERPRISE PAGE CONTRACT
+   Every routed application page consumes the same Prospect
+   Discovery visual language. Page-specific CSS may add layout,
+   but not a competing visual system.
+   ============================================================ */
+
+:root{
+  --wl-page-bg:#f5f7fb;
+  --wl-surface:#ffffff;
+  --wl-surface-muted:#f8fafc;
+  --wl-header-bg:#f4f7fb;
+  --wl-header-border:#e3e9f1;
+  --wl-header-title:#172033;
+  --wl-header-text:#344054;
+  --wl-header-muted:#667085;
+  --wl-card-bg:#ffffff;
+  --wl-card-header-bg:#f8fafc;
+  --wl-card-header-border:#e6ebf2;
+  --wl-card-border:#e3e9f1;
+  --wl-card-radius:12px;
+  --wl-card-shadow:0 1px 2px rgba(16,24,40,.035),0 6px 18px rgba(36,60,88,.055);
+  --wl-card-title:#172033;
+  --wl-card-text:#344054;
+  --wl-card-muted:#667085;
+  --wl-badge-bg:#edf4ff;
+  --wl-badge-border:#cfe0ff;
+  --wl-badge-text:#2563eb;
+  --wl-badge-radius:999px;
+  --wl-form-bg:#fff;
+  --wl-form-border:#dfe5ed;
+  --wl-form-radius:8px;
+  --wl-form-height:40px;
+}
+
+/* Every routed feature starts from the same page canvas. */
+main.app-main > router-outlet + *{
+  display:block!important;
+  min-width:0!important;
+  min-height:100%!important;
+  background:var(--wl-page-bg)!important;
+  color:var(--wl-text)!important;
+}
+
+/* Prospect-style page header: same geometry, same hierarchy, actions on the right. */
+main.app-main > router-outlet + * qai-page-header .page-header{
+  min-height:var(--wl-header-height,72px)!important;
+  box-sizing:border-box!important;
+  padding:14px 20px!important;
+  background:var(--wl-header-bg)!important;
+  border-bottom:1px solid var(--wl-header-border)!important;
+  color:var(--wl-header-text)!important;
+}
+main.app-main > router-outlet + * qai-page-header .page-header-title,
+main.app-main > router-outlet + * qai-page-header .page-title{
+  min-width:0!important;
+}
+main.app-main > router-outlet + * qai-page-header .page-header h1{
+  margin:0!important;
+  color:var(--wl-header-title)!important;
+  font-size:20px!important;
+  font-weight:760!important;
+  letter-spacing:-.025em!important;
+}
+main.app-main > router-outlet + * qai-page-header .page-header p{
+  margin:4px 0 0!important;
+  color:var(--wl-header-muted)!important;
+  font-size:10px!important;
+  line-height:1.45!important;
+}
+main.app-main > router-outlet + * qai-page-header .page-actions,
+main.app-main > router-outlet + * qai-page-header .header-actions{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:7px!important;
+  margin-left:auto!important;
+}
+main.app-main > router-outlet + * qai-page-header button{
+  min-height:32px!important;
+  border-radius:8px!important;
+  font-size:9px!important;
+  font-weight:750!important;
+}
+
+/* One card anatomy for bespoke page content. */
+main.app-main > router-outlet + * :where(
+  .card,.panel,.section-card,.content-card,.data-card,.workspace-card,
+  .settings-card,.config-card,.detail-card,.queue-panel,.message-card,
+  .approval-hero,.discovery-hero,.executive-band,.revenue-card,
+  .automation-card,.directory-card,.campaign-card,.campaigns,.safety,
+  .campaign-activity,.approval-panel,.hero,.hero-panel,.workspace-panel,
+  .table-card,.list-card,.form-card,.settings-panel,.content-panel
+){
+  border:1px solid var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+  background:var(--wl-card-bg)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+}
+
+/* Same card header pattern everywhere. */
+main.app-main > router-outlet + * :where(
+  .card-header,.section-header,.card-heading,.workspace-header,
+  .prospect-header,.queue-header,.message-top,.campaign-header,
+  .panel-header,.directory-card>header,.card>header,.panel>header,
+  .section-card>header,.content-card>header
+){
+  background:var(--wl-card-header-bg)!important;
+  border-bottom:1px solid var(--wl-card-header-border)!important;
+  color:var(--wl-card-title)!important;
+}
+main.app-main > router-outlet + * :where(
+  .card h1,.card h2,.card h3,.panel h1,.panel h2,.panel h3,
+  .section-card h1,.section-card h2,.section-card h3,
+  .workspace-card h1,.workspace-card h2,.workspace-card h3,
+  .workspace-card .card-heading,.card-heading h2,.card-heading h3,
+  .queue-header h3,.message-top strong
+){
+  color:var(--wl-card-title)!important;
+}
+main.app-main > router-outlet + * :where(
+  .card p,.panel p,.section-card p,.workspace-card p,
+  .card-subtitle,.subtitle,.muted,.eyebrow
+){
+  color:var(--wl-card-muted)!important;
+}
+
+/* Same KPI anatomy on both shared and bespoke metric implementations. */
+main.app-main > router-outlet + * :where(
+  .metrics article,.metrics .metric,.metric-card,.kpi-card,.stat-card
+){
+  position:relative!important;
+  overflow:hidden!important;
+  min-width:0!important;
+  border:1px solid var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+  background:var(--wl-card-bg)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+}
+main.app-main > router-outlet + * :where(
+  .metric-top,.metric-card .metric-top,.kpi-top,.stat-top
+){
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+main.app-main > router-outlet + * :where(
+  .metric-icon,.metric-card .metric-icon,.kpi-icon,.stat-icon
+){
+  display:grid!important;
+  width:30px!important;
+  height:30px!important;
+  flex:0 0 30px!important;
+  place-items:center!important;
+  border:1px solid var(--wl-accent-border)!important;
+  border-radius:8px!important;
+  background:var(--wl-accent-soft)!important;
+  color:var(--wl-accent)!important;
+}
+main.app-main > router-outlet + * :where(
+  .metric-label,.metric-card .metric-label,.kpi-label,.stat-label
+){
+  color:var(--wl-card-muted)!important;
+  font-size:9px!important;
+  font-weight:750!important;
+}
+main.app-main > router-outlet + * :where(
+  .metrics strong,.metric-card strong,.kpi-card strong,.stat-card strong
+){
+  color:var(--wl-card-title)!important;
+  font-weight:800!important;
+  letter-spacing:-.03em!important;
+}
+main.app-main > router-outlet + * :where(
+  .metrics small,.metric-card small,.kpi-card small,.stat-card small
+){
+  color:var(--wl-card-muted)!important;
+}
+
+/* Workflow/timeline is a first-class shared pattern, not a page-specific decoration. */
+main.app-main > router-outlet + * qai-ui-steps .surface{
+  border:1px solid var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+  background:var(--wl-card-bg)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+}
+main.app-main > router-outlet + * qai-ui-steps .surface>header{
+  background:var(--wl-card-header-bg)!important;
+  border-bottom:1px solid var(--wl-card-header-border)!important;
+}
+main.app-main > router-outlet + * qai-ui-steps .node{
+  border-color:var(--wl-card-border)!important;
+  background:var(--wl-surface)!important;
+  color:var(--wl-card-title)!important;
+}
+main.app-main > router-outlet + * qai-ui-steps .step.active .node{
+  border-color:var(--wl-accent)!important;
+  background:var(--wl-accent)!important;
+  color:#fff!important;
+}
+main.app-main > router-outlet + * qai-ui-steps .connector{
+  background:var(--wl-card-border)!important;
+}
+main.app-main > router-outlet + * qai-ui-steps .step strong{color:var(--wl-card-title)!important}
+main.app-main > router-outlet + * qai-ui-steps .step small,
+main.app-main > router-outlet + * qai-ui-steps .step em{color:var(--wl-card-muted)!important}
+
+/* All native tables/lists inherit the same card language. */
+main.app-main > router-outlet + * :where(
+  table,.data-table,.data-grid,.refined-grid
+){
+  border-color:var(--wl-card-border)!important;
+  background:var(--wl-card-bg)!important;
+}
+main.app-main > router-outlet + * :where(th,.data-table th,.data-grid th){
+  background:var(--wl-surface-muted)!important;
+  border-color:var(--wl-card-border)!important;
+  color:var(--wl-card-muted)!important;
+}
+main.app-main > router-outlet + * :where(td,.data-table td,.data-grid td){
+  border-color:var(--wl-card-border)!important;
+  color:var(--wl-card-text)!important;
+  background:var(--wl-card-bg)!important;
+}
+main.app-main > router-outlet + * :where(.list,.list-card .item,.list-item,.directory-row){
+  border-color:var(--wl-card-border)!important;
+  background:var(--wl-card-bg)!important;
+}
+
+/* Badges/statuses are one system. */
+main.app-main > router-outlet + * :where(
+  .status,.badge,.tag,.chip,.pill,.status-badge,.campaign-tag
+){
+  border:1px solid var(--wl-badge-border)!important;
+  border-radius:var(--wl-badge-radius)!important;
+  background:var(--wl-badge-bg)!important;
+  color:var(--wl-badge-text)!important;
+}
+
+/* Forms are one system. */
+main.app-main > router-outlet + * :where(
+  input:not([type=checkbox]):not([type=radio]),select,textarea
+){
+  min-height:var(--wl-form-height)!important;
+  box-sizing:border-box!important;
+  border:1px solid var(--wl-form-border)!important;
+  border-radius:var(--wl-form-radius)!important;
+  background:var(--wl-form-bg)!important;
+  color:var(--wl-text)!important;
+}
+main.app-main > router-outlet + * :where(
+  input:not([type=checkbox]):not([type=radio]),select,textarea
+):focus{
+  border-color:var(--wl-accent)!important;
+  outline:0!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--wl-accent) 14%,transparent)!important;
+}
+
+/* Buttons: only White Label variants define their visual treatment. */
+main.app-main > router-outlet + * :where(
+  button.primary,.primary,.primary-action,.btn-primary,.header-action
+){
+  border:1px solid var(--wl-button-1-border)!important;
+  border-radius:8px!important;
+  background:var(--wl-button-1-bg)!important;
+  color:var(--wl-button-1-text)!important;
+}
+main.app-main > router-outlet + * :where(
+  button.secondary,.secondary,.btn-secondary,.quiet-action
+){
+  border:1px solid var(--wl-button-2-border)!important;
+  border-radius:8px!important;
+  background:var(--wl-button-2-bg)!important;
+  color:var(--wl-button-2-text)!important;
+}
+main.app-main > router-outlet + * :where(
+  button.quiet,.quiet,.quiet-action,.btn-quiet
+){
+  border:1px solid var(--wl-button-3-border)!important;
+  border-radius:8px!important;
+  background:var(--wl-button-3-bg)!important;
+  color:var(--wl-button-3-text)!important;
+}
+main.app-main > router-outlet + * :where(
+  .page-actions,.header-actions,.card-actions,.action-buttons,.actions,.toolbar-actions
+){
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:7px!important;
+  margin-left:auto!important;
+}
+
+/* Toolbar/filter rows use the same quiet surface as Prospect Discovery. */
+main.app-main > router-outlet + * :where(
+  .toolbar,.page-toolbar,.queue-toolbar,.directory-toolbar,.filters-bar,
+  .filter-bar,.table-toolbar,.search-toolbar
+){
+  background:var(--wl-surface-muted)!important;
+  border-color:var(--wl-card-border)!important;
+}
+
+/* Shared responsive contract. */
+@media(max-width:800px){
+  main.app-main > router-outlet + * qai-page-header .page-header{padding:12px!important}
+  main.app-main > router-outlet + * :where(.metrics,.kpi-grid,.stat-grid){grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  main.app-main > router-outlet + * :where(.page-actions,.header-actions,.card-actions,.actions,.toolbar-actions){flex-wrap:wrap!important}
+}
+@media(max-width:520px){
+  main.app-main > router-outlet + * :where(.metrics,.kpi-grid,.stat-grid){grid-template-columns:1fr!important}
+}
