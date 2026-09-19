@@ -58,7 +58,7 @@ interface LayoutSection {
           <div>
             <span class="eyebrow">GLOBAL COMPONENT STYLES</span>
             <h2>Define once. Use everywhere.</h2>
-            <p>Each component type has one reusable visual style. Change it here and every Header, Grid, KPI, Card, Button or Text component uses the same definition across the application.</p>
+            <p>Each component type has one reusable visual style. Change it here and every shared component of that type uses the same definition across the application.</p>
           </div>
           <div class="style-save-actions"><span class="save-status" *ngIf="styleSaveMessage">{{ styleSaveMessage }}</span><button type="button" class="primary" (click)="saveStyles()">Save component styles</button></div>
         </div>
