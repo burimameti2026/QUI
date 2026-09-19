@@ -3,7 +3,7 @@
   padding: 12px 14px;
   border: 1px solid #f0c36d;
   border-radius: 10px;
-  background: #fff8e7;
+  background: var(--wl-surface,#fff)8e7;
   color: #5b4a20;
   font-size: 13px;
   line-height: 1.5;
@@ -16,7 +16,7 @@
   gap: 24px;
   margin-bottom: 18px;
   padding: 22px 24px;
-  border: 1px solid #edf0f4;
+  border: 1px solid var(--wl-border-soft,#edf0f4);
   border-radius: 14px;
   background: linear-gradient(135deg, #f4f7fc 0%, #eef3fb 62%, #f1effa 100%);
   box-shadow: 0 8px 24px rgba(39, 58, 86, 0.06);
@@ -24,14 +24,14 @@
 
 .subscription-hero h2 {
   margin: 0;
-  color: #202124;
+  color: var(--wl-text,#202124);
   font-size: 24px;
   font-weight: 700;
 }
 
 .subscription-hero p {
   margin: 6px 0 0;
-  color: #667085;
+  color: var(--wl-muted,#667085);
 }
 
 .subscription-price {
@@ -39,7 +39,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
-  color: #26364d;
+  color: var(--wl-text,#26364d);
 }
 
 .subscription-price strong {
@@ -60,8 +60,8 @@
 
 .panel > header {
   padding: 15px 18px;
-  border-bottom: 1px solid #edf0f4;
-  background: #fafbfc;
+  border-bottom: 1px solid var(--wl-border-soft,#edf0f4);
+  background: var(--wl-surface-muted,#fafbfc);
 }
 
 .panel > header > div {
@@ -71,7 +71,7 @@
 }
 
 .panel > header b {
-  color: #26364d;
+  color: var(--wl-text,#26364d);
   font-size: 14px;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .gap b {
-  color: #26364d;
+  color: var(--wl-text,#26364d);
 }
 
 .gap span:not(.pill) {
@@ -130,7 +130,7 @@
 }
 
 .table-wrap td {
-  color: #26364d;
+  color: var(--wl-text,#26364d);
   font-size: 13px;
 }
 
