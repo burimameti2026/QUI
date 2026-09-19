@@ -64,20 +64,32 @@ export class DashboardPage implements OnInit {
       { label:'Prospects discovered', value:this.acquisition.discovered || 0, subtitle:`${this.qualifiedProspects} high-fit prospects`, icon:'⌕', tone:'amber', action:{label:'Open',route:'/discover'} },
       { label:'Awaiting delivery', value:this.queuedMessages, subtitle:'review the approval queue', icon:'✓', tone:'rose', action:{label:'Open',route:'/acquisition/approval-queue'} }
     ]};
-    if (acquisition) acquisition.data = { badge:this.recentRun ? (this.recentRun.status || 'Run ready') : 'Ready', rows:[
-      {label:'Latest discovery run',value:`${this.recentRun?.discoveredCount || 0} prospects`},
-      {label:'Qualified',detail:'Passed autonomous scoring threshold',value:this.recentRun?.qualifiedCount || 0},
-      {label:'High score',detail:'Ready for targeted sales action',value:this.recentRun?.highScoreCount || 0}
-    ]}; acquisition!.actions=[{label:'Open agent',route:'/acquisition/autonomous'}];
-    if (outreach) outreach.data = { rows:[
-      {label:'Running campaigns',value:this.campaigns.length},
-      {label:'Queued messages',value:this.queuedMessages},
-      {label:'Replies',value:this.acquisition.replies || 0}
-    ], text:'Guardrail: approval before delivery'}; outreach!.actions=[{label:'View campaigns',route:'/campaigns'}];
-    if (programs) programs.data = { columns:[
-      {key:'program',label:'Program'},{key:'language',label:'Language'},{key:'status',label:'Status'},{key:'automation',label:'Automation'}
-    ], rows:this.programRows, emptyText:'No promotion plans have been created.'}; programs.actions=[{label:'Manage plans',route:'/renova/promotion'}];
-    if (publicExperience) publicExperience.data = { items:this.publicExperience }; publicExperience!.actions=[{label:'Open portal',route:'/renova/portal'}];
+    if (acquisition) {
+      acquisition.data = { badge:this.recentRun ? (this.recentRun.status || 'Run ready') : 'Ready', rows:[
+        {label:'Latest discovery run',value:`${this.recentRun?.discoveredCount || 0} prospects`},
+        {label:'Qualified',detail:'Passed autonomous scoring threshold',value:this.recentRun?.qualifiedCount || 0},
+        {label:'High score',detail:'Ready for targeted sales action',value:this.recentRun?.highScoreCount || 0}
+      ]};
+      acquisition.actions=[{label:'Open agent',route:'/acquisition/autonomous'}];
+    }
+    if (outreach) {
+      outreach.data = { rows:[
+        {label:'Running campaigns',value:this.campaigns.length},
+        {label:'Queued messages',value:this.queuedMessages},
+        {label:'Replies',value:this.acquisition.replies || 0}
+      ], text:'Guardrail: approval before delivery'};
+      outreach.actions=[{label:'View campaigns',route:'/campaigns'}];
+    }
+    if (programs) {
+      programs.data = { columns:[
+        {key:'program',label:'Program'},{key:'language',label:'Language'},{key:'status',label:'Status'},{key:'automation',label:'Automation'}
+      ], rows:this.programRows, emptyText:'No promotion plans have been created.'};
+      programs.actions=[{label:'Manage plans',route:'/renova/promotion'}];
+    }
+    if (publicExperience) {
+      publicExperience.data = { items:this.publicExperience };
+      publicExperience.actions=[{label:'Open portal',route:'/renova/portal'}];
+    }
     if (review) { review.data={text:'Use the approval queue to review the exact subject, body and destination before delivery. The backend still enforces sender verification, suppression and provider controls.'}; review.actions=[{label:'Open queue',route:'/acquisition/approval-queue'}]; }
     if (handoff) handoff.data={text:'LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.'};
 
