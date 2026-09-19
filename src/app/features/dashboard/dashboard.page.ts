@@ -100,15 +100,17 @@ export class DashboardPage implements OnInit {
   }
 
   private applyWhiteLabelLayout(config: UiPageConfig) {
-    const raw = localStorage.getItem('qai-white-label-page-layout');
-    try {
+    const layout = this.whiteLabel.layout();
+    if (!layout.length) return;
 
-      const header = bySection.get('header')?.items?.find((item: any) => item.enabled);
+    try {
+      const bySection = new Map(layout.map(section => [section.id, section]));
+
+      const header = bySection.get('header')?.items?.find(item => item.enabled);
       if (header) {
         config.header = config.header || {};
         if (header.label) config.header.title = header.label;
         if (header.template) (config as any).headerTemplate = header.template;
-        if (header.appearance) config.header.appearance = header.appearance;
       }
 
       const componentMap: Record<string, string> = {
@@ -133,7 +135,7 @@ export class DashboardPage implements OnInit {
           if (!target) continue;
           if (item.template) target.template = item.template as any;
           if (item.label && target.type !== 'metrics') target.title = item.label;
-          }
+        }
       }
 
       const kpiSection = bySection.get('kpis');
