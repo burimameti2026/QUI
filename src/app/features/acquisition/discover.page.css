@@ -108,3 +108,16 @@ qai-page-header button.primary{background:var(--discover-button-primary)!importa
 /* Final shared surface contract. */
 .discovery-hero,.workspace-card,.prospect-card{border-radius:var(--wl-card-radius,12px)!important;border-color:var(--wl-card-border,var(--wl-border))!important}
 .discovery-metrics .metric-card{border-radius:var(--wl-card-radius,12px)!important;background:var(--wl-card-bg,var(--wl-surface))!important}
+
+
+/* Final unified enterprise override: this route inherits the Prospect Discovery composition. */
+:host{background:#f5f7fb!important;color:var(--wl-text)!important}
+qai-page-header{display:block!important;margin:0!important}
+qai-page-header .page-header{background:var(--wl-header-bg)!important;border-bottom:1px solid var(--wl-header-border)!important}
+qai-page-header .page-actions{justify-content:flex-end!important;margin-left:auto!important}
+.discovery-hero,.workspace-card,.prospect-card{background:var(--wl-card-bg)!important;border:1px solid var(--wl-card-border)!important;border-radius:var(--wl-card-radius)!important;box-shadow:var(--wl-card-shadow)!important}
+.workspace-header,.prospect-header{background:var(--wl-card-header-bg)!important;border-bottom:1px solid var(--wl-card-header-border)!important}
+.workspace-header h3,.prospect-header h3{color:var(--wl-card-title)!important}
+.discovery-metrics .metric-card{background:var(--wl-card-bg)!important;border:1px solid var(--wl-card-border)!important;border-radius:var(--wl-card-radius)!important;box-shadow:var(--wl-card-shadow)!important}
+
+
