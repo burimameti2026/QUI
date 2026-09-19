@@ -39,20 +39,23 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
     <ng-template #componentTpl let-component>
       <ng-container [ngSwitch]="component.type">
         <div *ngSwitchCase="'steps'" ><qai-ui-steps
-          [eyebrow]="component.badge || 'WORKFLOW'"
+          [template]="component.template" [eyebrow]="component.badge || 'WORKFLOW'"
           [title]="component.title || ''"
           [subtitle]="component.subtitle || ''"
           [steps]="value(component, 'steps', [])"></qai-ui-steps></div>
 
         <div *ngSwitchCase="'metrics'" ><qai-ui-metrics
+          [template]="component.template"
           [items]="value(component, 'items', [])"
           (action)="emitRoute($event)"></qai-ui-metrics></div>
 
         <div *ngSwitchCase="'card'" ><qai-ui-card
+          [template]="component.template"
           [model]="cardModel(component)"
           (action)="emitRoute($event)"></qai-ui-card></div>
 
         <div *ngSwitchCase="'list-card'" ><qai-ui-list-card
+          [template]="component.template"
           [eyebrow]="component.badge || ''"
           [title]="component.title || ''"
           [items]="value(component, 'items', [])"
@@ -60,6 +63,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
           (actionClick)="emitRoute($event)"></qai-ui-list-card></div>
 
         <div *ngSwitchCase="'table-card'" ><qai-ui-table-card
+          [template]="component.template"
           [eyebrow]="component.badge || ''"
           [title]="component.title || ''"
           [columns]="value(component, 'columns', [])"
