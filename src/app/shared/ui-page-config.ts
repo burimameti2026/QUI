@@ -10,21 +10,6 @@ export type UiTemplateId =
 
 export interface UiBinding { source: string; fallback?: string | number; }
 
-export interface UiAppearance {
-  surfaceColor?: string;
-  headerColor?: string;
-  borderColor?: string;
-  titleColor?: string;
-  textColor?: string;
-  mutedTextColor?: string;
-  accentColor?: string;
-  buttonBackgroundColor?: string;
-  buttonTextColor?: string;
-  buttonBorderColor?: string;
-  buttonHoverBackgroundColor?: string;
-  height?: number;
-  radius?: number;
-}
 export interface UiPageAction {
   id?: string;
   label: string;
@@ -40,8 +25,6 @@ export interface UiPageComponentConfig {
   subtitle?: string;
   badge?: string;
   columns?: 1 | 2 | 3 | 4 | 5;
-  appearance?: UiAppearance;
-  itemAppearances?: UiAppearance[];
   data?: Record<string, unknown>;
   bindings?: Record<string, UiBinding>;
   actions?: UiPageAction[];
