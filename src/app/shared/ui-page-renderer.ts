@@ -97,8 +97,6 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
   `,
   styles: [`
     :host{display:block;min-width:0}
-    .dashboard-renderer{min-height:100%;background:linear-gradient(180deg,#f8fbff 0,#f5f7fb 230px,#f5f7fb 100%)}
-    .dashboard-renderer .page-content{padding-top:4px}
     .page-content{padding:var(--wl-page-padding-y) var(--wl-page-padding-x) var(--wl-page-padding-bottom)}
     .page-section{min-width:0}
     .full-span{grid-column:1 / -1;min-width:0}
