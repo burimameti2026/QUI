@@ -114,7 +114,7 @@ const i = (
           >
           <div class="header-tools">
             <a class="header-icon notification" routerLink="/inbox" aria-label="Notifications">
-              ◌<span class="notification-dot">3</span>
+              ◌<span class="notification-dot" aria-hidden="true"></span>
             </a>
             <button type="button" class="header-help" aria-label="Help">?</button>
           </div>
