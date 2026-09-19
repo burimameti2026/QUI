@@ -41,6 +41,7 @@ export interface UiPageComponentConfig {
   badge?: string;
   columns?: 1 | 2 | 3 | 4 | 5;
   appearance?: UiAppearance;
+  itemAppearances?: UiAppearance[];
   data?: Record<string, unknown>;
   bindings?: Record<string, UiBinding>;
   actions?: UiPageAction[];
