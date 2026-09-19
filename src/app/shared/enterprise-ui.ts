@@ -19,28 +19,11 @@ styles:[`:host{display:block}.surface{border:1px solid var(--ui-border,#d6e0ec);
 `]})
 export class UiSteps { @Input() eyebrow='WORKFLOW'; @Input() title=''; @Input() subtitle=''; @Input() badge=''; @Input() steps:UiStep[]=[]; }
 
-@Component({selector:'qai-ui-metrics',standalone:true,imports:[CommonModule],template:`<div class="metrics"><button type="button" *ngFor="let item of items; let i = index" [class]="'metric '+(item.tone||'blue')" [ngStyle]="appearanceStyle(i)" (click)="action.emit(item.action?.route||'')"><span class="top"><span class="icon">{{item.icon||'•'}}</span><span>{{item.label}}</span></span><strong>{{item.value}}</strong><small>{{item.subtitle}}<i *ngIf="item.action">→</i></small></button></div>`,styles:[`:host{display:block}.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:14px}.metric{--accent:var(--ui-accent,var(--wl-accent,#2563eb));--soft:var(--ui-header,#e8f0ff);position:relative;display:block;min-height:126px;padding:16px;text-align:left;border:1px solid var(--ui-border,#d6e0ec);border-radius:13px;background:var(--ui-surface,var(--wl-surface,#fff));box-shadow:0 7px 20px rgba(15,47,104,.055);cursor:pointer}.metric:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}.metric.violet{--accent:#7c3aed;--soft:#eee9fe}.metric.green{--accent:#059669;--soft:#dcf8e9}.metric.amber{--accent:#d97706;--soft:#fef3c7}.metric.rose{--accent:#e11d48;--soft:#ffe4e6}.top{display:flex;align-items:center;gap:9px;color:var(--ui-muted,#5f6c80);font-size:11px;font-weight:700}.icon{width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:var(--soft);color:var(--accent);font-size:11px}.metric>strong{display:block;margin:15px 0 13px;color:var(--ui-title,#141c2d);font-size:28px;line-height:1}.metric small{display:flex;align-items:center;color:var(--ui-muted,#7b8798);font-size:9px}.metric small i{margin-left:auto;color:var(--accent);font-size:13px;font-style:normal}@media(max-width:1180px){.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.metrics{grid-template-columns:1fr}}
+@Component({selector:'qai-ui-metrics',standalone:true,imports:[CommonModule],template:`<div class="metrics"><button type="button" *ngFor="let item of items; let i = index" [class]="'metric '+(item.tone||'blue')" [ngStyle]="appearanceStyle(i)" (click)="action.emit(item.action?.route||'')"><span class="top"><span class="icon">{{item.icon||'•'}}</span><span>{{item.label}}</span></span><strong>{{item.value}}</strong><small>{{item.subtitle}}<i *ngIf="item.action">→</i></small></button></div>`,styles:[`:host{display:block}.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:14px}.metric{--accent:var(--ui-accent,var(--wl-accent,#2563eb));--soft:var(--ui-header,#e8f0ff);position:relative;display:block;min-height:126px;padding:16px;text-align:left;border:1px solid var(--ui-border,#d6e0ec);border-radius:13px;background:var(--ui-surface,var(--wl-surface,#fff));box-shadow:0 7px 20px rgba(15,47,104,.055);cursor:pointer}.metric:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}.top{display:flex;align-items:center;gap:9px;color:var(--ui-muted,#5f6c80);font-size:11px;font-weight:700}.icon{width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:var(--soft);color:var(--accent);font-size:11px}.metric>strong{display:block;margin:15px 0 13px;color:var(--ui-title,#141c2d);font-size:28px;line-height:1}.metric small{display:flex;align-items:center;color:var(--ui-muted,#7b8798);font-size:9px}.metric small i{margin-left:auto;color:var(--accent);font-size:13px;font-style:normal}@media(max-width:1180px){.metrics{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.metrics{grid-template-columns:1fr}}
 `]})
 export class UiMetrics {
   @Input() items:UiMetric[]=[];
-  @Input() itemAppearances:Record<string,string>[]=[];
   @Output() action=new EventEmitter<string>();
-  appearanceStyle(index:number):Record<string,string> {
-    const a=this.itemAppearances[index]||{};
-    return {
-      '--ui-surface':a['surfaceColor']||'var(--wl-surface,#fff)',
-      '--ui-header':a['headerColor']||'var(--wl-header-bg,#fff)',
-      '--ui-border':a['borderColor']||'var(--wl-border,#d6e0ec)',
-      '--ui-title':a['titleColor']||'var(--wl-text,#141c2d)',
-      '--ui-text':a['textColor']||'var(--wl-text,#26364d)',
-      '--ui-muted':a['mutedTextColor']||'var(--wl-muted,#68778d)',
-      '--ui-accent':a['accentColor']||'var(--wl-accent,#2563eb)',
-      '--accent':a['accentColor']||'var(--wl-accent,#2563eb)',
-      '--soft':a['headerColor']||'var(--wl-header-bg,#e8f0ff)',
-      '--ui-radius':(a['radius']||13)+'px',
-      ...(a['height'] ? {'min-height':a['height']+'px'} : {})
-    };
-  }
 }
 
 @Component({selector:'qai-ui-card',standalone:true,imports:[CommonModule],template:`
