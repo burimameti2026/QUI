@@ -14,8 +14,8 @@ export interface BrandTheme {
 
 @Injectable({ providedIn: "root" })
 export class BrandThemeService {
-  readonly brand = signal<BrandTheme>(this.fromWhiteLabel());
-  constructor(private whiteLabel: WhiteLabelConfigService) {}
+  readonly brand = signal<BrandTheme>({} as BrandTheme);
+  constructor(private whiteLabel: WhiteLabelConfigService) { this.brand.set(this.fromWhiteLabel()); }
 
   load(): Observable<BrandTheme> {
     const value = this.fromWhiteLabel();
