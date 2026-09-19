@@ -113,8 +113,8 @@ body:not(:has(.leads-page-header)) .prospect-header,
 body:not(:has(.leads-page-header)) .section-header {
   min-height:58px!important;
   padding:14px 17px!important;
-  border-bottom:1px solid #edf0f4!important;
-  background:#fff!important;
+  border-bottom:1px solid var(--qui-border-soft)!important;
+  background:var(--qui-surface)!important;
   border-radius:0!important;
 }
 
@@ -124,7 +124,7 @@ body:not(:has(.leads-page-header)) .panel-body,
 body:not(:has(.leads-page-header)) .section-body,
 body:not(:has(.leads-page-header)) .card-content,
 body:not(:has(.leads-page-header)) .directory-body {
-  background:#fff!important;
+  background:var(--qui-surface)!important;
 }
 
 /* KPI/stat cards: clean enterprise hierarchy, no gradients */
@@ -159,7 +159,7 @@ body:not(:has(.leads-page-header)) .metric-card i,
 body:not(:has(.leads-page-header)) .stat-card i,
 body:not(:has(.leads-page-header)) .kpi-card i,
 body:not(:has(.leads-page-header)) .summary-card i {
-  border-radius:8px!important;
+  border-radius:var(--qui-radius-md)!important;
 }
 
 /* Card grids should breathe consistently */
@@ -182,9 +182,9 @@ body:not(:has(.leads-page-header)) .summary-tile,
 body:not(:has(.leads-page-header)) .option-card,
 body:not(:has(.leads-page-header)) .action-card,
 body:not(:has(.leads-page-header)) .step-card {
-  background:#fff!important;
+  background:var(--qui-surface)!important;
   border:1px solid #e8ebef!important;
-  border-radius:10px!important;
+  border-radius:var(--qui-radius-lg)!important;
   box-shadow:none!important;
 }
 
@@ -204,11 +204,11 @@ body:not(:has(.leads-page-header)) .empty,
 body:not(:has(.leads-page-header)) .loading-state,
 body:not(:has(.leads-page-header)) .data-state,
 body:not(:has(.leads-page-header)) .directory-empty {
-  border-radius:10px!important;
+  border-radius:var(--qui-radius-lg)!important;
 }
 
 /* Responsive card spacing */
-@media(max-width:760px){
+@media (max-width: 640px){
   body:not(:has(.leads-page-header)) .card,
   body:not(:has(.leads-page-header)) .panel,
   body:not(:has(.leads-page-header)) .section-card,
@@ -231,6 +231,6 @@ body:not(:has(.leads-page-header)) .directory-empty {
   body:not(:has(.leads-page-header)) .metric-card,
   body:not(:has(.leads-page-header)) .stat-card,
   body:not(:has(.leads-page-header)) .kpi-card {
-    border-radius:10px!important;
+    border-radius:var(--qui-radius-lg)!important;
   }
 }

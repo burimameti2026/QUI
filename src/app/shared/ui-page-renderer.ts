@@ -97,7 +97,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
     .page-section{min-width:0}
     .grid-block{display:grid;grid-template-columns:repeat(var(--wl-grid-columns),minmax(0,1fr));gap:var(--wl-grid-gap)}
     .grid-block>ng-container{display:contents}
-    @media(max-width:680px){.grid-block{grid-template-columns:1fr}}
+    @media (max-width: 640px){.grid-block{grid-template-columns:1fr}}
   `],
 })
 export class UiPageRenderer {

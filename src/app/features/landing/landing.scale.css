@@ -27,7 +27,7 @@
   transform: translateY(0.5px);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 960px) {
   .landing-nav .brand > span {
     gap: 7px;
   }

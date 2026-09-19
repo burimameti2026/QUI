@@ -14,30 +14,30 @@ interface Overview { facilities:number; customers:number; orders:number; pending
 <section class="grid"><a *ngFor="let m of modules" [routerLink]="m.route" class="card"><div class="icon" [class]="m.tone">{{m.icon}}</div><div><b>{{m.title}}</b><span>{{m.text}}</span></div><strong>→</strong></a></section>
 <div *ngIf="error" class="error">{{error}}</div>
 `,styles:[`:host{display:block;color:var(--enterprise-text)!important;background:var(--enterprise-bg)!important}
-.tenant-bar,.metrics article,.flow,.card{border:0!important;border-radius:var(--enterprise-radius)!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important}
+.tenant-bar,.metrics article,.flow,.card{border:0!important;border-radius:var(--enterprise-radius)!important;background:var(--qui-surface)!important;box-shadow:var(--enterprise-shadow)!important}
 .tenant-bar{margin:0 20px 14px!important;padding:18px 22px!important}
-.tenant-bar span{color:#98a2b3!important;font-weight:800!important;letter-spacing:.12em!important}
-.tenant-bar strong{color:#202124!important}
-.tenant-bar small{color:#667085!important}
+.tenant-bar span{color:var(--qui-faint)!important;font-weight:800!important;letter-spacing:.12em!important}
+.tenant-bar strong{color:var(--qui-text)!important}
+.tenant-bar small{color:var(--qui-muted)!important}
 .metrics{gap:12px!important;margin:0 20px 14px!important}
 .metrics article{min-height:116px!important;padding:17px 18px!important}
-.metrics span,.metrics small{color:#667085!important}
-.metrics strong{color:#202124!important;font-size:24px!important}
-.flow{margin:0 20px 14px!important;padding:16px!important;background:linear-gradient(110deg,#f1f6ff 0%,#f7f4ff 58%,#fff7ed 100%)!important}
-.flow b{color:#202124!important;letter-spacing:.08em!important}
-.flow span{color:#667085!important}
-.flow i{color:#98a2b3!important}
+.metrics span,.metrics small{color:var(--qui-muted)!important}
+.metrics strong{color:var(--qui-text)!important;font-size:var(--qui-text-3xl)!important}
+.flow{margin:0 20px 14px!important;padding:16px!important;background:linear-gradient(110deg,#f1f6ff 0%,#f7f4ff 58%,var(--qui-accent-soft) 100%)!important}
+.flow b{color:var(--qui-text)!important;letter-spacing:.08em!important}
+.flow span{color:var(--qui-muted)!important}
+.flow i{color:var(--qui-faint)!important}
 .grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;margin:0 20px!important}
 .card{min-height:104px!important;padding:16px!important;gap:12px!important}
 .card:hover{transform:translateY(-1px)!important;box-shadow:0 8px 24px rgba(16,24,40,.08)!important}
-.icon,.icon.green,.icon.red,.icon.violet,.icon.amber{border:0!important;border-radius:9px!important;background:#fff7ed!important;color:#f97316!important}
-.card b{color:#202124!important;font-size:12px!important}
-.card span{color:#667085!important}
-.card>strong{color:#f97316!important}
-.refresh{border:0!important;border-radius:8px!important;background:#f97316!important;color:#fff!important;font-weight:700!important}
-.error{margin:14px 20px 0!important;border:0!important;border-radius:9px!important;background:#fff1f2!important;color:#9f1239!important}
-@media(max-width:1050px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-@media(max-width:700px){.grid{grid-template-columns:1fr!important}.metrics{grid-template-columns:repeat(2,1fr)!important}}
+.icon,.icon.green,.icon.red,.icon.violet,.icon.amber{border:0!important;border-radius:var(--qui-radius-md)!important;background:var(--qui-accent-soft)!important;color:var(--qui-accent)!important}
+.card b{color:var(--qui-text)!important;font-size:var(--qui-text-sm)!important}
+.card span{color:var(--qui-muted)!important}
+.card>strong{color:var(--qui-accent)!important}
+.refresh{border:0!important;border-radius:var(--qui-radius-md)!important;background:var(--qui-accent)!important;color:var(--qui-on-accent)!important;font-weight:700!important}
+.error{margin:14px 20px 0!important;border:0!important;border-radius:var(--qui-radius-md)!important;background:#fff1f2!important;color:#9f1239!important}
+@media (max-width: 960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media (max-width: 640px){.grid{grid-template-columns:1fr!important}.metrics{grid-template-columns:repeat(2,1fr)!important}}
 `]})
 export class EnterprisePage implements OnInit {
  private readonly api=inject(ApiService); data:Overview={facilities:0,customers:0,orders:0,pendingOrders:0,stockItems:0,movementsInTransit:0,shipments:0,unpaidPayments:0}; error='';

@@ -1,0 +1,173 @@
+/* ==========================================================================
+   QUI design tokens — the ONE source of truth for the visual language.
+
+   Rules
+   1. Components use --qui-* tokens only. Never hardcode colours, radii,
+      font sizes, shadows or fonts.
+   2. Brand colour comes from White Label (--wl-accent). Everything else is
+      defined here.
+   3. This file is loaded LAST in angular.json so the legacy aliases at the
+      bottom override the old --ui-*, --ref-*, --enterprise-*, --canonical-*,
+      --card-* families. New code must not use those aliases.
+   4. Breakpoints cannot be variables. Use exactly three:
+        @media (max-width: 640px)   phone
+        @media (max-width: 960px)   tablet
+        @media (max-width: 1200px)  small desktop
+   ========================================================================== */
+
+:root {
+  /* ---- Brand (configurable at runtime through White Label) ---- */
+  --qui-accent: var(--wl-accent, #2563eb);
+  --qui-accent-hover: var(--wl-accent-hover, #1d4ed8);
+  --qui-accent-soft: var(--wl-accent-soft, #edf4ff);
+  --qui-accent-border: var(--wl-accent-border, #cfe0ff);
+  --qui-on-accent: #ffffff;
+
+  /* ---- Neutrals ---- */
+  --qui-bg: #f5f7fb;
+  --qui-surface: #ffffff;
+  --qui-surface-muted: #f8fafc;
+  --qui-border: #e3e8ef;
+  --qui-border-soft: #edf0f4;
+  --qui-border-strong: #d0d7e2;
+  --qui-text: #101828;
+  --qui-text-soft: #475467;
+  --qui-muted: #667085;
+  --qui-faint: #8293a7;
+
+  /* ---- Status ---- */
+  --qui-positive: #15803d;
+  --qui-positive-soft: #ecfdf3;
+  --qui-negative: #dc2626;
+  --qui-negative-soft: #fef3f2;
+  --qui-warning: #d97706;
+  --qui-warning-soft: #fff7e8;
+
+  /* ---- Radius ---- */
+  --qui-radius-xs: 4px;   /* checkbox, tiny chips */
+  --qui-radius-sm: 6px;   /* tags, small buttons */
+  --qui-radius-md: 8px;   /* inputs, buttons, menu items */
+  --qui-radius-lg: 12px;  /* cards, panels, modals */
+  --qui-radius-xl: 16px;  /* hero blocks */
+  --qui-radius-pill: 999px;
+
+  /* ---- Spacing (4px grid) ---- */
+  --qui-space-1: 4px;
+  --qui-space-2: 8px;
+  --qui-space-3: 12px;
+  --qui-space-4: 16px;
+  --qui-space-5: 20px;
+  --qui-space-6: 24px;
+  --qui-space-8: 32px;
+
+  /* ---- Elevation ---- */
+  --qui-shadow-sm: 0 1px 2px rgba(16, 24, 40, .05);
+  --qui-shadow-md: 0 2px 5px rgba(16, 24, 40, .035), 0 7px 18px rgba(36, 60, 88, .05);
+  --qui-shadow-lg: 0 12px 32px rgba(16, 24, 40, .12);
+  --qui-focus-ring: 0 0 0 3px var(--qui-accent-soft), 0 0 0 1px var(--qui-accent);
+
+  /* ---- Typography ---- */
+  --qui-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --qui-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --qui-text-xs: 11px;    /* smallest legible size: badges, captions */
+  --qui-text-sm: 12px;    /* table cells, helper text */
+  --qui-text-md: 13px;    /* body */
+  --qui-text-lg: 14px;    /* emphasised body, card titles */
+  --qui-text-xl: 16px;    /* section titles */
+  --qui-text-2xl: 18px;
+  --qui-text-3xl: 22px;   /* page titles */
+  --qui-text-4xl: 28px;   /* KPI numbers, hero */
+
+  /* ---- Layout ---- */
+  --qui-sidebar-width: 250px;
+  --qui-sidebar-width-collapsed: 72px;
+  --qui-control-height: 34px;
+}
+
+/* --------------------------------------------------------------------------
+   Legacy aliases. DO NOT use in new code. They exist so older stylesheets
+   pick up the unified values until they are migrated to --qui-* tokens.
+   -------------------------------------------------------------------------- */
+:root {
+  /* --ui-* (design-system) */
+  --ui-bg: var(--qui-bg);
+  --ui-surface: var(--qui-surface);
+  --ui-surface-subtle: var(--qui-surface-muted);
+  --ui-border: var(--qui-border);
+  --ui-border-strong: var(--qui-border-strong);
+  --ui-ink: var(--qui-text);
+  --ui-ink-soft: var(--qui-text-soft);
+  --ui-muted: var(--qui-muted);
+  --ui-faint: var(--qui-faint);
+  --ui-accent: var(--qui-accent);
+  --ui-accent-soft: var(--qui-accent-soft);
+  --ui-positive: var(--qui-positive);
+  --ui-negative: var(--qui-negative);
+  --ui-radius: var(--qui-radius-lg);
+  --ui-shadow: var(--qui-shadow-md);
+
+  /* --ref-* (reference polish) */
+  --ref-bg: var(--qui-bg);
+  --ref-panel: var(--qui-surface);
+  --ref-surface: var(--qui-surface);
+  --ref-line: var(--qui-border);
+  --ref-border: var(--qui-border);
+  --ref-border-soft: var(--qui-border-soft);
+  --ref-text: var(--qui-text);
+  --ref-ink: var(--qui-text);
+  --ref-muted: var(--qui-muted);
+  --ref-blue: var(--qui-accent);
+
+  /* --enterprise-* */
+  --enterprise-bg: var(--qui-bg);
+  --enterprise-surface: var(--qui-surface);
+  --enterprise-subtle: var(--qui-surface-muted);
+  --enterprise-border: var(--qui-border);
+  --enterprise-text: var(--qui-text);
+  --enterprise-muted: var(--qui-muted);
+  --enterprise-accent: var(--qui-accent);
+  --enterprise-accent-soft: var(--qui-accent-soft);
+  --enterprise-radius: var(--qui-radius-lg);
+  --enterprise-shadow: var(--qui-shadow-md);
+
+  /* --canonical-* */
+  --canonical-surface: var(--qui-surface);
+  --canonical-border: var(--qui-border);
+  --canonical-text: var(--qui-text);
+  --canonical-accent: var(--qui-accent);
+  --canonical-shadow: var(--qui-shadow-md);
+
+  /* --card-* */
+  --card-bg: var(--qui-surface);
+  --card-border: var(--qui-border);
+  --card-ink: var(--qui-text);
+  --card-muted: var(--qui-muted);
+  --card-radius: var(--qui-radius-lg);
+  --card-shadow: var(--qui-shadow-md);
+
+  /* module colours that used to be separate palettes */
+  --leads: var(--qui-accent);
+  --leads-soft: var(--qui-accent-soft);
+  --cms: var(--qui-accent);
+  --cms-soft: var(--qui-accent-soft);
+  --finance: var(--qui-warning);
+  --finance-soft: var(--qui-warning-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Base element defaults (single definition; replaces duplicates in
+   styles.css and _design-system.css)
+   -------------------------------------------------------------------------- */
+html, body {
+  background: var(--qui-bg);
+  color: var(--qui-text);
+  font-family: var(--qui-font);
+  font-size: var(--qui-text-md);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--qui-accent);
+  outline-offset: 2px;
+}

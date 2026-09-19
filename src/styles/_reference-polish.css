@@ -24,7 +24,7 @@ html, body { background: var(--ref-bg); }
 }
 
 /* Page surfaces stay white; the workspace around them is the reference cool-gray canvas. */
-qai-page-header .page-header { background: #fff !important; }
+qai-page-header .page-header { background: var(--qui-surface) !important; }
 .dashboard-content { padding: 0px 0px 0px !important; }
 
 /* Primary content cards: crisp, quiet, no heavy panel chrome. */
@@ -45,7 +45,7 @@ qai-page-header .page-header { background: #fff !important; }
 .revenue-card,
 .automation-card {
   border: 1px solid var(--ref-border) !important;
-  border-radius: 12px !important;
+  border-radius: var(--qui-radius-lg) !important;
   background: var(--ref-surface) !important;
   box-shadow: 0 1px 3px rgba(218, 80, 1, 0.045) !important;
 }
@@ -62,7 +62,7 @@ qai-page-header .page-header { background: #fff !important; }
   min-height: 62px !important;
   padding: 15px 17px !important;
   border-bottom: 1px solid var(--ref-border-soft) !important;
-  background: #fff !important;
+  background: var(--qui-surface) !important;
 }
 
 .card-body,
@@ -76,7 +76,7 @@ qai-page-header .page-header { background: #fff !important; }
 .prospect-header h3 {
   margin: 4px 0 0 !important;
   color: var(--ref-ink) !important;
-  font-size: 15px !important;
+  font-size: var(--qui-text-lg) !important;
   line-height: 1.25 !important;
   font-weight: 750 !important;
   letter-spacing: -.015em !important;
@@ -96,7 +96,7 @@ qai-page-header .page-header { background: #fff !important; }
 
   border: 1px solid var(--ref-border) !important;
   border-radius: 0px !important;
-  background: #fff !important;
+  background: var(--qui-surface) !important;
   box-shadow: 0 1px 3px rgba(31, 55, 84, .045) !important;
 }
 .dashboard-content .metric-grid { gap: 12px !important; margin-bottom: 14px !important; }
@@ -104,8 +104,8 @@ qai-page-header .page-header { background: #fff !important; }
   min-height: 132px !important;
   padding: 17px !important;
   border: 1px solid #d7e0ea !important;
-  border-radius: 12px !important;
-  background: #fff !important;
+  border-radius: var(--qui-radius-lg) !important;
+  background: var(--qui-surface) !important;
   box-shadow: 0 2px 7px rgba(36, 60, 88, .055) !important;
 }
 .dashboard-content .metric-card:hover {
@@ -115,17 +115,17 @@ qai-page-header .page-header { background: #fff !important; }
 .dashboard-content .metric-icon {
   width: 31px !important;
   height: 31px !important;
-  border-radius: 8px !important;
-  background: #eaf2ff !important;
+  border-radius: var(--qui-radius-md) !important;
+  background: var(--qui-accent-soft) !important;
   color: var(--ref-blue) !important;
 }
 .dashboard-content .metric-card:nth-child(2) .metric-icon { background: #f0eaff !important; color: #7c3aed !important; }
-.dashboard-content .metric-card:nth-child(3) .metric-icon { background: #def8eb !important; color: #059669 !important; }
-.dashboard-content .metric-card:nth-child(4) .metric-icon { background: #fff2c9 !important; color: #d97706 !important; }
-.dashboard-content .metric-card:nth-child(5) .metric-icon { background: #ffe6eb !important; color: #e11d48 !important; }
-.dashboard-content .metric-card strong { margin: 14px 0 9px !important; color: var(--ref-ink) !important; font-size: 29px !important; font-weight: 750 !important; }
-.dashboard-content .metric-label { color: #526a84 !important; font-size: 10px !important; font-weight: 700 !important; }
-.dashboard-content .metric-card small { color: #8293a7 !important; font-size: 9px !important; }
+.dashboard-content .metric-card:nth-child(3) .metric-icon { background: #def8eb !important; color: var(--qui-positive) !important; }
+.dashboard-content .metric-card:nth-child(4) .metric-icon { background: #fff2c9 !important; color: var(--qui-warning) !important; }
+.dashboard-content .metric-card:nth-child(5) .metric-icon { background: #ffe6eb !important; color: var(--qui-negative) !important; }
+.dashboard-content .metric-card strong { margin: 14px 0 9px !important; color: var(--ref-ink) !important; font-size: var(--qui-text-4xl) !important; font-weight: 750 !important; }
+.dashboard-content .metric-label { color: #526a84 !important; font-size: var(--qui-text-xs) !important; font-weight: 700 !important; }
+.dashboard-content .metric-card small { color: var(--qui-faint) !important; font-size: var(--qui-text-xs) !important; }
 
 .dashboard-content .command-grid,
 .dashboard-content .detail-grid { gap: 14px !important; margin-bottom: 14px !important; }
@@ -134,8 +134,8 @@ qai-page-header .page-header { background: #fff !important; }
 .dashboard-content .data-card .card-heading button,
 .dashboard-content .data-card .card-heading a {
   border: 1px solid #d5dfeb !important;
-  border-radius: 8px !important;
-  background: #fff !important;
+  border-radius: var(--qui-radius-md) !important;
+  background: var(--qui-surface) !important;
   color: #36516e !important;
 }
 
@@ -147,6 +147,6 @@ qai-page-header .page-header { background: #fff !important; }
   border-color: var(--ref-border-soft) !important;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .dashboard-content { padding-left: 18px !important; padding-right: 18px !important; }
 }

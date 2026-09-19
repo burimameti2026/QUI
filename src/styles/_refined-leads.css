@@ -1,20 +1,20 @@
 /* Supplied Leads reference: page-level geometry only. Shared primitives remain reusable. */
-.shell:has(.leads-page-header){grid-template-columns:308px minmax(0,1fr)!important;background:#fff!important}
-.shell:has(.leads-page-header) .sidebar{display:block!important;width:auto!important;background:#f7f8fa!important;border-right:1px solid #e1e5e9!important}
-.shell:has(.leads-page-header) .app-main{min-width:0!important;background:#fff!important}
-.shell:has(.leads-page-header) .app-header{height:58px!important;min-height:58px!important;padding:9px 18px!important;border-bottom:1px solid #e1e5e9!important;background:#fff!important}
-.shell:has(.leads-page-header) .global-search{width:420px!important;height:38px!important;border-radius:3px!important;border-color:#dfe3e7!important}
-.shell:has(.leads-page-header) .header-context{font-size:11px!important;color:#737c85!important}
-.shell:has(.leads-page-header) .header-icon{width:36px!important;height:36px!important;border-radius:3px!important}
-.shell:has(.leads-page-header) .admin-account{min-height:38px!important;border-radius:3px!important}
+.shell:has(.leads-page-header){grid-template-columns:308px minmax(0,1fr)!important;background:var(--qui-surface)!important}
+.shell:has(.leads-page-header) .sidebar{display:block!important;width:auto!important;background:#f7f8fa!important;border-right:1px solid var(--qui-border)!important}
+.shell:has(.leads-page-header) .app-main{min-width:0!important;background:var(--qui-surface)!important}
+.shell:has(.leads-page-header) .app-header{height:58px!important;min-height:58px!important;padding:9px 18px!important;border-bottom:1px solid var(--qui-border)!important;background:var(--qui-surface)!important}
+.shell:has(.leads-page-header) .global-search{width:420px!important;height:38px!important;border-radius:var(--qui-radius-xs)!important;border-color:var(--qui-border)!important}
+.shell:has(.leads-page-header) .header-context{font-size:var(--qui-text-xs)!important;color:#737c85!important}
+.shell:has(.leads-page-header) .header-icon{width:36px!important;height:36px!important;border-radius:var(--qui-radius-xs)!important}
+.shell:has(.leads-page-header) .admin-account{min-height:38px!important;border-radius:var(--qui-radius-xs)!important}
 .shell:has(.leads-page-header) .page{background:#f7f8fc!important}
 .shell:has(.leads-page-header) .brand{min-height:76px!important;padding:13px 16px!important;background:#f7f8fa!important}
 .shell:has(.leads-page-header) .reference-menu{padding:12px 10px 28px!important}
-.shell:has(.leads-page-header) .group-heading{padding:11px 10px 6px!important;background:transparent!important;color:#a0a5ab!important;font-size:9px!important;font-weight:700!important;letter-spacing:.08em!important}
+.shell:has(.leads-page-header) .group-heading{padding:11px 10px 6px!important;background:transparent!important;color:#a0a5ab!important;font-size:var(--qui-text-xs)!important;font-weight:700!important;letter-spacing:.08em!important}
 .shell:has(.leads-page-header) .group-items{gap:1px!important}
-.shell:has(.leads-page-header) .menu-item{min-height:34px!important;padding:0 9px!important;border-radius:4px!important;color:#5e656d!important;font-size:11px!important;font-weight:550!important}
-.shell:has(.leads-page-header) .menu-item.active{background:#fff!important;color:#202124!important;box-shadow:0 1px 3px rgba(30,38,46,.06)!important}
-.shell:has(.leads-page-header) .nav-icon{width:19px!important;flex-basis:19px!important;color:#7b838b!important;font-size:14px!important}
-.shell:has(.leads-page-header) .child-item{min-height:30px!important;font-size:10px!important}
-.shell:has(.leads-page-header) .brand-logo{width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:4px!important}
-.shell:has(.leads-page-header) .brand-copy strong{font-size:14px!important}.shell:has(.leads-page-header) .brand-copy small{font-size:7px!important}
+.shell:has(.leads-page-header) .menu-item{min-height:34px!important;padding:0 9px!important;border-radius:var(--qui-radius-xs)!important;color:#5e656d!important;font-size:var(--qui-text-xs)!important;font-weight:550!important}
+.shell:has(.leads-page-header) .menu-item.active{background:var(--qui-surface)!important;color:var(--qui-text)!important;box-shadow:0 1px 3px rgba(30,38,46,.06)!important}
+.shell:has(.leads-page-header) .nav-icon{width:19px!important;flex-basis:19px!important;color:#7b838b!important;font-size:var(--qui-text-lg)!important}
+.shell:has(.leads-page-header) .child-item{min-height:30px!important;font-size:var(--qui-text-xs)!important}
+.shell:has(.leads-page-header) .brand-logo{width:30px!important;height:30px!important;flex-basis:30px!important;border-radius:var(--qui-radius-xs)!important}
+.shell:has(.leads-page-header) .brand-copy strong{font-size:var(--qui-text-lg)!important}.shell:has(.leads-page-header) .brand-copy small{font-size:var(--qui-text-xs)!important}

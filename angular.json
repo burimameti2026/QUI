@@ -24,7 +24,8 @@
               "src/styles/_refined-leads.css",
               "src/styles/_canonical-final.css",
               "src/styles/_card-refinement.css",
-              "src/styles/_white-label-tokens.css"
+              "src/styles/_white-label-tokens.css",
+              "src/styles/_tokens.css"
             ]
           },
           "configurations": {

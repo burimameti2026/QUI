@@ -6,7 +6,7 @@
   margin: 0 -24px 24px;
   padding: 18px 24px 16px;
   border-bottom: 1px solid #dbe4ef;
-  background: #f8fafc;
+  background: var(--qui-surface-muted);
 }
 
 .steps::before {
@@ -33,7 +33,7 @@
   border-radius: 0;
   background: transparent;
   color: #64748b;
-  font-size: 10px;
+  font-size: var(--qui-text-xs);
   font-weight: 800;
   text-align: center;
 }
@@ -46,11 +46,11 @@
   place-items: center;
   border: 1px solid #cbd8e8;
   border-radius: 50%;
-  background: #fff;
+  background: var(--qui-surface);
   color: #64748b;
-  font-size: 11px;
+  font-size: var(--qui-text-xs);
   font-weight: 800;
-  box-shadow: 0 0 0 5px #f8fafc;
+  box-shadow: 0 0 0 5px var(--qui-surface-muted);
 }
 
 .steps button.wizard-step:hover {
@@ -60,18 +60,18 @@
 
 .steps button.wizard-step.active {
   border: 0;
-  color: #1d4ed8;
+  color: var(--qui-accent-hover);
 }
 
 .steps button.wizard-step.active b,
 .steps button.wizard-step.done b {
-  border-color: #2563eb;
-  background: #2563eb;
-  color: #fff;
+  border-color: var(--qui-accent);
+  background: var(--qui-accent);
+  color: var(--qui-on-accent);
 }
 
 .steps button.wizard-step.active b {
-  box-shadow: 0 0 0 5px #eaf2ff;
+  box-shadow: 0 0 0 5px var(--qui-accent-soft);
 }
 
 .builder > section {
@@ -79,36 +79,36 @@
 }
 
 .builder > section > h3 {
-  color: #172033;
-  font-size: 14px;
+  color: var(--qui-text);
+  font-size: var(--qui-text-lg);
 }
 
 .builder > section > p {
   color: #64748b;
-  font-size: 10px;
+  font-size: var(--qui-text-xs);
   line-height: 1.55;
 }
 
 .sequence {
   border: 1px solid #d7e1ef;
-  border-radius: 12px;
-  background: #fff;
+  border-radius: var(--qui-radius-lg);
+  background: var(--qui-surface);
   box-shadow: 0 4px 12px rgba(23, 32, 51, 0.04);
 }
 
 .sequence > b {
-  color: #1d4ed8;
+  color: var(--qui-accent-hover);
 }
 
 .review dl {
   overflow: hidden;
   border: 1px solid #d7e1ef;
-  border-radius: 12px;
-  background: #fff;
+  border-radius: var(--qui-radius-lg);
+  background: var(--qui-surface);
 }
 
 .review dl div {
-  background: #fff;
+  background: var(--qui-surface);
 }
 
 .builder > footer {
@@ -117,7 +117,7 @@
   border-top: 1px solid #e2e8f0;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 640px) {
   .steps {
     grid-template-columns: 1fr;
     gap: 9px;
@@ -145,6 +145,6 @@
   }
 
   .steps button.wizard-step b {
-    box-shadow: 0 0 0 4px #f8fafc;
+    box-shadow: 0 0 0 4px var(--qui-surface-muted);
   }
 }

@@ -1,7 +1,7 @@
 /* Landing-only visual polish: typography, icon hierarchy and brand treatment. */
 .landing-nav > nav a,
 .landing-nav .text-link {
-  font-size: 14px;
+  font-size: var(--qui-text-lg);
   letter-spacing: .01em;
   font-weight: 700;
 }
@@ -15,13 +15,13 @@
 
 .brand b {
   letter-spacing: -.045em;
-  font-size: 20px;
+  font-size: var(--qui-text-3xl);
 }
 
 .brand strong {
   display: inline-block;
   margin-left: 2px;
-  font-size: 25px;
+  font-size: var(--qui-text-4xl);
   line-height: 1;
   letter-spacing: -.05em;
   font-weight: 850;
@@ -31,11 +31,11 @@
   width: 34px;
   height: 34px;
   padding: 7px;
-  border-radius: 10px;
+  border-radius: var(--qui-radius-lg);
   box-shadow: 0 7px 18px rgba(40, 95, 202, .22);
 }
 
-.section-label { font-size: 11px; }
+.section-label { font-size: var(--qui-text-xs); }
 
 .hero-copy > p,
 .section-intro p,
@@ -43,27 +43,27 @@
 .operations-copy > p,
 .security-section > div:first-child > p,
 .contact-copy p {
-  font-size: 16px;
+  font-size: var(--qui-text-xl);
   line-height: 1.68;
 }
 
-.hero-proof span { font-size: 12px; }
+.hero-proof span { font-size: var(--qui-text-sm); }
 
-.audience-strip b { font-size: 13px; }
+.audience-strip b { font-size: var(--qui-text-md); }
 
 .capability-grid article > small,
 .module-price-grid article > span,
 .pricing-eyebrow,
 .contact-card > div:first-child > span {
-  font-size: 11px;
+  font-size: var(--qui-text-xs);
   letter-spacing: .08em;
   font-weight: 800;
 }
 
-.capability-grid h3 { font-size: 21px; }
-.capability-grid p { font-size: 14px; }
-.module-price-grid h3 { font-size: 18px; }
-.module-price-grid p { font-size: 13px; }
+.capability-grid h3 { font-size: var(--qui-text-3xl); }
+.capability-grid p { font-size: var(--qui-text-lg); }
+.module-price-grid h3 { font-size: var(--qui-text-2xl); }
+.module-price-grid p { font-size: var(--qui-text-md); }
 
 .capability-icon,
 .price-icon {
@@ -71,8 +71,8 @@
   height: 42px;
   display: inline-grid;
   place-items: center;
-  border-radius: 12px;
-  font-size: 21px;
+  border-radius: var(--qui-radius-lg);
+  font-size: var(--qui-text-3xl);
   box-shadow: 0 8px 22px rgba(32, 58, 101, .10);
 }
 
@@ -89,7 +89,7 @@
 .primary-cta,
 .nav-cta,
 .secondary-cta {
-  font-size: 13px;
+  font-size: var(--qui-text-md);
   font-weight: 750;
 }
 
@@ -98,25 +98,25 @@
 }
 
 .floating-card > i {
-  font-size: 15px;
+  font-size: var(--qui-text-lg);
 }
 
-.floating-card small { font-size: 8px; }
-.floating-card b { font-size: 10px; }
+.floating-card small { font-size: var(--qui-text-xs); }
+.floating-card b { font-size: var(--qui-text-xs); }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .landing-nav > nav a,
-  .landing-nav .text-link { font-size: 13px; }
+  .landing-nav .text-link { font-size: var(--qui-text-md); }
 }
 
-@media (max-width: 620px) {
-  .brand b { font-size: 18px; }
-  .brand strong { font-size: 22px; }
+@media (max-width: 640px) {
+  .brand b { font-size: var(--qui-text-2xl); }
+  .brand strong { font-size: var(--qui-text-3xl); }
   .brand-mark { width: 31px; height: 31px; }
   .hero-copy > p,
   .section-intro p,
   .pricing-intro p,
   .operations-copy > p,
   .security-section > div:first-child > p,
-  .contact-copy p { font-size: 15px; }
+  .contact-copy p { font-size: var(--qui-text-lg); }
 }
