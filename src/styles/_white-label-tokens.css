@@ -1219,3 +1219,162 @@ qai-ui-card footer{
   background:#eef2ff!important;
   border-color:var(--wl-card-row-border)!important;
 }
+
+
+/* FINAL PRODUCT VISUAL SYSTEM — orange + neutral enterprise */
+:root{
+  --wl-app-surface:#ffffff;
+  --wl-page-bg:#f7f7f8;
+  --wl-surface:#ffffff;
+  --wl-surface-muted:#fafafa;
+  --wl-text:#171717;
+  --wl-muted:#737373;
+  --wl-border:#e6e8eb;
+  --wl-border-soft:#f0f0f0;
+  --wl-accent:#f59e0b;
+  --wl-accent-hover:#d97706;
+  --wl-accent-soft:#fff4df;
+  --wl-accent-border:#ffd08a;
+  --wl-card-bg:#ffffff;
+  --wl-card-header-bg:#ffffff;
+  --wl-card-border:#e4e6e9;
+  --wl-card-header-border:#f59e0b;
+  --wl-card-row-bg:#fafafa;
+  --wl-card-row-border:#ececec;
+  --wl-card-radius:0px;
+  --wl-kpi-radius:0px;
+  --wl-button-radius:8px;
+  --wl-button-1-bg:#f59e0b;
+  --wl-button-1-text:#171717;
+  --wl-button-1-border:#f59e0b;
+  --wl-button-1-hover:#d97706;
+  --wl-button-2-bg:#ffffff;
+  --wl-button-2-text:#171717;
+  --wl-button-2-border:#d8dadd;
+  --wl-button-2-hover:#f7f7f7;
+  --wl-button-3-bg:#fff4df;
+  --wl-button-3-text:#9a5b00;
+  --wl-button-3-border:#ffd08a;
+  --wl-button-3-hover:#ffebc2;
+}
+body,main.app-main{background:var(--wl-page-bg)!important;color:var(--wl-text)!important}
+main.app-main > router-outlet + *{
+  color:var(--wl-text);
+}
+main.app-main > router-outlet + * :where(
+  .card,.panel,.section-card,.content-card,.data-card,.workspace-card,
+  .settings-card,.config-card,.detail-card,.queue-panel,.message-card,
+  .approval-hero,.discovery-hero,.executive-band,.revenue-card,
+  .automation-card,.directory-card,.campaign-card,.campaigns,.safety,
+  .campaign-activity,.approval-panel,.hero,.hero-panel,.workspace-panel,
+  .table-card,.list-card,.form-card,.settings-panel,.content-panel,
+  .metric-card,.kpi-card,.stat-card
+){
+  background:#fff!important;
+  border-color:var(--wl-card-border)!important;
+  border-radius:0!important;
+  box-shadow:0 2px 8px rgba(23,23,23,.045)!important;
+}
+main.app-main > router-outlet + * :where(
+  .card>header,.panel>header,.section-card>header,.content-card>header,
+  .card-header,.workspace-header,.prospect-header,.section-header,
+  .queue-panel>header,.message-card>header,.table-card>header,
+  .list-card>header,.form-card>header,.settings-panel>header,.content-panel>header
+){
+  background:#fff!important;
+  border-bottom:2px solid var(--wl-card-header-border)!important;
+  color:var(--wl-text)!important;
+}
+main.app-main > router-outlet + * :where(
+  .metrics article,.metrics .metric,.metric-card,.kpi-card,.stat-card
+){
+  background:#fff!important;
+  border-radius:0!important;
+  border-color:var(--wl-card-border)!important;
+}
+main.app-main > router-outlet + * :where(
+  .card-body,.card-content,.card .body,.list,.list-card .list,
+  .table-wrap,.table-container,.rows,.card-rows
+){
+  background:#fafafa!important;
+}
+main.app-main > router-outlet + * :where(
+  .card .row,.card .item,.list-card .item,.table-card tbody tr,
+  .table-card td,.data-card .row,.content-card .row
+){
+  background:var(--wl-card-row-bg)!important;
+  border-color:var(--wl-card-row-border)!important;
+}
+button.primary,.primary,.primary-action,.btn-primary,.header-action,
+qai-page-header .page-actions button.primary,
+qai-page-header .header-actions button.primary{
+  background:#f59e0b!important;
+  border-color:#f59e0b!important;
+  color:#171717!important;
+}
+button.primary:hover:not(:disabled),.primary:hover:not(:disabled),
+.primary-action:hover:not(:disabled),.btn-primary:hover:not(:disabled),
+.header-action:hover:not(:disabled){
+  background:#d97706!important;
+}
+button.secondary,.secondary,.btn-secondary{
+  background:#fff!important;
+  border-color:#d8dadd!important;
+  color:#171717!important;
+}
+button.quiet,.quiet,.quiet-action,.btn-quiet{
+  background:#fff4df!important;
+  border-color:#ffd08a!important;
+  color:#9a5b00!important;
+}
+qai-ui-card .card,qai-ui-list-card .card,qai-ui-table-card .card{
+  background:#fff!important;border-radius:0!important;
+}
+qai-ui-card .card>header,qai-ui-list-card .card>header,qai-ui-table-card .card>header{
+  background:#fff!important;border-bottom:2px solid #f59e0b!important;
+}
+qai-ui-card .body,qai-ui-list-card .list,qai-ui-table-card .table-wrap{
+  background:#fafafa!important;
+}
+qai-ui-card .row,qai-ui-list-card .item,qai-ui-table-card tbody tr,qai-ui-table-card td{
+  background:#fafafa!important;border-color:#ececec!important;
+}
+qai-ui-metrics .metric{
+  background:#fff!important;
+  border-radius:0!important;
+  border-color:#e4e6e9!important;
+  box-shadow:0 2px 8px rgba(23,23,23,.045)!important;
+}
+qai-ui-metrics .metric .icon{
+  background:#fff4df!important;
+  color:#f59e0b!important;
+}
+qai-ui-metrics .metric.tone-blue .icon,
+qai-ui-metrics .metric.tone-violet .icon,
+qai-ui-metrics .metric.tone-amber .icon,
+qai-ui-metrics .metric.tone-rose .icon{
+  background:#fff4df!important;color:#f59e0b!important;
+}
+qai-ui-metrics .metric.tone-green .icon{
+  background:#eef8f1!important;color:#15803d!important;
+}
+qai-ui-metrics .metric strong{color:#171717!important}
+qai-ui-metrics .metric .label,
+qai-ui-metrics .metric small{color:#737373!important}
+qai-ui-metrics .sparkline polyline{stroke:#f59e0b!important}
+qai-page-header .page-header{
+  background:#fff!important;
+  border-bottom:1px solid #e6e8eb!important;
+}
+qai-page-header .page-header h1{color:#171717!important}
+qai-page-header .page-header p{color:#737373!important}
+input:not([type="checkbox"]):not([type="radio"]),select,textarea{
+  background:#fff!important;border-color:#dfe1e4!important;color:#171717!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:#f59e0b!important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.14)!important;
+}
+.status,.badge,.tag,.chip,.pill,.status-badge,.campaign-tag{
+  background:#fff4df!important;border-color:#ffd08a!important;color:#9a5b00!important;
+}
