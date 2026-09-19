@@ -42,7 +42,7 @@ export interface UiPageConfig {
   id: string;
   name: string;
   shell: { header: boolean; breadcrumb?: boolean };
-  header?: { title?: string; subtitle?: string; actions?: UiPageAction[] };
+  header?: { title?: string; subtitle?: string; actions?: UiPageAction[]; template?: "header-01" | "header-02" };
   sections: UiPageSectionConfig[];
 }
 
@@ -66,6 +66,7 @@ export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
   name: 'Acquisition command center',
   shell: { header: true, breadcrumb: false },
   header: {
+    template: 'header-01',
     title: 'Acquisition command center',
     subtitle: 'Build, qualify and route demand through one operating picture.',
     actions: [
