@@ -115,3 +115,94 @@ qai-ui-metrics .metric{
   border-color:var(--wl-card-border)!important;
   background:var(--wl-card-bg)!important;
 }
+
+
+/* Dashboard / shared enterprise templates: White Label is the visual authority. */
+qai-ui-steps .surface,
+qai-ui-card .card,
+qai-ui-list-card .card,
+qai-ui-table-card .card{
+  background:var(--wl-card-bg)!important;
+  border-color:var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+}
+qai-ui-steps .surface>header,
+qai-ui-card .card>header,
+qai-ui-list-card .card>header,
+qai-ui-table-card .card>header{
+  background:var(--wl-card-header-bg)!important;
+  border-bottom-color:var(--wl-card-border)!important;
+}
+qai-ui-steps h2,
+qai-ui-card h3,
+qai-ui-list-card h3,
+qai-ui-table-card h3{
+  color:var(--wl-card-title)!important;
+}
+qai-ui-steps p,
+qai-ui-steps .eyebrow,
+qai-ui-card header p,
+qai-ui-card .eyebrow,
+qai-ui-list-card .eyebrow,
+qai-ui-table-card .eyebrow{
+  color:var(--wl-card-muted)!important;
+}
+qai-ui-card .body,
+qai-ui-list-card .list,
+qai-ui-table-card .table-wrap{
+  background:var(--wl-surface-muted)!important;
+}
+qai-ui-card .row,
+qai-ui-list-card .item,
+qai-ui-table-card td{
+  background:var(--wl-card-bg)!important;
+  border-color:var(--wl-card-border)!important;
+  color:var(--wl-card-text)!important;
+}
+qai-ui-card .row.first{
+  background:var(--wl-accent-soft)!important;
+  border-color:var(--wl-accent-border)!important;
+}
+qai-ui-card .row.first strong,
+qai-ui-card footer button,
+qai-ui-list-card header button,
+qai-ui-table-card header button{
+  color:var(--wl-button-1-text)!important;
+}
+qai-ui-card footer{
+  background:var(--wl-surface-muted)!important;
+  border-color:var(--wl-card-border)!important;
+}
+qai-ui-card footer button{
+  background:var(--wl-button-1-bg)!important;
+  border:1px solid var(--wl-button-1-border)!important;
+  color:var(--wl-button-1-text)!important;
+  padding:7px 10px!important;
+  border-radius:var(--wl-card-radius)!important;
+}
+qai-ui-list-card header button,
+qai-ui-table-card header button{
+  background:var(--wl-button-2-bg)!important;
+  border-color:var(--wl-button-2-border)!important;
+  color:var(--wl-button-2-text)!important;
+}
+qai-ui-steps .badge,
+qai-ui-list-card .item em,
+qai-ui-list-card .item em.success{
+  background:var(--wl-accent-soft)!important;
+  border-color:var(--wl-accent-border)!important;
+  color:var(--wl-accent)!important;
+}
+qai-ui-table-card th{
+  background:var(--wl-surface-muted)!important;
+  border-color:var(--wl-card-border)!important;
+  color:var(--wl-card-muted)!important;
+}
+qai-ui-table-card td{color:var(--wl-card-text)!important}
+qai-ui-page-renderer .text-block{
+  border-color:var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+  background:var(--wl-card-bg)!important;
+}
+qai-ui-page-renderer .text-block h3{color:var(--wl-card-title)!important}
+qai-ui-page-renderer .text-block p{color:var(--wl-card-text)!important}
