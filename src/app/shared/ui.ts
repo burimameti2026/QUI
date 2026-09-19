@@ -20,7 +20,7 @@ function translateValue(i18n: AdminI18nService, value: string): string {
   </div>`,
   styles: [`
     :host { display:block; min-width:0; }
-    :host .page-header--orange .primary { border-color:var(--wl-button-1-border, var(--brand-button-primary, var(--brand-primary)))!important; background:var(--wl-button-1-bg, var(--brand-button-primary, var(--brand-primary)))!important; color:var(--wl-button-1-text, var(--brand-button-primary-text, #fff))!important; }
+    :host .page-header--orange .primary { border-color:var(--wl-button-1-border, var(--brand-button-primary, var(--brand-primary)))!important; background:var(--wl-button-1-bg, var(--brand-button-primary, var(--brand-primary)))!important; color:var(--wl-button-1-text, var(--brand-button-primary-text, var(--wl-surface,#fff)))!important; }
     :host .page-header--orange .primary:hover { border-color:var(--wl-button-1-hover, var(--brand-button-primary-hover, var(--brand-primary-hover)))!important; background:var(--wl-button-1-hover, var(--brand-button-primary-hover, var(--brand-primary-hover)))!important; }
   `]
 })
@@ -55,12 +55,12 @@ export class Empty { readonly i18n = inject(AdminI18nService); @Input() title="N
   template:`<nav class="wizard" [attr.aria-label]="translate(label)"><ol><li *ngFor="let step of steps;let index=index" [class.active]="index===current" [class.done]="isDone(index)"><span>{{isDone(index)?'✓':index+1}}</span><div><b>{{translate(step)}}</b><small *ngIf="descriptions[index]">{{translate(descriptions[index])}}</small></div></li></ol></nav>`,
   styles:[`
     :host { display: block; min-width: 0; }
-    .wizard { display: block; width: 100%; padding: 16px 18px 18px; background: #fff; }
+    .wizard { display: block; width: 100%; padding: 16px 18px 18px; background: var(--wl-surface,#fff); }
     .wizard ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
     .wizard ol::before { content: ""; position: absolute; top: 19px; left: 32px; right: 32px; height: 2px; background: #d9e3f1; }
     .wizard li { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px; color: #64748b; text-align: center; }
-    .wizard li > span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #cbd8e8; border-radius: 50%; background: #fff; color: #62748c; font-size: 11px; font-weight: 800; box-shadow: 0 0 0 5px #fff; }
-    .wizard li.done > span, .wizard li.active > span { border-color: #2563eb; background: #2563eb; color: #fff; }
+    .wizard li > span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #cbd8e8; border-radius: 50%; background: var(--wl-surface,#fff); color: #62748c; font-size: 11px; font-weight: 800; box-shadow: 0 0 0 5px var(--wl-surface,#fff); }
+    .wizard li.done > span, .wizard li.active > span { border-color: var(--wl-accent,#2563eb); background: var(--wl-accent,#2563eb); color: var(--wl-surface,#fff); }
     .wizard li.active > span { box-shadow: 0 0 0 5px #eaf2ff; }
     .wizard li > div { min-width: 0; }
     .wizard li b { display: block; color: #334155; font-size: 10px; font-weight: 800; }
@@ -71,7 +71,7 @@ export class Empty { readonly i18n = inject(AdminI18nService); @Input() title="N
       .wizard ol { grid-template-columns: 1fr; gap: 10px; }
       .wizard ol::before { top: 18px; bottom: 18px; left: 19px; right: auto; width: 2px; height: auto; }
       .wizard li { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 11px; padding: 0; text-align: left; }
-      .wizard li > span { box-shadow: 0 0 0 4px #fff; }
+      .wizard li > span { box-shadow: 0 0 0 4px var(--wl-surface,#fff); }
     }
   `]
 })
