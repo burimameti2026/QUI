@@ -540,3 +540,87 @@ main{background:var(--wl-page-bg,#f5f7fb)!important}
   background:var(--wl-accent-soft,#edf4ff)!important;
   color:var(--wl-accent,#2563eb)!important;
 }
+
+
+/* Enterprise top chrome — mirrors the source-of-truth workspace shell. */
+.app-header{
+  min-height:60px!important;
+  padding:10px 22px!important;
+  background:rgba(255,255,255,.98)!important;
+  border-bottom:1px solid #e7ebf1!important;
+}
+.header-search-wrap{gap:14px!important}
+.global-search{
+  width:min(392px,100%)!important;
+  height:36px!important;
+  border-radius:8px!important;
+  background:#fff!important;
+}
+.header-tools{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-left:auto;
+}
+.header-icon{
+  position:relative;
+  display:grid;
+  width:30px;
+  height:30px;
+  place-items:center;
+  color:#667085;
+  text-decoration:none;
+  font-size:20px;
+  line-height:1;
+}
+.header-icon:hover{color:#2563eb}
+.notification-dot{
+  position:absolute;
+  top:1px;
+  right:1px;
+  display:grid;
+  width:14px;
+  height:14px;
+  place-items:center;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:#f04438;
+  color:#fff;
+  font-size:7px;
+  font-weight:800;
+}
+.header-help{
+  display:grid;
+  width:30px;
+  height:30px;
+  place-items:center;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#667085;
+  font-size:13px;
+  font-weight:700;
+}
+.header-help:hover{background:#f2f5f9;color:#2563eb}
+.admin-menu{margin-left:0!important}
+.admin-account{
+  min-height:36px!important;
+  padding:2px 3px!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:transparent!important;
+}
+.admin-account:hover,.admin-account.open{background:#f2f5f9!important}
+.admin-avatar{
+  width:34px!important;
+  height:34px!important;
+  background:#e9efff!important;
+  color:#315fbd!important;
+  font-size:10px!important;
+}
+.admin-copy{display:none!important}
+.admin-chevron{font-size:10px!important;margin-left:1px}
+@media(max-width:620px){
+  .header-tools{gap:7px}
+  .header-help{display:none}
+}
