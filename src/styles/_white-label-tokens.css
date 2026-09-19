@@ -338,7 +338,7 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-page-max-width:none;
   --wl-header-padding:14px;
   --wl-header-gap:20px;
-  --wl-header-font-size:16px;
+  --wl-header-font-size:16px;\n  --wl-button-gap:8px;
   --wl-card-padding:16px;
   --wl-card-gap:12px;
   --wl-card-font-size:14px;
@@ -349,7 +349,7 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-button-font-size:10px;
   --wl-button-font-weight:700;
   --wl-kpi-padding:16px;
-  --wl-kpi-shadow:0 4px 14px rgba(15,47,104,.05);
+  --wl-kpi-shadow:0 4px 14px rgba(15,47,104,.05);\n  --wl-steps-padding:18px;\n  --wl-steps-gap:10px;\n  --wl-steps-connector-height:2px;\n  --wl-steps-focus-ring:5px;\n  --wl-steps-font-size:10px;\n  --wl-steps-label-gap:4px;\n  --wl-steps-label-size:8px;\n  --wl-steps-line-height:1.35;\n  --wl-steps-connector-offset:18px;\n  --wl-steps-connector-width:2px;\n  --wl-steps-mobile-ring:4px;
   --wl-text-padding:18px;
   --wl-text-title-size:14px;
   --wl-text-body-size:11px;
@@ -401,3 +401,45 @@ qai-ui-list-card .copy{min-width:0;flex:1} qai-ui-table-card .table-wrap{overflo
 @media(max-width:1100px){qai-ui-metrics .metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.columns-5,.columns-4,.columns-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){qai-ui-steps .steps{grid-template-columns:repeat(5,1fr);gap:8px}qai-ui-steps .connector{display:none}}
 @media(max-width:680px){qai-ui-metrics .metrics,qai-ui-steps .steps,qai-ui-section .ui-section{grid-template-columns:1fr!important}}
+
+
+/* Refined shared primitives: structure is shared, appearance is White Label controlled. */
+qai-page-header .page-header{
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--wl-header-gap);
+  width:100%;
+  min-height:var(--wl-header-height);
+  padding:var(--wl-header-padding) var(--wl-page-padding-x);
+  background:var(--wl-header-bg)!important;
+  border-bottom:1px solid var(--wl-header-border)!important;
+  color:var(--wl-header-text)!important;
+  font-size:var(--wl-header-font-size);
+}
+qai-page-header .page-header-title{min-width:0;flex:1 1 auto}
+qai-page-header .page-header h1{margin:0;color:var(--wl-header-title)!important;font-size:var(--wl-header-font-size);font-weight:700}
+qai-page-header .page-header p{margin:4px 0 0;color:var(--wl-header-muted)!important}
+qai-page-header .page-actions{display:flex;align-items:center;gap:var(--wl-button-gap);flex:0 0 auto}
+qai-page-header .page-actions button{min-height:var(--wl-control-height);padding:var(--wl-button-padding-y) var(--wl-button-padding-x)}
+
+qai-wizard-steps .wizard{display:block;width:100%;padding:var(--wl-steps-padding) var(--wl-card-padding);background:var(--wl-steps-bg,var(--wl-surface))}
+qai-wizard-steps .wizard ol{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:0;padding:0;list-style:none}
+qai-wizard-steps .wizard ol:before{content:"";position:absolute;top:calc(var(--wl-control-height) / 2);left:var(--wl-card-padding);right:var(--wl-card-padding);height:var(--wl-steps-connector-height);background:var(--wl-steps-border,var(--wl-border))}
+qai-wizard-steps .wizard li{position:relative;z-index:1;display:flex;min-width:0;flex-direction:column;align-items:center;gap:var(--wl-steps-gap);padding:0 var(--wl-card-padding);color:var(--wl-steps-muted,var(--wl-muted));text-align:center}
+qai-wizard-steps .wizard li>span{display:grid;width:var(--wl-control-height);height:var(--wl-control-height);place-items:center;border:1px solid var(--wl-steps-border,var(--wl-border));border-radius:50%;background:var(--wl-steps-bg,var(--wl-surface));color:var(--wl-steps-muted,var(--wl-muted));font-size:var(--wl-button-font-size);font-weight:var(--wl-button-font-weight);box-shadow:0 0 0 var(--wl-steps-focus-ring) var(--wl-steps-bg,var(--wl-surface))}
+qai-wizard-steps .wizard li.done>span,qai-wizard-steps .wizard li.active>span{border-color:var(--wl-steps-accent,var(--wl-accent));background:var(--wl-steps-accent,var(--wl-accent));color:var(--wl-surface)}
+qai-wizard-steps .wizard li.active>span{box-shadow:0 0 0 var(--wl-steps-focus-ring) var(--wl-accent-soft,var(--wl-surface-muted))}
+qai-wizard-steps .wizard li>div{min-width:0}
+qai-wizard-steps .wizard li b{display:block;color:var(--wl-steps-text,var(--wl-text));font-size:var(--wl-steps-font-size);font-weight:var(--wl-button-font-weight)}
+qai-wizard-steps .wizard li.active b{color:var(--wl-steps-accent,var(--wl-accent))}
+qai-wizard-steps .wizard li small{display:block;margin-top:var(--wl-steps-label-gap);color:var(--wl-steps-muted,var(--wl-muted));font-size:var(--wl-steps-label-size);line-height:var(--wl-steps-line-height)}
+@media(max-width:680px){
+  qai-page-header .page-header{align-items:flex-start;flex-wrap:wrap}
+  qai-page-header .page-actions{width:100%}
+  qai-wizard-steps .wizard ol{grid-template-columns:1fr;gap:var(--wl-steps-gap)}
+  qai-wizard-steps .wizard ol:before{top:var(--wl-steps-connector-offset);bottom:var(--wl-steps-connector-offset);left:calc(var(--wl-control-height) / 2);right:auto;width:var(--wl-steps-connector-width);height:auto}
+  qai-wizard-steps .wizard li{display:grid;grid-template-columns:var(--wl-control-height) minmax(0,1fr);align-items:center;gap:var(--wl-steps-gap);padding:0;text-align:left}
+  qai-wizard-steps .wizard li>span{box-shadow:0 0 0 var(--wl-steps-mobile-ring) var(--wl-steps-bg,var(--wl-surface))}
+}
