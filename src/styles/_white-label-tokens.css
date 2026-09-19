@@ -1378,3 +1378,18 @@ input:focus,select:focus,textarea:focus{
 .status,.badge,.tag,.chip,.pill,.status-badge,.campaign-tag{
   background:#fff4df!important;border-color:#ffd08a!important;color:#9a5b00!important;
 }
+
+/* Final reference alignment for page-specific card headings. */
+main.app-main > router-outlet + * :where(.card-heading,.card-heading h3,.card-heading button,.card-heading a){
+  background-color:#fff!important;
+}
+main.app-main > router-outlet + * :where(.card-heading){
+  border-bottom:2px solid #f59e0b!important;
+}
+main.app-main > router-outlet + * :where(.card-heading h3){
+  color:#171717!important;
+}
+main.app-main > router-outlet + * :where(.metric-card,.kpi-card,.stat-card){
+  border-radius:0!important;
+  box-shadow:0 2px 8px rgba(23,23,23,.045)!important;
+}
