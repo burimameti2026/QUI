@@ -129,12 +129,12 @@ qai-page-header .page-header { background: #fff !important; }
 
 .dashboard-content .command-grid,
 .dashboard-content .detail-grid { gap: 14px !important; margin-bottom: 14px !important; }
-.dashboard-content .data-card { box-shadow: 0 2px 7px rgba(36, 60, 88, .045) !important; }
-.dashboard-content .data-card .card-footer { border-top: 1px solid var(--ref-border-soft) !important; background: #fbfcfe !important; }
+.dashboard-content .data-card { box-shadow: 0 2px 7px rgba(235, 236, 236, 0.045) !important; }
+.dashboard-content .data-card .card-footer { border-top: 0px solid var(--ref-border-soft) !important; background: #fbfcfe !important; }
 .dashboard-content .data-card .card-heading button,
 .dashboard-content .data-card .card-heading a {
   border: 1px solid #d5dfeb !important;
-  border-radius: 8px !important;
+  border-radius: 0px !important;
   background: #fff !important;
   color: #36516e !important;
 }
