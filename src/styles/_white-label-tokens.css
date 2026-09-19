@@ -17,11 +17,11 @@
   --wl-card-title:#202124;
   --wl-card-text:#26364d;
   --wl-card-muted:#667085;
-  --wl-card-accent:#f97316;
+  --wl-card-accent:#2563eb;
   --wl-card-radius:12px;
-  --wl-button-1-bg:#f97316; --wl-button-1-text:#ffffff; --wl-button-1-border:#f97316; --wl-button-1-hover:#ea580c;
+  --wl-button-1-bg:#2563eb; --wl-button-1-text:#ffffff; --wl-button-1-border:#2563eb; --wl-button-1-hover:#1d4ed8;
   --wl-button-2-bg:#ffffff; --wl-button-2-text:#202124; --wl-button-2-border:#dfe5ed; --wl-button-2-hover:#f8fafc;
-  --wl-button-3-bg:#fff7ed; --wl-button-3-text:#c2410c; --wl-button-3-border:#fed7aa; --wl-button-3-hover:#ffedd5;
+  --wl-button-3-bg:#edf4ff; --wl-button-3-text:#1d4ed8; --wl-button-3-border:#cfe0ff; --wl-button-3-hover:#dbeafe;
   --wl-button-4-bg:#ffffff; --wl-button-4-text:#202124; --wl-button-4-border:#dfe5ed; --wl-button-4-hover:#f8fafc;
 }
 
