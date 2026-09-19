@@ -105,22 +105,19 @@ const i = (
     <main class="app-main">
       <header class="app-header">
         <div class="header-search-wrap">
-          <a class="hub-brand" routerLink="/dashboard" *ngIf="isHub"
-            ><span class="hub-brand-logo">L</span
-            ><span><b>LeadsAI</b><small>WORKSPACE HUB</small></span></a
-          ><label class="global-search"
+          <label class="global-search"
             ><span>⌕</span
             ><input
               [(ngModel)]="query"
               placeholder="Search leads, contacts, invoices..."
             /><kbd>Ctrl K</kbd></label
           >
-          <div class="header-context">
-            <span class="context-dot"></span>{{ workspaceLabel }}
+          <div class="header-tools">
+            <a class="header-icon notification" routerLink="/inbox" aria-label="Notifications">
+              ◌<span class="notification-dot">3</span>
+            </a>
+            <button type="button" class="header-help" aria-label="Help">?</button>
           </div>
-          <a class="header-icon" routerLink="/inbox"
-            >◌<span class="notification-dot"></span
-          ></a>
           <div class="admin-menu" (click)="$event.stopPropagation()">
             <button
               type="button"
@@ -130,11 +127,7 @@ const i = (
             >
               <span class="admin-avatar">{{
                 initials(session?.name || session?.tenantSlug || "BA")
-              }}</span
-              ><span class="admin-copy"
-                ><b>{{ session?.name || "Administrator" }}</b
-                ><small>{{ workspaceName }}</small></span
-              ><span class="admin-chevron">{{
+              }}</span><span class="admin-chevron">{{
                 adminMenuOpen ? "⌃" : "⌄"
               }}</span>
             </button>
