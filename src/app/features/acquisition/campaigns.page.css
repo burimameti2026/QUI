@@ -308,3 +308,7 @@
     width:100% !important;
   }
 }
+
+
+/* Final shared surface contract. */
+.hero,.campaigns,.safety,.campaign-activity,.approval-panel{border-color:var(--wl-card-border,var(--wl-border))!important;border-radius:var(--wl-card-radius,12px)!important}
