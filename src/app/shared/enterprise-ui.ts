@@ -8,7 +8,17 @@ export interface UiMetric { label: string; value: string | number; subtitle?: st
 export interface UiRow { label: string; detail?: string; value: string | number; }
 export interface UiCardModel { eyebrow?: string; title: string; subtitle?: string; badge?: string; badgeTone?: 'neutral'|'success'|'info'|'warning'; rows?: UiRow[]; text?: string; action?: UiAction; }
 
-@Component({selector:'qai-ui-section',standalone:true,imports:[CommonModule],template:`<section class="ui-section" [ngClass]="'columns-'+columns"><ng-content/></section>`,styles:[`:host{display:block;min-width:0}`]})
+@Component({selector:'qai-ui-section',standalone:true,imports:[CommonModule],template:`<section class="ui-section" [ngClass]="'columns-'+columns"><ng-content/></section>`,styles:[`
+  :host{display:block;min-width:0}
+  .ui-section{display:grid;grid-template-columns:1fr;gap:var(--wl-grid-gap,16px);min-width:0}
+  .ui-section.columns-1{grid-template-columns:1fr}
+  .ui-section.columns-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ui-section.columns-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ui-section.columns-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ui-section.columns-5{grid-template-columns:repeat(5,minmax(0,1fr))}
+  @media(max-width:1100px){.ui-section.columns-4,.ui-section.columns-5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:760px){.ui-section.columns-2,.ui-section.columns-3,.ui-section.columns-4,.ui-section.columns-5{grid-template-columns:1fr}}
+`]})
 export class UiSection { @Input() columns:UiColumns=1; }
 
 @Component({selector:'qai-ui-steps',standalone:true,imports:[CommonModule],template:`
