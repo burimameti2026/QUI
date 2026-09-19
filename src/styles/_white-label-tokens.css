@@ -328,3 +328,63 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   color:var(--wl-notice-text,var(--wl-text))!important;
 }
 .callout-icon,.notice-icon{color:var(--wl-notice-accent,var(--wl-accent))!important}
+
+
+/* Global design-system primitives: every page inherits these defaults. */
+:root{
+  --wl-page-padding-x:24px;
+  --wl-page-padding-y:0;
+  --wl-page-padding-bottom:24px;
+  --wl-page-max-width:none;
+  --wl-header-padding:14px;
+  --wl-header-gap:20px;
+  --wl-header-font-size:16px;
+  --wl-card-padding:16px;
+  --wl-card-gap:12px;
+  --wl-card-font-size:14px;
+  --wl-card-shadow:0 4px 14px rgba(15,47,104,.05);
+  --wl-button-radius:9px;
+  --wl-button-padding-y:6px;
+  --wl-button-padding-x:9px;
+  --wl-button-font-size:10px;
+  --wl-button-font-weight:700;
+  --wl-kpi-padding:16px;
+  --wl-kpi-shadow:0 4px 14px rgba(15,47,104,.05);
+  --wl-text-padding:18px;
+  --wl-text-title-size:14px;
+  --wl-text-body-size:11px;
+  --wl-text-shadow:none;
+  --wl-focus-ring:color-mix(in srgb,var(--wl-accent) 14%,transparent);
+  --wl-disabled-opacity:.55;
+  --wl-selected-bg:var(--wl-accent-soft);
+  --wl-selected-border:var(--wl-accent);
+  --wl-danger:#dc2626;
+  --wl-success:#16a34a;
+  --wl-warning:#d97706;
+  --wl-info:var(--wl-accent);
+  --wl-control-height:40px;
+}
+
+/* Shared states. Pages do not define their own state colors. */
+button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:var(--wl-disabled-opacity);cursor:not-allowed}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--wl-accent);
+  outline-offset:2px;
+}
+
+/* Pagination and common toolbar surfaces use the same system. */
+.pagination,.pager,.table-pagination,.toolbar,.page-toolbar{
+  color:var(--wl-text);
+}
+.pagination button,.pager button,.table-pagination button{
+  min-width:32px;min-height:var(--wl-control-height);
+  border:1px solid var(--wl-border);
+  border-radius:var(--wl-button-radius);
+  background:var(--wl-surface);
+  color:var(--wl-text);
+}
+.pagination button.active,.pager button.active,.table-pagination button.active{
+  background:var(--wl-selected-bg);
+  border-color:var(--wl-selected-border);
+  color:var(--wl-accent);
+}
