@@ -13,7 +13,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
       *ngIf="config.shell.header"
       [title]="config.header?.title || config.name"
       [subtitle]="config.header?.subtitle || ''"
-      [style]="headerStyle()">
+      >
       <ng-container *ngFor="let action of config.header?.actions || []">
         <button type="button"
           [class.primary]="action.variant === 'primary'"
@@ -38,28 +38,28 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
 
     <ng-template #componentTpl let-component>
       <ng-container [ngSwitch]="component.type">
-        <div *ngSwitchCase="'steps'" [ngStyle]="appearanceStyle(component)"><qai-ui-steps
+        <div *ngSwitchCase="'steps'" ><qai-ui-steps
           [eyebrow]="component.badge || 'WORKFLOW'"
           [title]="component.title || ''"
           [subtitle]="component.subtitle || ''"
           [steps]="value(component, 'steps', [])"></qai-ui-steps></div>
 
-        <div *ngSwitchCase="'metrics'" [ngStyle]="appearanceStyle(component)"><qai-ui-metrics
+        <div *ngSwitchCase="'metrics'" ><qai-ui-metrics
           [items]="value(component, 'items', [])"
           (action)="emitRoute($event)"></qai-ui-metrics></div>
 
-        <div *ngSwitchCase="'card'" [ngStyle]="appearanceStyle(component)"><qai-ui-card
+        <div *ngSwitchCase="'card'" ><qai-ui-card
           [model]="cardModel(component)"
           (action)="emitRoute($event)"></qai-ui-card></div>
 
-        <div *ngSwitchCase="'list-card'" [ngStyle]="appearanceStyle(component)"><qai-ui-list-card
+        <div *ngSwitchCase="'list-card'" ><qai-ui-list-card
           [eyebrow]="component.badge || ''"
           [title]="component.title || ''"
           [items]="value(component, 'items', [])"
           [action]="firstAction(component)"
           (actionClick)="emitRoute($event)"></qai-ui-list-card></div>
 
-        <div *ngSwitchCase="'table-card'" [ngStyle]="appearanceStyle(component)"><qai-ui-table-card
+        <div *ngSwitchCase="'table-card'" ><qai-ui-table-card
           [eyebrow]="component.badge || ''"
           [title]="component.title || ''"
           [columns]="value(component, 'columns', [])"
@@ -68,13 +68,13 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
           [action]="firstAction(component)"
           (actionClick)="emitRoute($event)"></qai-ui-table-card></div>
 
-        <article class="text-block" *ngSwitchCase="'text'" [ngStyle]="appearanceStyle(component)">
+        <article class="text-block" *ngSwitchCase="'text'" >
           <span *ngIf="component.badge" class="eyebrow">{{ component.badge }}</span>
           <h3>{{ component.title }}</h3>
           <p>{{ value(component, 'text', component.subtitle || '') }}</p>
         </article>
 
-        <div class="grid-block" *ngSwitchCase="'grid'" [ngStyle]="appearanceStyle(component)">
+        <div class="grid-block" *ngSwitchCase="'grid'" >
           <ng-container *ngFor="let child of component.children || []">
             <ng-container *ngTemplateOutlet="componentTpl; context: { $implicit: child }"></ng-container>
           </ng-container>
@@ -130,35 +130,6 @@ export class UiPageRenderer {
 
   emitAction(action: UiPageAction) { this.action.emit(action); }
 
-  appearanceStyle(component: UiPageComponentConfig): Record<string, string> {
-    const a = component.appearance || {};
-    return {
-      '--ui-surface': a.surfaceColor || '#ffffff',
-      '--ui-header': a.headerColor || '#d6e8ff',
-      '--ui-border': a.borderColor || '#d6e0ec',
-      '--ui-title': a.titleColor || '#173f7a',
-      '--ui-text': a.textColor || '#26364d',
-      '--ui-muted': a.mutedTextColor || '#68778d',
-      '--ui-accent': a.accentColor || '#1769e0',
-      '--ui-button-bg': a.buttonBackgroundColor || a.accentColor || '#1769e0',
-      '--ui-button-text': a.buttonTextColor || '#ffffff',
-      '--ui-button-border': a.buttonBorderColor || a.accentColor || '#1769e0',
-      '--ui-button-hover': a.buttonHoverBackgroundColor || a.accentColor || '#1769e0',
-      ...(a.height ? { 'min-height': a.height + 'px' } : {}),
-      ...(a.radius ? { '--ui-radius': a.radius + 'px' } : {})
-    };
-  }
-
-  headerStyle(): Record<string,string> {
-    const a = (this.config?.header as any)?.appearance || {};
-    return {
-      ...(a.headerColor ? {'--wl-header-bg': a.headerColor} : {}),
-      ...(a.borderColor ? {'--wl-header-border': a.borderColor} : {}),
-      ...(a.titleColor ? {'--wl-header-title': a.titleColor} : {}),
-      ...(a.textColor ? {'--wl-header-text': a.textColor} : {}),
-      ...(a.mutedTextColor ? {'--wl-header-muted': a.mutedTextColor} : {}),
-    };
-  }
 
   emitRoute(route: string) {
     if (route) this.action.emit({ label: route, route });
