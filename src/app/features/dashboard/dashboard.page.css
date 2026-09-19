@@ -208,3 +208,20 @@ qai-page-header .page-actions{justify-content:flex-end!important;margin-left:aut
 .card-heading h3{color:var(--wl-card-title)!important}
 .card-heading button,.card-heading a{margin-left:auto!important}
 
+
+
+/* Dashboard page header follows the shared Discovery composition: transparent section header, actions on the right. */
+:host qai-page-header .page-header{
+  background:transparent!important;
+  border:0!important;
+  border-bottom:0!important;
+  border-radius:0!important;
+  padding:0 24px 16px!important;
+}
+:host qai-page-header .page-header-main{
+  justify-content:space-between!important;
+}
+:host qai-page-header .page-actions{
+  margin-left:auto!important;
+  justify-content:flex-end!important;
+}
