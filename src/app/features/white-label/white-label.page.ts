@@ -129,7 +129,7 @@ interface LayoutSection {
                     <option [ngValue]="1">1 column</option>
                     <option [ngValue]="2">2 columns</option>
                     <option [ngValue]="3">3 columns</option>
-                    <option [ngValue]="4">4 columns</option>
+                    <option [ngValue]="4">4 columns</option>\n                    <option [ngValue]="5">5 columns</option>
                   </select>
                 </label>
               </div>
@@ -139,7 +139,7 @@ interface LayoutSection {
                   <strong>{{ section.kind === "kpis" ? "KPI configuration" : section.kind === "cards" ? "Card configuration" : section.kind === "buttons" ? "Button configuration" : "Component configuration" }}</strong>
                   <span>Choose a template for each item. Values remain data; templates remain reusable code.</span>
                 </div>
-                <button type="button" class="quiet" (click)="addItem(section)">+ Add item</button>
+                <button *ngIf="section.kind !== 'header'" type="button" class="quiet" (click)="addItem(section)">+ Add item</button>
               </div>
 
               <div class="item-card" *ngFor="let item of section.items; let itemIndex = index">
