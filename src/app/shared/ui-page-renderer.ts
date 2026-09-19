@@ -14,6 +14,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
       [template]="config.header?.template || 'header-01'"
       [title]="config.header?.title || config.name"
       [subtitle]="config.header?.subtitle || ''"
+      [breadcrumbs]="config.breadcrumb || []"
       >
       <ng-container *ngFor="let action of config.header?.actions || []">
         <button type="button"
