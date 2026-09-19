@@ -38,10 +38,13 @@ export interface UiPageSectionConfig {
   collapsed?: boolean;
   components: UiPageComponentConfig[];
 }
+export interface UiBreadcrumb { label: string; route?: string; }
+
 export interface UiPageConfig {
   id: string;
   name: string;
   shell: { header: boolean; breadcrumb?: boolean };
+  breadcrumb?: UiBreadcrumb[];
   header?: { title?: string; subtitle?: string; actions?: UiPageAction[]; template?: "header-01" | "header-02" };
   sections: UiPageSectionConfig[];
 }
@@ -64,7 +67,12 @@ export const UI_COMPONENT_REGISTRY: Record<UiPageComponentType, {
 export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
   id: 'dashboard',
   name: 'Acquisition command center',
-  shell: { header: true, breadcrumb: false },
+  shell: { header: true, breadcrumb: true },
+  breadcrumb: [
+    { label: 'Home', route: '/dashboard' },
+    { label: 'Command Center' },
+    { label: 'Dashboard' }
+  ],
   header: {
     template: 'header-02',
     title: 'Acquisition command center',
