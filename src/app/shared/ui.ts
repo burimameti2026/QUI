@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
+import { RouterLink } from "@angular/router";
 import { AdminI18nService } from "../core/admin-i18n.service";
 import { adminText } from "../core/admin-page-translations";
 import { adminUniversalText } from "../core/admin-universal-translations";
@@ -11,15 +12,32 @@ function translateValue(i18n: AdminI18nService, value: string): string {
 @Component({
   selector: "qai-page-header",
   standalone: true,
+  imports: [CommonModule, RouterLink],
   template: `<div class="page-header" [attr.data-template]="template">
+    <nav class="breadcrumbs" *ngIf="breadcrumbs.length" aria-label="Breadcrumb">
+      <ng-container *ngFor="let crumb of breadcrumbs; let last = last">
+        <a *ngIf="crumb.route && !last" [routerLink]="crumb.route">{{ translate(crumb.label) || crumb.label }}</a>
+        <span *ngIf="!crumb.route || last" [class.current]="last">{{ translate(crumb.label) || crumb.label }}</span>
+        <i *ngIf="!last">›</i>
+      </ng-container>
+    </nav>
+    <div class="page-header-main">
     <div class="page-header-title" *ngIf="title || subtitle">
       <h1 *ngIf="title">{{ translate(title) || title }}</h1>
       <p *ngIf="subtitle">{{ translate(subtitle) || subtitle }}</p>
     </div>
     <div class="page-actions"><ng-content /></div>
+    </div>
   </div>`,
   styles: [`
     :host { display:block; min-width:0; }
+    .page-header{position:relative;display:block;box-sizing:border-box;padding:0 24px 16px;background:transparent;border:0;color:var(--wl-header-text,#344054)}
+    .breadcrumbs{display:flex;align-items:center;gap:8px;min-height:30px;padding-top:7px;color:var(--wl-header-muted,#667085);font-size:10px;line-height:1}
+    .breadcrumbs a,.breadcrumbs span{color:var(--wl-header-muted,#667085);text-decoration:none;white-space:nowrap}
+    .breadcrumbs a:hover{color:var(--wl-accent,#2563eb)}
+    .breadcrumbs .current{color:var(--wl-header-title,#172033);font-weight:650}
+    .breadcrumbs i{font-style:normal;color:#b3bfce}
+    .page-header-main{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:72px;padding:10px 0 0}
     .page-header{display:flex;align-items:center;justify-content:space-between;gap:var(--wl-header-gap,14px);min-height:var(--wl-header-height,72px);padding:var(--wl-header-padding,16px 24px);box-sizing:border-box;background:var(--wl-header-bg,#f4f7fb);border:1px solid var(--wl-header-border,#e3e9f1);border-radius:var(--wl-header-radius,0);color:var(--wl-header-text,#344054)}
     .page-header-title{min-width:0}
     .page-header-title h1{margin:0;color:var(--wl-header-title,#172033);font-size:var(--wl-header-title-size,20px);font-weight:760;letter-spacing:-.025em;line-height:1.2}
@@ -35,6 +53,7 @@ export class PageHeader {
   @Input() title = "";
   @Input() subtitle = "";
   @Input() accent: "default" | "orange" = "default";
+  @Input() breadcrumbs: Array<{label:string;route?:string}> = [];
   translate(value: string): string { return translateValue(this.i18n, value); }
 }
 
