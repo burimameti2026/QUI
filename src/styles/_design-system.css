@@ -988,7 +988,7 @@ tbody tr:hover {
 
 .brand,
 .app-header {
-  background: #fff !important;
+  background: #dddfdba8 !important;
   border-color: var(--ref-line) !important
 }
 
@@ -3460,6 +3460,7 @@ qai-ui-page-renderer .card>footer {
 }
 
 qai-page-header .page-header {
+  
   background: var(--wl-header-bg) !important;
   border-bottom-color: var(--wl-header-border) !important;
 }
@@ -6184,9 +6185,11 @@ main.app-main,
 
 main.app-main,
 .page {
+
   width: 100% !important;
   max-width: none !important;
-  margin: 0 !important;
+    margin: 0 !important;
+  padding: 10px!important;
   background: var(--wl-page-bg) !important;
   color: var(--wl-text) !important;
 }
@@ -6194,7 +6197,7 @@ main.app-main,
 .sidebar {
   background: #fff !important;
   color: #343434 !important;
-  border-right: 1px solid var(--wl-border) !important;
+  border-right: 0px solid var(--wl-border) !important;
 }
 
 .brand {
