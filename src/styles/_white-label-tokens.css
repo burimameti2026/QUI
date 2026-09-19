@@ -467,7 +467,9 @@ qai-page-header .page-header{
 qai-page-header .page-header-title{min-width:0;flex:1 1 auto}
 qai-page-header .page-header h1{margin:0;color:var(--wl-header-title)!important;font-size:var(--wl-header-font-size);font-weight:700}
 qai-page-header .page-header p{margin:4px 0 0;color:var(--wl-header-muted)!important}
-qai-page-header .page-actions{display:flex;align-items:center;gap:var(--wl-button-gap);flex:0 0 auto}
+qai-page-header .page-header-main{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;min-width:0!important}
+qai-page-header .page-header-title{min-width:0!important;flex:1 1 auto!important}
+qai-page-header .page-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:var(--wl-button-gap)!important;flex:0 0 auto!important;margin-left:auto!important;width:auto!important}
 qai-page-header .page-actions button{min-height:var(--wl-control-height);padding:var(--wl-button-padding-y) var(--wl-button-padding-x)}
 
 qai-wizard-steps .wizard{display:block;width:100%;padding:var(--wl-steps-padding) var(--wl-card-padding);background:var(--wl-steps-bg,var(--wl-surface))}
@@ -1018,6 +1020,7 @@ main.app-main > router-outlet + * :where(
 
 /* Shared responsive contract. */
 @media(max-width:800px){
+  main.app-main > router-outlet + * qai-page-header .page-header-main{width:100%!important}
   main.app-main > router-outlet + * qai-page-header .page-header{padding:12px!important}
   main.app-main > router-outlet + * :where(.metrics,.kpi-grid,.stat-grid){grid-template-columns:repeat(2,minmax(0,1fr))!important}
   main.app-main > router-outlet + * :where(.page-actions,.header-actions,.card-actions,.actions,.toolbar-actions){flex-wrap:wrap!important}
