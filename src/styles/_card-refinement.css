@@ -234,3 +234,117 @@ body:not(:has(.leads-page-header)) .directory-empty {
     border-radius:10px!important;
   }
 }
+
+
+/* Dashboard renderer uses enterprise-ui child components, so its internal classes
+   must be styled globally. Prospect Discovery remains the visual reference. */
+qai-ui-page-renderer .metrics{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:0 0 14px!important;
+}
+qai-ui-page-renderer .metrics .metric{
+  position:relative!important;
+  display:block!important;
+  min-height:118px!important;
+  padding:16px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:var(--wl-card-bg,#fff)!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.03),0 4px 14px rgba(36,60,88,.045)!important;
+  text-align:left!important;
+}
+qai-ui-page-renderer .metrics .metric::before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;right:0!important;top:0!important;
+  height:3px!important;
+  background:var(--brand-accent,var(--wl-accent))!important;
+}
+qai-ui-page-renderer .metrics .metric:nth-child(1)::before{background:var(--brand-kpi-1,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(2)::before{background:var(--brand-kpi-2,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(3)::before{background:var(--brand-kpi-3,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(4)::before{background:var(--brand-kpi-4,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(5)::before{background:var(--brand-kpi-5,var(--wl-accent))!important}
+
+qai-ui-page-renderer .metrics .metric .top{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+qai-ui-page-renderer .metrics .metric .icon{
+  display:grid!important;
+  width:31px!important;height:31px!important;
+  place-items:center!important;
+  border-radius:8px!important;
+  background:var(--brand-accent-soft,var(--wl-accent-soft))!important;
+  color:var(--brand-accent,var(--wl-accent))!important;
+}
+qai-ui-page-renderer .metrics .metric:nth-child(1) .icon{background:var(--brand-kpi-1-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-1,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(2) .icon{background:var(--brand-kpi-2-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-2,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(3) .icon{background:var(--brand-kpi-3-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-3,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(4) .icon{background:var(--brand-kpi-4-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-4,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric:nth-child(5) .icon{background:var(--brand-kpi-5-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-5,var(--wl-accent))!important}
+qai-ui-page-renderer .metrics .metric .top>span:last-child{
+  color:var(--wl-muted,#667085)!important;
+  font-size:10px!important;
+  font-weight:700!important;
+}
+qai-ui-page-renderer .metrics .metric>strong{
+  display:block!important;
+  margin:11px 0 0!important;
+  color:#172033!important;
+  font-size:26px!important;
+  line-height:1!important;
+}
+qai-ui-page-renderer .metrics .metric>small{
+  display:block!important;
+  margin-top:5px!important;
+  color:#8293a7!important;
+  font-size:9px!important;
+}
+qai-ui-page-renderer .card{
+  border:1px solid #e5e9f0!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.03),0 4px 14px rgba(36,60,88,.045)!important;
+  overflow:hidden!important;
+}
+qai-ui-page-renderer .card>header{
+  min-height:62px!important;
+  padding:14px 17px!important;
+  background:var(--wl-card-header-bg,#fff)!important;
+  border-bottom:1px solid #edf0f4!important;
+}
+qai-ui-page-renderer .card>header h3{
+  margin:4px 0 3px!important;
+  color:var(--brand-card-header-text,var(--wl-card-title,#202124))!important;
+  font-size:13px!important;
+  font-weight:750!important;
+}
+qai-ui-page-renderer .card>header .eyebrow{
+  color:#98a2b3!important;
+  font-size:9px!important;
+  font-weight:750!important;
+  letter-spacing:.1em!important;
+}
+qai-ui-page-renderer .card>.body{
+  padding:16px!important;
+  background:#fff!important;
+}
+qai-ui-page-renderer .card>footer{
+  padding:12px 16px!important;
+  background:#f8fafc!important;
+  border-top:1px solid #edf0f4!important;
+}
+
+@media(max-width:900px){
+  qai-ui-page-renderer .metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+  qai-ui-page-renderer .metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:480px){
+  qai-ui-page-renderer .metrics{grid-template-columns:1fr!important}
+}
