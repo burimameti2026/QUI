@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrandThemeService } from "../../core/brand-theme.service";
-import { WhiteLabelConfigService, WhiteLabelSection } from "../../core/white-label-config.service";
+import { WhiteLabelConfigService, WhiteLabelSection, WhiteLabelStyles } from "../../core/white-label-config.service";
 import { PageHeader } from "../../shared/ui";
 
 type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text";
@@ -52,6 +52,41 @@ interface LayoutSection {
           <button type="button" class="primary" (click)="saveLayout()">Save page configuration</button>
         </div>
       </div>
+
+      <section class="style-system">
+        <div class="style-system-head">
+          <div>
+            <span class="eyebrow">GLOBAL COMPONENT STYLES</span>
+            <h2>Define once. Use everywhere.</h2>
+            <p>Each component type has one reusable visual style. Change it here and every Header, Grid, KPI, Card, Button or Text component uses the same definition across the application.</p>
+          </div>
+          <button type="button" class="primary" (click)="saveStyles()">Save component styles</button>
+        </div>
+        <div class="style-tabs">
+          <button type="button" *ngFor="let type of styleTypes" [class.selected]="activeStyle === type.id" (click)="activeStyle = type.id">{{ type.label }}</button>
+        </div>
+        <div class="style-editor" *ngIf="styles[activeStyle] as style">
+          <div class="style-editor-title">
+            <strong>{{ styleLabel(activeStyle) }} Style</strong>
+            <span>This is the global style for all {{ styleLabel(activeStyle) }} components.</span>
+          </div>
+          <div class="style-fields">
+            <label>Surface<input type="color" [(ngModel)]="style.surfaceColor" /></label>
+            <label>Header / soft background<input type="color" [(ngModel)]="style.headerColor" /></label>
+            <label>Border<input type="color" [(ngModel)]="style.borderColor" /></label>
+            <label>Title<input type="color" [(ngModel)]="style.titleColor" /></label>
+            <label>Text<input type="color" [(ngModel)]="style.textColor" /></label>
+            <label>Muted text<input type="color" [(ngModel)]="style.mutedTextColor" /></label>
+            <label>Accent<input type="color" [(ngModel)]="style.accentColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button background<input type="color" [(ngModel)]="style.buttonBackgroundColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button text<input type="color" [(ngModel)]="style.buttonTextColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button border<input type="color" [(ngModel)]="style.buttonBorderColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button hover<input type="color" [(ngModel)]="style.buttonHoverBackgroundColor" /></label>
+            <label>Height (px)<input type="number" min="0" max="1200" [(ngModel)]="style.height" /></label>
+            <label>Radius (px)<input type="number" min="0" max="40" [(ngModel)]="style.radius" /></label>
+          </div>
+        </div>
+      </section>
 
       <div class="builder-grid">
         <aside class="section-list">
@@ -133,28 +168,6 @@ interface LayoutSection {
                     </button>
                   </div>
                 </div>
-
-                <div class="appearance-area">
-                  <div class="appearance-heading">
-                    <div><strong>Appearance</strong><span>Configure this item independently. These values are presentation overrides for this component/template.</span></div>
-                  </div>
-                  <div class="appearance-grid">
-                    <label>Surface<input type="color" [(ngModel)]="item.appearance.surfaceColor" /></label>
-                    <label>Header<input type="color" [(ngModel)]="item.appearance.headerColor" /></label>
-                    <label>Border<input type="color" [(ngModel)]="item.appearance.borderColor" /></label>
-                    <label>Title text<input type="color" [(ngModel)]="item.appearance.titleColor" /></label>
-                    <label>Body text<input type="color" [(ngModel)]="item.appearance.textColor" /></label>
-                    <label>Muted text<input type="color" [(ngModel)]="item.appearance.mutedTextColor" /></label>
-                    <label>Accent<input type="color" [(ngModel)]="item.appearance.accentColor" /></label>
-                    <label *ngIf="section.kind === 'buttons'">Button background<input type="color" [(ngModel)]="item.appearance.buttonBackgroundColor" /></label>
-                    <label *ngIf="section.kind === 'buttons'">Button text<input type="color" [(ngModel)]="item.appearance.buttonTextColor" /></label>
-                    <label *ngIf="section.kind === 'buttons'">Button border<input type="color" [(ngModel)]="item.appearance.buttonBorderColor" /></label>
-                    <label *ngIf="section.kind === 'buttons'">Button hover<input type="color" [(ngModel)]="item.appearance.buttonHoverBackgroundColor" /></label>
-                    <label>Height (px)<input type="number" min="0" max="1200" step="1" [(ngModel)]="item.appearance.height" /></label>
-                    <label>Radius (px)<input type="number" min="0" max="40" step="1" [(ngModel)]="item.appearance.radius" /></label>
-                  </div>
-                </div>
-
                 <div class="item-footer">
                   <span>Template ID: <code>{{ item.template }}</code></span>
                   <button type="button" class="remove" (click)="removeItem(section, itemIndex)">Remove</button>
@@ -184,6 +197,16 @@ interface LayoutSection {
 })
 export class WhiteLabelPage implements OnInit {
   brand = this.theme.defaults();
+  styles: WhiteLabelStyles = this.whiteLabel.loadStyles();
+  activeStyle: keyof WhiteLabelStyles = "header";
+  readonly styleTypes: { id: keyof WhiteLabelStyles; label: string }[] = [
+    { id: "header", label: "Header" },
+    { id: "grid", label: "Grid" },
+    { id: "kpis", label: "KPI" },
+    { id: "cards", label: "Card" },
+    { id: "buttons", label: "Button" },
+    { id: "text", label: "Text" },
+  ];
 
   readonly templates: Record<LayoutSectionKind, { id: string; label: string; description: string; mark: string }[]> = {
     header: [
@@ -297,6 +320,7 @@ export class WhiteLabelPage implements OnInit {
 
   ngOnInit() {
     this.theme.load().subscribe(r => this.brand = { ...this.brand, ...r });
+    this.styles = this.whiteLabel.loadStyles();
     this.loadLayout();
   }
 
@@ -310,6 +334,14 @@ export class WhiteLabelPage implements OnInit {
 
   templatesFor(kind: LayoutSectionKind) {
     return this.templates[kind];
+  }
+
+  styleLabel(type: keyof WhiteLabelStyles): string {
+    return this.styleTypes.find(x => x.id === type)?.label || type;
+  }
+
+  saveStyles() {
+    this.whiteLabel.saveStyles(this.styles);
   }
 
   addItem(section: LayoutSection) {
@@ -356,6 +388,7 @@ export class WhiteLabelPage implements OnInit {
 
   resetLayout() {
     localStorage.removeItem("qai-white-label-page-layout");
+    localStorage.removeItem("qai-white-label-component-styles");
     window.location.reload();
   }
 
