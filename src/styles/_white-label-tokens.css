@@ -1245,7 +1245,7 @@ qai-ui-card footer{
   --wl-kpi-radius:0px;
   --wl-button-radius:8px;
   --wl-button-1-bg:#f59e0b;
-  --wl-button-1-text:#171717;
+  --wl-button-1-text:#ffffff;
   --wl-button-1-border:#f59e0b;
   --wl-button-1-hover:#d97706;
   --wl-button-2-bg:#ffffff;
@@ -1310,22 +1310,26 @@ qai-page-header .page-actions button.primary,
 qai-page-header .header-actions button.primary{
   background:#f59e0b!important;
   border-color:#f59e0b!important;
-  color:#171717!important;
+  color:#ffffff!important;
+  min-height:44px!important;
 }
 button.primary:hover:not(:disabled),.primary:hover:not(:disabled),
 .primary-action:hover:not(:disabled),.btn-primary:hover:not(:disabled),
 .header-action:hover:not(:disabled){
   background:#d97706!important;
+  color:#ffffff!important;
 }
 button.secondary,.secondary,.btn-secondary{
-  background:#fff!important;
+  background:#ffffff!important;
   border-color:#d8dadd!important;
   color:#171717!important;
+  min-height:44px!important;
 }
 button.quiet,.quiet,.quiet-action,.btn-quiet{
-  background:#fff4df!important;
-  border-color:#ffd08a!important;
-  color:#9a5b00!important;
+  background:#ffffff!important;
+  border-color:#d8dadd!important;
+  color:#171717!important;
+  min-height:44px!important;
 }
 qai-ui-card .card,qai-ui-list-card .card,qai-ui-table-card .card{
   background:#fff!important;border-radius:0!important;
