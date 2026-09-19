@@ -341,7 +341,8 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-page-max-width:none;
   --wl-header-padding:14px;
   --wl-header-gap:20px;
-  --wl-header-font-size:16px;\n  --wl-button-gap:8px;
+  --wl-header-font-size:16px;
+  --wl-button-gap:8px;
   --wl-card-padding:16px;
   --wl-card-gap:12px;
   --wl-card-font-size:14px;
@@ -356,7 +357,17 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-kpi-gap:12px;
   --wl-section-gap:14px;
   --wl-section-margin:14px;
-  --wl-steps-padding:18px;\n  --wl-steps-gap:10px;\n  --wl-steps-connector-height:2px;\n  --wl-steps-focus-ring:5px;\n  --wl-steps-font-size:10px;\n  --wl-steps-label-gap:4px;\n  --wl-steps-label-size:8px;\n  --wl-steps-line-height:1.35;\n  --wl-steps-connector-offset:18px;\n  --wl-steps-connector-width:2px;\n  --wl-steps-mobile-ring:4px;
+  --wl-steps-padding:18px;
+  --wl-steps-gap:10px;
+  --wl-steps-connector-height:2px;
+  --wl-steps-focus-ring:5px;
+  --wl-steps-font-size:10px;
+  --wl-steps-label-gap:4px;
+  --wl-steps-label-size:8px;
+  --wl-steps-line-height:1.35;
+  --wl-steps-connector-offset:18px;
+  --wl-steps-connector-width:2px;
+  --wl-steps-mobile-ring:4px;
   --wl-text-padding:18px;
   --wl-text-title-size:14px;
   --wl-text-body-size:11px;
