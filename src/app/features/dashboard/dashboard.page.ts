@@ -113,7 +113,7 @@ export class DashboardPage implements OnInit {
       }
 
       const componentMap: Record<string, string> = {
-        'kpi-1':'operating-kpis','kpi-2':'operating-kpis','kpi-3':'operating-kpis','kpi-4':'operating-kpis',
+        'kpi-1':'operating-kpis','kpi-2':'operating-kpis','kpi-3':'operating-kpis','kpi-4':'operating-kpis','kpi-5':'operating-kpis',
         'card-1':'acquisition-engine','card-2':'active-outreach'
       };
 
