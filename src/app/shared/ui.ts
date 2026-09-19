@@ -38,7 +38,6 @@ function translateValue(i18n: AdminI18nService, value: string): string {
     .breadcrumbs .current{color:var(--wl-header-title,#172033);font-weight:650}
     .breadcrumbs i{font-style:normal;color:#b3bfce}
     .page-header-main{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:72px;padding:10px 0 0}
-    .page-header{display:flex;align-items:center;justify-content:space-between;gap:var(--wl-header-gap,14px);min-height:var(--wl-header-height,72px);padding:var(--wl-header-padding,16px 24px);box-sizing:border-box;background:var(--wl-header-bg,#f4f7fb);border:1px solid var(--wl-header-border,#e3e9f1);border-radius:var(--wl-header-radius,0);color:var(--wl-header-text,#344054)}
     .page-header-title{min-width:0}
     .page-header-title h1{margin:0;color:var(--wl-header-title,#172033);font-size:var(--wl-header-title-size,20px);font-weight:760;letter-spacing:-.025em;line-height:1.2}
     .page-header-title p{margin:5px 0 0;color:var(--wl-header-muted,#667085);font-size:var(--wl-header-font-size,11px);line-height:1.45}
