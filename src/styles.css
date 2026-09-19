@@ -939,3 +939,27 @@ a,.text-primary,.link-primary{color:var(--wl-button-1-bg,var(--brand-primary))!i
 @media(max-width:1100px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:700px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:480px){.app-main:has(.discovery-hero) .discovery-metrics{grid-template-columns:1fr!important}}
+
+
+/* White Label final authority — Prospect Discovery header. */
+.app-main:has(.discovery-hero) qai-page-header .page-header{
+  box-sizing:border-box!important;
+  min-height:var(--wl-header-height,64px)!important;
+  height:var(--wl-header-height,64px)!important;
+  padding:14px 24px!important;
+  background:var(--wl-header-bg,var(--wl-surface,#fff))!important;
+  border-bottom:1px solid var(--wl-header-border,var(--wl-border,#e1e5e9))!important;
+  color:var(--wl-header-text,var(--wl-text,#202124))!important;
+  flex-direction:row!important;
+  align-items:center!important;
+}
+.app-main:has(.discovery-hero) qai-page-header .page-header h1{
+  margin:0!important;
+  color:var(--wl-header-title,var(--wl-text,#202124))!important;
+  font-size:22px!important;
+  font-weight:700!important;
+}
+.app-main:has(.discovery-hero) qai-page-header .page-header p{
+  margin:4px 0 0!important;
+  color:var(--wl-header-muted,var(--wl-muted,#667085))!important;
+}
