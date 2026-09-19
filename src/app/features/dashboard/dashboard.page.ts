@@ -6,6 +6,7 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { DEFAULT_DASHBOARD_PAGE_CONFIG, UiPageAction, UiPageConfig } from '../../shared/ui-page-config';
 import { UiPageRenderer } from '../../shared/ui-page-renderer';
+import { WhiteLabelConfigService } from '../../core/white-label-config.service';
 
 @Component({
   standalone: true,
@@ -16,6 +17,7 @@ export class DashboardPage implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly whiteLabel = inject(WhiteLabelConfigService);
 
   loaded = false;
   error = '';
@@ -99,10 +101,7 @@ export class DashboardPage implements OnInit {
 
   private applyWhiteLabelLayout(config: UiPageConfig) {
     const raw = localStorage.getItem('qai-white-label-page-layout');
-    if (!raw) return;
     try {
-      const layout = JSON.parse(raw) as Array<any>;
-      const bySection = new Map(layout.map(section => [section.id, section]));
 
       const header = bySection.get('header')?.items?.find((item: any) => item.enabled);
       if (header) {
@@ -134,8 +133,7 @@ export class DashboardPage implements OnInit {
           if (!target) continue;
           if (item.template) target.template = item.template as any;
           if (item.label && target.type !== 'metrics') target.title = item.label;
-          if (item.appearance) target.appearance = item.appearance;
-        }
+          }
       }
 
       const kpiSection = bySection.get('kpis');
@@ -152,8 +150,6 @@ export class DashboardPage implements OnInit {
             })
           };
         }
-        const appearances = configured.map((item: any) => item.appearance).filter(Boolean);
-        if (appearances.length) (kpiComponent as any).itemAppearances = appearances;
       }
     } catch {
       // Ignore invalid white-label overrides and keep the safe runtime configuration.
