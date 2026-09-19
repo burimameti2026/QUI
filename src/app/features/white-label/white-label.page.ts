@@ -5,7 +5,7 @@ import { BrandThemeService } from "../../core/brand-theme.service";
 import { WhiteLabelConfigService, WhiteLabelSection, WhiteLabelStyles } from "../../core/white-label-config.service";
 import { PageHeader } from "../../shared/ui";
 
-type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text";
+type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text" | "steps" | "lists" | "tables" | "badges" | "forms";
 
 interface LayoutItem {
   id: string;
@@ -208,6 +208,11 @@ export class WhiteLabelPage implements OnInit {
     { id: "cards", label: "Card" },
     { id: "buttons", label: "Button" },
     { id: "text", label: "Text" },
+    { id: "steps", label: "Steps" },
+    { id: "lists", label: "List" },
+    { id: "tables", label: "Table" },
+    { id: "badges", label: "Badge" },
+    { id: "forms", label: "Form / Input" },
   ];
 
   readonly templates: Record<LayoutSectionKind, { id: string; label: string; description: string; mark: string }[]> = {
@@ -240,6 +245,21 @@ export class WhiteLabelPage implements OnInit {
     text: [
       { id: "text-01", label: "Text / Standard", description: "Heading and supporting copy", mark: "T" },
       { id: "text-02", label: "Text / Callout", description: "Highlighted explanatory copy", mark: "!" },
+    ],
+    steps: [
+      { id: "steps-01", label: "Steps / Workflow", description: "Horizontal operational workflow", mark: "1→" },
+    ],
+    lists: [
+      { id: "list-01", label: "List / Standard", description: "Icon, content and status", mark: "☷" },
+    ],
+    tables: [
+      { id: "table-01", label: "Table / Standard", description: "Enterprise data table", mark: "▤" },
+    ],
+    badges: [
+      { id: "badge-01", label: "Badge / Status", description: "Status and state indicator", mark: "●" },
+    ],
+    forms: [
+      { id: "form-01", label: "Form / Standard", description: "Inputs, selects and controls", mark: "□" },
     ],
   };
 
