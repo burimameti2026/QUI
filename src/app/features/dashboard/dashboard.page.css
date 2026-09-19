@@ -90,3 +90,108 @@
   background:var(--wl-surface-muted,#f8fafc)!important;
   color:var(--wl-card-muted,var(--wl-muted,#667085))!important;
 }
+
+
+/* Prospect Discovery is the visual source of truth for Dashboard cards and KPIs. */
+.executive-band,
+.metric-card,
+.revenue-card,
+.automation-card,
+.data-card{
+  border:1px solid #e5e9f0!important;
+  border-radius:var(--wl-card-radius,10px)!important;
+  background:var(--wl-card-bg,#fff)!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.03),0 4px 14px rgba(36,60,88,.045)!important;
+}
+
+.metric-grid{
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin-bottom:14px!important;
+}
+
+.metric-card{
+  position:relative!important;
+  min-height:118px!important;
+  padding:16px!important;
+  border:0!important;
+  border-radius:var(--wl-card-radius,10px)!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.metric-card:before{
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:3px!important;
+  border-radius:0!important;
+  background:var(--brand-accent,var(--wl-accent))!important;
+}
+.metric-card.blue:before{background:var(--brand-kpi-1,var(--wl-accent))!important}
+.metric-card.violet:before{background:var(--brand-kpi-2,var(--wl-accent))!important}
+.metric-card.green:before{background:var(--brand-kpi-3,var(--wl-accent))!important}
+.metric-card.amber:before{background:var(--brand-kpi-4,var(--wl-accent))!important}
+.metric-card.rose:before{background:var(--brand-kpi-5,var(--wl-accent))!important}
+
+.metric-top{gap:8px!important}
+.metric-icon{
+  width:31px!important;
+  height:31px!important;
+  border-radius:8px!important;
+  background:var(--brand-accent-soft,var(--wl-accent-soft))!important;
+  color:var(--brand-accent,var(--wl-accent))!important;
+}
+.metric-card.blue .metric-icon{background:var(--brand-kpi-1-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-1,var(--wl-accent))!important}
+.metric-card.violet .metric-icon{background:var(--brand-kpi-2-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-2,var(--wl-accent))!important}
+.metric-card.green .metric-icon{background:var(--brand-kpi-3-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-3,var(--wl-accent))!important}
+.metric-card.amber .metric-icon{background:var(--brand-kpi-4-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-4,var(--wl-accent))!important}
+.metric-card.rose .metric-icon{background:var(--brand-kpi-5-soft,var(--wl-accent-soft))!important;color:var(--brand-kpi-5,var(--wl-accent))!important}
+.metric-label{font-size:10px!important;color:var(--wl-muted,#667085)!important}
+.metric-card>strong{
+  margin-top:11px!important;
+  margin-bottom:0!important;
+  color:#172033!important;
+  font-size:26px!important;
+  line-height:1!important;
+}
+.metric-card small{
+  display:block!important;
+  margin-top:5px!important;
+  color:#8293a7!important;
+  font-size:9px!important;
+}
+.metric-card:hover{
+  border-color:#e5e9f0!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+.card-heading{
+  min-height:62px!important;
+  padding:14px 17px!important;
+}
+.card-heading h3{
+  margin:4px 0 3px!important;
+  color:var(--brand-card-header-text,var(--wl-card-title,#202124))!important;
+  font-size:13px!important;
+  font-weight:750!important;
+}
+.card-heading button,.card-heading a{
+  height:31px!important;
+  min-height:31px!important;
+  padding:0 10px!important;
+  border-radius:7px!important;
+  font-size:9px!important;
+}
+
+@media(max-width:1100px){
+  .metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+  .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:480px){
+  .metric-grid{grid-template-columns:1fr!important}
+}
