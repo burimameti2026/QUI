@@ -11,7 +11,7 @@ function translateValue(i18n: AdminI18nService, value: string): string {
 @Component({
   selector: "qai-page-header",
   standalone: true,
-  template: `<div class="page-header">
+  template: `<div class="page-header" [attr.data-template]="template">
     <div class="page-header-title" *ngIf="title || subtitle">
       <h1 *ngIf="title">{{ translate(title) || title }}</h1>
       <p *ngIf="subtitle">{{ translate(subtitle) || subtitle }}</p>
@@ -22,6 +22,7 @@ function translateValue(i18n: AdminI18nService, value: string): string {
 })
 export class PageHeader {
   readonly i18n = inject(AdminI18nService);
+  @Input() template = "header-01";
   @Input() title = "";
   @Input() subtitle = "";
   @Input() accent: "default" | "orange" = "default";
