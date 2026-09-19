@@ -3,7 +3,7 @@
   padding: 12px 14px;
   border: 1px solid #f0c36d;
   border-radius: 10px;
-  background: var(--wl-surface,#fff)8e7;
+  background: var(--wl-surface,var(--wl-surface,#fff))8e7;
   color: #5b4a20;
   font-size: 13px;
   line-height: 1.5;
@@ -24,14 +24,14 @@
 
 .subscription-hero h2 {
   margin: 0;
-  color: var(--wl-text,#202124);
+  color: var(--wl-text,var(--wl-text,#202124));
   font-size: 24px;
   font-weight: 700;
 }
 
 .subscription-hero p {
   margin: 6px 0 0;
-  color: var(--wl-muted,#667085);
+  color: var(--wl-muted,var(--wl-muted,#667085));
 }
 
 .subscription-price {
