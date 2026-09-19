@@ -14,7 +14,7 @@ export interface WhiteLabelStyle extends WhiteLabelItemAppearance {
   shadow?: string;
 }
 export interface WhiteLabelStyles { header:WhiteLabelStyle; grid:WhiteLabelStyle; kpis:WhiteLabelStyle; cards:WhiteLabelStyle; buttons:WhiteLabelStyle; text:WhiteLabelStyle; steps:WhiteLabelStyle; lists:WhiteLabelStyle; tables:WhiteLabelStyle; badges:WhiteLabelStyle; forms:WhiteLabelStyle; tabs:WhiteLabelStyle; dataGrid:WhiteLabelStyle; navigation:WhiteLabelStyle; modals:WhiteLabelStyle; notices:WhiteLabelStyle; }
-export interface WhiteLabelItem { id:string; label:string; template:string; enabled:boolean; appearance:WhiteLabelItemAppearance; }
+export interface WhiteLabelItem { id:string; label:string; template:string; enabled:boolean; appearance?:WhiteLabelItemAppearance; }
 export interface WhiteLabelSection { id:string; kind:string; label:string; columns:number; expanded?:boolean; items:WhiteLabelItem[]; }
 
 const STORAGE_KEY='qai-white-label-page-layout-v2';
@@ -52,7 +52,7 @@ export class WhiteLabelConfigService {
     this.set(root,'--wl-ready','1');
   }
   private normalizeStyles(styles:any):WhiteLabelStyles { const source=styles||{}; return Object.keys(DEFAULT_STYLES).reduce((out,key)=>{ out[key as keyof WhiteLabelStyles]={...DEFAULT_APPEARANCE,...(DEFAULT_STYLES[key as keyof WhiteLabelStyles]||{}),...(source[key]||{})}; return out; },{} as WhiteLabelStyles); }
-  private normalize(sections:any[]):WhiteLabelSection[]{ return sections.map(section=>({...section,items:Array.isArray(section.items)?section.items.map((item:any)=>({...item,appearance:{...DEFAULT_APPEARANCE,...(item.appearance||{})}})):[]})); }
+  private normalize(sections:any[]):WhiteLabelSection[]{ return sections.map(section=>({...section,items:Array.isArray(section.items)?section.items.map((item:any)=>{const {appearance,...clean}=item||{}; return clean;}):[]})); }
   private enabled(sections:WhiteLabelSection[],kind:string){return sections.find(x=>x.kind===kind)?.items?.filter(x=>x.enabled!==false)||[];}
   private firstEnabled(sections:WhiteLabelSection[],kind:string){return this.enabled(sections,kind)[0];}
   private set(root:HTMLElement,name:string,value:string){root.style.setProperty(name,value);}
