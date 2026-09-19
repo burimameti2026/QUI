@@ -1456,3 +1456,104 @@ main.app-main > router-outlet + * :where(
 body:not(:has(.leads-page-header)) .designer > aside{
   border-radius:0!important;
 }
+
+
+/* ============================================================
+   FINAL APPLICATION SHELL SHAPE
+   Enterprise application/page surfaces are rectangular.
+   Buttons, icons and badges retain their own geometry.
+   ============================================================ */
+html,
+body,
+main.app-main,
+main.app-main > router-outlet + * {
+  border-radius: 0 !important;
+}
+
+main.app-main > router-outlet + * :where(
+  .shell,
+  .shell-page,
+  .page,
+  .page-shell,
+  .app-shell,
+  .content-shell,
+  .workspace-shell,
+  .dashboard-shell,
+  .dashboard-content
+) {
+  border-radius: 0 !important;
+}
+
+/* Outer card-like wrappers must not reintroduce rounded corners. */
+main.app-main > router-outlet + * :where(
+  .card,
+  .panel,
+  .panel-card,
+  .card-shell,
+  .card-container,
+  .card-wrapper,
+  .section-card,
+  .content-card,
+  .data-card,
+  .workspace-card,
+  .settings-card,
+  .config-card,
+  .detail-card,
+  .queue-panel,
+  .message-card,
+  .table-card,
+  .list-card,
+  .form-card,
+  .settings-panel,
+  .content-panel,
+  .metric-card,
+  .kpi-card,
+  .stat-card,
+  [class*="card"],
+  [class*="-card"],
+  [class*="Card"],
+  [class*="-Card"]
+) {
+  border-radius: 0 !important;
+}
+
+/* Controls remain rounded. */
+main.app-main > router-outlet + * :where(
+  button,
+  .button,
+  .btn,
+  .primary,
+  .secondary,
+  .quiet-action,
+  .primary-action,
+  .btn-primary,
+  .btn-secondary,
+  [role="button"]
+) {
+  border-radius: 8px !important;
+}
+
+/* Icon containers remain rounded. */
+main.app-main > router-outlet + * :where(
+  .metric-icon,
+  .impact-icon,
+  .gap-mark,
+  .icon,
+  .company-mark
+) {
+  border-radius: 8px !important;
+}
+
+/* Status/badge/pill geometry remains pill-shaped. */
+main.app-main > router-outlet + * :where(
+  .badge,
+  .status,
+  .status-badge,
+  .tag,
+  .chip,
+  .pill,
+  .score-chip,
+  .trend
+) {
+  border-radius: 999px !important;
+}
