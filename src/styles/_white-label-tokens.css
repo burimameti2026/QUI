@@ -461,3 +461,79 @@ qai-wizard-steps .wizard li small{display:block;margin-top:var(--wl-steps-label-
   qai-wizard-steps .wizard li{display:grid;grid-template-columns:var(--wl-control-height) minmax(0,1fr);align-items:center;gap:var(--wl-steps-gap);padding:0;text-align:left}
   qai-wizard-steps .wizard li>span{box-shadow:0 0 0 var(--wl-steps-mobile-ring) var(--wl-steps-bg,var(--wl-surface))}
 }
+
+
+/* Canonical card system — all application cards use these White Label controls. */
+:root{
+  --wl-card-padding:18px;
+  --wl-card-header-height:56px;
+  --wl-card-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.045);
+  --wl-card-title-size:14px;
+  --wl-card-title-weight:700;
+  --wl-card-text-size:13px;
+  --wl-card-header-padding:16px 18px;
+  --wl-card-footer-bg:var(--wl-surface-muted);
+}
+
+/* Generic cards: one geometry, one hierarchy, configurable through White Label. */
+.card,.panel,.section-card,.content-card,.data-card,.workspace-card,.settings-card,.config-card,.detail-card,
+.qai-card,.metric-card,.kpi-card,.stat-card{
+  background:var(--wl-card-bg)!important;
+  border:1px solid var(--wl-card-border)!important;
+  border-radius:var(--wl-card-radius)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+  overflow:hidden;
+}
+
+.card>header,.panel>header,.section-card>header,.content-card>header,.card-header,
+.workspace-header,.prospect-header,.section-header{
+  min-height:var(--wl-card-header-height)!important;
+  padding:var(--wl-card-header-padding)!important;
+  background:var(--wl-card-header-bg)!important;
+  border-bottom:1px solid var(--wl-card-border)!important;
+}
+
+.card>header h1,.card>header h2,.card>header h3,.panel>header h1,.panel>header h2,.panel>header h3,
+.card-header h1,.card-header h2,.card-header h3,
+.workspace-header h3,.prospect-header h3,.section-header h3{
+  margin:0!important;
+  color:var(--wl-card-title)!important;
+  font-size:var(--wl-card-title-size)!important;
+  font-weight:var(--wl-card-title-weight)!important;
+  line-height:1.25!important;
+}
+
+.card>header p,.panel>header p,.card-header p,.workspace-header p,.prospect-header p,.section-header p{
+  margin:4px 0 0!important;
+  color:var(--wl-card-muted)!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+}
+
+.card>.body,.card-body,.panel>.body,.panel-body,.card-content,.workspace-body{
+  padding:var(--wl-card-padding)!important;
+  background:var(--wl-card-bg)!important;
+  color:var(--wl-card-text)!important;
+}
+
+.card>footer,.panel>footer,.card-footer{
+  padding:12px var(--wl-card-padding)!important;
+  background:var(--wl-card-footer-bg)!important;
+  border-top:1px solid var(--wl-card-border)!important;
+}
+
+.card:hover,.panel:hover,.section-card:hover,.content-card:hover,.data-card:hover,.workspace-card:hover{
+  box-shadow:var(--wl-card-shadow)!important;
+}
+
+/* KPI cards keep the same shell; only their configured accent varies. */
+.metric-card,.kpi-card,.stat-card{
+  padding:var(--wl-card-padding)!important;
+}
+
+/* Remove accidental legacy flat/colored card treatments. */
+.card[class*="blue"],.card[class*="green"],.card[class*="rose"],.card[class*="violet"],
+.panel[class*="blue"],.panel[class*="green"],.panel[class*="rose"],.panel[class*="violet"]{
+  background:var(--wl-card-bg)!important;
+  border-color:var(--wl-card-border)!important;
+}
