@@ -62,7 +62,7 @@
 
 .content-admin p {
   margin: 0;
-  color: #667085;
+  color: var(--wl-muted,#667085);
   font-size: 11px;
   line-height: 1.55;
 }
@@ -79,7 +79,7 @@
   appearance: none;
   border: 1px solid #d7dee8;
   border-radius: 7px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   color: #253149;
   padding: 9px 13px;
   font: inherit;
@@ -91,7 +91,7 @@
 
 .content-admin button:hover:not(:disabled) {
   border-color: #9fb2ca;
-  background: #f8fafc;
+  background: var(--wl-surface-muted,#f8fafc);
 }
 
 .content-admin button:disabled {
@@ -102,7 +102,7 @@
 .content-admin button.primary {
   border-color: var(--renova-orange);
   background: var(--renova-orange);
-  color: #fff;
+  color: var(--wl-surface,#fff);
 }
 
 .content-admin button.primary:hover:not(:disabled) {
@@ -113,7 +113,7 @@
 .content-admin button.publish {
   border-color: #059669;
   background: #059669;
-  color: #fff;
+  color: var(--wl-surface,#fff);
 }
 
 .content-admin button.publish:hover:not(:disabled) {
@@ -124,7 +124,7 @@
 .content-admin button.danger {
   color: #b42318;
   border-color: #f0c8c4;
-  background: #fff;
+  background: var(--wl-surface,#fff);
 }
 
 .content-admin button.small {
@@ -149,7 +149,7 @@
 
 .status.draft {
   border-color: #f1d59f;
-  background: #fff8e8;
+  background: var(--wl-surface,#fff)8e8;
   color: #9a6700;
 }
 
@@ -171,7 +171,7 @@
 
 .error {
   border-color: #f0c8c4;
-  background: #fff5f4;
+  background: var(--wl-surface,#fff)5f4;
   color: #b42318;
 }
 
@@ -207,15 +207,15 @@
 
 .sections button.active {
   border-bottom-color: transparent;
-  background: #fff;
-  color: #202124;
+  background: var(--wl-surface,#fff);
+  color: var(--wl-text,#202124);
   box-shadow: 0 1px 3px rgba(16,24,40,.07);
 }
 
 .section-panel {
   margin-top: 14px;
   padding: 20px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   border: 1px solid #edf0f4;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16,24,40,.055);
@@ -257,7 +257,7 @@
   padding: 10px 11px;
   border: 1px solid #d3dbe6;
   border-radius: 7px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   color: #172033;
   font: inherit;
   font-size: 12px;
@@ -306,7 +306,7 @@
 }
 
 .cms-card:hover {
-  border-color: #fed7aa;
+  border-color: var(--wl-button-3-border,#fed7aa);
 }
 
 .cms-card .card-index {
@@ -319,7 +319,7 @@
   min-width: 25px;
   height: 25px;
   border-radius: 6px;
-  background: #fff7ed;
+  background: var(--wl-surface,#fff)7ed;
   color: #c2410c;
   font-size: 10px;
   font-weight: 800;
@@ -346,9 +346,9 @@
 }
 
 aside {
-  border: 1px solid #dfe5ed;
+  border: 1px solid var(--wl-button-2-border,#dfe5ed);
   border-radius: 9px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   overflow: hidden;
 }
 
@@ -362,7 +362,7 @@ aside button {
   border-bottom: 1px solid #edf0f4;
   border-radius: 0;
   padding: 14px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
 }
 
 aside button:last-child {
@@ -396,9 +396,9 @@ aside em {
 .workspace main {
   min-width: 0;
   padding: 22px;
-  border: 1px solid #dfe5ed;
+  border: 1px solid var(--wl-button-2-border,#dfe5ed);
   border-radius: 9px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
 }
 
 .toolbar {
@@ -436,7 +436,7 @@ aside em {
 .automation {
   margin-top: 22px;
   padding: 18px;
-  border: 1px solid #dfe5ed;
+  border: 1px solid var(--wl-button-2-border,#dfe5ed);
   border-radius: 9px;
   background: #fbfcfe;
 }
@@ -475,7 +475,7 @@ aside em {
   padding: 7px 10px;
   border: 1px solid #d8e0ea;
   border-radius: 999px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   color: #526077;
   font-size: 10px;
   font-weight: 650;
@@ -487,7 +487,7 @@ aside em {
 }
 
 .result-section {
-  background: linear-gradient(180deg,#fff,#fbfcff);
+  background: linear-gradient(180deg,var(--wl-surface,#fff),#fbfcff);
 }
 
 .success-head {
@@ -522,9 +522,9 @@ aside em {
 .result-grid>div {
   min-width: 0;
   padding: 15px;
-  border: 1px solid #dfe5ed;
+  border: 1px solid var(--wl-button-2-border,#dfe5ed);
   border-radius: 8px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
 }
 
 .result-grid small,
@@ -560,7 +560,7 @@ aside em {
 .timeline div {
   position: relative;
   padding: 15px 15px 15px 38px;
-  border-left: 2px solid #dfe5ed;
+  border-left: 2px solid var(--wl-button-2-border,#dfe5ed);
 }
 
 .timeline div:before {
@@ -568,7 +568,7 @@ aside em {
   position: absolute;
   left: -9px;
   top: 11px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   color: #9aa6b7;
   font-size: 18px;
   line-height: 18px;
@@ -602,7 +602,7 @@ aside em {
   border: 1px solid #d7dee8;
   border-radius: 7px;
   padding: 9px 13px;
-  background: #fff;
+  background: var(--wl-surface,#fff);
   color: #315fbd;
   text-decoration: none;
   font-size: 12px;
@@ -610,7 +610,7 @@ aside em {
 }
 
 .actions a:hover {
-  background: #f8fafc;
+  background: var(--wl-surface-muted,#f8fafc);
 }
 
 .actions a.secondary-link {
