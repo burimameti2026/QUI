@@ -12,7 +12,7 @@
   --wl-header-text:#26364d;
   --wl-header-muted:#667085;
   --wl-card-bg:#ffffff;
-  --wl-card-header-bg:#ffffff;
+  --wl-card-header-bg:#f2f5fb;
   --wl-card-border:#e7ebf0;
   --wl-card-title:#202124;
   --wl-card-text:#26364d;
@@ -20,7 +20,7 @@
   --wl-card-accent:#2563eb;
   --wl-card-radius:12px;
   --wl-button-1-bg:#2563eb; --wl-button-1-text:#ffffff; --wl-button-1-border:#2563eb; --wl-button-1-hover:#1d4ed8;
-  --wl-button-2-bg:#ffffff; --wl-button-2-text:#202124; --wl-button-2-border:#dfe5ed; --wl-button-2-hover:#f8fafc;
+  --wl-button-2-bg:#eef2ff; --wl-button-2-text:#334155; --wl-button-2-border:#d7def0; --wl-button-2-hover:#e7edff;
   --wl-button-3-bg:#edf4ff; --wl-button-3-text:#1d4ed8; --wl-button-3-border:#cfe0ff; --wl-button-3-hover:#dbeafe;
   --wl-button-4-bg:#ffffff; --wl-button-4-text:#202124; --wl-button-4-border:#dfe5ed; --wl-button-4-hover:#f8fafc;
 }
@@ -125,7 +125,7 @@ qai-page-header .page-header[data-template="header-02"] .page-actions{
 qai-page-header .page-header[data-template="header-02"] .page-actions button{
   min-height:40px!important;
   padding:0 15px!important;
-  border-radius:8px!important;
+  border-radius:var(--wl-button-radius,0px)!important;
   font-size:12px!important;
   font-weight:650!important;
   box-shadow:0 1px 2px rgba(16,24,40,.04);
@@ -232,7 +232,7 @@ qai-ui-table-card th{
 qai-ui-table-card td{color:var(--wl-card-text)!important}
 qai-ui-page-renderer .text-block{
   border-color:var(--wl-card-border)!important;
-  border-radius:var(--wl-card-radius)!important;
+  border-radius:var(--wl-card-radius,0px)!important;
   background:var(--wl-card-bg)!important;
 }
 qai-ui-page-renderer .text-block h3{color:var(--wl-card-title)!important}
@@ -266,7 +266,7 @@ qai-ui-table-card .card{border-radius:var(--wl-table-radius,8px)!important}
 qai-ui-table-card th{background:var(--wl-table-header,var(--wl-surface-muted))!important;border-color:var(--wl-table-border,var(--wl-border))!important;color:var(--wl-table-muted,var(--wl-muted))!important}
 qai-ui-table-card td{border-color:var(--wl-table-border,var(--wl-border))!important;color:var(--wl-table-text,var(--wl-text))!important}
 
-.status,.badge,.tag,.chip,.pill,.status-badge{
+.status,.badge,.tag,.chip,.pill,.status-badge,.campaign-tag{
   border-radius:var(--wl-badge-radius,999px)!important;
   border-color:var(--wl-badge-border,var(--wl-accent-border))!important;
   background:var(--wl-badge-bg,var(--wl-accent-soft))!important;
@@ -375,7 +375,7 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-card-gap:12px;
   --wl-card-font-size:14px;
   --wl-card-shadow:0 4px 14px rgba(15,47,104,.05);
-  --wl-button-radius:9px;
+  --wl-button-radius:0px;
   --wl-button-padding-y:6px;
   --wl-button-padding-x:9px;
   --wl-button-font-size:10px;
