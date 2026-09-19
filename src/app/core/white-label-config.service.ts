@@ -11,8 +11,8 @@ export interface WhiteLabelStyles { header:WhiteLabelStyle; grid:WhiteLabelStyle
 export interface WhiteLabelItem { id:string; label:string; template:string; enabled:boolean; appearance:WhiteLabelItemAppearance; }
 export interface WhiteLabelSection { id:string; kind:string; label:string; columns:number; expanded?:boolean; items:WhiteLabelItem[]; }
 
-const STORAGE_KEY='qai-white-label-page-layout';
-const STYLE_KEY='qai-white-label-component-styles';
+const STORAGE_KEY='qai-white-label-page-layout-v2';
+const STYLE_KEY='qai-white-label-component-styles-v2';
 const DEFAULT_APPEARANCE:WhiteLabelItemAppearance={surfaceColor:'#ffffff',headerColor:'#edf4ff',borderColor:'#dbe5f0',titleColor:'#172b4d',textColor:'#26364d',mutedTextColor:'#667085',accentColor:'#2563eb',buttonBackgroundColor:'#2563eb',buttonTextColor:'#ffffff',buttonBorderColor:'#2563eb',buttonHoverBackgroundColor:'#1d4ed8',height:0,radius:12};
 const DEFAULT_STYLES:WhiteLabelStyles={header:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:64,radius:0},grid:{...DEFAULT_APPEARANCE,height:0,radius:12},kpis:{...DEFAULT_APPEARANCE,headerColor:'#edf4ff',height:0,radius:12},cards:{...DEFAULT_APPEARANCE,height:0,radius:12},buttons:{...DEFAULT_APPEARANCE,height:40,radius:9},text:{...DEFAULT_APPEARANCE,headerColor:'#ffffff',height:0,radius:0}};
 
