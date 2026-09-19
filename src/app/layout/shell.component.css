@@ -624,3 +624,32 @@ main{background:var(--wl-page-bg,#f5f7fb)!important}
   .header-tools{gap:7px}
   .header-help{display:none}
 }
+
+
+/* FINAL APPLICATION GEOMETRY — the shell itself is rectangular. */
+:host,
+qai-shell,
+.shell,
+.shell.hub-shell,
+main.app-main,
+.page {
+  border-radius: 0 !important;
+}
+
+.shell,
+main.app-main,
+.page {
+  overflow: visible !important;
+}
+
+/* Keep only the intended inner controls rounded. */
+.menu-item,
+.child-item,
+.collapse-btn,
+.global-search,
+.admin-account,
+.header-help,
+.admin-dropdown,
+.admin-menu-item {
+  border-radius: 8px;
+}
