@@ -27,7 +27,7 @@ export class WhiteLabelConfigService {
   }
   save(sections:WhiteLabelSection[]):void { const normalized=this.normalize(sections); localStorage.setItem(STORAGE_KEY,JSON.stringify(normalized)); this.layout.set(normalized); this.apply(normalized); }
   loadStyles():WhiteLabelStyles { try { const raw=localStorage.getItem(STYLE_KEY); if(raw){ return this.normalizeStyles(JSON.parse(raw)); } } catch {} return JSON.parse(JSON.stringify(DEFAULT_STYLES)); }
-  saveStyles(styles:WhiteLabelStyles):void { const normalized=this.normalizeStyles(styles); localStorage.setItem(STYLE_KEY,JSON.stringify(normalized)); this.styles.set(normalized); this.apply(this.layout(),normalized); }
+  saveStyles(styles:WhiteLabelStyles):WhiteLabelStyles { const normalized=this.normalizeStyles(JSON.parse(JSON.stringify(styles))); localStorage.setItem(STYLE_KEY,JSON.stringify(normalized)); this.styles.set(normalized); this.apply(this.layout(),normalized); return normalized; }
   apply(sections=this.layout(), styles=this.styles()):void {
     const root=document.documentElement;
     const header=styles.header;
@@ -50,5 +50,5 @@ export class WhiteLabelConfigService {
   private enabled(sections:WhiteLabelSection[],kind:string){return sections.find(x=>x.kind===kind)?.items?.filter(x=>x.enabled!==false)||[];}
   private firstEnabled(sections:WhiteLabelSection[],kind:string){return this.enabled(sections,kind)[0];}
   private set(root:HTMLElement,name:string,value:string){root.style.setProperty(name,value);}
-  private darken(hex:string){if(!/^#[0-9a-fA-F]{6}$/.test(hex))return '#ea580c';const r=Math.max(0,parseInt(hex.slice(1,3),16)-25),g=Math.max(0,parseInt(hex.slice(3,5),16)-25),b=Math.max(0,parseInt(hex.slice(5,7),16)-25);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
+  private darken(hex:string){if(!/^#[0-9a-fA-F]{6}$/.test(hex))return '#1d4ed8';const r=Math.max(0,parseInt(hex.slice(1,3),16)-25),g=Math.max(0,parseInt(hex.slice(3,5),16)-25),b=Math.max(0,parseInt(hex.slice(5,7),16)-25);return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 }
