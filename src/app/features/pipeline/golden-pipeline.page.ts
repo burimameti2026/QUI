@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CrmService, GoldenPipelineBoard } from '../crm/crm.service';
+import { CrmService, GoldenPipelineBoard, GoldenPipelineStage } from '../crm/crm.service';
+import { Opportunity } from '../../core/models/platform.models';
 import { finalize } from 'rxjs';
 import { PageHeader } from '../../shared/ui';
 
@@ -60,13 +61,13 @@ export class GoldenPipelinePage implements OnInit {
     });
   }
   totalOpportunities(data: GoldenPipelineBoard): number {
-    return data.stages.reduce((sum, stage) => sum + (stage.opportunities?.length || 0), 0);
+    return data.stages.reduce((sum: number, stage: GoldenPipelineStage) => sum + (stage.opportunities?.length || 0), 0);
   }
   totalValue(data: GoldenPipelineBoard): number {
-    return data.stages.reduce((sum, stage) => sum + (stage.opportunities || []).reduce((s, item) => s + Number(item.amount || 0), 0), 0);
+    return data.stages.reduce((sum: number, stage: GoldenPipelineStage) => sum + (stage.opportunities || []).reduce((s: number, item: Opportunity) => s + Number(item.amount || 0), 0), 0);
   }
   weightedValue(data: GoldenPipelineBoard): number {
-    return data.stages.reduce((sum, stage) => sum + (stage.opportunities || []).reduce((s, item) => s + Number(item.amount || 0) * Number(stage.probability || 0) / 100, 0), 0);
+    return data.stages.reduce((sum: number, stage: GoldenPipelineStage) => sum + (stage.opportunities || []).reduce((s: number, item: Opportunity) => s + Number(item.amount || 0) * Number(stage.probability || 0) / 100, 0), 0);
   }
   money(value: number): string {
     return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value || 0);
