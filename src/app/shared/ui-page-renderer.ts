@@ -45,7 +45,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
           [subtitle]="component.subtitle || ''"
           [steps]="value(component, 'steps', [])"></qai-ui-steps></div>
 
-        <div *ngSwitchCase="'metrics'" ><qai-ui-metrics
+        <div *ngSwitchCase="'metrics'" class="full-span"><qai-ui-metrics
           [template]="component.template"
           [items]="value(component, 'items', [])"
           (action)="emitRoute($event)"></qai-ui-metrics></div>
@@ -95,6 +95,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
     :host{display:block;min-width:0}
     .page-content{padding:var(--wl-page-padding-y) var(--wl-page-padding-x) var(--wl-page-padding-bottom)}
     .page-section{min-width:0}
+    .full-span{grid-column:1 / -1;min-width:0}
     .grid-block{display:grid;grid-template-columns:repeat(var(--wl-grid-columns),minmax(0,1fr));gap:var(--wl-grid-gap)}
     .grid-block>ng-container{display:contents}
     @media(max-width:680px){.grid-block{grid-template-columns:1fr}}
