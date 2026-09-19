@@ -57,15 +57,15 @@ export class Empty { readonly i18n = inject(AdminI18nService); @Input() title="N
     :host { display: block; min-width: 0; }
     .wizard { display: block; width: 100%; padding: 16px 18px 18px; background: var(--wl-surface,#fff); }
     .wizard ol { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
-    .wizard ol::before { content: ""; position: absolute; top: 19px; left: 32px; right: 32px; height: 2px; background: #d9e3f1; }
-    .wizard li { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px; color: #64748b; text-align: center; }
-    .wizard li > span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #cbd8e8; border-radius: 50%; background: var(--wl-surface,#fff); color: #62748c; font-size: 11px; font-weight: 800; box-shadow: 0 0 0 5px var(--wl-surface,#fff); }
+    .wizard ol::before { content: ""; position: absolute; top: 19px; left: 32px; right: 32px; height: 2px; background: var(--wl-steps-border,var(--wl-border)); }
+    .wizard li { position: relative; z-index: 1; display: flex; min-width: 0; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px; color: var(--wl-steps-muted,var(--wl-muted)); text-align: center; }
+    .wizard li > span { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--wl-steps-border,var(--wl-border)); border-radius: 50%; background: var(--wl-surface,#fff); color: var(--wl-steps-muted,var(--wl-muted)); font-size: 11px; font-weight: 800; box-shadow: 0 0 0 5px var(--wl-surface,#fff); }
     .wizard li.done > span, .wizard li.active > span { border-color: var(--wl-accent,#2563eb); background: var(--wl-accent,#2563eb); color: var(--wl-surface,#fff); }
-    .wizard li.active > span { box-shadow: 0 0 0 5px #eaf2ff; }
+    .wizard li.active > span { box-shadow: 0 0 0 5px var(--wl-accent-soft,var(--wl-surface-muted)); }
     .wizard li > div { min-width: 0; }
-    .wizard li b { display: block; color: #334155; font-size: 10px; font-weight: 800; }
-    .wizard li.active b { color: #1d4ed8; }
-    .wizard li small { display: block; margin-top: 4px; color: #7b8798; font-size: 8px; line-height: 1.35; }
+    .wizard li b { display: block; color: var(--wl-steps-text,var(--wl-text)); font-size: 10px; font-weight: 800; }
+    .wizard li.active b { color: var(--wl-steps-accent,var(--wl-accent)); }
+    .wizard li small { display: block; margin-top: 4px; color: var(--wl-steps-muted,var(--wl-muted)); font-size: 8px; line-height: 1.35; }
     @media (max-width: 680px) {
       .wizard { padding: 14px 16px 16px; }
       .wizard ol { grid-template-columns: 1fr; gap: 10px; }
