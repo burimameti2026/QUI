@@ -128,7 +128,7 @@ export class DashboardPage implements OnInit {
           continue;
         }
 
-        section.columns = saved.columns || section.columns;
+        if ([1, 2, 3, 4, 5].includes(saved.columns)) section.columns = saved.columns as 1 | 2 | 3 | 4 | 5;
         for (const item of savedItems) {
           const targetId = componentMap[item.id] || item.id;
           const target = section.components.find(component => component.id === targetId);
