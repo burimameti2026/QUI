@@ -254,3 +254,77 @@ input:focus,select:focus,textarea:focus{
   border-color:var(--wl-form-accent,var(--wl-accent))!important;
   box-shadow:0 0 0 3px color-mix(in srgb,var(--wl-form-accent,var(--wl-accent)) 14%,transparent)!important;
 }
+
+
+/* Remaining application component families. */
+qai-refined-tabs .refined-tabs,.tabs,.nav-tabs{
+  background:var(--wl-tabs-bg,var(--wl-surface))!important;
+  border-color:var(--wl-tabs-border,var(--wl-border))!important;
+  border-radius:var(--wl-tabs-radius,8px)!important;
+}
+qai-refined-tabs button,.tabs button,.nav-tabs button{
+  color:var(--wl-tabs-muted,var(--wl-muted))!important;
+}
+qai-refined-tabs button.active,.tabs button.active,.nav-tabs button.active,
+qai-refined-tabs .active{
+  color:var(--wl-tabs-accent,var(--wl-accent))!important;
+  border-color:var(--wl-tabs-accent,var(--wl-accent))!important;
+}
+
+qai-data-grid .refined-grid,.data-grid,.data-table{
+  background:var(--wl-grid-bg,var(--wl-surface))!important;
+  border-color:var(--wl-grid-border,var(--wl-border))!important;
+  border-radius:var(--wl-grid-radius,8px)!important;
+}
+qai-data-grid table,.data-grid table,.data-table{
+  border-color:var(--wl-grid-border,var(--wl-border))!important;
+}
+qai-data-grid th,.data-grid th,.data-table th{
+  background:var(--wl-grid-header,var(--wl-surface-muted))!important;
+  border-color:var(--wl-grid-border,var(--wl-border))!important;
+  color:var(--wl-grid-muted,var(--wl-muted))!important;
+}
+qai-data-grid td,.data-grid td,.data-table td{
+  border-color:var(--wl-grid-border,var(--wl-border))!important;
+  color:var(--wl-grid-text,var(--wl-text))!important;
+}
+
+.sidebar,.app-sidebar,.navigation-shell,.nav-shell{
+  background:var(--wl-nav-bg,var(--wl-surface))!important;
+  border-color:var(--wl-nav-border,var(--wl-border))!important;
+}
+.sidebar .menu-item,.sidebar .child-item,.app-sidebar a,.navigation-shell a{
+  color:var(--wl-nav-text,var(--wl-text))!important;
+}
+.sidebar .menu-item:hover,.sidebar .child-item:hover{
+  background:var(--wl-accent-soft,var(--wl-surface-muted))!important;
+}
+.sidebar .menu-item.active,.sidebar .child-item.active{
+  color:var(--wl-nav-accent,var(--wl-accent))!important;
+}
+.sidebar .nav-icon,.sidebar .nav-chevron{
+  color:var(--wl-nav-muted,var(--wl-muted))!important;
+}
+.sidebar .menu-item.active .nav-icon,.sidebar .menu-item.active .nav-chevron{
+  color:var(--wl-nav-accent,var(--wl-accent))!important;
+}
+
+qai-modal .modal-card,.modal-card,.dialog-card{
+  background:var(--wl-modal-bg,var(--wl-surface))!important;
+  border-color:var(--wl-modal-border,var(--wl-border))!important;
+  border-radius:var(--wl-modal-radius,12px)!important;
+}
+qai-modal .modal-card>header,.modal-card>header,.dialog-card>header{
+  background:var(--wl-modal-header,var(--wl-surface))!important;
+  border-bottom-color:var(--wl-modal-border,var(--wl-border))!important;
+}
+qai-modal h3,.modal-card h3,.dialog-card h3{color:var(--wl-modal-title,var(--wl-text))!important}
+qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var(--wl-modal-text,var(--wl-text))!important}
+
+.callout,.notice,.alert,.toast,.banner{
+  background:var(--wl-notice-bg,var(--wl-accent-soft))!important;
+  border-color:var(--wl-notice-border,var(--wl-accent-border))!important;
+  border-radius:var(--wl-notice-radius,8px)!important;
+  color:var(--wl-notice-text,var(--wl-text))!important;
+}
+.callout-icon,.notice-icon{color:var(--wl-notice-accent,var(--wl-accent))!important}
