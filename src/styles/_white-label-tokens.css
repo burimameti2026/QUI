@@ -997,3 +997,67 @@ main.app-main > router-outlet + * :where(
 @media(max-width:520px){
   main.app-main > router-outlet + * :where(.metrics,.kpi-grid,.stat-grid){grid-template-columns:1fr!important}
 }
+
+
+/* ============================================================
+   FINAL LEGACY-BRIDGE
+   Older feature CSS may still reference --ui-* / --brand-* tokens.
+   They resolve to the same White Label values instead of creating
+   a second visual system. This keeps every existing page aligned
+   without requiring page-by-page rewrites.
+   ============================================================ */
+:root{
+  --ui-bg:var(--wl-page-bg);
+  --ui-surface:var(--wl-surface);
+  --ui-surface-subtle:var(--wl-surface-muted);
+  --ui-border:var(--wl-card-border);
+  --ui-border-strong:var(--wl-card-border);
+  --ui-ink:var(--wl-card-title);
+  --ui-ink-soft:var(--wl-card-text);
+  --ui-muted:var(--wl-card-muted);
+  --ui-faint:var(--wl-card-muted);
+  --ui-accent:var(--wl-accent);
+  --ui-accent-soft:var(--wl-accent-soft);
+  --ui-positive:var(--wl-success,#16a34a);
+  --ui-negative:var(--wl-danger,#dc2626);
+  --ui-warning:var(--wl-warning,#d97706);
+  --ui-radius:var(--wl-card-radius);
+  --ui-shadow:var(--wl-card-shadow);
+
+  --brand-primary:var(--wl-button-1-bg);
+  --brand-primary-hover:var(--wl-button-1-hover);
+  --brand-primary-soft:var(--wl-button-3-bg);
+  --brand-primary-border:var(--wl-button-3-border);
+  --brand-accent:var(--wl-accent);
+  --brand-accent-hover:var(--wl-accent-hover);
+  --brand-accent-soft:var(--wl-accent-soft);
+  --brand-accent-border:var(--wl-accent-border);
+}
+
+/* Legacy page containers inherit the same canvas and spacing. */
+main.app-main > router-outlet + * :where(
+  .lead-workspace,.toolbar,.layout,.cards,.metrics,.table-wrap,
+  .directory-card,.conversion-guide,.builder-shell,.builder-grid
+){
+  box-sizing:border-box;
+}
+
+/* Legacy metric/card implementations use the same right-side action rule. */
+main.app-main > router-outlet + * :where(
+  .actions,.row-actions,.directory-actions,.card-actions,.header-actions,
+  .builder-actions,.toolbar-actions
+){
+  justify-content:flex-end!important;
+  margin-left:auto!important;
+}
+
+/* Do not allow legacy page CSS to reintroduce a different card radius/shadow. */
+main.app-main > router-outlet + * :where(
+  .lead-metrics article,.metrics.compact article,.cards>div,
+  .directory-card,.conversion-guide,.campaigns,.safety,.panel
+){
+  border-radius:var(--wl-card-radius)!important;
+  border-color:var(--wl-card-border)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+  background:var(--wl-card-bg)!important;
+}
