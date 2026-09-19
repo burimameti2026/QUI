@@ -19,9 +19,9 @@
 /* Global runtime aliases only. Component visuals belong to the White Label token system. */
 /* Runtime branding bridge — all aliases resolve to White Label tokens. */
 :root{
-  --brand-primary:var(--wl-button-1-bg,#f97316);--brand-primary-hover:var(--wl-button-1-hover,#ea580c);
-  --brand-primary-soft:var(--wl-button-3-bg,#fff7ed);--brand-primary-border:var(--wl-button-3-border,#fed7aa);
-  --brand-accent:var(--wl-accent,#2563eb);--brand-accent-hover:var(--wl-accent-hover,#1d4ed8);
-  --brand-accent-soft:var(--wl-accent-soft,#edf4ff);--brand-accent-border:var(--wl-accent-border,#cfe0ff);
+  --brand-primary:var(--wl-button-1-bg,var(--wl-accent,#2563eb));--brand-primary-hover:var(--wl-button-1-hover,var(--wl-accent-hover,#1d4ed8));
+  --brand-primary-soft:var(--wl-button-3-bg,var(--wl-accent-soft,#edf4ff));--brand-primary-border:var(--wl-button-3-border,var(--wl-accent-border,#cfe0ff));
+  --brand-accent:var(--wl-accent);--brand-accent-hover:var(--wl-accent-hover);
+  --brand-accent-soft:var(--wl-accent-soft);--brand-accent-border:var(--wl-accent-border);
 }
 
