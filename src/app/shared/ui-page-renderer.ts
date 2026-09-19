@@ -11,6 +11,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
   template: `
     <qai-page-header
       *ngIf="config.shell.header"
+      [template]="config.header?.template || 'header-01'"
       [title]="config.header?.title || config.name"
       [subtitle]="config.header?.subtitle || ''"
       >
@@ -72,17 +73,21 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
           [action]="firstAction(component)"
           (actionClick)="emitRoute($event)"></qai-ui-table-card></div>
 
-        <article class="text-block" *ngSwitchCase="'text'" >
+        <article class="text-block" [attr.data-template]="component.template" *ngSwitchCase="'text'" >
           <span *ngIf="component.badge" class="eyebrow">{{ component.badge }}</span>
           <h3>{{ component.title }}</h3>
           <p>{{ value(component, 'text', component.subtitle || '') }}</p>
         </article>
 
-        <div class="grid-block" *ngSwitchCase="'grid'" >
+        <div class="grid-block" *ngSwitchCase="'grid'" [attr.data-template]="component.template">
           <ng-container *ngFor="let child of component.children || []">
             <ng-container *ngTemplateOutlet="componentTpl; context: { $implicit: child }"></ng-container>
           </ng-container>
         </div>
+
+        <button *ngSwitchCase="'button'" type="button" [attr.data-template]="component.template" (click)="emitAction(firstAction(component) || {label: component.title || 'Action'})">
+          {{ component.title || component.data?.['label'] || 'Action' }}
+        </button>
       </ng-container>
     </ng-template>
   `,
