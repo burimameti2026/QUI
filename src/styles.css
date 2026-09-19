@@ -24,20 +24,4 @@
   --brand-accent:var(--wl-accent,#2563eb);--brand-accent-hover:var(--wl-accent-hover,#1d4ed8);
   --brand-accent-soft:var(--wl-accent-soft,#edf4ff);--brand-accent-border:var(--wl-accent-border,#cfe0ff);
 }
-button.primary,.primary,.primary-action,.btn-primary,.page-actions button.primary,.header-actions button.primary{
-  background:var(--wl-button-1-bg,var(--brand-primary))!important;border-color:var(--wl-button-1-border,var(--brand-primary))!important;color:var(--wl-button-1-text,#fff)!important;
-}
-button.primary:hover:not(:disabled),.primary:hover:not(:disabled),.primary-action:hover:not(:disabled),.btn-primary:hover:not(:disabled){
-  background:var(--wl-button-1-hover,var(--brand-primary-hover))!important;border-color:var(--wl-button-1-hover,var(--brand-primary-hover))!important;
-}
-input:focus,select:focus,textarea:focus{
-  border-color:var(--wl-button-1-border,var(--brand-primary))!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--wl-button-1-bg,var(--brand-primary)) 12%,transparent)!important;
-}
-a,.text-primary,.link-primary{color:var(--wl-button-1-bg,var(--brand-primary))!important}
-.menu-item.active:before,.context-dot,.notification-dot,.child-item.active .child-dot{background:var(--wl-button-1-bg,var(--brand-primary))!important}
-.menu-item.active .nav-icon,.menu-item:hover .nav-icon,.menu-item:hover .nav-chevron,.menu-item.active .nav-chevron{color:var(--wl-button-1-bg,var(--brand-primary))!important}
-.brand-logo,.admin-avatar,.hub-brand-logo{background:var(--wl-button-1-bg,var(--brand-primary))!important}
-.pipeline-kpis article:before,.golden-kpis article:before,.lead-workspace qai-kpi-strip .refined-kpi-strip>article:before,.app-main:has(.discovery-hero) .discovery-metrics .metric-card::before{background:var(--wl-button-1-bg,var(--brand-primary))!important}
-.pipeline-kpis .kpi-icon,.golden-kpis .kpi-icon,.brand-metrics .metric-icon.orange,.lead-workspace qai-kpi-strip .refined-kpi-strip .kpi-icon,.app-main:has(.discovery-hero) .selection-count,.app-main:has(.discovery-hero) .create-list,.app-main:has(.discovery-hero) .profile-option.selected .profile-mark{
-  background:var(--wl-button-1-bg,var(--brand-primary))!important;color:var(--wl-button-1-text,#fff)!important;
-}
+
