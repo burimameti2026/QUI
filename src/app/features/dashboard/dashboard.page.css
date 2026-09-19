@@ -195,3 +195,16 @@
 @media(max-width:480px){
   .metric-grid{grid-template-columns:1fr!important}
 }
+
+
+/* Final unified enterprise override: this route inherits the Prospect Discovery composition. */
+:host{background:#f5f7fb!important;color:var(--wl-text)!important}
+qai-page-header{display:block!important;margin:0!important}
+qai-page-header .page-header{background:var(--wl-header-bg)!important;border-bottom:1px solid var(--wl-header-border)!important}
+qai-page-header .page-actions{justify-content:flex-end!important;margin-left:auto!important}
+
+.executive-band,.metric-card,.revenue-card,.automation-card,.data-card{background:var(--wl-card-bg)!important;border:1px solid var(--wl-card-border)!important;border-radius:var(--wl-card-radius)!important;box-shadow:var(--wl-card-shadow)!important}
+.card-heading{background:var(--wl-card-header-bg)!important;border-bottom:1px solid var(--wl-card-header-border)!important}
+.card-heading h3{color:var(--wl-card-title)!important}
+.card-heading button,.card-heading a{margin-left:auto!important}
+
