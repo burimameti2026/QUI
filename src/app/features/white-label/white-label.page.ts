@@ -5,7 +5,7 @@ import { BrandThemeService } from "../../core/brand-theme.service";
 import { WhiteLabelConfigService, WhiteLabelSection, WhiteLabelStyles } from "../../core/white-label-config.service";
 import { PageHeader } from "../../shared/ui";
 
-type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text" | "steps" | "lists" | "tables" | "badges" | "forms";
+type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text" | "steps" | "lists" | "tables" | "badges" | "forms" | "tabs" | "dataGrid" | "navigation" | "modals" | "notices";
 
 interface LayoutItem {
   id: string;
