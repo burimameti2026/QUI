@@ -227,32 +227,42 @@ qai-page-header .page-actions{justify-content:flex-end!important;margin-left:aut
 }
 
 
-/* Final Dashboard alignment: header actions stay on the right; KPI row is centered. */
+/* Final Dashboard reference alignment: actions right, KPIs span the content width. */
 :host qai-page-header .page-actions{
   margin-left:auto!important;
   justify-content:flex-end!important;
 }
+:host qai-page-header .page-actions button{
+  border-radius:var(--wl-button-radius,0px)!important;
+}
 .metric-grid{
-  width:fit-content;
-  max-width:100%;
-  margin-left:auto!important;
-  margin-right:auto!important;
-  grid-template-columns:repeat(5,minmax(160px,190px))!important;
-  justify-content:center!important;
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  justify-content:stretch!important;
+}
+.card-heading{
+  background:var(--wl-card-header-bg,#f2f5fb)!important;
+}
+.card-heading button,
+.card-heading a{
+  border-radius:var(--wl-button-radius,0px)!important;
+}
+.knowledge-gap em,
+.score-chip,
+.trend{
+  background:var(--wl-badge-bg,#eef2ff)!important;
+  border-color:var(--wl-badge-border,#d7def0)!important;
+  color:var(--wl-badge-text,#4f46e5)!important;
 }
 @media(max-width:1100px){
-  .metric-grid{
-    width:100%;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  }
+  .metric-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 }
 @media(max-width:700px){
-  .metric-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  }
+  .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 }
 @media(max-width:480px){
-  .metric-grid{
-    grid-template-columns:1fr!important;
-  }
+  .metric-grid{grid-template-columns:1fr!important}
 }
