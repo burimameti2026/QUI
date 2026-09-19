@@ -92,6 +92,8 @@ export class WhiteLabelConfigService {
     if(out.cards?.headerColor==='#e4eaf3' || out.cards?.headerColor==='#f2f5fb') out.cards.headerColor='#ffffff';
     if(out.cards?.radius===11 || out.cards?.radius===12) out.cards.radius=0;
     if(out.buttons?.radius===0 || out.buttons?.radius===9) out.buttons.radius=8;
+    if(out.buttons?.height && out.buttons.height<44) out.buttons.height=44;
+    if(out.buttons?.buttonBackgroundColor==='#f59e0b') out.buttons.buttonTextColor='#ffffff';
     if(out.badges?.headerColor==='#edf4ff' || out.badges?.headerColor==='#eef2ff') out.badges.headerColor=ORANGE_SOFT;
     if(out.badges?.accentColor==='#2563eb' || out.badges?.accentColor==='#4f46e5') out.badges.accentColor=ORANGE;
     return out as WhiteLabelStyles;
