@@ -204,11 +204,19 @@
 }
 
 .shell.hub-shell{
-  grid-template-columns:308px minmax(0,1fr);
+  grid-template-columns:236px minmax(0,1fr);
 }
 
 .shell.hub-shell .sidebar{display:block}
 .shell.hub-shell .app-main{min-width:0}
+
+@media(max-width:900px){
+  .shell.hub-shell{grid-template-columns:76px minmax(0,1fr)}
+}
+
+@media(max-width:620px){
+  .shell.hub-shell{grid-template-columns:64px minmax(0,1fr)}
+}
 
 @media(max-width:900px){
   .shell{grid-template-columns:76px minmax(0,1fr)}
