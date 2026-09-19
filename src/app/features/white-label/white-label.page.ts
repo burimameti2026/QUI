@@ -60,7 +60,7 @@ interface LayoutSection {
             <h2>Define once. Use everywhere.</h2>
             <p>Each component type has one reusable visual style. Change it here and every Header, Grid, KPI, Card, Button or Text component uses the same definition across the application.</p>
           </div>
-          <button type="button" class="primary" (click)="saveStyles()">Save component styles</button>
+          <div class="style-save-actions"><span class="save-status" *ngIf="styleSaveMessage">{{ styleSaveMessage }}</span><button type="button" class="primary" (click)="saveStyles()">Save component styles</button></div>
         </div>
         <div class="style-tabs">
           <button type="button" *ngFor="let type of styleTypes" [class.selected]="activeStyle === type.id" (click)="activeStyle = type.id">{{ type.label }}</button>
@@ -200,6 +200,7 @@ export class WhiteLabelPage implements OnInit {
   brand = this.theme.defaults();
   styles: WhiteLabelStyles = this.whiteLabel.loadStyles();
   activeStyle: keyof WhiteLabelStyles = "header";
+  styleSaveMessage = "";
   readonly styleTypes: { id: keyof WhiteLabelStyles; label: string }[] = [
     { id: "header", label: "Header" },
     { id: "grid", label: "Grid" },
@@ -342,7 +343,9 @@ export class WhiteLabelPage implements OnInit {
   }
 
   saveStyles() {
-    this.whiteLabel.saveStyles(this.styles);
+    this.styles = this.whiteLabel.saveStyles(this.styles);
+    this.styleSaveMessage = "Component styles saved";
+    window.setTimeout(() => this.styleSaveMessage = "", 2500);
   }
 
   addItem(section: LayoutSection) {
@@ -388,8 +391,8 @@ export class WhiteLabelPage implements OnInit {
   }
 
   resetLayout() {
-    localStorage.removeItem("qai-white-label-page-layout");
-    localStorage.removeItem("qai-white-label-component-styles");
+    localStorage.removeItem("qai-white-label-page-layout-v2");
+    localStorage.removeItem("qai-white-label-component-styles-v2");
     window.location.reload();
   }
 
