@@ -99,22 +99,18 @@ qai-ui-card p,qai-ui-list-card p,qai-ui-table-card p,
   color:var(--wl-card-text);
 }
 
-/* Renderer-level component overrides still win because they set --ui-* on the instance. */
-qai-ui-card footer button{
-  background:var(--ui-button-bg,var(--wl-button-1-bg))!important;
-  border-color:var(--ui-button-border,var(--wl-button-1-border))!important;
-  color:var(--ui-button-text,var(--wl-button-1-text))!important;
-}
-qai-ui-list-card header button,qai-ui-table-card header button{
-  background:var(--ui-button-bg,var(--wl-button-2-bg))!important;
-  border-color:var(--ui-button-border,var(--wl-button-2-border))!important;
-  color:var(--ui-button-text,var(--wl-button-2-text))!important;
-}
-qai-ui-metrics .metric{
-  --accent:var(--wl-card-accent);
-  border-color:var(--wl-card-border)!important;
-  background:var(--wl-card-bg)!important;
-}
+/* Component templates are visual variants, but every value still comes from White Label tokens. */
+qai-ui-card .card[data-template="card-01"]{box-shadow:var(--wl-card-shadow)!important}
+qai-ui-card .card[data-template="card-02"]>header{background:var(--wl-accent-soft)!important}
+qai-ui-card .card[data-template="card-03"]{border-width:2px!important}
+qai-ui-card .card[data-template="card-04"]{box-shadow:none!important}
+qai-ui-metrics .metrics[data-template="kpi-02"] .metric{border-radius:0!important}
+qai-ui-metrics .metrics[data-template="kpi-03"] .metric{background:var(--wl-accent-soft)!important}
+qai-ui-metrics .metrics[data-template="kpi-04"] .metric{box-shadow:none!important}
+qai-ui-list-card .card[data-template="list-01"] .item{min-height:48px}
+qai-ui-table-card .card[data-template="table-01"] td{min-height:40px}
+qai-ui-steps .surface[data-template="steps-01"] .steps{gap:var(--wl-steps-gap,12px)}
+qai-page-renderer .text-block[data-template="text-01"]{}
 
 
 /* Dashboard / shared enterprise templates: White Label is the visual authority. */
