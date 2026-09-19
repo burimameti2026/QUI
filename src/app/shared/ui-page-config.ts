@@ -69,7 +69,7 @@ export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
   name: 'Acquisition command center',
   shell: { header: true, breadcrumb: true },
   breadcrumb: [
-    { label: 'Home', route: '/dashboard' },
+    { label: 'Kreu', route: '/dashboard' },
     { label: 'Command Center' },
     { label: 'Dashboard' }
   ],
