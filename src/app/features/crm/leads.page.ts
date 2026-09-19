@@ -10,7 +10,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
-  styleUrls: ['./leads.orange-style.css'],
+  styleUrls: ['./leads.page.css'],
   template: `
     <section class="leads-page-header">
       <div class="title"><h1>Leads <span class="count">{{ rows.length }}</span></h1><p>Manage your sales leads and move qualified demand into the CRM.</p></div>
