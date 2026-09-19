@@ -84,19 +84,19 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
   `,
   styles: [`
     :host{display:block;min-width:0}
-    .page-content{padding:0 24px 24px}
+    .page-content{padding:var(--wl-page-padding-y,0) var(--wl-page-padding-x,24px) var(--wl-page-padding-bottom,24px)}
     .page-section{min-width:0}
-    .text-block{border:1px solid #d6e0ec;border-radius:14px;background:#fff;padding:18px;box-shadow:0 7px 20px rgba(15,47,104,.055)}
-    .text-block .eyebrow{font-size:9px;font-weight:800;letter-spacing:.9px;color:#68778d}
-    .text-block h3{margin:5px 0 7px;color:#173f7a;font-size:14px}
-    .text-block p{margin:0;color:#66748a;font-size:11px;line-height:1.7}
-    .grid-block{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .text-block{border:1px solid var(--wl-text-border,var(--wl-border));border-radius:var(--wl-text-radius,var(--wl-card-radius,12px));background:var(--wl-text-surface,var(--wl-surface));padding:var(--wl-text-padding,18px);box-shadow:var(--wl-text-shadow,var(--wl-card-shadow))}
+    .text-block .eyebrow{font-size:var(--wl-text-eyebrow-size,9px);font-weight:800;letter-spacing:.9px;color:var(--wl-text-muted,var(--wl-muted))}
+    .text-block h3{margin:5px 0 7px;color:var(--wl-text-title,var(--wl-text));font-size:var(--wl-text-title-size,14px)}
+    .text-block p{margin:0;color:var(--wl-text-body,var(--wl-text));font-size:var(--wl-text-body-size,11px);line-height:1.7}
+    .grid-block{display:grid;grid-template-columns:repeat(var(--wl-grid-columns,2),minmax(0,1fr));gap:var(--wl-grid-gap,14px)}
     .grid-block>ng-container{display:contents}
-    button{border:0;border-radius:9px;padding:9px 13px;font-size:10px;font-weight:700;cursor:pointer;margin-left:7px}
-    button.primary{background:#1769e0;color:#fff}
-    button.quiet-action{background:#eef5ff;color:#1769e0}
+    button{border:1px solid var(--wl-button-2-border,var(--wl-border));border-radius:var(--wl-button-radius,9px);padding:var(--wl-button-padding-y,9px) var(--wl-button-padding-x,13px);font-size:var(--wl-button-font-size,10px);font-weight:var(--wl-button-font-weight,700);cursor:pointer;margin-left:7px}
+    button.primary{background:var(--wl-button-1-bg,var(--wl-accent));border-color:var(--wl-button-1-border,var(--wl-accent));color:var(--wl-button-1-text,#fff)}
+    button.quiet-action{background:var(--wl-button-3-bg,var(--wl-accent-soft));border-color:var(--wl-button-3-border,var(--wl-accent-border));color:var(--wl-button-3-text,var(--wl-accent))}
     @media(max-width:680px){.page-content{padding:0 12px 18px}.grid-block{grid-template-columns:1fr}}
-  `]
+  `],
 })
 export class UiPageRenderer {
   @Input() config!: UiPageConfig;
