@@ -611,7 +611,7 @@ qai-page-header .page-header-title{min-width:0!important;flex:1 1 auto!important
 qai-page-header .page-header h1{margin:0!important;color:var(--wl-header-title)!important;font-size:17px!important;font-weight:750!important;line-height:1.2!important}
 qai-page-header .page-header p{margin:4px 0 0!important;color:var(--wl-header-muted)!important;font-size:11px!important;line-height:1.4!important}
 qai-page-header .page-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:8px!important;flex:0 0 auto!important;margin-left:auto!important}
-qai-page-header .page-actions button{min-height:34px!important;height:34px!important;padding:0 11px!important;border-radius:8px!important;font-size:10px!important;font-weight:700!important;white-space:nowrap!important}
+qai-page-header .page-actions button{min-height:34px!important;height:34px!important;padding:0 11px!important;border-radius:var(--wl-button-radius,0px)!important;font-size:10px!important;font-weight:700!important;white-space:nowrap!important}
 
 /* Exact shared workflow anatomy: numbered nodes + connectors + metadata. */
 qai-ui-steps .surface{
@@ -794,7 +794,7 @@ main.app-main > router-outlet + * qai-page-header .header-actions{
 }
 main.app-main > router-outlet + * qai-page-header button{
   min-height:32px!important;
-  border-radius:8px!important;
+  border-radius:var(--wl-button-radius,0px)!important;
   font-size:9px!important;
   font-weight:750!important;
 }
@@ -977,7 +977,7 @@ main.app-main > router-outlet + * :where(
   button.primary,.primary,.primary-action,.btn-primary,.header-action
 ){
   border:1px solid var(--wl-button-1-border)!important;
-  border-radius:8px!important;
+  border-radius:var(--wl-button-radius,0px)!important;
   background:var(--wl-button-1-bg)!important;
   color:var(--wl-button-1-text)!important;
 }
@@ -985,7 +985,7 @@ main.app-main > router-outlet + * :where(
   button.secondary,.secondary,.btn-secondary,.quiet-action
 ){
   border:1px solid var(--wl-button-2-border)!important;
-  border-radius:8px!important;
+  border-radius:var(--wl-button-radius,0px)!important;
   background:var(--wl-button-2-bg)!important;
   color:var(--wl-button-2-text)!important;
 }
@@ -993,7 +993,7 @@ main.app-main > router-outlet + * :where(
   button.quiet,.quiet,.quiet-action,.btn-quiet
 ){
   border:1px solid var(--wl-button-3-border)!important;
-  border-radius:8px!important;
+  border-radius:var(--wl-button-radius,0px)!important;
   background:var(--wl-button-3-bg)!important;
   color:var(--wl-button-3-text)!important;
 }
