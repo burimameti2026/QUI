@@ -18,7 +18,8 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
       <ng-container *ngFor="let action of config.header?.actions || []">
         <button type="button"
           [class.primary]="action.variant === 'primary'"
-          [class.quiet-action]="action.variant !== 'primary'"
+          [class.secondary]="action.variant === 'secondary'"
+          [class.quiet-action]="action.variant === 'quiet' || !action.variant"
           (click)="emitAction(action)">
           {{ action.label }}
         </button>
