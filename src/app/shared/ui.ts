@@ -18,7 +18,16 @@ function translateValue(i18n: AdminI18nService, value: string): string {
     </div>
     <div class="page-actions"><ng-content /></div>
   </div>`,
-  styles: [`:host { display:block; min-width:0; }`]
+  styles: [`
+    :host { display:block; min-width:0; }
+    .page-header{display:flex;align-items:center;justify-content:space-between;gap:var(--wl-header-gap,14px);min-height:var(--wl-header-height,72px);padding:var(--wl-header-padding,16px 24px);box-sizing:border-box;background:var(--wl-header-bg,#f4f7fb);border:1px solid var(--wl-header-border,#e3e9f1);border-radius:var(--wl-header-radius,0);color:var(--wl-header-text,#344054)}
+    .page-header-title{min-width:0}
+    .page-header-title h1{margin:0;color:var(--wl-header-title,#172033);font-size:var(--wl-header-title-size,20px);font-weight:760;letter-spacing:-.025em;line-height:1.2}
+    .page-header-title p{margin:5px 0 0;color:var(--wl-header-muted,#667085);font-size:var(--wl-header-font-size,11px);line-height:1.45}
+    .page-actions{display:flex;align-items:center;justify-content:flex-end;gap:var(--wl-header-gap,8px);margin-left:auto;flex:0 0 auto}
+    .page-actions button,.page-actions a{min-height:var(--wl-control-height,34px);box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+    @media(max-width:760px){.page-header{align-items:flex-start;flex-wrap:wrap}.page-actions{width:100%;flex-wrap:wrap}}
+  `]
 })
 export class PageHeader {
   readonly i18n = inject(AdminI18nService);
