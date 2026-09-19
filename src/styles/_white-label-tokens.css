@@ -1150,3 +1150,72 @@ qai-ui-card .card>header h3,qai-ui-list-card .card>header h3,qai-ui-table-card .
   font-weight:750!important;
   letter-spacing:-.01em!important;
 }
+
+
+/* FINAL APPLICATION CARD CONTRACT — source of truth: white card header + blue/indigo content rows. */
+:root{
+  --wl-card-bg:#ffffff;
+  --wl-card-header-bg:#ffffff;
+  --wl-card-border:#dbe3ef;
+  --wl-card-header-border:#3157c8;
+  --wl-card-row-bg:#e8edff;
+  --wl-card-row-border:#cbd6f4;
+  --wl-kpi-radius:0px;
+  --wl-card-radius:0px;
+}
+main.app-main > router-outlet + * :where(
+  .card,.panel,.section-card,.content-card,.data-card,.workspace-card,
+  .settings-card,.config-card,.detail-card,.queue-panel,.message-card,
+  .approval-hero,.discovery-hero,.executive-band,.revenue-card,
+  .automation-card,.directory-card,.campaign-card,.campaigns,.safety,
+  .campaign-activity,.approval-panel,.hero,.hero-panel,.workspace-panel,
+  .table-card,.list-card,.form-card,.settings-panel,.content-panel
+){
+  background:#fff!important;
+  border-color:var(--wl-card-border)!important;
+  border-radius:0!important;
+}
+main.app-main > router-outlet + * :where(
+  .card>header,.panel>header,.section-card>header,.content-card>header,
+  .card-header,.workspace-header,.prospect-header,.section-header,
+  .queue-panel>header,.message-card>header,.table-card>header,
+  .list-card>header,.form-card>header,.settings-panel>header,.content-panel>header
+){
+  background:#fff!important;
+  border-bottom:2px solid var(--wl-card-header-border)!important;
+  color:var(--wl-card-title)!important;
+}
+main.app-main > router-outlet + * :where(
+  .metrics article,.metrics .metric,.metric-card,.kpi-card,.stat-card
+){
+  border-radius:0!important;
+  background:#fff!important;
+}
+qai-ui-card .card,
+qai-ui-list-card .card,
+qai-ui-table-card .card{
+  background:#fff!important;
+  border-radius:0!important;
+}
+qai-ui-card .card>header,
+qai-ui-list-card .card>header,
+qai-ui-table-card .card>header{
+  background:#fff!important;
+  border-bottom:2px solid var(--wl-card-header-border)!important;
+}
+qai-ui-card .body,
+qai-ui-list-card .list,
+qai-ui-table-card .table-wrap{
+  background:#eef2ff!important;
+}
+qai-ui-card .row,
+qai-ui-list-card .item,
+qai-ui-table-card tbody tr,
+qai-ui-table-card td{
+  background:var(--wl-card-row-bg)!important;
+  border-color:var(--wl-card-row-border)!important;
+}
+qai-ui-card footer{
+  background:#eef2ff!important;
+  border-color:var(--wl-card-row-border)!important;
+}
