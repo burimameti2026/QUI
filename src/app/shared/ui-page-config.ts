@@ -66,11 +66,11 @@ export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
   name: 'Acquisition command center',
   shell: { header: true, breadcrumb: false },
   header: {
-    template: 'header-01',
+    template: 'header-02',
     title: 'Acquisition command center',
     subtitle: 'Build, qualify and route demand through one operating picture.',
     actions: [
-      { id: 'refresh', label: 'Refresh data', command: 'refresh', variant: 'quiet' },
+      { id: 'refresh', label: 'Refresh data', command: 'refresh', variant: 'secondary' },
       { id: 'promotion', label: 'Open promotion plan', route: '/renova/promotion', variant: 'primary' }
     ]
   },
