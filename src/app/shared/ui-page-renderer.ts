@@ -99,7 +99,6 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
     .grid-block>ng-container{display:contents}
     @media(max-width:680px){.grid-block{grid-template-columns:1fr}}
   `],
-,
 })
 export class UiPageRenderer {
   @Input() config!: UiPageConfig;
