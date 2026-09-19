@@ -66,16 +66,11 @@ export const UI_COMPONENT_REGISTRY: Record<UiPageComponentType, {
 
 export const DEFAULT_DASHBOARD_PAGE_CONFIG: UiPageConfig = {
   id: 'dashboard',
-  name: 'Acquisition command center',
+  name: 'Dashboard',
   shell: { header: true, breadcrumb: true },
-  breadcrumb: [
-    { label: 'Kreu', route: '/dashboard' },
-    { label: 'Command Center' },
-    { label: 'Dashboard' }
-  ],
   header: {
     template: 'header-02',
-    title: 'Acquisition command center',
+    title: 'Dashboard',
     subtitle: 'Build, qualify and route demand through one operating picture.',
     actions: [
       { id: 'refresh', label: 'Refresh data', command: 'refresh', variant: 'secondary' },
