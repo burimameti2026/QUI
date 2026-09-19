@@ -26,7 +26,7 @@ interface LayoutSection {
   label: string;
   description: string;
   expanded: boolean;
-  columns: 1 | 2 | 3 | 4;
+  columns: 1 | 2 | 3 | 4 | 5;
   items: LayoutItem[];
 }
 
