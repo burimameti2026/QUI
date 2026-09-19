@@ -1413,3 +1413,19 @@ main.app-main > router-outlet + * :where(.metric-card,.kpi-card,.stat-card){
   border-radius:0!important;
   box-shadow:0 2px 8px rgba(23,23,23,.045)!important;
 }
+
+/* FINAL SHAPE CONTRACT — every application card is rectangular. */
+body:not(:has(.leads-page-header)) .designer > aside,
+body:not(:has(.leads-page-header)) .designer .card,
+body:not(:has(.leads-page-header)) .designer [class*="card"],
+body:not(:has(.leads-page-header)) :where(
+  .card,.panel,.section-card,.content-card,.data-card,.workspace-card,
+  .settings-card,.config-card,.detail-card,.queue-panel,.message-card,
+  .table-card,.list-card,.form-card,.settings-panel,.content-panel,
+  .metric-card,.kpi-card,.stat-card
+){
+  border-radius:0!important;
+}
+body:not(:has(.leads-page-header)) .designer > aside{
+  border-radius:0!important;
+}
