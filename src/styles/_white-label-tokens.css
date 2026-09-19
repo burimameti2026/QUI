@@ -1429,3 +1429,30 @@ body:not(:has(.leads-page-header)) :where(
 body:not(:has(.leads-page-header)) .designer > aside{
   border-radius:0!important;
 }
+
+
+/* GLOBAL CARD SHAPE ENFORCEMENT — every card-like surface, every page. */
+main.app-main > router-outlet + * :where(
+  .card,.panel-card,.card-shell,.card-container,.card-wrapper,
+  .panel,.panel-shell,.panel-container,.section-card,.content-card,
+  .data-card,.workspace-card,.settings-card,.config-card,.detail-card,
+  .queue-panel,.message-card,.table-card,.list-card,.form-card,
+  .settings-panel,.content-panel,.metric-card,.kpi-card,.stat-card,
+  .designer > aside,
+  [class*="card"],[class*="-card"],
+  [class*="Card"],[class*="-Card"]
+){
+  border-radius:0!important;
+}
+main.app-main > router-outlet + * :where(
+  .card > *, .panel-card > *, .card-shell > *, .card-container > *,
+  .card-wrapper > *, .panel > *, .section-card > *, .content-card > *,
+  .data-card > *, .workspace-card > *, .settings-card > *,
+  .config-card > *, .detail-card > *, .table-card > *, .list-card > *,
+  .metric-card > *, .kpi-card > *, .stat-card > *
+){
+  border-radius:0!important;
+}
+body:not(:has(.leads-page-header)) .designer > aside{
+  border-radius:0!important;
+}
