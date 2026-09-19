@@ -70,6 +70,13 @@ export class WhiteLabelConfigService {
     const source=styles||{};
     const out:any={global:{...DEFAULT_GLOBAL_TOKENS,...(source.global||{})}};
     for(const key of Object.keys(DEFAULT_STYLES)){ out[key]={...DEFAULT_APPEARANCE,...(DEFAULT_STYLES[key as keyof WhiteLabelStyles]||{}),...(source[key]||{})}; }
+    // Migrate the previous visual defaults so existing saved White Label settings follow the current system.
+    if(out.global.cardRadius===11) out.global.cardRadius=0;
+    if(out.cards?.headerColor==='#ffffff') out.cards.headerColor='#f2f5fb';
+    if(out.cards?.radius===12 || out.cards?.radius===11) out.cards.radius=0;
+    if(out.buttons?.radius===8 || out.buttons?.radius===9) out.buttons.radius=0;
+    if(out.badges?.headerColor==='#edf4ff') out.badges.headerColor='#eef2ff';
+    if(out.badges?.accentColor==='#2563eb') out.badges.accentColor='#4f46e5';
     return out as WhiteLabelStyles;
   }
   private normalize(sections:any[]):WhiteLabelSection[]{ return sections.map(section=>({...section,items:Array.isArray(section.items)?section.items.map((item:any)=>{const {appearance,...clean}=item||{}; return clean;}):[]})); }
