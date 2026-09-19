@@ -100,8 +100,36 @@ qai-ui-card p,qai-ui-list-card p,qai-ui-table-card p,
 }
 
 /* Component templates are visual variants, but every value still comes from White Label tokens. */
-qai-page-header .page-header[data-template="header-02"]{min-height:calc(var(--wl-header-height) * .86)}
-qai-page-header .page-header[data-template="header-02"] .page-header-title h1{font-size:calc(var(--wl-header-font-size) * .92)}
+qai-page-header .page-header[data-template="header-02"]{
+  min-height:82px;
+  padding:16px 24px 14px!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  align-items:center;
+}
+qai-page-header .page-header[data-template="header-02"] .page-header-title h1{
+  font-size:26px;
+  line-height:1.15;
+  font-weight:760;
+  letter-spacing:-.035em;
+}
+qai-page-header .page-header[data-template="header-02"] .page-header-title p{
+  margin-top:6px;
+  font-size:12px;
+  line-height:1.4;
+}
+qai-page-header .page-header[data-template="header-02"] .page-actions{
+  gap:10px;
+}
+qai-page-header .page-header[data-template="header-02"] .page-actions button{
+  min-height:40px!important;
+  padding:0 15px!important;
+  border-radius:8px!important;
+  font-size:12px!important;
+  font-weight:650!important;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
 
 qai-ui-card .card[data-template="card-01"]{box-shadow:var(--wl-card-shadow)!important}
 qai-ui-card .card[data-template="card-02"]>header{background:var(--wl-accent-soft)!important}
