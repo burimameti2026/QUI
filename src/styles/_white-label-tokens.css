@@ -1,5 +1,10 @@
 /* White Label runtime tokens — single application-wide source of truth. */
 :root{
+  --wl-surface:#ffffff; --wl-app-surface:#ffffff; --wl-surface-muted:#f8fafc;
+  --wl-text:#202124; --wl-muted:#667085; --wl-border:#e1e5e9; --wl-border-soft:#f0f2f5;
+  --wl-accent:#2563eb; --wl-accent-hover:#1d4ed8; --wl-accent-soft:#edf4ff; --wl-accent-border:#cfe0ff;
+}
+:root{
   --wl-app-surface:#ffffff;
   --wl-header-bg:#ffffff;
   --wl-header-border:#e7ebf0;
