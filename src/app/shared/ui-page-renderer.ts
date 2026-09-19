@@ -9,6 +9,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
   standalone: true,
   imports: [CommonModule, PageHeader, UiSection, UiSteps, UiMetrics, UiCard, UiListCard, UiTableCard],
   template: `
+    <div [class.dashboard-renderer]="config.id === 'dashboard'">
     <qai-page-header
       *ngIf="config.shell.header"
       [template]="config.header?.template || 'header-01'"
@@ -38,6 +39,7 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
         </ng-container>
       </div>
     </main>
+    </div>
 
     <ng-template #componentTpl let-component>
       <ng-container [ngSwitch]="component.type">
@@ -95,6 +97,8 @@ import { UiBinding, UiPageAction, UiPageComponentConfig, UiPageConfig } from './
   `,
   styles: [`
     :host{display:block;min-width:0}
+    .dashboard-renderer{min-height:100%;background:linear-gradient(180deg,#f8fbff 0,#f5f7fb 230px,#f5f7fb 100%)}
+    .dashboard-renderer .page-content{padding-top:4px}
     .page-content{padding:var(--wl-page-padding-y) var(--wl-page-padding-x) var(--wl-page-padding-bottom)}
     .page-section{min-width:0}
     .full-span{grid-column:1 / -1;min-width:0}
