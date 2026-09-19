@@ -12,13 +12,13 @@
   --wl-header-text:#26364d;
   --wl-header-muted:#667085;
   --wl-card-bg:#ffffff;
-  --wl-card-header-bg:#f2f5fb;
+  --wl-card-header-bg:#e4eaf3;
   --wl-card-border:#e7ebf0;
   --wl-card-title:#202124;
   --wl-card-text:#26364d;
   --wl-card-muted:#667085;
   --wl-card-accent:#2563eb;
-  --wl-card-radius:12px;
+  --wl-card-radius:0px;
   --wl-button-1-bg:#2563eb; --wl-button-1-text:#ffffff; --wl-button-1-border:#2563eb; --wl-button-1-hover:#1d4ed8;
   --wl-button-2-bg:#eef2ff; --wl-button-2-text:#334155; --wl-button-2-border:#d7def0; --wl-button-2-hover:#e7edff;
   --wl-button-3-bg:#edf4ff; --wl-button-3-text:#1d4ed8; --wl-button-3-border:#cfe0ff; --wl-button-3-hover:#dbeafe;
@@ -186,7 +186,7 @@ qai-ui-table-card .table-wrap{
 qai-ui-card .row,
 qai-ui-list-card .item,
 qai-ui-table-card td{
-  background:var(--wl-card-bg)!important;
+  background:var(--wl-card-row-bg,var(--wl-surface-muted))!important;
   border-color:var(--wl-card-border)!important;
   color:var(--wl-card-text)!important;
 }
@@ -375,7 +375,7 @@ qai-modal .modal-body,.modal-card .modal-body,.dialog-card .modal-body{color:var
   --wl-card-gap:12px;
   --wl-card-font-size:14px;
   --wl-card-shadow:0 4px 14px rgba(15,47,104,.05);
-  --wl-button-radius:0px;
+  --wl-button-radius:8px;
   --wl-button-padding-y:6px;
   --wl-button-padding-x:9px;
   --wl-button-font-size:10px;
@@ -583,8 +583,9 @@ qai-wizard-steps .wizard li small{display:block;margin-top:var(--wl-steps-label-
   --wl-header-muted:#667085;
   --wl-header-height:72px;
   --wl-card-shadow:0 1px 2px rgba(16,24,40,.035),0 6px 18px rgba(36,60,88,.055);
-  --wl-card-header-bg:#f8fafc;
-  --wl-card-header-border:#e6ebf2;
+  --wl-card-header-bg:#e4eaf3;
+  --wl-card-header-border:#cbd5e1;
+  --wl-card-row-bg:#eef2f7;
   --wl-badge-bg:#edf4ff;
   --wl-badge-border:#cfe0ff;
   --wl-badge-text:#2563eb;
