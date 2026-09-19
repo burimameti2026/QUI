@@ -14,7 +14,7 @@ export interface WhiteLabelStyle extends WhiteLabelItemAppearance {
   shadow?: string;
 }
 export interface WhiteLabelStyles { header:WhiteLabelStyle; grid:WhiteLabelStyle; kpis:WhiteLabelStyle; cards:WhiteLabelStyle; buttons:WhiteLabelStyle; text:WhiteLabelStyle; steps:WhiteLabelStyle; lists:WhiteLabelStyle; tables:WhiteLabelStyle; badges:WhiteLabelStyle; forms:WhiteLabelStyle; tabs:WhiteLabelStyle; dataGrid:WhiteLabelStyle; navigation:WhiteLabelStyle; modals:WhiteLabelStyle; notices:WhiteLabelStyle; }
-export interface WhiteLabelItem { id:string; label:string; template:string; enabled:boolean; appearance?:WhiteLabelItemAppearance; }
+export interface WhiteLabelItem { id:string; label:string; template:string; enabled:boolean; }
 export interface WhiteLabelSection { id:string; kind:string; label:string; columns:number; expanded?:boolean; items:WhiteLabelItem[]; }
 
 const STORAGE_KEY='qai-white-label-page-layout-v2';
@@ -42,7 +42,6 @@ export class WhiteLabelConfigService {
     const kpis=styles.kpis;
     const buttonsStyle=styles.buttons;
     const text=styles.text; const steps=styles.steps; const lists=styles.lists; const tables=styles.tables; const badges=styles.badges; const forms=styles.forms; const tabs=styles.tabs; const dataGrid=styles.dataGrid; const navigation=styles.navigation; const modals=styles.modals; const notices=styles.notices;
-    const buttons=this.enabled(sections,'buttons');
     this.set(root,'--wl-app-surface',card.surfaceColor); this.set(root,'--wl-surface',card.surfaceColor); this.set(root,'--wl-text',card.textColor); this.set(root,'--wl-muted',card.mutedTextColor); this.set(root,'--wl-border',card.borderColor); this.set(root,'--wl-accent',card.accentColor); this.set(root,'--wl-accent-hover',card.buttonHoverBackgroundColor||this.darken(card.accentColor)); this.set(root,'--wl-accent-soft',card.headerColor); this.set(root,'--wl-grid-gap',(grid.gap||12)+'px'); this.set(root,'--wl-grid-columns','2'); this.set(root,'--wl-header-bg',header.headerColor); this.set(root,'--wl-header-border',header.borderColor);
     this.set(root,'--wl-header-title',header.titleColor); this.set(root,'--wl-header-text',header.textColor); this.set(root,'--wl-header-muted',header.mutedTextColor); this.set(root,'--wl-header-height',(header.height||64)+'px'); this.set(root,'--wl-header-padding',(header.padding||14)+'px'); this.set(root,'--wl-header-gap',(header.gap||20)+'px'); this.set(root,'--wl-header-font-size',(header.fontSize||16)+'px');
     this.set(root,'--wl-card-bg',card.surfaceColor); this.set(root,'--wl-card-header-bg',card.headerColor); this.set(root,'--wl-card-border',card.borderColor);
