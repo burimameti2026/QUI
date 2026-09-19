@@ -225,3 +225,34 @@ qai-page-header .page-actions{justify-content:flex-end!important;margin-left:aut
   margin-left:auto!important;
   justify-content:flex-end!important;
 }
+
+
+/* Final Dashboard alignment: header actions stay on the right; KPI row is centered. */
+:host qai-page-header .page-actions{
+  margin-left:auto!important;
+  justify-content:flex-end!important;
+}
+.metric-grid{
+  width:fit-content;
+  max-width:100%;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  grid-template-columns:repeat(5,minmax(160px,190px))!important;
+  justify-content:center!important;
+}
+@media(max-width:1100px){
+  .metric-grid{
+    width:100%;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:700px){
+  .metric-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:480px){
+  .metric-grid{
+    grid-template-columns:1fr!important;
+  }
+}
