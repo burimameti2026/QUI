@@ -213,6 +213,11 @@ export class WhiteLabelPage implements OnInit {
     { id: "tables", label: "Table" },
     { id: "badges", label: "Badge" },
     { id: "forms", label: "Form / Input" },
+    { id: "tabs", label: "Tabs" },
+    { id: "dataGrid", label: "Data Grid" },
+    { id: "navigation", label: "Navigation" },
+    { id: "modals", label: "Modal" },
+    { id: "notices", label: "Notice" },
   ];
 
   readonly templates: Record<LayoutSectionKind, { id: string; label: string; description: string; mark: string }[]> = {
@@ -260,6 +265,21 @@ export class WhiteLabelPage implements OnInit {
     ],
     forms: [
       { id: "form-01", label: "Form / Standard", description: "Inputs, selects and controls", mark: "□" },
+    ],
+    tabs: [
+      { id: "tabs-01", label: "Tabs / Standard", description: "Workspace navigation tabs", mark: "T" },
+    ],
+    dataGrid: [
+      { id: "grid-data-01", label: "Data Grid / Standard", description: "Dense enterprise data grid", mark: "▤" },
+    ],
+    navigation: [
+      { id: "nav-01", label: "Navigation / Standard", description: "Sidebar and navigation shell", mark: "☰" },
+    ],
+    modals: [
+      { id: "modal-01", label: "Modal / Standard", description: "Dialog and workspace action", mark: "□" },
+    ],
+    notices: [
+      { id: "notice-01", label: "Notice / Standard", description: "Information and status callout", mark: "i" },
     ],
   };
 
