@@ -129,7 +129,8 @@ interface LayoutSection {
                     <option [ngValue]="1">1 column</option>
                     <option [ngValue]="2">2 columns</option>
                     <option [ngValue]="3">3 columns</option>
-                    <option [ngValue]="4">4 columns</option>\n                    <option [ngValue]="5">5 columns</option>
+                    <option [ngValue]="4">4 columns</option>
+                    <option [ngValue]="5">5 columns</option>
                   </select>
                 </label>
               </div>
