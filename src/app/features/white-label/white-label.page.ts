@@ -16,7 +16,7 @@ interface LayoutItem {
   appearance: {
     surfaceColor: string; headerColor: string; borderColor: string;
     titleColor: string; textColor: string; mutedTextColor: string;
-    accentColor: string; buttonBackgroundColor: string; buttonTextColor: string; buttonBorderColor: string; buttonHoverBackgroundColor: string; height: number; radius: number;
+    accentColor: string; buttonBackgroundColor?: string; buttonTextColor?: string; buttonBorderColor?: string; buttonHoverBackgroundColor?: string; height: number; radius: number;
   };
 }
 
