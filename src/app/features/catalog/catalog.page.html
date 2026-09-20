@@ -33,16 +33,20 @@
 
   <section class="card" aria-label="Product directory">
     <header class="card-header"><strong>Products</strong><span class="meta">{{ filteredProducts.length }} shown</span></header>
-    <div class="list">
-      <div class="list-item table-head"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>LANGUAGES</span><span>STATUS</span><span>ACTIONS</span></div>
-      <article class="list-item" *ngFor="let product of filteredProducts">
-        <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'product' }}</small></div>
-        <span>{{ product.code }}</span>
-        <span>{{ categoryName(product.productCategoryId) }}</span>
-        <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
-        <span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span>
-        <a class="button-quiet" [routerLink]="['/catalog', product.id]">Manage →</a>
-      </article>
+    <div class="table" *ngIf="!loading && filteredProducts.length">
+      <table>
+        <thead><tr><th>Product</th><th>Code</th><th>Category</th><th>Languages</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+            <td><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'product' }}</small></td>
+            <td>{{ product.code }}</td>
+            <td>{{ categoryName(product.productCategoryId) }}</td>
+            <td>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</td>
+            <td><span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span></td>
+            <td><a class="button-quiet" [routerLink]="['/catalog', product.id]">Manage →</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="empty" *ngIf="!loading && products.length && !filteredProducts.length">No products match the current filters.</div>
     <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first product to start the promotion workflow.</div>
