@@ -1,30 +1,54 @@
 /* Small page-level refinement for the campaign workflow. Global tokens remain canonical. */
 .campaign-timeline {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border: 1px solid var(--wl-border);
-  background: var(--wl-surface);
-  overflow: hidden;
+  min-width: 0;
   margin: 16px 0;
+  padding: 22px 8px 4px;
 }
-
+.campaign-timeline-track {
+  position: absolute;
+  top: 37px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 1px;
+  background: var(--wl-border-strong);
+}
 .campaign-timeline-step {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
   min-width: 0;
-  padding: 14px 16px;
-  border-right: 1px solid var(--wl-border);
+  text-align: center;
 }
-
-.campaign-timeline-step:last-child { border-right: 0; }
-.campaign-timeline-step b { flex: 0 0 auto; font-size: 12px; color: var(--wl-muted); }
-.campaign-timeline-step span { min-width: 0; display: grid; gap: 2px; }
-.campaign-timeline-step strong { font-size: 13px; }
-.campaign-timeline-step small { color: var(--wl-muted); font-size: 11px; }
-.campaign-timeline-step.is-current { background: #f7f8fa; border-top: 2px solid var(--wl-accent); padding-top: 12px; }
-.campaign-timeline-step.is-current b { color: var(--wl-accent); }
+.campaign-timeline-node {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--wl-border-strong);
+  background: var(--wl-surface);
+  font-size: 10px;
+  font-weight: 700;
+}
+.campaign-timeline-copy { display: grid; gap: 2px; min-width: 0; }
+.campaign-timeline-copy strong { font-size: 12px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.campaign-timeline-copy small { color: var(--wl-muted); font-size: 10px; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.campaign-timeline-step.is-current .campaign-timeline-node { border: 2px solid var(--wl-accent); color: var(--wl-accent); }
+.campaign-timeline-step.is-current .campaign-timeline-copy strong { color: var(--wl-accent); }
+.campaign-timeline-step.is-complete .campaign-timeline-node { background: var(--wl-text); color: var(--wl-surface); border-color: var(--wl-text); }
+@media (max-width:760px) {
+  .campaign-timeline { grid-template-columns: 1fr 1fr; gap: 18px 0; }
+  .campaign-timeline-track { top: 37px; left: 25%; right: 25%; }
+}
+@media (max-width:520px) {
+  .campaign-timeline { grid-template-columns: 1fr; gap: 14px; padding-top: 12px; }
+  .campaign-timeline-track { display: none; }
+}
 
 .guardrail-card { align-self: start; }
 .guardrail-card .card-header { align-items: flex-start; }
