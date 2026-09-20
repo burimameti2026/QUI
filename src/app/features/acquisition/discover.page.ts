@@ -10,9 +10,10 @@ import { AcquisitionService } from "./acquisition.service";
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
     <qai-page-header
-      title="Prospect Discovery"
-      subtitle="Define who you want to sell to, collect market evidence and prioritize companies showing real buying intent."
+     
     >
+
+
       <button class="quiet-action" (click)="load()">↻ Refresh data</button>
       <button (click)="openIcp()">+ New ICP</button>
       <button (click)="prospectOpen = true">+ Add prospect</button>

@@ -240,15 +240,15 @@ button,
 .primary-action,
 .btn-primary,
 .btn-secondary {
-  height: 34px !important;
-  min-height: 34px !important;
+  height: 40px !important;
+  min-height: 40px !important;
   padding: 0 13px !important;
   border: 0px solid var(--ref-line) !important;
   border-radius: 8px !important;
-  background: #fff !important;
-  color: #ee4b00 !important;
+  background: #000000 !important;
+  color: #fffefe !important;
   box-shadow: none !important;
-  font-size: 11px !important;
+  font-size: 13px !important;
   font-weight: 650 !important
 }
 
@@ -626,7 +626,7 @@ tbody tr:hover {
   flex: 0 0 31px !important;
   border-radius: 8px !important;
   background: #edf4ff !important;
-  color: #2563eb !important;
+  color: #0b0c0c !important;
   font-size: 13px !important
 }
 
@@ -709,7 +709,7 @@ tbody tr:hover {
   gap: 16px !important;
   min-height: 62px !important;
   padding: 13px 16px !important;
-  background: #fff !important;
+  background: #7a7777 !important;
   border-bottom: 1px solid #edf0f4 !important
 }
 
@@ -1007,7 +1007,7 @@ tbody tr:hover {
 }
 
 .admin-avatar {
-  background: #2563eb !important;
+  background: #000000 !important;
   border-radius: 7px !important
 }
 
@@ -3422,8 +3422,7 @@ qai-ui-page-renderer .card>footer {
   --wl-border-soft: #f0f2f5;
   --wl-accent: #2563eb;
   --wl-accent-hover: #1d4ed8;
-  --wl-accent-soft: #edf4ff;
-  --wl-accent-border: #cfe0ff;
+
 }
 
 :root {
@@ -4586,8 +4585,8 @@ qai-wizard-steps .wizard li small {
   --wl-card-shadow: 0 1px 2px rgba(16, 24, 40, .03);
   --wl-card-header-bg: #e4eaf3;
   --wl-card-header-border: #2563eb;
-  --wl-card-row-bg: #eef2f7;
-  --wl-badge-bg: #edf4ff;
+  --wl-card-row-bg: #363636;
+  --wl-badge-bg: #363636;
   --wl-badge-border: #cfe0ff;
   --wl-badge-text: #2563eb;
   --wl-badge-radius: 999px;
@@ -5675,13 +5674,13 @@ qai-ui-card footer {
   --wl-border-soft: #f0f0f0;
   --wl-accent: #f5500bdb;
   --wl-accent-hover: #000000;
-  --wl-accent-soft: #fff4df;
-  --wl-accent-border: #ffd08a;
+  --wl-accent-soft: #cccccc3b;
+  --wl-accent-border: #615d5b;
   --wl-card-bg: #ffffff;
   --wl-card-header-bg: #ffffff;
   --wl-card-border: #e4e6e9;
   --wl-card-header-border: #f5500bdb;
-  --wl-card-row-bg: #fafafa;
+  --wl-card-row-bg: #363636;
   --wl-card-row-border: #ececec;
   --wl-card-radius: 0px;
   --wl-kpi-radius: 0px;
@@ -5782,7 +5781,7 @@ body:not(:has(.leads-page-header)) button[class*=secondary] {
   color: #fcfdff !important;
   border: 0 !important;
   border-radius: 8px !important;
-  box-shadow: inset -2px 2px 0 1px #edf0f4 !important;
+  box-shadow: inset 0px 0px 0 1px #000000 !important;
   min-height: 44px !important;
 }
 
@@ -6042,7 +6041,7 @@ main.app-main>router-outlet+* :where(button,
   .btn-primary,
   .btn-secondary,
   [role="button"]) {
-  border-radius: 8px !important;
+  border-radius: 0px !important;
 }
 
 /* Icon containers remain rounded. */
@@ -6051,7 +6050,7 @@ main.app-main>router-outlet+* :where(.metric-icon,
   .gap-mark,
   .icon,
   .company-mark) {
-  border-radius: 8px !important;
+  border-radius: 0px !important;
 }
 
 /* Status/badge/pill geometry remains pill-shaped. */
@@ -6082,13 +6081,13 @@ main.app-main>router-outlet+* :where(.badge,
   --wl-border-soft: #f0f0f0;
   --wl-accent: #f5500bdb;
   --wl-accent-hover: #000000;
-  --wl-accent-soft: #fff4df;
-  --wl-accent-border: #ffd08a;
-  --wl-card-bg: #ffffff;
-  --wl-card-header-bg: #ffffff;
+  --wl-accent-soft: #cccc3b;
+  --wl-accent-border: #615d5b;
+  --wl-card-bg: #f7f8fc;
+  --wl-card-header-bg: #f7f8fc;
   --wl-card-border: #e4e6e9;
-  --wl-card-header-border: #f5500bdb;
-  --wl-card-row-bg: #fafafa;
+  --wl-card-header-border: #f7f8fc;
+  --wl-card-row-bg: #f7f8fc;
   --wl-card-row-border: #ececec;
   --wl-card-radius: 0px;
   --wl-kpi-radius: 0px;
@@ -6205,8 +6204,8 @@ main.app-main,
 }
 
 .brand-logo {
-  background: var(--wl-accent) !important;
-  color: #fff !important;
+  background: #000000 !important;
+  color: #aaa !important;
   border-radius: 8px !important;
 }
 
@@ -6235,7 +6234,7 @@ main.app-main,
 .menu-item.active,
 .child-item:hover,
 .child-item.active {
-  background: var(--wl-accent-soft) !important;
+  background: #000000 !important;
   color: var(--wl-accent) !important;
 }
 

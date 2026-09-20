@@ -238,11 +238,11 @@
   gap:10px;
   margin:auto 14px 14px;
   padding:10px 11px;
-  background:var(--wl-accent-soft);
-  border:1px solid var(--wl-accent-border);
+  background:#000000;
+  border:1px solid var(--wl-card-row-border);
 }
-.revenue-note strong,.automation-note strong{color:var(--wl-text)}
-.revenue-note span,.automation-note span{color:var(--wl-muted)}
+.revenue-note strong,.automation-note strong{color:#ffffff}
+.revenue-note span,.automation-note span{color:#ffffff}
 
 .impact-grid{
   display:grid;

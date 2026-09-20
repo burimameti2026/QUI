@@ -130,22 +130,22 @@
 .header-search-wrap{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:0px;
   width:100%;
 }
 
 .global-search{
   display:flex;
   align-items:center;
-  width:min(392px,100%);
-  height:36px;
+  width:min(600px,100%);
+  height:44px;
 }
 
 .global-search input{
   width:100%;
-  min-width:0;
-  border:0;
-  outline:0;
+  min-width:400px;
+  border:0px;
+  outline: 10px solid hwb(0 99% 1% / 0.089);
   background:transparent;
 }
 

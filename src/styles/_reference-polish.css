@@ -62,7 +62,7 @@ qai-page-header .page-header { background: #fff !important; }
   min-height: 62px !important;
   padding: 15px 17px !important;
   border-bottom: 1px solid var(--ref-border-soft) !important;
-  background: #fff !important;
+  background: #686666 !important;
 }
 
 .card-body,
@@ -133,7 +133,7 @@ qai-page-header .page-header { background: #fff !important; }
 .dashboard-content .data-card .card-footer { border-top: 0px solid var(--ref-border-soft) !important; background: #fbfcfe !important; }
 .dashboard-content .data-card .card-heading button,
 .dashboard-content .data-card .card-heading a {
-  border: 1px solid #d5dfeb !important;
+  border: 1px solid #5f7186 !important;
   border-radius: 0px !important;
   background: #fff !important;
   color: #36516e !important;
