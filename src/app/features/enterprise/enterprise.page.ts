@@ -7,11 +7,11 @@ import { PageHeader } from '../../shared/ui';
 interface Overview { facilities:number; customers:number; orders:number; pendingOrders:number; stockItems:number; movementsInTransit:number; shipments:number; unpaidPayments:number; }
 
 @Component({standalone:true,imports:[CommonModule,RouterLink,PageHeader],template:`
-<qai-page-header title="Enterprise Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="refresh" (click)="load()">↻ Refresh</button></qai-page-header>
-<section class="tenant-bar"><div><span>WORKSPACE</span><strong>Renova Workspace</strong></div><small>Tenant-isolated operational data · Enterprise operations</small></section>
-<section class="metrics"><article *ngFor="let m of metrics"><span>{{m.label}}</span><strong>{{m.value}}</strong><small>{{m.note}}</small></article></section>
-<section class="flow"><div><b>01 · COMMERCIAL</b><span>Customer → Order → Pricing → Fulfillment</span></div><i>→</i><div><b>02 · PHYSICAL</b><span>Stock → Warehouse → Shipment → Delivery</span></div><i>→</i><div><b>03 · FINANCIAL</b><span>Proforma → Invoice → Payment → Reconciliation</span></div></section>
-<section class="grid"><a *ngFor="let m of modules" [routerLink]="m.route" class="card"><div class="icon" [class]="m.tone">{{m.icon}}</div><div><b>{{m.title}}</b><span>{{m.text}}</span></div><strong>→</strong></a></section>
+<qai-page-header title="Enterprise Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="button-quiet" (click)="load()">↻ Refresh</button></qai-page-header>
+<section class="toolbar"><div><span>WORKSPACE</span><strong>Renova Workspace</strong></div><small>Tenant-isolated operational data · Enterprise operations</small></section>
+<section class="metric-grid"><article *ngFor="let m of metrics"><span>{{m.label}}</span><strong>{{m.value}}</strong><small>{{m.note}}</small></article></section>
+<section class="steps"><div><b>01 · COMMERCIAL</b><span>Customer → Order → Pricing → Fulfillment</span></div><i>→</i><div><b>02 · PHYSICAL</b><span>Stock → Warehouse → Shipment → Delivery</span></div><i>→</i><div><b>03 · FINANCIAL</b><span>Proforma → Invoice → Payment → Reconciliation</span></div></section>
+<section class="content-grid"><a *ngFor="let m of modules" [routerLink]="m.route" class="card"><div class="icon" [class]="m.tone">{{m.icon}}</div><div><b>{{m.title}}</b><span>{{m.text}}</span></div><strong>→</strong></a></section>
 <div *ngIf="error" class="error">{{error}}</div>
 `,styles:[`:host{display:block;color:var(--enterprise-text)!important;background:var(--enterprise-bg)!important}
 .tenant-bar,.metrics article,.flow,.card{border:0!important;border-radius:var(--enterprise-radius)!important;background:#fff!important;box-shadow:var(--enterprise-shadow)!important}
