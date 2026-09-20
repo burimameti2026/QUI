@@ -16,25 +16,25 @@
 
   <ol aria-label="Outreach pipeline">
     <li class="done">
-      <button class="pipeline-step" type="button" (click)="openPipelineStep(1)">
+      <button class="button-quiet" type="button" (click)="openPipelineStep(1)">
         <b>01</b>
         Audience
       </button>
     </li>
     <li>
-      <button class="pipeline-step" type="button" (click)="openPipelineStep(3)">
+      <button class="button-quiet" type="button" (click)="openPipelineStep(3)">
         <b>02</b>
         Message
       </button>
     </li>
     <li>
-      <button class="pipeline-step" type="button" (click)="showApprovalQueue()">
+      <button class="button-quiet" type="button" (click)="showApprovalQueue()">
         <b>03</b>
         Approval
       </button>
     </li>
     <li>
-      <button class="pipeline-step" type="button" (click)="openDemos()">
+      <button class="button-quiet" type="button" (click)="openDemos()">
         <b>04</b>
         Demo
       </button>
@@ -47,25 +47,25 @@
 <p class="notice" *ngIf="loading">Loading campaign pipeline…</p>
 
 <div class="content-grid">
-  <section class="campaigns">
-    <header>
+  <section class="card">
+    <header class="card-header">
       <div>
         <span class="eyebrow">Campaigns</span>
         <h3>Acquisition processes</h3>
         <p>Manage the audience, sender, sequence and launch state of every process.</p>
       </div>
-      <span class="campaign-count">{{ rows.length }} total</span>
+      <span class="meta">{{ rows.length }} total</span>
     </header>
 
     <div class="list">
-      <article
+      <article class="list-item"
         *ngFor="let campaign of rows"
         [class.is-running]="campaign.status === 2"
       >
         <div class="icon">↗</div>
 
         <div class="stack">
-          <header>
+          <header class="card-header">
             <strong>{{ campaign.name }}</strong>
             <span
               class="status"
@@ -111,7 +111,7 @@
           Start campaign
         </button>
 
-        <span class="running-label" *ngIf="campaign.status === 2">● Live</span>
+        <span class="status success" *ngIf="campaign.status === 2">● Live</span>
       </article>
     </div>
 
@@ -125,7 +125,7 @@
   </section>
 
   <aside class="card">
-    <header>
+    <header class="card-header">
       <div>
         <span class="eyebrow">Launch guardrails</span>
         <h3>Safe by design</h3>
@@ -135,7 +135,7 @@
     <ul>
       <li *ngFor="let guardrail of guardrails">
         <button
-          class="guardrail-button"
+          class="list-item"
           type="button"
           (click)="openGuardrail(guardrail)"
         >
@@ -152,7 +152,7 @@
 </div>
 
 <section class="card" *ngIf="selectedCampaign">
-  <header>
+  <header class="card-header">
     <div>
       <span class="eyebrow">Execution history</span>
       <h3>{{ selectedCampaign.name }}</h3>
@@ -161,26 +161,26 @@
   </header>
 
   <div class="metric-grid compact">
-    <article>
+    <article class="metric">
       <span>Recipients</span>
       <strong>{{ selectedCampaign.recipients || 0 }}</strong>
     </article>
-    <article>
+    <article class="metric">
       <span>Queued</span>
       <strong>{{ selectedCampaign.queued || 0 }}</strong>
     </article>
-    <article>
+    <article class="metric">
       <span>Sent</span>
       <strong>{{ selectedCampaign.sent || 0 }}</strong>
     </article>
-    <article>
+    <article class="metric">
       <span>Replies</span>
       <strong>{{ selectedCampaign.replied || 0 }}</strong>
     </article>
   </div>
 
   <div class="list" *ngIf="activity.length; else noActivity">
-    <article *ngFor="let item of activity">
+    <article class="list-item" *ngFor="let item of activity">
       <span class="status">{{ item.status }}</span>
       <div>
         <b>{{ item.title }}</b>
@@ -198,7 +198,7 @@
 </section>
 
 <section class="card table" #approvalQueue>
-  <header>
+  <header class="card-header">
     <div>
       <span class="eyebrow">Human review</span>
       <b>Approval queue</b>
@@ -265,7 +265,7 @@
     </table>
   </div>
 
-  <div class="queue-empty" *ngIf="!messages.length">
+  <div class="empty" *ngIf="!messages.length">
     <b>✓</b>
     <span>No messages await review.</span>
   </div>
@@ -276,8 +276,8 @@
   [title]="selectedGuardrail?.title || 'Launch guardrail'"
   (close)="guardrailOpen = false"
 >
-  <section class="guardrail-detail" *ngIf="selectedGuardrail">
-    <div class="guardrail-number">{{ selectedGuardrail.number }}</div>
+  <section class="card-body" *ngIf="selectedGuardrail">
+    <div class="icon">{{ selectedGuardrail.number }}</div>
     <div>
       <span>SAFE LAUNCH CONTROL</span>
       <h3>{{ selectedGuardrail.title }}</h3>
@@ -285,12 +285,12 @@
     </div>
   </section>
 
-  <div class="guardrail-check">
+  <div class="notice">
     <b>✓ Enforced before launch</b>
     <span>{{ selectedGuardrail?.result }}</span>
   </div>
 
-  <footer class="guardrail-footer">
+  <footer class="actions">
     <button type="button" (click)="guardrailOpen = false">Close</button>
     <button type="button" class="button-primary" (click)="openGuardrailAction()">
       {{ selectedGuardrail?.action }}
@@ -305,7 +305,7 @@
 >
   <nav class="steps">
     <button
-      class="wizard-step"
+      class="button-quiet"
       *ngFor="let label of ['Audience', 'Sender', 'Sequence', 'Review']; let i = index"
       [class.active]="builderStep === i + 1"
       [class.done]="builderStep > i + 1"
@@ -315,7 +315,7 @@
     </button>
   </nav>
 
-  <form class="builder" (ngSubmit)="save()">
+  <form class="form" (ngSubmit)="save()">
     <section *ngIf="builderStep === 1">
       <h3>Who should enter?</h3>
       <p>Choose the reviewed list created by Prospect Discovery.</p>
@@ -340,7 +340,7 @@
       <h3>Who is sending?</h3>
       <p>The exact address must also be verified under Integrations.</p>
 
-      <div class="form2">
+      <div class="content-grid">
         <label>
           Sender name
           <input [(ngModel)]="form.senderName" name="sender" required />
@@ -363,7 +363,7 @@
         Messages stop after a reply. Variables: company, contact, industry and country.
       </p>
 
-      <article class="sequence" *ngFor="let step of form.steps; let i = index">
+      <article class="card" *ngFor="let step of form.steps; let i = index">
         <b>Step {{ i + 1 }}</b>
 
         <label>
@@ -395,7 +395,7 @@
       </article>
     </section>
 
-    <section class="review" *ngIf="builderStep === 4">
+    <section class="card-body" *ngIf="builderStep === 4">
       <h3>Ready to create draft</h3>
 
       <dl>
@@ -422,7 +422,7 @@
       </p>
     </section>
 
-    <p class="alert-error" *ngIf="error">{{ error }}</p>
+    <p class="alert" *ngIf="error">{{ error }}</p>
 
     <footer>
       <button type="button" (click)="show = false">Cancel</button>
