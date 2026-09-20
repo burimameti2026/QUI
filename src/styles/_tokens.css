@@ -1,2 +1,1 @@
-/* Compatibility entry point. White Label is the single visual source of truth. */
-@import './_white-label-tokens.css';
+/* Deprecated: canonical application styling lives in _design-system.css. */
