@@ -31,7 +31,20 @@ import { AcquisitionService } from "./acquisition.service";
     </div>
     <div class="card">
       <span class="eyebrow">Current workflow progress</span>
-      <qai-wizard-steps [steps]="['Define ICP', 'Verify data', 'Build audience', 'Launch']" [descriptions]="['Target market', 'Trusted source', 'Qualified accounts', 'Approval gate']" [current]="journeyStep" />
+      <div class="discovery-timeline" role="list" aria-label="Current workflow progress">
+        <div class="discovery-timeline-step" *ngFor="let step of [
+          { number: '01', title: 'Define ICP', description: 'Target market' },
+          { number: '02', title: 'Verify data', description: 'Trusted source' },
+          { number: '03', title: 'Build audience', description: 'Qualified accounts' },
+          { number: '04', title: 'Launch', description: 'Approval gate' }
+        ]; let i = index" [class.is-complete]="i < journeyStep" [class.is-current]="i === journeyStep" role="listitem">
+          <span class="discovery-timeline-node">{{ step.number }}</span>
+          <span class="discovery-timeline-copy">
+            <strong>{{ step.title }}</strong>
+            <small>{{ step.description }}</small>
+          </span>
+        </div>
+      </div>
     </div>
   </section>
 
