@@ -21,9 +21,9 @@ import { CrmService } from './crm.service';
           <div><span class="eyebrow">CRM DIRECTORY</span><h2>Company workspace</h2><p>Search and manage every account in one consistent directory.</p></div>
           <div class="facts"><span><b>{{ rows.length }}</b>Total</span></div>
         </header>
-        <div class="toolbar">
-          <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search company, domain or industry" /></label>
-          <strong>{{ visible.length }} shown</strong>
+        <div class="toolbar directory-search">
+          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search company, domain or industry" /></label>
+          <span class="status">{{ visible.length }} shown</span>
         </div>
         <div class="notice" *ngIf="loading">Loading companies…</div>
         <div class="table" *ngIf="!loading && visible.length">
