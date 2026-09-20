@@ -1,7 +1,5 @@
-<qai-page-header
-  title="Acquisition Approval Queue"
-  subtitle="Review AI-prepared outreach before any external delivery is attempted."
->
+<main class="page">
+<qai-page-header title="Acquisition Approval Queue" subtitle="Review AI-prepared outreach before any external delivery is attempted.">
   <div class="page-actions">
     <button type="button" class="button-quiet" (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : '↻ Refresh' }}</button>
     <a class="button-primary" href="/acquisition/autonomous">Open autonomous agent →</a>
@@ -45,10 +43,7 @@
 
   <div class="list" *ngIf="!loading; else loadingTpl">
     <article class="list-item" *ngFor="let message of visibleMessages">
-      <header class="card-header">
-        <div class="identity"><span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span><div><strong>{{ message.prospect || 'Unknown prospect' }}</strong><small>{{ message.contactName || 'Contact' }} · {{ message.email || 'No recipient' }}</small></div></div>
-        <span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && isProcessed(message)">{{ statusLabel(message) }}</span>
-      </header>
+      <div class="identity"><span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span><span class="stack"><strong>{{ message.prospect || 'Unknown prospect' }}</strong><small>{{ message.contactName || 'Contact' }} · {{ message.email || 'No recipient' }}</small></span><span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && isProcessed(message)">{{ statusLabel(message) }}</span></div>
       <div class="meta"><span class="status">{{ message.campaign || 'Campaign' }}</span><span class="stack"><b>Subject</b>{{ message.subject || 'No subject' }}</span><span class="stack"><b>Created</b>{{ message.createdAtUtc | date:'medium' }}</span></div>
       <section class="card-body"><span class="eyebrow">MESSAGE PREVIEW</span><p>{{ message.body || 'No message body available.' }}</p></section>
       <footer class="actions">
@@ -61,3 +56,4 @@
 </section>
 
 <ng-template #loadingTpl><div class="empty"><div class="status-dot"></div><strong>Loading approval queue…</strong><span>Retrieving the latest acquisition messages.</span></div></ng-template>
+</main>
