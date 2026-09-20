@@ -1,1 +1,30 @@
-/* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
+/* Platform workspace packages — page-specific structure, using canonical design tokens. */
+:host{display:block}
+.page{max-width:1440px;margin:0 auto}
+.page>.metric-grid{margin-top:0}
+.page>.hero{align-items:center}
+.hero-copy{min-width:0}
+.hero .actions{margin-top:16px}
+.workspace-target{margin-bottom:10px}
+.workspace-target .form{max-width:720px}
+.content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.package-card{min-height:100%}
+.package-card.selected{border-color:var(--wl-accent)}
+.package-card .card-header{align-items:flex-start}
+.package-card .card-header>div{min-width:0}
+.package-card .card-header h3{margin:0 0 6px}
+.package-card .card-body{display:flex;flex-direction:column;gap:14px}
+.package-description{margin:0;color:var(--wl-muted);line-height:1.55}
+.package-card .facts{margin-top:auto}
+.package-card .list{border:1px solid var(--wl-border)}
+.package-card .list-item{min-height:38px;padding:8px 10px}
+.package-card .card-footer{display:flex;align-items:center;justify-content:space-between}
+.install-result .facts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.page>.notice,.page>.alert{margin-top:0}
+@media(max-width:900px){
+ .install-result .facts{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .content-grid{grid-template-columns:1fr}
+ .install-result .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
