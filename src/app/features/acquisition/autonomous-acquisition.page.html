@@ -20,13 +20,13 @@
 </section>
 
 <section class="metric-grid">
-  <div><b>{{ agents.length }}</b><span>Agents</span></div>
-  <div><b>{{ active }}</b><span>Active</span></div>
-  <div><b>{{ runs.length }}</b><span>Runs</span></div>
-  <div><b>{{ completed }}</b><span>Completed</span></div>
-  <div><b>{{ discovered }}</b><span>Discovered</span></div>
-  <div><b>{{ qualified }}</b><span>Qualified</span></div>
-  <div><b>{{ emails }}</b><span>Emails sent</span></div>
+  <div class="metric"><b>{{ agents.length }}</b><span>Agents</span></div>
+  <div class="metric"><b>{{ active }}</b><span>Active</span></div>
+  <div class="metric"><b>{{ runs.length }}</b><span>Runs</span></div>
+  <div class="metric"><b>{{ completed }}</b><span>Completed</span></div>
+  <div class="metric"><b>{{ discovered }}</b><span>Discovered</span></div>
+  <div class="metric"><b>{{ qualified }}</b><span>Qualified</span></div>
+  <div class="metric"><b>{{ emails }}</b><span>Emails sent</span></div>
 </section>
 
 <section *ngIf="editing" class="card">
@@ -69,4 +69,4 @@
   <ng-template #e2eEmpty><div class="empty">Run the E2E check to validate configured agent → active agent → run → memory → discovery → qualification → outreach pipeline.</div></ng-template>
 </section>
 
-<div *ngIf="error" class="alert-error">{{ error }}</div>
+<div *ngIf="error" class="alert">{{ error }}</div>
