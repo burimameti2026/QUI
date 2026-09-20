@@ -22,33 +22,33 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
       <a *ngFor="let t of tabs" [routerLink]="'/enterprise/'+t.key" [class.active]="section===t.key"><span class="tab-icon">{{ tabIcon(t.key) }}</span><span>{{t.label}}</span></a>
     </nav>
     <section class="metric-grid">
-      <article class="metric-card" *ngFor="let card of summaryCards" [class]="'metric-card '+card.tone">
+      <article class="metric" *ngFor="let card of summaryCards" [class]="'metric-card '+card.tone">
         <div class="metric-top"><span class="metric-icon">{{ card.icon }}</span><span class="metric-label">{{ card.label }}</span></div>
         <strong>{{ card.value | number }}</strong>
         <small>{{ card.note }}</small>
         <span class="metric-spark"></span>
       </article>
     </section>
-    <section class="list-card">
-      <header class="list-header">
+    <section class="card">
+      <header class="card-header">
         <div><span class="eyebrow">ENTERPRISE OPERATIONS</span><h2>{{ title }}</h2><p>{{ rows.length | number }} records in the current workspace.</p></div>
-        <div class="header-actions"><button type="button" class="export-action" (click)="exportCsv()">⇩ Export <span>⌄</span></button><button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button><button type="button" class="primary-action" *ngIf="canCreate" (click)="openCreate()">＋ New</button></div>
+        <div class="actions"><button type="button" class="button-secondary" (click)="exportCsv()">⇩ Export <span>⌄</span></button><button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button><button type="button" class="primary-action" *ngIf="canCreate" (click)="openCreate()">＋ New</button></div>
       </header>
-      <div class="filters">
-        <label class="search-box"><span>⌕</span><input [(ngModel)]="search" (ngModelChange)="invalidateDerived()" placeholder="Search number, client or product..." /></label>
-        <label class="select-box"><span>Status</span><select [(ngModel)]="statusFilter" (ngModelChange)="invalidateDerived()"><option value="">All statuses</option><option *ngFor="let s of statusValues" [value]="s">{{s}}</option></select></label>
-        <label class="select-box"><span>Client</span><select [(ngModel)]="clientFilter" (ngModelChange)="invalidateDerived()"><option value="">All clients</option><option *ngFor="let c of clientValues" [value]="c">{{c}}</option></select></label>
-        <label class="date-box"><span>▣</span><input type="date" [(ngModel)]="dateFrom" (ngModelChange)="invalidateDerived()" title="From date" /><span>–</span><input type="date" [(ngModel)]="dateTo" (ngModelChange)="invalidateDerived()" title="To date" /></label>
-        <button type="button" class="filter-button" (click)="clearFilters()">≡ Filters <span *ngIf="hasFilters">•</span></button>
+      <div class="toolbar">
+        <label class="search"><span>⌕</span><input [(ngModel)]="search" (ngModelChange)="invalidateDerived()" placeholder="Search number, client or product..." /></label>
+        <label class="search"><span>Status</span><select [(ngModel)]="statusFilter" (ngModelChange)="invalidateDerived()"><option value="">All statuses</option><option *ngFor="let s of statusValues" [value]="s">{{s}}</option></select></label>
+        <label class="search"><span>Client</span><select [(ngModel)]="clientFilter" (ngModelChange)="invalidateDerived()"><option value="">All clients</option><option *ngFor="let c of clientValues" [value]="c">{{c}}</option></select></label>
+        <label class="search"><span>▣</span><input type="date" [(ngModel)]="dateFrom" (ngModelChange)="invalidateDerived()" title="From date" /><span>–</span><input type="date" [(ngModel)]="dateTo" (ngModelChange)="invalidateDerived()" title="To date" /></label>
+        <button type="button" class="button-quiet" (click)="clearFilters()">≡ Filters <span *ngIf="hasFilters">•</span></button>
       </div>
       <div class="alert alert-error" *ngIf="error"><strong>Live workspace warning</strong><span>{{error}}</span></div>
-      <div class="table-wrap" *ngIf="!loading && !error && pagedRows.length">
+      <div class="table" *ngIf="!loading && !error && pagedRows.length">
         <table><thead><tr><th class="check-col"><input type="checkbox" [checked]="allPageSelected" (change)="togglePage($event)" /></th><th *ngFor="let c of columns">{{c}}</th><th *ngIf="hasStatus">Workflow</th><th class="actions-col">Actions</th></tr></thead>
-          <tbody><tr *ngFor="let row of pagedRows; trackBy: trackRow"><td class="check-col"><input type="checkbox" [checked]="isSelected(row)" (change)="toggleRow(row)" /></td><td *ngFor="let k of keys" [class.primary-cell]="k==='number'||k==='code'"><ng-container *ngIf="k==='status'; else normalValue"><span class="status-chip" [ngClass]="statusTone(row[k])">{{ display(row,k) }}</span></ng-container><ng-template #normalValue><span [title]="display(row,k)">{{ display(row,k) }}</span></ng-template></td><td *ngIf="hasStatus"><button type="button" class="table-link" (click)="openStatus(row)">Update status</button></td><td class="row-actions"><button type="button" class="dots" (click)="openRowActions(row)" [attr.aria-label]="'Actions for '+display(row,keys[0]||'id')">•••</button></td></tr></tbody>
+          <tbody><tr *ngFor="let row of pagedRows; trackBy: trackRow"><td class="check-col"><input type="checkbox" [checked]="isSelected(row)" (change)="toggleRow(row)" /></td><td *ngFor="let k of keys" [class.primary-cell]="k==='number'||k==='code'"><ng-container *ngIf="k==='status'; else normalValue"><span class="status" [ngClass]="statusTone(row[k])">{{ display(row,k) }}</span></ng-container><ng-template #normalValue><span [title]="display(row,k)">{{ display(row,k) }}</span></ng-template></td><td *ngIf="hasStatus"><button type="button" class="button-quiet" (click)="openStatus(row)">Update status</button></td><td class="actions"><button type="button" class="dots" (click)="openRowActions(row)" [attr.aria-label]="'Actions for '+display(row,keys[0]||'id')">•••</button></td></tr></tbody>
         </table>
       </div>
-      <div class="state" *ngIf="loading"><span class="spinner"></span><strong>Loading data…</strong><span>Synchronizing this module with the Enterprise API.</span></div>
-      <div class="state" *ngIf="!loading && !error && !filteredRows.length"><span class="state-icon">⌕</span><strong>{{ rows.length ? 'No matching records' : 'No Renova records yet' }}</strong><span>{{ rows.length ? 'Try another search or clear the filters.' : 'This tenant API returned no records for this module.' }}</span></div>
+      <div class="empty" *ngIf="loading"><span class="spinner"></span><strong>Loading data…</strong><span>Synchronizing this module with the Enterprise API.</span></div>
+      <div class="empty" *ngIf="!loading && !error && !filteredRows.length"><span class="state-icon">⌕</span><strong>{{ rows.length ? 'No matching records' : 'No Renova records yet' }}</strong><span>{{ rows.length ? 'Try another search or clear the filters.' : 'This tenant API returned no records for this module.' }}</span></div>
       <footer class="table-footer" *ngIf="!loading && !error && filteredRows.length"><span>Showing {{ pageStart + 1 }} – {{ pageEnd }} of {{ filteredRows.length | number }} {{ title.toLowerCase() }}</span><div class="pagination"><button type="button" (click)="previousPage()" [disabled]="page===1">‹</button><button type="button" *ngFor="let p of pageNumbers" [class.page-active]="p===page" (click)="goPage(p)">{{p}}</button><button type="button" (click)="nextPage()" [disabled]="page===pageCount">›</button></div></footer>
     </section>
   `,
