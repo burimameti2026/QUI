@@ -29,22 +29,6 @@ function translateValue(i18n: AdminI18nService, value: string): string {
     <div class="page-actions"><ng-content /></div>
     </div>
   </div>`,
-  styles: [`
-    :host { display:block; min-width:0; }
-    .page-header{position:relative;display:block;box-sizing:border-box;padding:0 24px 16px;background:transparent;border:0;color:var(--wl-header-text,#344054)}
-    .breadcrumbs{display:flex;align-items:center;gap:8px;min-height:30px;padding-top:7px;color:var(--wl-header-muted,#667085);font-size:10px;line-height:1}
-    .breadcrumbs a,.breadcrumbs span{color:var(--wl-header-muted,#667085);text-decoration:none;white-space:nowrap}
-    .breadcrumbs a:hover{color:var(--wl-accent,#2563eb)}
-    .breadcrumbs .current{color:var(--wl-header-title,#172033);font-weight:650}
-    .breadcrumbs i{font-style:normal;color:#b3bfce}
-    .page-header-main{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:72px;padding:10px 0 0}
-    .page-header-title{min-width:0}
-    .page-header-title h1{margin:0;color:var(--wl-header-title,#172033);font-size:var(--wl-header-title-size,20px);font-weight:760;letter-spacing:-.025em;line-height:1.2}
-    .page-header-title p{margin:5px 0 0;color:var(--wl-header-muted,#667085);font-size:var(--wl-header-font-size,11px);line-height:1.45}
-    .page-actions{display:flex;align-items:center;justify-content:flex-end;gap:var(--wl-header-gap,8px);margin-left:auto;flex:0 0 auto}
-    .page-actions button,.page-actions a{min-height:var(--wl-control-height,34px);box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
-    @media(max-width:760px){.page-header{align-items:flex-start;flex-wrap:wrap}.page-actions{width:100%;flex-wrap:wrap}}
-  `]
 })
 export class PageHeader {
   readonly i18n = inject(AdminI18nService);
