@@ -25,31 +25,31 @@
 </section>
 
 <section class="metric-grid">
-  <button class="metric blue" type="button" (click)="go('/catalog')">
+  <button class="metric" type="button" (click)="go('/catalog')">
     <div class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Product catalog</span></div>
     <strong>{{ products.length }}</strong>
     <small>{{ publishedProducts }} public publications live</small>
   </button>
 
-  <button class="metric violet" type="button" (click)="go('/renova/promotion')">
+  <button class="metric" type="button" (click)="go('/renova/promotion')">
     <div class="metric-top"><span class="metric-icon">✦</span><span class="metric-label">Promotion plans</span></div>
     <strong>{{ activePlans }}</strong>
     <small>active market programs</small>
   </button>
 
-  <button class="metric green" type="button" (click)="go('/acquisition/autonomous')">
+  <button class="metric" type="button" (click)="go('/acquisition/autonomous')">
     <div class="metric-top"><span class="metric-icon">↯</span><span class="metric-label">Autonomous agents</span></div>
     <strong>{{ activeAgentCount }}</strong>
     <small>running acquisition engines</small>
   </button>
 
-  <button class="metric amber" type="button" (click)="go('/discover')">
+  <button class="metric" type="button" (click)="go('/discover')">
     <div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Prospects discovered</span></div>
     <strong>{{ acquisition.discovered || 0 }}</strong>
     <small>{{ qualifiedProspects }} high-fit prospects</small>
   </button>
 
-  <button class="metric rose" type="button" (click)="go('/acquisition/approval-queue')">
+  <button class="metric" type="button" (click)="go('/acquisition/approval-queue')">
     <div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Awaiting delivery</span></div>
     <strong>{{ queuedMessages }}</strong>
     <small>review the approval queue</small>
@@ -91,9 +91,9 @@
       <button class="button-quiet" type="button" (click)="go('/campaigns')">View campaigns</button>
     </header>
     <div class="list">
-      <div><span class="icon">↗</span><span><small>Running campaigns</small><strong>{{ campaigns.length }}</strong></span></div>
-      <div><span class="icon">✓</span><span><small>Queued messages</small><strong>{{ queuedMessages }}</strong></span></div>
-      <div><span class="icon">↩</span><span><small>Replies</small><strong>{{ acquisition.replies || 0 }}</strong></span></div>
+      <div class="list-item"><span class="icon">↗</span><span><small>Running campaigns</small><strong>{{ campaigns.length }}</strong></span></div>
+      <div class="list-item"><span class="icon">✓</span><span><small>Queued messages</small><strong>{{ queuedMessages }}</strong></span></div>
+      <div class="list-item"><span class="icon">↩</span><span><small>Replies</small><strong>{{ acquisition.replies || 0 }}</strong></span></div>
     </div>
     <div class="card-footer stack"><span><i></i>Guardrail</span><strong>Approval before delivery</strong></div>
   </article>
@@ -109,7 +109,7 @@
       <button class="button-quiet" type="button" (click)="go('/renova/promotion')">Manage plans</button>
     </header>
     <div class="list" *ngIf="programRows.length">
-      <div class="list-item">
+      <div class="list-item table-head">
         <span>Program</span><span>Language</span><span>Status</span><span>Automation</span>
       </div>
       <div class="list-item" *ngFor="let row of programRows">
