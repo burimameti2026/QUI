@@ -31,9 +31,9 @@ export class RenovaPortalPage implements OnInit, OnDestroy {
   readonly historyUrl = 'https://renova.com.mk/en/history-en/';
   readonly facilitiesUrl = 'https://renova.com.mk/en/facilities-en/';
   readonly heroes = [
-    { kicker: 'RENOVA / 1992—', title: 'Building better. Together.', text: 'Professional construction materials for projects, distributors and builders across the Balkans.', image: 'https://renova.com.mk/wp-content/uploads/2024/07/COVEREN.jpg' },
-    { kicker: 'RENOVA / FACILITIES', title: 'Production built around quality.', text: 'Explore Renova facilities and the production capabilities behind the portfolio.', image: 'https://renova.com.mk/wp-content/uploads/2024/07/OBJEKTET-ENArtboard-1.jpg' },
-    { kicker: 'RENOVA / PROJECTS', title: 'Built for real projects.', text: 'From construction materials to hospitality and commercial projects, discover Renova in the real world.', image: 'https://renova.com.mk/wp-content/uploads/2024/06/a356_ho_00_p_2048x1536.jpg' }
+    { kicker: ' 1992—', title: 'Building better. Together.', text: 'Professional construction materials for projects, distributors and builders across the Balkans.', image: 'https://renova.com.mk/wp-content/uploads/2024/07/COVEREN.jpg' },
+    { kicker: ' FACILITIES', title: 'Production built around quality.', text: 'Explore Renova facilities and the production capabilities behind the portfolio.', image: 'https://renova.com.mk/wp-content/uploads/2024/07/OBJEKTET-ENArtboard-1.jpg' },
+    { kicker: ' PROJECTS', title: 'Built for real projects.', text: 'From construction materials to hospitality and commercial projects, discover Renova in the real world.', image: 'https://renova.com.mk/wp-content/uploads/2024/06/a356_ho_00_p_2048x1536.jpg' }
   ];
   readonly solutions = [
     ['01','Facade & insulation','Durable exterior surfaces, insulation and professional facade work.'],

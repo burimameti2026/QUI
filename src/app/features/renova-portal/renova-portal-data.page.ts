@@ -16,9 +16,9 @@ const TR: Record<Lang, Record<string,string>> = {
 
 const HERO_TR: Record<Lang, Array<{kicker:string,title:string,text:string}>> = {
   en:[
-    {kicker:'RENOVA / 1992—',title:'Building better. Together.',text:'Professional construction materials for projects, distributors and builders across the Balkans.'},
-    {kicker:'RENOVA / FACILITIES',title:'Production built around quality.',text:'Explore Renova facilities and the production capabilities behind the portfolio.'},
-    {kicker:'RENOVA / PROJECTS',title:'Built for real projects.',text:'From construction materials to hospitality and commercial projects, discover Renova in the real world.'}
+    {kicker:' 1992—',title:'Building better. Together.',text:'Professional construction materials for projects, distributors and builders across the Balkans.'},
+    {kicker:' FACILITIES',title:'Production built around quality.',text:'Explore Renova facilities and the production capabilities behind the portfolio.'},
+    {kicker:' PROJECTS',title:'Built for real projects.',text:'From construction materials to hospitality and commercial projects, discover Renova in the real world.'}
   ],
   mk:[
     {kicker:'РЕНОВА / 1992—',title:'Градиме подобро. Заедно.',text:'Професионални градежни материјали за проекти, дистрибутери и изведувачи низ Балканот.'},
@@ -26,14 +26,14 @@ const HERO_TR: Record<Lang, Array<{kicker:string,title:string,text:string}>> = {
     {kicker:'РЕНОВА / ПРОЕКТИ',title:'Создадено за реални проекти.',text:'Од градежни материјали до хотелски и комерцијални проекти, запознајте ја Ренова во реална примена.'}
   ],
   sq:[
-    {kicker:'RENOVA / 1992—',title:'Ndërtojmë më mirë. Së bashku.',text:'Materiale profesionale ndërtimi për projekte, distributorë dhe ndërtues në Ballkan.'},
-    {kicker:'RENOVA / FABRIKAT',title:'Prodhim i ndërtuar mbi cilësi.',text:'Eksploroni objektet e Renova dhe kapacitetet prodhuese pas portofolit.'},
-    {kicker:'RENOVA / PROJEKTET',title:'Ndërtuar për projekte reale.',text:'Nga materialet e ndërtimit te projektet hoteliere dhe komerciale, zbuloni Renova në praktikë.'}
+    {kicker:' 1992—',title:'Ndërtojmë më mirë. Së bashku.',text:'Materiale profesionale ndërtimi për projekte, distributorë dhe ndërtues në Ballkan.'},
+    {kicker:' FABRIKAT',title:'Prodhim i ndërtuar mbi cilësi.',text:'Eksploroni objektet e Renova dhe kapacitetet prodhuese pas portofolit.'},
+    {kicker:' PROJEKTET',title:'Ndërtuar për projekte reale.',text:'Nga materialet e ndërtimit te projektet hoteliere dhe komerciale, zbuloni Renova në praktikë.'}
   ],
   de:[
-    {kicker:'RENOVA / 1992—',title:'Besser bauen. Gemeinsam.',text:'Professionelle Baustoffe für Projekte, Vertriebspartner und Bauunternehmen auf dem Balkan.'},
-    {kicker:'RENOVA / WERKE',title:'Produktion mit Fokus auf Qualität.',text:'Entdecken Sie die Renova-Standorte und Produktionskapazitäten hinter dem Portfolio.'},
-    {kicker:'RENOVA / PROJEKTE',title:'Für reale Projekte gebaut.',text:'Von Baustoffen bis zu Hotel- und Gewerbeprojekten: Renova in der praktischen Anwendung.'}
+    {kicker:' 1992—',title:'Besser bauen. Gemeinsam.',text:'Professionelle Baustoffe für Projekte, Vertriebspartner und Bauunternehmen auf dem Balkan.'},
+    {kicker:' WERKE',title:'Produktion mit Fokus auf Qualität.',text:'Entdecken Sie die Renova-Standorte und Produktionskapazitäten hinter dem Portfolio.'},
+    {kicker:' PROJEKTE',title:'Für reale Projekte gebaut.',text:'Von Baustoffen bis zu Hotel- und Gewerbeprojekten: Renova in der praktischen Anwendung.'}
   ]
 };
 

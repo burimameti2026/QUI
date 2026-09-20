@@ -2,7 +2,7 @@ import { AdminLanguage } from './admin-i18n.service';
 
 /** UI-only labels for the Renova CMS. Persisted website content is not translated here. */
 export const ADMIN_CMS_TRANSLATIONS: Record<string, Record<AdminLanguage, string>> = {
-  'RENOVA / CONTENT MANAGEMENT': { en: 'RENOVA / CONTENT MANAGEMENT', mk: 'RENOVA / УПРАВУВАЊЕ СО СОДРЖИНА', sq: 'RENOVA / MENAXHIMI I PËRMBAJTJES', de: 'RENOVA / CONTENT-MANAGEMENT' },
+  ' CONTENT MANAGEMENT': { en: ' CONTENT MANAGEMENT', mk: ' УПРАВУВАЊЕ СО СОДРЖИНА', sq: ' MENAXHIMI I PËRMBAJTJES', de: ' CONTENT-MANAGEMENT' },
   'Renova CMS': { en: 'Renova CMS', mk: 'Renova CMS', sq: 'Renova CMS', de: 'Renova CMS' },
   'Manage the public Renova website content from one tenant-scoped workspace. Product data remains managed in Product Hub.': { en: 'Manage the public Renova website content from one tenant-scoped workspace. Product data remains managed in Product Hub.', mk: 'Управувајте со јавната содржина на Renova од еден tenant-опсег. Податоците за производите остануваат во Product Hub.', sq: 'Menaxhoni përmbajtjen publike të Renova nga një workspace i kufizuar për tenant-in. Të dhënat e produkteve mbeten në Product Hub.', de: 'Verwalten Sie die öffentlichen Renova-Inhalte in einem mandantenbezogenen Workspace. Produktdaten bleiben im Product Hub.' },
   'CMS sections': { en: 'CMS sections', mk: 'CMS секции', sq: 'Seksionet CMS', de: 'CMS-Bereiche' },
