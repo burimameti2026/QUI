@@ -13,7 +13,7 @@
 .prospect-card,
 .discovery-metrics .metric-card {
   border: 1px solid #e5e9f0 !important;
-  border-radius: 0px !important;
+  border-radius: 12px !important;
 
   box-shadow: 0 1px 2px rgba(16, 24, 40, .03), 0 4px 14px rgba(36, 60, 88, .045) !important;
 }
@@ -67,8 +67,8 @@
   position: relative !important;
   min-height: 118px !important;
   padding: 16px !important;
-  border: 0 !important;
-  border-radius: 22px !important;
+  border: 1px solid #e5e9f0 !important;
+  border-radius: 12px !important;
   box-shadow: none !important
 }
 
@@ -103,9 +103,9 @@
   width: 31px !important;
   height: 31px !important;
   place-items: center !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   background: var(--brand-accent-soft) !important;
-  color: var(--brand-accent) !important;
+
   font-style: normal !important
 }
 
@@ -137,7 +137,7 @@
 .discovery-metrics .metric-card strong {
   display: block !important;
   margin-top: 11px !important;
-  color: #172033 !important;
+  color: #ccd2df !important;
   font-size: 26px !important;
   line-height: 1 !important
 }
@@ -189,10 +189,10 @@
   height: 31px !important;
   min-height: 31px !important;
   padding: 0 10px !important;
-  border: 1px solid var(--wl-button-2-border, var(--wl-button-2-border, #dfe5ed)) !important;
+  border: 0px solid var(--wl-button-2-border, var(--wl-button-2-border, #dfe5ed)) !important;
   border-radius: 7px !important;
-  background: var(--wl-surface, var(--wl-surface, #fff)) !important;
-  color: #475467 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
   font-size: 9px !important;
   font-weight: 700 !important
 }
@@ -742,8 +742,21 @@ qai-page-header button.primary {
 }
 
 .discovery-metrics .metric-card {
-  border-radius: var(--wl-card-radius, 12px) !important;
-  background: var(--wl-card-bg, var(--wl-surface)) !important
+    position:relative;
+  display:flex;
+  min-width:0;
+  min-height:120px !important;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:17px 16px 15px;
+  text-align:left;
+  background:var(--wl-card-bg);
+  border:1px solid var(--wl-card-border);
+  border-radius:0;
+  box-shadow:0 2px 8px rgba(23,23,23,.045);
+  color:var(--wl-text);
+  cursor:pointer;
+  overflow:hidden;
 }
 
 

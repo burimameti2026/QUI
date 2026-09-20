@@ -9,8 +9,9 @@ import { AcquisitionService } from "./acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
-    <qai-page-header
-     
+<qai-page-header
+      title="Prospect Discovery"
+      subtitle="Define who you want to sell to, collect market evidence and prioritize companies showing real buying intent."
     >
 
 

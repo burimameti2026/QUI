@@ -6396,7 +6396,7 @@ qai-page-header .page-actions button.primary,
 qai-page-header .header-actions button.primary {
   min-height: 44px !important;
   background: var(--wl-button-1-bg) !important;
-  border: 0 !important;
+  border: 2px solid var(--wl-button-1-border) !important;
   color: #fff !important;
 }
 
