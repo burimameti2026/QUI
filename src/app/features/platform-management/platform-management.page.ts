@@ -13,13 +13,13 @@ import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive
    <a class="button-primary" routerLink="/platform/prepare-workspace">＋ Prepare Real Workspace</a>
   </qai-page-header>
 
-  <section class="hero">
-   <div><span class="eyebrow">LEADSAI CONTROL CENTER</span><h2>One administration surface for the whole platform.</h2><p>Manage the workspace foundation, users, billing, autonomous acquisition and governance without leaving the enterprise shell.</p></div>
-   <div class="notice"><span class="status-dot"></span><div><b>Platform ready</b><small>Workspace controls available</small></div></div>
+  <section class="hero platform-hero">
+   <div class="platform-hero-copy"><span class="eyebrow">LEADSAI CONTROL CENTER</span><h2>One administration surface for the whole platform.</h2><p>Manage the workspace foundation, users, billing, autonomous acquisition and governance without leaving the enterprise shell.</p></div>
+   <div class="platform-hero-status"><span class="status-dot"></span><div><b>Platform ready</b><small>Workspace controls available</small></div></div>
   </section>
 
   <section class="section"><header class="section-header"><div><span class="eyebrow">WORKSPACE</span><h3>Workspace management</h3><p>Provision and govern tenant-owned environments.</p></div></header>
-   <div class="content-grid">
+   <div class="content-grid platform-card-grid">
     <a routerLink="/platform/prepare-workspace" class="card"><span class="icon">✦</span><div><b>Prepare Real Workspace</b><p>Configure the use case, market and autonomous acquisition agent, then queue the first discovery run.</p></div><strong>Open →</strong></a>
     <a routerLink="/platform/packages" class="card"><span class="icon">▦</span><div><b>Workspace Packages</b><p>Review reusable operating packages and controlled provisioning options.</p></div><strong>Open →</strong></a>
     <a routerLink="/admin/modules" class="card"><span class="icon">◈</span><div><b>Tenants & Licensing</b><p>Control tenants, plans, modules and platform entitlements.</p></div><strong>Open →</strong></a>
