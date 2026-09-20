@@ -19,18 +19,17 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
     <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
     <section class="page">
       <qai-kpi-strip>
-        <article><span class="icon">♧</span><span>New Leads</span><strong>{{ rows.length }}</strong><small>↗ 12% vs previous period</small><svg class="metric" viewBox="0 0 108 38"><polyline points="0,29 14,15 27,24 39,18 51,26 65,11 78,20 91,8 108,3"/></svg></article>
-        <article><span class="icon">◎</span><span>Qualified Leads</span><strong>{{ count(80,101) }}</strong><small>↗ 4.2% vs previous period</small><svg class="metric" viewBox="0 0 108 38"><polyline points="0,25 13,17 25,21 39,10 52,16 64,12 76,20 91,8 108,4"/></svg></article>
-        <article><span class="icon">◷</span><span>Avg Response Time</span><strong>1.8h</strong><small>↗ 15% vs previous period</small><svg class="metric" viewBox="0 0 108 38"><polyline points="0,27 13,25 26,17 39,21 52,13 65,17 78,9 92,14 108,4"/></svg></article>
-        <article><span class="icon">△</span><span>Hot Leads</span><strong>{{ count(80,101) }}</strong><small>↘ 2% vs previous period</small><svg class="metric" viewBox="0 0 108 38"><polyline points="0,12 14,7 27,16 39,8 51,14 65,6 78,12 91,5 108,11"/></svg></article>
-        <article><span class="icon">◷</span><span>Pipeline Value</span><strong>{{ money(total()) }}</strong><small>Current qualified demand</small><svg class="metric" viewBox="0 0 108 38"><polyline points="0,27 14,23 27,25 40,15 52,18 65,10 78,15 92,8 108,5"/></svg></article>
+        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
+        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">N</span><span class="metric-label">New</span></div><strong>{{ countNew() }}</strong><small>New or unqualified enquiries</small></article>
+        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ count(80,101) }}</strong><small>Score 80–100</small></article>
+        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">€</span><span class="metric-label">Pipeline value</span></div><strong>{{ money(total()) }}</strong><small>Estimated value across leads</small></article>
       </qai-kpi-strip>
       <qai-refined-tabs>
         <button [class.active]="activeTab==='All'" (click)="setTab('All')" type="button">All</button><button [class.active]="activeTab==='Favourite'" (click)="setTab('Favourite')" type="button">Favourite</button><button [class.active]="activeTab==='New'" (click)="setTab('New')" type="button">New</button><button [class.active]="activeTab==='Assigned to me'" (click)="setTab('Assigned to me')" type="button">Assigned to me</button><button [class.active]="activeTab==='Overdue'" (click)="setTab('Overdue')" type="button">Overdue</button><button [class.active]="activeTab==='Hot'" (click)="setTab('Hot')" type="button">Hot</button>
       </qai-refined-tabs>
       <qai-data-grid *ngIf="!loading && !error">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><button type="button" class="toolbar-button">▽ &nbsp;Filters</button><button type="button" class="toolbar-button">↕ &nbsp;Sort</button><select [(ngModel)]="temp"><option value="">All statuses</option><option>Hot</option><option>Warm</option><option>Cold</option></select><div class="toolbar"><button type="button">⇧</button><button type="button">⇩</button><button type="button" (click)="load()">↻</button><div class="view-toggle"><button type="button" class="active">☷</button><button type="button">⊞</button></div></div>
+          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><select [(ngModel)]="temp"><option value="">All temperatures</option><option>Hot</option><option>Warm</option><option>Cold</option></select><button type="button" class="toolbar-button">▽ Filters</button><button type="button" class="toolbar-button">↕ Sort</button><span class="toolbar-spacer"></span><button type="button" class="toolbar-button">⇧ Export</button><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
         </div>
         <table>
           <thead><tr><th class="check-col"><input type="checkbox" [checked]="allVisibleSelected" (change)="toggleAll($event)" /></th><th>Customer</th><th>Company</th><th>Email</th><th>Status</th><th>Manager</th><th>Source</th><th>Score</th><th>Created</th><th>Actions</th></tr></thead>
@@ -67,6 +66,7 @@ export class LeadsPage implements OnInit {
   deleteSelected(){const ids=this.selected.map(x=>x.id);this.clearSelection();ids.forEach(id=>this.data.deleteLead(id).subscribe({next:()=>this.rows=this.rows.filter(x=>x.id!==id),error:()=>{}}))}
 
   count(a:number,b:number){return this.rows.filter(x=>x.score>=a&&x.score<b).length}
+  countNew(){return this.rows.filter(x=>{const status=String(x.status||'').toLowerCase();return status==='new'||!status}).length}
   total(){return this.rows.reduce((s,x)=>s+(Number(x.estimatedValue)||0),0)}
   createdDate(x:any){const v=x.createdAt||x.created||x.createdDate;if(!v)return'—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(d)}
   temperature(x:any){return x.score>=80?'Hot':x.score>=50?'Warm':'Cold'}
