@@ -17,22 +17,22 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
 
       <section class="metric-grid">
         <article class="metric">
-          <span class="eyebrow">AVAILABLE PACKAGES</span>
+          <div class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Available packages</span></div>
           <strong>{{ packages.length }}</strong>
           <small>Reusable workspace setups</small>
         </article>
         <article class="metric">
-          <span class="eyebrow">RECOMMENDED</span>
+          <div class="metric-top"><span class="metric-icon">★</span><span class="metric-label">Recommended</span></div>
           <strong>1</strong>
           <small>FusionFleet Promotion</small>
         </article>
         <article class="metric">
-          <span class="eyebrow">PROVISIONING</span>
+          <div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Provisioning</span></div>
           <strong>Ready</strong>
           <small>Install into workspace</small>
         </article>
         <article class="metric">
-          <span class="eyebrow">MODE</span>
+          <div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Mode</span></div>
           <strong>Tenant-safe</strong>
           <small>Current or selected tenant</small>
         </article>
@@ -49,7 +49,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         </div>
       </section>
 
-      <section class="card">
+      <section class="card workspace-target">
         <div class="card-header">
           <div>
             <span class="eyebrow">TARGET WORKSPACE</span>
