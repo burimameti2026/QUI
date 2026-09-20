@@ -9,6 +9,7 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, PageHeader, AdminStaticI18nDirective],
+  styleUrl: './prepare-real-workspace.page.css',
   template: `
     <main class="page" qaiAdminStaticI18n>
       <qai-page-header title="Prepare Real Workspace" subtitle="Configure a tenant-owned acquisition workspace and start its autonomous operating loop.">
