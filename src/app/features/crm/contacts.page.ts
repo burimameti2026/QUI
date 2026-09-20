@@ -10,45 +10,47 @@ import { CrmService } from './crm.service';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./contacts.page.css'],
   template: `
-    <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
-      <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
-      <button class="button-secondary" (click)="exportCsv()">⇩ Export CSV</button>
-      <button class="button-primary" (click)="open()">+ Add contact</button>
-    </qai-page-header>
-    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Contacts could not be loaded</b><p>{{ error }}</p></div></div>
-    <section class="card">
-      <header>
-        <div><span class="eyebrow">CRM DIRECTORY</span><h2>Contact workspace</h2><p>Search, review and manage every person in the customer lifecycle.</p></div>
-        <div class="card-header"><span><b>{{ rows.length }}</b>Total</span><span><b>{{ leadCount }}</b>Leads</span><span><b>{{ customerCount }}</b>Customers</span></div>
-      </header>
-      <div class="toolbar">
-        <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search name, email or phone" /></label>
-        <select [(ngModel)]="stage"><option value="">All lifecycle stages</option><option>visitor</option><option>lead</option><option>customer</option></select>
-        <strong>{{ visible.length }} shown</strong>
-      </div>
-      <div class="data-state" *ngIf="loading">Loading contacts…</div>
-      <div class="table-wrap contacts-table" *ngIf="!loading && visible.length">
-        <table>
-          <thead><tr><th>Contact</th><th>Email</th><th>Phone</th><th>Lifecycle</th><th>Created</th><th>Actions</th></tr></thead>
-          <tbody><tr *ngFor="let x of visible">
-            <td><div class="identity"><i>{{ initials(x) }}</i><span><b>{{ x.firstName }} {{ x.lastName }}</b><small>CRM contact</small></span></div></td>
-            <td><a class="email-link" [href]="'mailto:' + x.email">{{ x.email || '—' }}</a></td><td>{{ x.phone || '—' }}</td>
-            <td><span class="lifecycle" [class.customer]="x.lifecycleStage === 'customer'" [class.lead]="x.lifecycleStage === 'lead'">{{ x.lifecycleStage || 'visitor' }}</span></td>
-            <td>{{ x.createdAtUtc | date: 'mediumDate' }}</td>
-            <td><div class="actions"><button (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
-          </tr></tbody>
-        </table>
-      </div>
-      <div class="empty" *ngIf="!loading && !error && !visible.length"><i>◎</i><strong>{{ rows.length ? 'No matching contacts' : 'No contacts available' }}</strong><span>{{ rows.length ? 'No contacts match the current search or lifecycle filter.' : 'There are no contacts in this workspace yet. Add the first contact to start the CRM directory.' }}</span><button class="button-primary" *ngIf="!rows.length" (click)="open()">Add contact</button></div>
-    </section>
-    <qai-modal [open]="show" [title]="form.id ? 'Edit contact' : 'New contact'" (close)="show = false">
-      <form class="form" (ngSubmit)="save()">
-        <div class="content-grid"><label>First name<input [(ngModel)]="form.firstName" name="first" required /></label><label>Last name<input [(ngModel)]="form.lastName" name="last" /></label></div>
-        <label>Email<input [(ngModel)]="form.email" name="email" type="email" /></label><label>Phone<input [(ngModel)]="form.phone" name="phone" /></label>
-        <label>Lifecycle<select [(ngModel)]="form.lifecycleStage" name="stage"><option>visitor</option><option>lead</option><option>customer</option></select></label>
-        <footer><button type="button" (click)="show = false">Cancel</button><button class="button-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save contact' }}</button></footer>
-      </form>
-    </qai-modal>`
+    <main class="page">
+      <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
+        <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
+        <button class="button-secondary" (click)="exportCsv()">⇩ Export CSV</button>
+        <button class="button-primary" (click)="open()">+ Add contact</button>
+      </qai-page-header>
+      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Contacts could not be loaded</b><p>{{ error }}</p></div></div>
+      <section class="card">
+        <header class="card-header">
+          <div><span class="eyebrow">CRM DIRECTORY</span><h2>Contact workspace</h2><p>Search, review and manage every person in the customer lifecycle.</p></div>
+          <div class="facts"><span><b>{{ rows.length }}</b>Total</span><span><b>{{ leadCount }}</b>Leads</span><span><b>{{ customerCount }}</b>Customers</span></div>
+        </header>
+        <div class="toolbar">
+          <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search name, email or phone" /></label>
+          <select [(ngModel)]="stage"><option value="">All lifecycle stages</option><option>visitor</option><option>lead</option><option>customer</option></select>
+          <strong>{{ visible.length }} shown</strong>
+        </div>
+        <div class="notice" *ngIf="loading">Loading contacts…</div>
+        <div class="table" *ngIf="!loading && visible.length">
+          <table>
+            <thead><tr><th>Contact</th><th>Email</th><th>Phone</th><th>Lifecycle</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody><tr *ngFor="let x of visible">
+              <td><div class="identity"><i>{{ initials(x) }}</i><span><b>{{ x.firstName }} {{ x.lastName }}</b><small>CRM contact</small></span></div></td>
+              <td><a class="button-quiet" [href]="'mailto:' + x.email">{{ x.email || '—' }}</a></td><td>{{ x.phone || '—' }}</td>
+              <td><span class="status" [class.customer]="x.lifecycleStage === 'customer'" [class.lead]="x.lifecycleStage === 'lead'">{{ x.lifecycleStage || 'visitor' }}</span></td>
+              <td>{{ x.createdAtUtc | date: 'mediumDate' }}</td>
+              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
+            </tr></tbody>
+          </table>
+        </div>
+        <div class="empty" *ngIf="!loading && !error && !visible.length"><i>◎</i><strong>{{ rows.length ? 'No matching contacts' : 'No contacts available' }}</strong><span>{{ rows.length ? 'No contacts match the current search or lifecycle filter.' : 'There are no contacts in this workspace yet. Add the first contact to start the CRM directory.' }}</span><button class="button-primary" *ngIf="!rows.length" (click)="open()">Add contact</button></div>
+      </section>
+      <qai-modal [open]="show" [title]="form.id ? 'Edit contact' : 'New contact'" (close)="show = false">
+        <form class="form" (ngSubmit)="save()">
+          <div class="content-grid"><label>First name<input [(ngModel)]="form.firstName" name="first" required /></label><label>Last name<input [(ngModel)]="form.lastName" name="last" /></label></div>
+          <label>Email<input [(ngModel)]="form.email" name="email" type="email" /></label><label>Phone<input [(ngModel)]="form.phone" name="phone" /></label>
+          <label>Lifecycle<select [(ngModel)]="form.lifecycleStage" name="stage"><option>visitor</option><option>lead</option><option>customer</option></select></label>
+          <footer class="actions"><button class="button-quiet" type="button" (click)="show = false">Cancel</button><button class="button-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save contact' }}</button></footer>
+        </form>
+      </qai-modal>
+    </main>`
 })
 export class ContactsPage implements OnInit {
   rows: Contact[] = []; q = ''; stage = ''; show = false; loading = false; saving = false; error = '';
