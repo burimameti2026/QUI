@@ -84,7 +84,7 @@
   </div>
 
   <div class="queue-list" *ngIf="!loading; else loadingTpl">
-    <article class="message-card" *ngFor="let message of visibleMessages">
+    <article class="card" *ngFor="let message of visibleMessages">
       <header class="message-top">
         <div class="identity">
           <span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span>
