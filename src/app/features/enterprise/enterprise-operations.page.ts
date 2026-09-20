@@ -13,11 +13,10 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
   imports: [CommonModule, FormsModule, RouterLink, PageHeader],
   template: `
     <qai-page-header [title]="title" [subtitle]="subtitle">
-      <a routerLink="/enterprise" class="quiet-action">← Enterprise Operations</a>
+      <a routerLink="/enterprise" class="button-quiet enterprise-back">← Back</a>
       <button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button>
       <button type="button" class="primary-action" *ngIf="canCreate" (click)="openCreate()">＋ New {{ title }}</button>
     </qai-page-header>
-    <div class="breadcrumb"><a routerLink="/enterprise"></a><span>›</span><span>Enterprise Operations</span><span>›</span><strong>{{ title }}</strong></div>
     <nav class="tabs" aria-label="Enterprise modules">
       <a *ngFor="let t of tabs" [routerLink]="'/enterprise/'+t.key" [class.active]="section===t.key"><span class="tab-icon">{{ tabIcon(t.key) }}</span><span>{{t.label}}</span></a>
     </nav>
