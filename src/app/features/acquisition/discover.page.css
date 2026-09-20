@@ -186,21 +186,22 @@
 }
 
 .header-action {
-  height: 31px !important;
-  min-height: 31px !important;
-  padding: 0 10px !important;
-  border: 1px solid var(--wl-button-2-border, var(--wl-button-2-border, #dfe5ed)) !important;
-  border-radius: 7px !important;
-  background: var(--wl-surface, var(--wl-surface, #fff)) !important;
-  color: #475467 !important;
-  font-size: 9px !important;
-  font-weight: 700 !important
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 13px !important;
+  border: 0 !important;
+  border-radius: var(--wl-button-radius, 8px) !important;
+  background: #000 !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  box-shadow: inset -2px 2px 0 1px #edf0f4 !important
 }
 
-.header-action:hover {
-  border-color: var(--brand-primary-border) !important;
-  background: var(--wl-surface, var(--wl-surface, #fff))af6 !important;
-  color: var(--brand-primary) !important
+.header-action:hover:not(:disabled) {
+  border-color: var(--wl-accent) !important;
+  background: var(--wl-accent) !important;
+  color: #fff !important
 }
 
 .profile-list {
@@ -628,21 +629,7 @@
 
 /* Final route-local White Label overrides. */
 :host {
-  --discover-button-primary: var(--brand-button-primary);
-  --discover-button-secondary: var(--brand-button-secondary);
   --discover-card-header: var(--brand-card-header)
-}
-
-qai-page-header button {
-  background: var(--discover-button-secondary) !important;
-  color: var(--brand-button-secondary-text) !important;
-  border-color: var(--brand-button-secondary-border) !important
-}
-
-qai-page-header button.primary {
-  background: var(--discover-button-primary) !important;
-  color: var(--brand-button-primary-text) !important;
-  border-color: var(--discover-button-primary) !important
 }
 
 .workspace-header,
