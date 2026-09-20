@@ -6,7 +6,6 @@ import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive
 
 @Component({
  standalone:true,imports:[CommonModule,RouterLink,PageHeader,AdminStaticI18nDirective],
- styleUrl:'./platform-management.page.css',
  template:`
  <main class="page" qaiAdminStaticI18n>
   <qai-page-header title="Platform Management" subtitle="Control tenants, access, automation and workspace provisioning from one place.">
