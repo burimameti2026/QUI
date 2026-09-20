@@ -754,10 +754,9 @@
 }
 
 qai-page-header {
-   background: #fff !important;
-
+  background: #fff !important;
   display: block !important;
-  margin: 2px !important
+  margin: 0 !important;
 }
 
 qai-page-header .page-header {
