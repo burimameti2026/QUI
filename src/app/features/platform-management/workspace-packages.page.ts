@@ -38,7 +38,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         </article>
       </section>
 
-      <section class="hero">
+      <section class="hero platform-hero">
         <div>
           <span class="eyebrow">PACKAGE LIBRARY</span>
           <h2>Choose a complete operating package.</h2>
@@ -75,7 +75,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
           </div>
         </header>
         <div class="content-grid">
-          <article class="card" *ngFor="let item of packages" [class.selected]="selected === item.id">
+          <article class="card package-card" *ngFor="let item of packages" [class.selected]="selected === item.id">
             <div class="card-header">
               <div>
                 <h3>{{ item.name }}</h3>
@@ -83,7 +83,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
               </div>
             </div>
             <div class="card-body">
-              <p>{{ item.description }}</p>
+              <p class="package-description">{{ item.description }}</p>
               <div class="facts">
                 <div>
                   <span>Required modules</span>
@@ -105,7 +105,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         </div>
       </section>
 
-      <section *ngIf="result" class="card">
+      <section *ngIf="result" class="card install-result">
         <div class="card-header">
           <div>
             <span class="eyebrow">INSTALLATION COMPLETE</span>
