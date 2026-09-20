@@ -86,3 +86,11 @@
   .guardrail-item { grid-template-columns: 28px minmax(0, 1fr) 16px; }
   .guardrail-state { display: none; }
 }
+
+
+/* Canonical workflow presentation. */
+.campaign-workflow{margin-bottom:10px}
+.campaign-workflow .card-body{padding:4px 14px 12px}
+.campaign-timeline{margin:8px 0 0;padding-left:12px;padding-right:12px}
+.guardrail-item{padding-left:12px;padding-right:12px}
+.guardrail-number{padding-right:6px}
