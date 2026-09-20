@@ -43,7 +43,7 @@
 </section>
 
 <p class="notice success" *ngIf="message">{{ message }}</p>
-<p class="notice error" *ngIf="error">{{ error }}</p>
+<p class="notice alert-error" *ngIf="error">{{ error }}</p>
 <p class="notice" *ngIf="loading">Loading campaign pipeline…</p>
 
 <div class="content-grid">
@@ -104,7 +104,7 @@
         </button>
 
         <button
-          class="button-primary campaign-action"
+          class="button-primary"
           *ngIf="campaign.status === 0 || campaign.status === 3"
           (click)="start(campaign)"
         >
@@ -124,7 +124,7 @@
     </div>
   </section>
 
-  <aside class="safety">
+  <aside class="card">
     <header>
       <div>
         <span class="eyebrow">Launch guardrails</span>
@@ -151,7 +151,7 @@
   </aside>
 </div>
 
-<section class="card campaign-activity" *ngIf="selectedCampaign">
+<section class="card" *ngIf="selectedCampaign">
   <header>
     <div>
       <span class="eyebrow">Execution history</span>
@@ -197,7 +197,7 @@
   </ng-template>
 </section>
 
-<section class="card table approval-panel" #approvalQueue>
+<section class="card table" #approvalQueue>
   <header>
     <div>
       <span class="eyebrow">Human review</span>
@@ -422,7 +422,7 @@
       </p>
     </section>
 
-    <p class="error" *ngIf="error">{{ error }}</p>
+    <p class="alert-error" *ngIf="error">{{ error }}</p>
 
     <footer>
       <button type="button" (click)="show = false">Cancel</button>
