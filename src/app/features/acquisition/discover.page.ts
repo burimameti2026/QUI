@@ -29,9 +29,10 @@ import { AcquisitionService } from "./acquisition.service";
         <span><b>{{ overview.hot || 0 }}</b> high priority</span>
       </div>
     </div>
-    <div class="card">
+    <div class="card discovery-progress">
       <span class="eyebrow">Current workflow progress</span>
       <div class="discovery-timeline" role="list" aria-label="Current workflow progress">
+        <div class="discovery-timeline-track" aria-hidden="true"></div>
         <div class="discovery-timeline-step" *ngFor="let step of [
           { number: '01', title: 'Define ICP', description: 'Target market' },
           { number: '02', title: 'Verify data', description: 'Trusted source' },
