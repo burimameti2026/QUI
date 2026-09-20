@@ -8,38 +8,18 @@
 </qai-page-header>
 
 <section class="hero">
-  <div>
-    <span>OUTREACH PIPELINE</span>
+  <div class="stack">
+    <span class="eyebrow">OUTREACH PIPELINE</span>
     <h2>{{ rows.length }} campaigns · {{ running }} running</h2>
     <p>Every recipient passes sender verification, suppression and human approval.</p>
   </div>
 
-  <ol aria-label="Outreach pipeline">
-    <li class="done">
-      <button class="button-quiet" type="button" (click)="openPipelineStep(1)">
-        <b>01</b>
-        Audience
-      </button>
-    </li>
-    <li>
-      <button class="button-quiet" type="button" (click)="openPipelineStep(3)">
-        <b>02</b>
-        Message
-      </button>
-    </li>
-    <li>
-      <button class="button-quiet" type="button" (click)="showApprovalQueue()">
-        <b>03</b>
-        Approval
-      </button>
-    </li>
-    <li>
-      <button class="button-quiet" type="button" (click)="openDemos()">
-        <b>04</b>
-        Demo
-      </button>
-    </li>
-  </ol>
+  <div class="steps" aria-label="Outreach pipeline">
+    <button class="button-quiet" type="button" (click)="openPipelineStep(1)"><b>01</b> Audience</button>
+    <button class="button-quiet" type="button" (click)="openPipelineStep(3)"><b>02</b> Message</button>
+    <button class="button-quiet" type="button" (click)="showApprovalQueue()"><b>03</b> Approval</button>
+    <button class="button-quiet" type="button" (click)="openDemos()"><b>04</b> Demo</button>
+  </div>
 </section>
 
 <p class="notice success" *ngIf="message">{{ message }}</p>
@@ -58,22 +38,14 @@
     </header>
 
     <div class="list">
-      <article class="list-item"
-        *ngFor="let campaign of rows"
-        [class.is-running]="campaign.status === 2"
-      >
+      <article class="list-item" *ngFor="let campaign of rows" [class.is-running]="campaign.status === 2">
         <div class="icon">↗</div>
 
         <div class="stack">
-          <header class="card-header">
+          <div class="identity">
             <strong>{{ campaign.name }}</strong>
-            <span
-              class="status"
-              [ngClass]="'status-' + status(campaign.status).toLowerCase()"
-            >
-              {{ status(campaign.status) }}
-            </span>
-          </header>
+            <span class="status" [ngClass]="'status-' + status(campaign.status).toLowerCase()">{{ status(campaign.status) }}</span>
+          </div>
 
           <div class="meta">
             <span>
@@ -82,9 +54,7 @@
             </span>
             <span>
               <small>Started</small>
-              <b>
-                {{ campaign.startsAtUtc ? (campaign.startsAtUtc | date: 'short') : 'Not started' }}
-              </b>
+              <b>{{ campaign.startsAtUtc ? (campaign.startsAtUtc | date: 'short') : 'Not started' }}</b>
             </span>
             <span>
               <small>Recipients</small>
@@ -99,27 +69,19 @@
           </div>
         </div>
 
-        <button class="button-secondary" (click)="inspect(campaign)">
-          Activity
-        </button>
-
+        <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
         <button
           class="button-primary"
           *ngIf="campaign.status === 0 || campaign.status === 3"
           (click)="start(campaign)"
-        >
-          Start campaign
-        </button>
-
+        >Start campaign</button>
         <span class="status success" *ngIf="campaign.status === 2">● Live</span>
       </article>
     </div>
 
     <div class="empty" *ngIf="!rows.length">
       <h3>No campaign yet</h3>
-      <p>
-        Import companies into a target list, then build the controlled outreach sequence.
-      </p>
+      <p>Import companies into a target list, then build the controlled outreach sequence.</p>
       <button class="button-primary" (click)="openBuilder()">Build campaign</button>
     </div>
   </section>
@@ -132,22 +94,16 @@
       </div>
     </header>
 
-    <ul>
-      <li *ngFor="let guardrail of guardrails">
-        <button
-          class="list-item"
-          type="button"
-          (click)="openGuardrail(guardrail)"
-        >
-          <b>{{ guardrail.number }}</b>
-          <span>
-            <strong>{{ guardrail.title }}</strong>
-            <small>{{ guardrail.summary }}</small>
-          </span>
-          <i>›</i>
-        </button>
-      </li>
-    </ul>
+    <div class="list">
+      <button class="list-item" type="button" *ngFor="let guardrail of guardrails" (click)="openGuardrail(guardrail)">
+        <b>{{ guardrail.number }}</b>
+        <span class="stack">
+          <strong>{{ guardrail.title }}</strong>
+          <small>{{ guardrail.summary }}</small>
+        </span>
+        <i>›</i>
+      </button>
+    </div>
   </aside>
 </div>
 
@@ -161,22 +117,10 @@
   </header>
 
   <div class="metric-grid compact">
-    <article class="metric">
-      <span>Recipients</span>
-      <strong>{{ selectedCampaign.recipients || 0 }}</strong>
-    </article>
-    <article class="metric">
-      <span>Queued</span>
-      <strong>{{ selectedCampaign.queued || 0 }}</strong>
-    </article>
-    <article class="metric">
-      <span>Sent</span>
-      <strong>{{ selectedCampaign.sent || 0 }}</strong>
-    </article>
-    <article class="metric">
-      <span>Replies</span>
-      <strong>{{ selectedCampaign.replied || 0 }}</strong>
-    </article>
+    <article class="metric"><span>Recipients</span><strong>{{ selectedCampaign.recipients || 0 }}</strong></article>
+    <article class="metric"><span>Queued</span><strong>{{ selectedCampaign.queued || 0 }}</strong></article>
+    <article class="metric"><span>Sent</span><strong>{{ selectedCampaign.sent || 0 }}</strong></article>
+    <article class="metric"><span>Replies</span><strong>{{ selectedCampaign.replied || 0 }}</strong></article>
   </div>
 
   <div class="list" *ngIf="activity.length; else noActivity">
@@ -191,13 +135,11 @@
   </div>
 
   <ng-template #noActivity>
-    <p class="empty">
-      No execution events yet. Start the campaign to queue its first approval-controlled message.
-    </p>
+    <p class="empty">No execution events yet. Start the campaign to queue its first approval-controlled message.</p>
   </ng-template>
 </section>
 
-<section class="card table" #approvalQueue>
+<section class="card" #approvalQueue>
   <header class="card-header">
     <div>
       <span class="eyebrow">Human review</span>
@@ -219,56 +161,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let item of messages"
-          [class.awaiting]="item.status === 0"
-        >
-          <td>
-            <b>{{ item.prospect }}</b>
-            <small>{{ item.contactName }}</small>
-          </td>
+        <tr *ngFor="let item of messages" [class.awaiting]="item.status === 0">
+          <td><b>{{ item.prospect }}</b><small>{{ item.contactName }}</small></td>
           <td>{{ item.email }}</td>
           <td>{{ item.subject }}</td>
+          <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
           <td>
-            <span
-              class="status"
-              [ngClass]="'status-' + messageStatus(item.status).toLowerCase()"
-            >
-              {{ messageStatus(item.status) }}
-            </span>
-          </td>
-          <td>
-            <button
-              class="button-secondary"
-              *ngIf="item.status === 0 && !item.approvalRequested"
-              (click)="requestApproval(item)"
-            >
-              Request approval
-            </button>
-            <button
-              class="button-primary"
-              *ngIf="item.status === 0 && item.approvalRequested"
-              (click)="approveAndSend(item)"
-            >
-              Approve & send
-            </button>
-            <button
-              class="button-danger"
-              *ngIf="item.status === 4"
-              (click)="retryMessage(item)"
-            >
-              Retry failed send
-            </button>
+            <div class="actions">
+              <button class="button-secondary" *ngIf="item.status === 0 && !item.approvalRequested" (click)="requestApproval(item)">Request approval</button>
+              <button class="button-primary" *ngIf="item.status === 0 && item.approvalRequested" (click)="approveAndSend(item)">Approve &amp; send</button>
+              <button class="button-danger" *ngIf="item.status === 4" (click)="retryMessage(item)">Retry failed send</button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="empty" *ngIf="!messages.length">
-    <b>✓</b>
-    <span>No messages await review.</span>
-  </div>
+  <div class="empty" *ngIf="!messages.length"><b>✓</b><span>No messages await review.</span></div>
 </section>
 
 <qai-modal
@@ -279,22 +189,17 @@
   <section class="card-body" *ngIf="selectedGuardrail">
     <div class="icon">{{ selectedGuardrail.number }}</div>
     <div>
-      <span>SAFE LAUNCH CONTROL</span>
+      <span class="eyebrow">SAFE LAUNCH CONTROL</span>
       <h3>{{ selectedGuardrail.title }}</h3>
       <p>{{ selectedGuardrail.detail }}</p>
     </div>
   </section>
 
-  <div class="notice">
-    <b>✓ Enforced before launch</b>
-    <span>{{ selectedGuardrail?.result }}</span>
-  </div>
+  <div class="notice"><b>✓ Enforced before launch</b><span>{{ selectedGuardrail?.result }}</span></div>
 
   <footer class="actions">
     <button type="button" (click)="guardrailOpen = false">Close</button>
-    <button type="button" class="button-primary" (click)="openGuardrailAction()">
-      {{ selectedGuardrail?.action }}
-    </button>
+    <button type="button" class="button-primary" (click)="openGuardrailAction()">{{ selectedGuardrail?.action }}</button>
   </footer>
 </qai-modal>
 
@@ -329,9 +234,7 @@
         Target list
         <select [(ngModel)]="form.targetListId" name="list" required>
           <option value="">Select target list</option>
-          <option *ngFor="let list of lists" [value]="list.id">
-            {{ list.name }}
-          </option>
+          <option *ngFor="let list of lists" [value]="list.id">{{ list.name }}</option>
         </select>
       </label>
     </section>
@@ -347,51 +250,31 @@
         </label>
         <label>
           Sender email
-          <input
-            type="email"
-            [(ngModel)]="form.senderEmail"
-            name="email"
-            required
-          />
+          <input type="email" [(ngModel)]="form.senderEmail" name="email" required />
         </label>
       </div>
     </section>
 
     <section *ngIf="builderStep === 3">
       <h3>What happens?</h3>
-      <p>
-        Messages stop after a reply. Variables: company, contact, industry and country.
-      </p>
+      <p>Messages stop after a reply. Variables: company, contact, industry and country.</p>
 
       <article class="card" *ngFor="let step of form.steps; let i = index">
-        <b>Step {{ i + 1 }}</b>
-
-        <label>
-          Wait hours
-          <input
-            type="number"
-            min="0"
-            [(ngModel)]="step.delayHours"
-            [name]="'delay' + i"
-          />
-        </label>
-
-        <label>
-          Subject
-          <input
-            [(ngModel)]="step.subjectTemplate"
-            [name]="'subject' + i"
-          />
-        </label>
-
-        <label>
-          Message
-          <textarea
-            rows="4"
-            [(ngModel)]="step.bodyTemplate"
-            [name]="'body' + i"
-          ></textarea>
-        </label>
+        <div class="card-body">
+          <strong>Step {{ i + 1 }}</strong>
+          <label>
+            Wait hours
+            <input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" />
+          </label>
+          <label>
+            Subject
+            <input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" />
+          </label>
+          <label>
+            Message
+            <textarea rows="4" [(ngModel)]="step.bodyTemplate" [name]="'body' + i"></textarea>
+          </label>
+        </div>
       </article>
     </section>
 
@@ -399,54 +282,22 @@
       <h3>Ready to create draft</h3>
 
       <dl>
-        <div>
-          <dt>Campaign</dt>
-          <dd>{{ form.name }}</dd>
-        </div>
-        <div>
-          <dt>Audience</dt>
-          <dd>{{ selectedList?.name }}</dd>
-        </div>
-        <div>
-          <dt>Sender</dt>
-          <dd>{{ form.senderName }} · {{ form.senderEmail }}</dd>
-        </div>
-        <div>
-          <dt>Sequence</dt>
-          <dd>{{ form.steps.length }} approval-controlled emails</dd>
-        </div>
+        <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
+        <div><dt>Audience</dt><dd>{{ selectedList?.name }}</dd></div>
+        <div><dt>Sender</dt><dd>{{ form.senderName }} · {{ form.senderEmail }}</dd></div>
+        <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
       </dl>
 
-      <p>
-        Creating does not send email. Start queues recipients; each real message still requires approval.
-      </p>
+      <p>Creating does not send email. Start queues recipients; each real message still requires approval.</p>
     </section>
 
     <p class="alert" *ngIf="error">{{ error }}</p>
 
-    <footer>
+    <footer class="actions">
       <button type="button" (click)="show = false">Cancel</button>
-      <span></span>
-      <button type="button" *ngIf="builderStep > 1" (click)="back()">
-        Back
-      </button>
-      <button
-        class="button-primary"
-        type="button"
-        *ngIf="builderStep < 4"
-        [disabled]="!canContinue"
-        (click)="next()"
-      >
-        Continue
-      </button>
-      <button
-        class="button-primary"
-        type="submit"
-        *ngIf="builderStep === 4"
-        [disabled]="busy"
-      >
-        {{ busy ? 'Creating…' : 'Create draft' }}
-      </button>
+      <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
+      <button class="button-primary" type="button" *ngIf="builderStep < 4" [disabled]="!canContinue" (click)="next()">Continue</button>
+      <button class="button-primary" type="submit" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Creating…' : 'Create draft' }}</button>
     </footer>
   </form>
 </qai-modal>
