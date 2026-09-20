@@ -16,18 +16,18 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
         <div actions class="page-actions"><a class="button-secondary" routerLink="/platform">Back to Platform</a></div>
       </qai-page-header>
 
-      <nav class="steps" aria-label="Workspace setup progress">
+      <nav class="steps workspace-steps" aria-label="Workspace setup progress">
         <span [class.active]="step===1" [class.done]="step>1"><b>01</b> Area</span>
         <span [class.active]="step===2" [class.done]="step>2"><b>02</b> Target</span>
         <span [class.active]="step===3"><b>03</b> Automation</span>
       </nav>
 
-      <section *ngIf="step===1" class="card">
+      <section *ngIf="step===1" class="card setup-card">
         <header class="card-header"><div><span class="eyebrow">WORKSPACE PURPOSE</span><h2>What should this workspace do?</h2></div><span class="status">Step 1 of 3</span></header>
         <div class="card-body">
           <p class="meta">Select the operating area. This determines which acquisition automation is provisioned for this tenant.</p>
-          <div class="content-grid">
-            <button type="button" class="card" *ngFor="let item of options?.useCases" [class.selected]="useCase===item.id" (click)="selectArea(item.id)">
+          <div class="content-grid setup-choice-grid">
+            <button type="button" class="setup-choice" *ngFor="let item of options?.useCases" [class.selected]="useCase===item.id" (click)="selectArea(item.id)">
               <div class="identity"><span class="avatar">→</span><span class="stack"><strong>{{item.name}}</strong><small>{{item.description}}</small></span></div>
               <div class="actions"><span class="button-quiet">Select operating area →</span></div>
             </button>
@@ -35,10 +35,10 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
         </div>
       </section>
 
-      <section *ngIf="step===2" class="card">
+      <section *ngIf="step===2" class="card setup-card">
         <header class="card-header"><div><span class="eyebrow">TARGET MARKET</span><h2>Define the target market</h2><p class="meta">Business context for this tenant's prospecting, enrichment, qualification and campaign routing.</p></div><button type="button" class="button-secondary" (click)="step=1">← Back</button></header>
         <div class="card-body">
-          <div class="form content-grid">
+          <div class="form content-grid target-form">
             <label>Template<select [(ngModel)]="templateKey"><option value="">Select template</option><option *ngFor="let t of templates" [value]="t.id">{{t.name}}</option></select></label>
             <label>Industry<input [(ngModel)]="industry" placeholder="Logistics, SaaS, Manufacturing..."/></label>
             <label>Region<input [(ngModel)]="region" placeholder="DACH, Europe, North America..."/></label>
@@ -47,25 +47,25 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
             <label>Daily discovery limit<input type="number" [(ngModel)]="dailyDiscoveryLimit" min="1" max="100"/></label>
             <label>Minimum qualification score<input type="number" [(ngModel)]="minimumScore" min="1" max="100"/></label>
           </div>
-          <section class="section">
+          <section class="section automation-plan">
             <header class="section-header"><div><span class="eyebrow">AUTONOMOUS LOOP</span><h3>Automation plan</h3></div></header>
             <p class="meta">Once started, the background worker continues the tenant's scheduled acquisition runs.</p>
-            <div class="steps"><span><b>01</b> Configure Agent</span><span><b>02</b> Discover</span><span><b>03</b> Enrich</span><span><b>04</b> Qualify</span><span><b>05</b> Route to Campaign</span></div>
+            <div class="steps automation-steps"><span><b>01</b> Configure Agent</span><span><b>02</b> Discover</span><span><b>03</b> Enrich</span><span><b>04</b> Qualify</span><span><b>05</b> Route to Campaign</span></div>
           </section>
         </div>
         <footer class="card-footer actions"><button type="button" class="button-primary" [disabled]="!ready||saving" (click)="start()">{{saving?'Preparing automation…':'Prepare & Start Automation'}}</button></footer>
       </section>
 
-      <section *ngIf="step===3" class="card">
+      <section *ngIf="step===3" class="card setup-card">
         <header class="card-header"><div><span class="eyebrow">AUTOMATION CONTROL</span><h2>Automation started</h2><p class="meta">The workspace is prepared for this tenant. The initial acquisition run is queued and the daily scheduler will continue automatically.</p></div><span class="status">{{result?.status || 'activation-queued'}}</span></header>
         <div class="card-body">
-          <div class="metric-grid">
+          <div class="metric-grid result-metrics">
             <article class="metric"><span>Agent</span><strong>{{result?.agentName || '-'}}</strong><small>{{result?.agentStatus || '-'}}</small></article>
             <article class="metric"><span>Initial run</span><strong>{{result?.initialRunId || 'Already queued / not returned'}}</strong><small>Queued for autonomous discovery</small></article>
             <article class="metric"><span>Target list</span><strong>{{result?.targetListId || 'Provisioned / pending'}}</strong><small>Qualified prospects route here</small></article>
             <article class="metric"><span>Campaign</span><strong>{{result?.campaignId || 'Provisioned / pending'}}</strong><small>Delivery remains approval-controlled</small></article>
           </div>
-          <section class="section"><header class="section-header"><div><span class="eyebrow">PROVISIONING</span><h3>Workspace automation lifecycle</h3></div></header>
+          <section class="section lifecycle"><header class="section-header"><div><span class="eyebrow">PROVISIONING</span><h3>Workspace automation lifecycle</h3></div></header>
             <div class="list">
               <div class="list-item"><span class="status-dot done"></span><span class="stack"><strong>Workspace configured</strong><small>Selected template and target market applied to this tenant only.</small></span></div>
               <div class="list-item"><span class="status-dot done"></span><span class="stack"><strong>Autonomous agent active</strong><small>{{result?.agentName}} · {{result?.agentStatus}}</small></span></div>
