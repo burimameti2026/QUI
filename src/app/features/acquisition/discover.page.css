@@ -195,7 +195,7 @@
   color: #fff !important;
   font-size: 13px !important;
   font-weight: 650 !important;
-  box-shadow: inset -2px 2px 0 1px #edf0f4 !important
+  box-shadow: inset 0px 0px 0 0px #edf0f4 !important
 }
 
 .header-action:hover:not(:disabled) {
@@ -754,12 +754,14 @@
 }
 
 qai-page-header {
+   background: #fff !important;
+
   display: block !important;
-  margin: 0 !important
+  margin: 2px !important
 }
 
 qai-page-header .page-header {
-  background: var(--wl-header-bg) !important;
+  background: #fff !important;
   border-bottom: 1px solid var(--wl-header-border) !important
 }
 

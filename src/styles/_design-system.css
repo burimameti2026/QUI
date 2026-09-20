@@ -6766,9 +6766,9 @@ qai-page-header .header-actions > button,
 qai-page-header .header-actions > a {
   box-sizing: border-box !important;
   width: auto !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
   padding: 0 13px !important;
   margin: 0 !important;
   border-width: 0 !important;
