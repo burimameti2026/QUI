@@ -14,12 +14,13 @@
     <p>Every recipient passes sender verification, suppression and human approval.</p>
   </div>
 
-  <div class="steps" aria-label="Outreach pipeline">
-    <div><b>01</b><span>Audience</span></div>
-    <div><b>02</b><span>Message</span></div>
-    <div><b>03</b><span>Approval</span></div>
-    <div><b>04</b><span>Demo</span></div>
-  </div>
+</section>
+
+<section class="campaign-timeline" aria-label="Outreach pipeline">
+  <div class="campaign-timeline-step is-current"><b>01</b><span><strong>Audience</strong><small>Target accounts</small></span></div>
+  <div class="campaign-timeline-step"><b>02</b><span><strong>Message</strong><small>Prepare sequence</small></span></div>
+  <div class="campaign-timeline-step"><b>03</b><span><strong>Approval</strong><small>Human review</small></span></div>
+  <div class="campaign-timeline-step"><b>04</b><span><strong>Demo</strong><small>Qualified handoff</small></span></div>
 </section>
 
 <p class="notice success" *ngIf="message">{{ message }}</p>
@@ -88,24 +89,32 @@
     </div>
   </section>
 
-  <aside class="card">
+  <aside class="card guardrail-card">
     <header class="card-header">
       <div>
         <span class="eyebrow">Launch guardrails</span>
         <h3>Safe by design</h3>
+        <p>Every launch is checked before a real message can leave the workspace.</p>
       </div>
+      <span class="status">Protected</span>
     </header>
 
-    <div class="list">
-      <button class="list-item" type="button" *ngFor="let guardrail of guardrails" (click)="openGuardrail(guardrail)">
-        <b>{{ guardrail.number }}</b>
-        <span class="stack">
+    <div class="guardrail-list">
+      <button class="guardrail-item" type="button" *ngFor="let guardrail of guardrails" (click)="openGuardrail(guardrail)">
+        <span class="guardrail-number">{{ guardrail.number }}</span>
+        <span class="guardrail-copy">
           <strong>{{ guardrail.title }}</strong>
           <small>{{ guardrail.summary }}</small>
         </span>
-        <i>›</i>
+        <span class="guardrail-state">Enforced</span>
+        <i aria-hidden="true">›</i>
       </button>
     </div>
+
+    <footer class="guardrail-footer">
+      <span><i></i> Approval gate</span>
+      <strong>Required before delivery</strong>
+    </footer>
   </aside>
 </div>
 
