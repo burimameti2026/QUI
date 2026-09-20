@@ -17,10 +17,11 @@
 </section>
 
 <section class="campaign-timeline" aria-label="Outreach pipeline">
-  <div class="campaign-timeline-step is-current"><b>01</b><span><strong>Audience</strong><small>Target accounts</small></span></div>
-  <div class="campaign-timeline-step"><b>02</b><span><strong>Message</strong><small>Prepare sequence</small></span></div>
-  <div class="campaign-timeline-step"><b>03</b><span><strong>Approval</strong><small>Human review</small></span></div>
-  <div class="campaign-timeline-step"><b>04</b><span><strong>Demo</strong><small>Qualified handoff</small></span></div>
+  <div class="campaign-timeline-track" aria-hidden="true"></div>
+  <div class="campaign-timeline-step is-current"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Audience</strong><small>Target accounts</small></span></div>
+  <div class="campaign-timeline-step"><span class="campaign-timeline-node">02</span><span class="campaign-timeline-copy"><strong>Message</strong><small>Prepare sequence</small></span></div>
+  <div class="campaign-timeline-step"><span class="campaign-timeline-node">03</span><span class="campaign-timeline-copy"><strong>Approval</strong><small>Human review</small></span></div>
+  <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Demo</strong><small>Qualified handoff</small></span></div>
 </section>
 
 <p class="notice success" *ngIf="message">{{ message }}</p>
