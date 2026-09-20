@@ -1,10 +1,10 @@
-<div class="campaign-page">
+<div class="page">
 <qai-page-header
   title="Campaign Command Center"
   subtitle="Turn a qualified audience into controlled conversations and booked demos."
 >
-  <button class="refresh-action" (click)="load()">↻ Refresh data</button>
-  <button class="primary" (click)="openBuilder()">+ Build campaign</button>
+  <button class="button-quiet" (click)="load()">↻ Refresh data</button>
+  <button class="button-primary" (click)="openBuilder()">+ Build campaign</button>
 </qai-page-header>
 
 <section class="hero">
@@ -46,7 +46,7 @@
 <p class="notice error" *ngIf="error">{{ error }}</p>
 <p class="notice" *ngIf="loading">Loading campaign pipeline…</p>
 
-<div class="layout">
+<div class="content-grid">
   <section class="campaigns">
     <header>
       <div>
@@ -57,25 +57,25 @@
       <span class="campaign-count">{{ rows.length }} total</span>
     </header>
 
-    <div class="campaign-list">
+    <div class="list">
       <article
         *ngFor="let campaign of rows"
         [class.is-running]="campaign.status === 2"
       >
-        <div class="campaign-icon">↗</div>
+        <div class="icon">↗</div>
 
-        <div class="campaign-main">
+        <div class="stack">
           <header>
             <strong>{{ campaign.name }}</strong>
             <span
-              class="pill"
+              class="status"
               [ngClass]="'status-' + status(campaign.status).toLowerCase()"
             >
               {{ status(campaign.status) }}
             </span>
           </header>
 
-          <div class="campaign-data">
+          <div class="meta">
             <span>
               <small>Goal</small>
               <b>{{ campaign.goal || 'Book demo' }}</b>
@@ -99,12 +99,12 @@
           </div>
         </div>
 
-        <button class="activity-action" (click)="inspect(campaign)">
+        <button class="button-secondary" (click)="inspect(campaign)">
           Activity
         </button>
 
         <button
-          class="primary campaign-action"
+          class="button-primary campaign-action"
           *ngIf="campaign.status === 0 || campaign.status === 3"
           (click)="start(campaign)"
         >
@@ -120,7 +120,7 @@
       <p>
         Import companies into a target list, then build the controlled outreach sequence.
       </p>
-      <button class="primary" (click)="openBuilder()">Build campaign</button>
+      <button class="button-primary" (click)="openBuilder()">Build campaign</button>
     </div>
   </section>
 
@@ -151,7 +151,7 @@
   </aside>
 </div>
 
-<section class="panel campaign-activity" *ngIf="selectedCampaign">
+<section class="card campaign-activity" *ngIf="selectedCampaign">
   <header>
     <div>
       <span class="eyebrow">Execution history</span>
@@ -160,7 +160,7 @@
     <button (click)="selectedCampaign = null">Close</button>
   </header>
 
-  <div class="metrics compact">
+  <div class="metric-grid compact">
     <article>
       <span>Recipients</span>
       <strong>{{ selectedCampaign.recipients || 0 }}</strong>
@@ -179,9 +179,9 @@
     </article>
   </div>
 
-  <div class="activity-list" *ngIf="activity.length; else noActivity">
+  <div class="list" *ngIf="activity.length; else noActivity">
     <article *ngFor="let item of activity">
-      <span class="pill">{{ item.status }}</span>
+      <span class="status">{{ item.status }}</span>
       <div>
         <b>{{ item.title }}</b>
         <small>{{ item.type }} · {{ item.atUtc | date: 'medium' }}</small>
@@ -197,7 +197,7 @@
   </ng-template>
 </section>
 
-<section class="panel table-wrap approval-panel" #approvalQueue>
+<section class="card table approval-panel" #approvalQueue>
   <header>
     <div>
       <span class="eyebrow">Human review</span>
@@ -207,7 +207,7 @@
     <strong>{{ pendingMessages }} pending</strong>
   </header>
 
-  <div class="approval-table-shell" *ngIf="messages.length">
+  <div class="table" *ngIf="messages.length">
     <table>
       <thead>
         <tr>
@@ -231,7 +231,7 @@
           <td>{{ item.subject }}</td>
           <td>
             <span
-              class="pill"
+              class="status"
               [ngClass]="'status-' + messageStatus(item.status).toLowerCase()"
             >
               {{ messageStatus(item.status) }}
@@ -239,21 +239,21 @@
           </td>
           <td>
             <button
-              class="queue-action"
+              class="button-secondary"
               *ngIf="item.status === 0 && !item.approvalRequested"
               (click)="requestApproval(item)"
             >
               Request approval
             </button>
             <button
-              class="primary"
+              class="button-primary"
               *ngIf="item.status === 0 && item.approvalRequested"
               (click)="approveAndSend(item)"
             >
               Approve & send
             </button>
             <button
-              class="danger"
+              class="button-danger"
               *ngIf="item.status === 4"
               (click)="retryMessage(item)"
             >
@@ -292,7 +292,7 @@
 
   <footer class="guardrail-footer">
     <button type="button" (click)="guardrailOpen = false">Close</button>
-    <button type="button" class="primary" (click)="openGuardrailAction()">
+    <button type="button" class="button-primary" (click)="openGuardrailAction()">
       {{ selectedGuardrail?.action }}
     </button>
   </footer>
@@ -431,7 +431,7 @@
         Back
       </button>
       <button
-        class="primary"
+        class="button-primary"
         type="button"
         *ngIf="builderStep < 4"
         [disabled]="!canContinue"
@@ -440,7 +440,7 @@
         Continue
       </button>
       <button
-        class="primary"
+        class="button-primary"
         type="submit"
         *ngIf="builderStep === 4"
         [disabled]="busy"
