@@ -7613,3 +7613,153 @@ qai-page-header .page-actions {
 /* ============================================================
    END CANONICAL APPLICATION DESIGN SYSTEM
    ============================================================ */
+
+/* ============================================================
+   REFINED GLOBAL NAVIGATION
+   ============================================================ */
+/* Navigation typography and interaction are global so every page gets the same shell behavior. */
+.sidebar {
+  background: #ffffff !important;
+  color: #171717 !important;
+}
+
+.reference-menu {
+  color: #171717 !important;
+}
+
+.group-heading {
+  margin: 0 10px 7px !important;
+  color: #737373 !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  font-weight: 750 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+}
+
+.group-items {
+  gap: 3px !important;
+}
+
+.reference-group .menu-item,
+.reference-group .child-item {
+  box-sizing: border-box !important;
+  color: #333333 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease !important;
+}
+
+.reference-group .menu-item {
+  min-height: 42px !important;
+  padding: 0 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+}
+
+.reference-group .menu-item .nav-icon {
+  color: #5f6368 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+.reference-group .menu-item .nav-label {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  font-weight: 650 !important;
+}
+
+.reference-group .menu-item .nav-chevron {
+  color: #777777 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+/* Hover = unmistakable black navigation state. */
+.reference-group .menu-item:hover,
+.reference-group .child-item:hover {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.reference-group .menu-item:hover .nav-icon,
+.reference-group .menu-item:hover .nav-chevron {
+  color: #ffffff !important;
+}
+
+/* Active = stronger than hover at rest: orange, white, bold and clearly bounded. */
+.reference-group .menu-item.active,
+.reference-group .child-item.active {
+  background: var(--wl-accent, #f5500bdb) !important;
+  border-color: var(--wl-accent, #f5500bdb) !important;
+  color: #ffffff !important;
+  font-weight: 750 !important;
+  box-shadow: inset 3px 0 0 #000000, 0 2px 6px rgba(0,0,0,.10) !important;
+}
+
+.reference-group .menu-item.active .nav-icon,
+.reference-group .menu-item.active .nav-chevron,
+.reference-group .child-item.active .child-dot {
+  color: #ffffff !important;
+}
+
+.reference-group .menu-item.active .nav-label,
+.reference-group .child-item.active {
+  font-weight: 750 !important;
+}
+
+/* A hovered active item still follows the requested black/white hover contract. */
+.reference-group .menu-item.active:hover,
+.reference-group .child-item.active:hover {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: inset 3px 0 0 var(--wl-accent, #f5500bdb) !important;
+}
+
+.child-items {
+  margin-left: 20px !important;
+  padding-left: 13px !important;
+  border-left: 1px solid #e2e2e2 !important;
+}
+
+.reference-group .child-item {
+  min-height: 36px !important;
+  padding: 0 10px !important;
+  border-radius: 7px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+.reference-group .child-dot {
+  width: 5px !important;
+  height: 5px !important;
+  flex: 0 0 5px !important;
+  border-radius: 50% !important;
+  background: #a3a3a3 !important;
+}
+
+.reference-group .child-item:hover .child-dot,
+.reference-group .child-item.active .child-dot {
+  background: #ffffff !important;
+}
+
+.shell.collapsed .reference-group .menu-item {
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.shell.collapsed .reference-group .menu-item.active {
+  box-shadow: inset 3px 0 0 #000000, 0 2px 6px rgba(0,0,0,.10) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-group .menu-item,
+  .reference-group .child-item {
+    transition: none !important;
+  }
+}
