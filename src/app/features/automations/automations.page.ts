@@ -34,11 +34,11 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
 
     <p class="notice success" *ngIf="publishedMessage">{{ publishedMessage }}</p>
 
-    <section class="metric-grid">
-      <article class="metric"><span class="icon">⚡</span><div><small>Total automations</small><strong>{{ rows.length }}</strong><em>Configured business rules</em></div></article>
-      <article class="metric"><span class="icon">✓</span><div><small>Active</small><strong>{{ activeCount }}</strong><em>Rules currently enabled</em></div></article>
-      <article class="metric"><span class="icon">!</span><div><small>Failed runs</small><strong>{{ failedCount }}</strong><em>Needs attention</em></div></article>
-      <article class="metric"><span class="icon">◷</span><div><small>Last run</small><strong>{{ lastRun === 'Never' ? '—' : 'Live' }}</strong><em>{{ lastRun }}</em></div></article>
+    <section class="metric-grid automation-kpis">
+      <article class="metric"><div class="metric-top"><span class="metric-icon">⚡</span><span class="metric-label">Total automations</span></div><strong>{{ rows.length }}</strong><small>Configured business rules</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Active</span></div><strong>{{ activeCount }}</strong><small>Rules currently enabled</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-icon">!</span><span class="metric-label">Failed runs</span></div><strong>{{ failedCount }}</strong><small>Needs attention</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Last run</span></div><strong>{{ lastRun === 'Never' ? '—' : 'Live' }}</strong><small>{{ lastRun }}</small></article>
     </section>
 
     <section class="card">
