@@ -6759,6 +6759,17 @@ main.app-main>router-outlet+* :where(
   box-shadow: inset -2px 2px 0 1px #edf0f4 !important;
 }
 
+/* Final shell gutter alignment: the global header uses the same outer gutter as routed page content. */
+.app-header {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.page {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 /* Final page-header control alignment: every header action shares one exact geometry. */
 qai-page-header .page-actions > button,
 qai-page-header .page-actions > a,
