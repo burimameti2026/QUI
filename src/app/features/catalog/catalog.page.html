@@ -1,4 +1,4 @@
-<section class="catalog-shell">
+<section class="page">
   <header class="catalog-hero">
     <div>
       <span class="eyebrow"> PRODUCT HUB</span>
@@ -6,12 +6,12 @@
       <p>Manage product information, markets, languages and publication from one workspace.</p>
     </div>
     <div class="hero-actions">
-      <button class="secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
-      <a class="primary" routerLink="/catalog/new">+ Add Product</a>
+      <button class="button-secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
+      <a class="button-primary" routerLink="/catalog/new">+ Add Product</a>
     </div>
   </header>
 
-  <div class="metrics">
+  <div class="metric-grid">
     <article><span class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Total products</span></span><strong>{{ products.length }}</strong><small>catalog records</small></article>
     <article><span class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Published</span></span><strong>{{ publishedCount }}</strong><small>publications live</small></article>
     <article><span class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Draft / review</span></span><strong>{{ draftCount }}</strong><small>awaiting publication</small></article>
