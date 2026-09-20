@@ -64,7 +64,7 @@
       <h3>Message queue</h3>
       <p>Inspect recipient, campaign context and the exact message before approval.</p>
     </div>
-    <div class="queue-summary">
+    <div class="meta">
       <span><b>{{ visibleMessages.length }}</b> shown</span>
       <span><b>{{ pending }}</b> pending</span>
     </div>
@@ -83,9 +83,9 @@
     </div>
   </div>
 
-  <div class="queue-list" *ngIf="!loading; else loadingTpl">
+  <div class="list" *ngIf="!loading; else loadingTpl">
     <article class="card" *ngFor="let message of visibleMessages">
-      <header class="message-top">
+      <header class="card-header">
         <div class="identity">
           <span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span>
           <div>
@@ -100,18 +100,18 @@
 
       <div class="meta">
         <span class="status">{{ message.campaign || 'Campaign' }}</span>
-        <span class="meta-item"><b>Subject</b>{{ message.subject || 'No subject' }}</span>
-        <span class="meta-item"><b>Created</b>{{ message.createdAtUtc | date:'medium' }}</span>
+        <span class="stack"><b>Subject</b>{{ message.subject || 'No subject' }}</span>
+        <span class="stack"><b>Created</b>{{ message.createdAtUtc | date:'medium' }}</span>
       </div>
 
       <section class="card-body">
-        <span class="body-label">MESSAGE PREVIEW</span>
+        <span class="eyebrow">MESSAGE PREVIEW</span>
         <p>{{ message.body || 'No message body available.' }}</p>
       </section>
 
       <footer class="actions">
-        <div class="guardrail">
-          <span class="guardrail-dot"></span>
+        <div class="notice">
+          <span class="status-dot"></span>
           <span>Sender, suppression, provider and tenant safety checks remain enforced by the backend.</span>
         </div>
         <div class="actions">
@@ -130,5 +130,5 @@
 </section>
 
 <ng-template #loadingTpl>
-  <div class="empty loading"><div class="spinner"></div><strong>Loading approval queue…</strong><span>Retrieving the latest acquisition messages.</span></div>
+  <div class="empty"><div class="status-dot"></div><strong>Loading approval queue…</strong><span>Retrieving the latest acquisition messages.</span></div>
 </ng-template>
