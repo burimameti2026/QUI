@@ -10,46 +10,48 @@ import { CrmService } from './crm.service';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./companies.page.css'],
   template: `
-    <qai-page-header title="Companies" subtitle="Account intelligence, firmographics and commercial activity.">
-      <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
-      <button class="button-primary" (click)="open()">+ Add company</button>
-    </qai-page-header>
-    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Companies could not be loaded</b><p>{{ error }}</p></div></div>
-    <section class="card">
-      <header>
-        <div><span class="eyebrow">CRM DIRECTORY</span><h2>Company workspace</h2><p>Search and manage every account in one consistent directory.</p></div>
-        <div class="card-header"><span><b>{{ rows.length }}</b>Total</span></div>
-      </header>
-      <div class="toolbar">
-        <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search company, domain or industry" /></label>
-        <strong>{{ visible.length }} shown</strong>
-      </div>
-      <div class="data-state" *ngIf="loading">Loading companies…</div>
-      <div class="table" *ngIf="!loading && visible.length">
-        <table>
-          <thead><tr><th>Company</th><th>Domain</th><th>Industry</th><th>Country</th><th>Employees</th><th>Revenue</th><th>Actions</th></tr></thead>
-          <tbody><tr *ngFor="let x of visible">
-            <td><div class="identity"><i>{{ initials(x.name) }}</i><span><b>{{ x.name }}</b><small>CRM account</small></span></div></td>
-            <td><a class="domain-link" [href]="companyUrl(x.domain)" target="_blank" rel="noopener">{{ x.domain || '—' }}</a></td>
-            <td>{{ x.industry || '—' }}</td><td>{{ x.country || '—' }}</td><td>{{ x.employees || '—' }}</td><td>{{ x.annualRevenue ? money(x.annualRevenue) : '—' }}</td>
-            <td><div class="actions"><button (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
-          </tr></tbody>
-        </table>
-      </div>
-      <div class="empty" *ngIf="!loading && !error && !visible.length">
-        <i>▦</i><strong>{{ rows.length ? 'No matching companies' : 'No companies yet' }}</strong>
-        <span>{{ rows.length ? 'Change the search to see more accounts.' : 'Add a company or install the complete demo scenario.' }}</span>
-        <button class="button-primary" *ngIf="!rows.length" (click)="open()">Add company</button>
-      </div>
-    </section>
-    <qai-modal [open]="show" [title]="form.id ? 'Edit company' : 'Add company'" (close)="show = false">
-      <form class="form" (ngSubmit)="save()">
-        <label>Name<input [(ngModel)]="form.name" name="name" required /></label><label>Domain<input [(ngModel)]="form.domain" name="domain" /></label>
-        <div class="content-grid"><label>Industry<input [(ngModel)]="form.industry" name="industry" /></label><label>Country<input [(ngModel)]="form.country" name="country" /></label></div>
-        <div class="content-grid"><label>Employees<input type="number" [(ngModel)]="form.employees" name="employees" /></label><label>Annual revenue<input type="number" [(ngModel)]="form.annualRevenue" name="revenue" /></label></div>
-        <footer><button type="button" (click)="show = false">Cancel</button><button class="button-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save company' }}</button></footer>
-      </form>
-    </qai-modal>
+    <main class="page">
+      <qai-page-header title="Companies" subtitle="Account intelligence, firmographics and commercial activity.">
+        <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
+        <button class="button-primary" (click)="open()">+ Add company</button>
+      </qai-page-header>
+      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Companies could not be loaded</b><p>{{ error }}</p></div></div>
+      <section class="card">
+        <header class="card-header">
+          <div><span class="eyebrow">CRM DIRECTORY</span><h2>Company workspace</h2><p>Search and manage every account in one consistent directory.</p></div>
+          <div class="facts"><span><b>{{ rows.length }}</b>Total</span></div>
+        </header>
+        <div class="toolbar">
+          <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search company, domain or industry" /></label>
+          <strong>{{ visible.length }} shown</strong>
+        </div>
+        <div class="notice" *ngIf="loading">Loading companies…</div>
+        <div class="table" *ngIf="!loading && visible.length">
+          <table>
+            <thead><tr><th>Company</th><th>Domain</th><th>Industry</th><th>Country</th><th>Employees</th><th>Revenue</th><th>Actions</th></tr></thead>
+            <tbody><tr *ngFor="let x of visible">
+              <td><div class="identity"><i>{{ initials(x.name) }}</i><span><b>{{ x.name }}</b><small>CRM account</small></span></div></td>
+              <td><a class="button-quiet" [href]="companyUrl(x.domain)" target="_blank" rel="noopener">{{ x.domain || '—' }}</a></td>
+              <td>{{ x.industry || '—' }}</td><td>{{ x.country || '—' }}</td><td>{{ x.employees || '—' }}</td><td>{{ x.annualRevenue ? money(x.annualRevenue) : '—' }}</td>
+              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
+            </tr></tbody>
+          </table>
+        </div>
+        <div class="empty" *ngIf="!loading && !error && !visible.length">
+          <i>▦</i><strong>{{ rows.length ? 'No matching companies' : 'No companies yet' }}</strong>
+          <span>{{ rows.length ? 'Change the search to see more accounts.' : 'Add a company or install the complete demo scenario.' }}</span>
+          <button class="button-primary" *ngIf="!rows.length" (click)="open()">Add company</button>
+        </div>
+      </section>
+      <qai-modal [open]="show" [title]="form.id ? 'Edit company' : 'Add company'" (close)="show = false">
+        <form class="form" (ngSubmit)="save()">
+          <label>Name<input [(ngModel)]="form.name" name="name" required /></label><label>Domain<input [(ngModel)]="form.domain" name="domain" /></label>
+          <div class="content-grid"><label>Industry<input [(ngModel)]="form.industry" name="industry" /></label><label>Country<input [(ngModel)]="form.country" name="country" /></label></div>
+          <div class="content-grid"><label>Employees<input type="number" [(ngModel)]="form.employees" name="employees" /></label><label>Annual revenue<input type="number" [(ngModel)]="form.annualRevenue" name="revenue" /></label></div>
+          <footer class="actions"><button class="button-quiet" type="button" (click)="show = false">Cancel</button><button class="button-primary" type="submit" [disabled]="saving">{{ saving ? 'Saving…' : 'Save company' }}</button></footer>
+        </form>
+      </qai-modal>
+    </main>
   `
 })
 export class CompaniesPage implements OnInit {
