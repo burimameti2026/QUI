@@ -10,10 +10,10 @@ import { adminText } from "../../core/admin-page-translations";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule],
-  template: `<div class="login">
-    <section class="login-hero">
+  template: `<div class="auth">
+    <section class="hero">
       <div class="brand"><span class="brand-mark">Q</span><div><b>Qualify</b><strong>AI</strong><small>{{ t('Business automation') }}</small></div></div>
-      <div class="hero-copy">
+      <div class="stack">
         <span class="eyebrow">{{ t('FROM PROSPECT TO CUSTOMER') }}</span>
         <h1>{{ t('Turn market signals into') }} <em>{{ t('qualified revenue.') }}</em></h1>
         <p>{{ t('Discover companies, prioritize buying intent and run approval-controlled outreach from one clear workspace.') }}</p>
@@ -27,8 +27,8 @@ import { adminText } from "../../core/admin-page-translations";
       </div>
     </section>
 
-    <section class="login-panel">
-      <div class="form-wrap">
+    <section class="card">
+      <div class="card-body">
         <div class="login-language"><span>{{ t('Language') }}</span><select [ngModel]="i18n.language()" (ngModelChange)="setLanguage($event)" name="language"><option *ngFor="let l of i18n.languages" [value]="l.code">{{ l.label }}</option></select></div>
         <div class="form-icon">→</div>
         <span class="form-eyebrow">{{ t('SECURE WORKSPACE ACCESS') }}</span>
@@ -41,7 +41,7 @@ import { adminText } from "../../core/admin-page-translations";
           <label *ngIf="mfaRequired"><span>{{ t('Authenticator code') }}</span><input [(ngModel)]="mfaCode" name="mfaCode" inputmode="numeric" autocomplete="one-time-code" [placeholder]="t('6-digit code')" /></label>
           <div class="form-meta"><span>{{ t('Protected enterprise access') }}</span><span>{{ t('Session secured') }}</span></div>
           <button type="submit" [disabled]="submitting">{{ submitting ? t('Signing in…') : mfaRequired ? t('Verify & sign in') : t('Sign in') }}<span>→</span></button>
-          <div class="error" *ngIf="error">{{ t(error) }}</div>
+          <div class="alert-error" *ngIf="error">{{ t(error) }}</div>
         </form>
         <div class="demo"><span>{{ t('DEMO WORKSPACE') }}</span><b>Renova</b><small>{{ t('Demo credentials are pre-filled for local development.') }}</small></div>
         <small class="copyright">QualifyAI · {{ t('Business automation platform') }}</small>
