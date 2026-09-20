@@ -14,7 +14,7 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
       title="Automations"
       subtitle="Turn customer and sales signals into automated revenue actions."
       ><button (click)="openWorkspaceMode()">Workspace data mode</button><button (click)="runAll()">▶ Run sales engine</button
-      ><button class="primary" (click)="open()">
+      ><button class="button-primary" (click)="open()">
         + New automation
       </button></qai-page-header
     >
@@ -23,7 +23,7 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
       <ol><li><b>1</b>Business signal</li><li><b>2</b>Active rule</li><li><b>3</b>Actions & controls</li><li><b>4</b>Run log / retry</li></ol>
     </section>
     <p class="notice success" *ngIf="publishedMessage">{{publishedMessage}}</p>
-    <section class="automation-metrics">
+    <section class="metric-grid">
       <article><span class="metric-icon">⚡</span><div><small>Total automations</small><strong>{{ rows.length }}</strong><em>Configured business rules</em></div></article>
       <article><span class="metric-icon">✓</span><div><small>Active</small><strong>{{ activeCount }}</strong><em>Rules currently enabled</em></div></article>
       <article><span class="metric-icon">!</span><div><small>Failed runs</small><strong>{{ failedCount }}</strong><em>Needs attention</em></div></article>
@@ -32,34 +32,34 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
     <section class="directory-card automation-workspace">
       <header>
         <div><span class="eyebrow">Revenue automation</span><h2>Automation rules</h2><p>Review triggers, business actions and execution controls in one workspace.</p></div>
-        <div class="directory-summary">
+        <div class="card-header">
           <span><b>{{ rows.length }}</b>Total</span>
           <span><b>{{ activeCount }}</b>Active</span>
           <span><b>{{ failedCount }}</b>Failed runs</span>
         </div>
       </header>
-      <div class="directory-toolbar">
+      <div class="toolbar">
         <label><span>⌕</span><input [(ngModel)]="query" placeholder="Search automation or trigger" /></label>
         <select [(ngModel)]="statusFilter"><option value="">All statuses</option><option value="active">Active</option><option value="paused">Paused</option></select>
         <strong>{{ visibleRows.length }} shown · Last run {{ lastRun }}</strong>
       </div>
-      <div class="table-wrap" *ngIf="visibleRows.length; else noAutomations">
+      <div class="table" *ngIf="visibleRows.length; else noAutomations">
         <table><thead><tr><th>Automation</th><th>Trigger</th><th>Business actions</th><th>Status</th><th>Enabled</th><th>Actions</th></tr></thead>
         <tbody><tr *ngFor="let a of visibleRows">
-          <td><div class="directory-identity"><i>⚡</i><span><b>{{a.name}}</b><small>{{conditionSummary(a)}}</small></span></div></td>
-          <td><span class="event-name">{{a.trigger}}</span><small class="trigger-detail">{{triggerMeaning(a.trigger)}}</small></td>
-          <td><span class="action-flow">{{actions(a)}}</span></td>
-          <td><span class="pill" [class.success]="a.active" [class.status-pending]="!a.active">{{a.active ? 'Active' : 'Paused'}}</span></td>
+          <td><div class="identity"><i>⚡</i><span><b>{{a.name}}</b><small>{{conditionSummary(a)}}</small></span></div></td>
+          <td><span class="eyebrow">{{a.trigger}}</span><small class="meta">{{triggerMeaning(a.trigger)}}</small></td>
+          <td><span class="steps">{{actions(a)}}</span></td>
+          <td><span class="status" [class.success]="a.active" [class.status-pending]="!a.active">{{a.active ? 'Active' : 'Paused'}}</span></td>
           <td><label class="toggle" [attr.aria-label]="'Enable ' + a.name"><input type="checkbox" [(ngModel)]="a.active" (change)="toggle(a)" /><span></span></label></td>
-          <td><div class="directory-actions"><button (click)="run(a)">▶ Run now</button><button [disabled]="!a.active" (click)="publish(a)">Publish test event</button><button class="primary" (click)="open(a)">Edit</button></div></td>
+          <td><div class="actions"><button (click)="run(a)">▶ Run now</button><button [disabled]="!a.active" (click)="publish(a)">Publish test event</button><button class="button-primary" (click)="open(a)">Edit</button></div></td>
         </tr></tbody></table>
       </div>
-      <ng-template #noAutomations><div class="directory-empty"><i>⚡</i><strong>No automation rules found</strong><span>Adjust the filter or create a new automation.</span><button class="primary" (click)="open()">Create automation</button></div></ng-template>
+      <ng-template #noAutomations><div class="empty"><i>⚡</i><strong>No automation rules found</strong><span>Adjust the filter or create a new automation.</span><button class="button-primary" (click)="open()">Create automation</button></div></ng-template>
     </section>
     <section class="panel table-wrap">
       <header><div><b>Execution history</b><span>Real action results and failures</span></div><button (click)="load()">↻ Refresh</button></header>
       <table><thead><tr><th>Started</th><th>Automation</th><th>Status</th><th>Execution log</th><th></th></tr></thead>
-      <tbody><tr *ngFor="let run of runs"><td>{{run.createdAtUtc|date:'short'}}</td><td>{{ruleName(run.ruleId)}}</td><td><span class="pill" [class.success]="run.status==='completed'" [class.hot]="run.status==='failed'">{{run.status}}</span></td><td><small>{{runSummary(run)}}</small></td><td><button *ngIf="run.status==='failed'" (click)="retry(run)">Retry</button></td></tr></tbody></table>
+      <tbody><tr *ngFor="let run of runs"><td>{{run.createdAtUtc|date:'short'}}</td><td>{{ruleName(run.ruleId)}}</td><td><span class="status" [class.success]="run.status==='completed'" [class.hot]="run.status==='failed'">{{run.status}}</span></td><td><small>{{runSummary(run)}}</small></td><td><button *ngIf="run.status==='failed'" (click)="retry(run)">Retry</button></td></tr></tbody></table>
       <p *ngIf="!runs.length">No automation has executed yet.</p>
     </section>
     <section class="panel table-wrap" *ngIf="deadLetters.length"><header><div><b>Dead-letter queue</b><span>Runs that exhausted automatic retries</span></div></header><table><thead><tr><th>Created</th><th>Entity</th><th>Error</th><th>Status</th></tr></thead><tbody><tr *ngFor="let x of deadLetters"><td>{{x.createdAtUtc|date:'short'}}</td><td>{{x.entityType}}</td><td><small>{{x.error}}</small></td><td><span class="pill hot">{{x.status}}</span></td></tr></tbody></table></section>
@@ -78,7 +78,7 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
             <option>meeting.booked</option>
             <option>schedule.weekday</option>
           </select></label
-        ><section class="discovery-template" *ngIf="form.trigger === 'schedule.weekday'"><b>Online prospect discovery</b><small>Runs live company search against one ICP, scores public evidence and creates a human-review target list. It does not send outreach.</small><div><label>ICP<select [(ngModel)]="discoveryIcpId" name="discoveryIcp"><option value="">Select an ICP</option><option *ngFor="let icp of icps" [value]="icp.id">{{icp.name}}</option></select></label><button type="button" (click)="useOnlineDiscoveryTemplate()" [disabled]="!discoveryIcpId">Use discovery template</button></div></section>
+        ><section class="card" *ngIf="form.trigger === 'schedule.weekday'"><b>Online prospect discovery</b><small>Runs live company search against one ICP, scores public evidence and creates a human-review target list. It does not send outreach.</small><div><label>ICP<select [(ngModel)]="discoveryIcpId" name="discoveryIcp"><option value="">Select an ICP</option><option *ngFor="let icp of icps" [value]="icp.id">{{icp.name}}</option></select></label><button type="button" (click)="useOnlineDiscoveryTemplate()" [disabled]="!discoveryIcpId">Use discovery template</button></div></section>
         ><label
           >Conditions JSON<textarea
             [(ngModel)]="form.conditionsJson"
@@ -86,17 +86,17 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
           ></textarea></label
         ><label
           >Actions JSON<textarea
-            class="large"
+            class="card-body"
             [(ngModel)]="form.actionsJson"
             name="actions"
           ></textarea></label
-        ><label class="checkline"
+        ><label class="list-item"
           ><input type="checkbox" [(ngModel)]="form.active" name="active" />
           Active</label
         >
         <footer>
           <button type="button" (click)="show = false">Cancel</button
-          ><button class="primary" type="submit">Save automation</button>
+          ><button class="button-primary" type="submit">Save automation</button>
         </footer>
       </form></qai-modal
     >`,
