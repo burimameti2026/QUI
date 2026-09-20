@@ -32,9 +32,9 @@ import { CrmService } from './crm.service';
           <table>
             <thead><tr><th>Contact</th><th>Email</th><th>Phone</th><th>Lifecycle</th><th>Created</th><th>Actions</th></tr></thead>
             <tbody><tr *ngFor="let x of visible">
-              <td><div class="identity"><i>{{ initials(x) }}</i><span><b>{{ x.firstName }} {{ x.lastName }}</b><small>CRM contact</small></span></div></td>
+              <td><div class="identity"><span class="avatar">{{ initials(x) }}</span><span class="stack"><b>{{ x.firstName }} {{ x.lastName }}</b><small>CRM contact</small></span></div></td>
               <td><a class="button-quiet" [href]="'mailto:' + x.email">{{ x.email || '—' }}</a></td><td>{{ x.phone || '—' }}</td>
-              <td><span class="status" [class.customer]="x.lifecycleStage === 'customer'" [class.lead]="x.lifecycleStage === 'lead'">{{ x.lifecycleStage || 'visitor' }}</span></td>
+              <td><span class="status">{{ x.lifecycleStage || 'visitor' }}</span></td>
               <td>{{ x.createdAtUtc | date: 'mediumDate' }}</td>
               <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
             </tr></tbody>
