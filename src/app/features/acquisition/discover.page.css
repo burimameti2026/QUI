@@ -186,17 +186,6 @@
 }
 
 .header-action {
-<<<<<<< HEAD
-  height: 31px !important;
-  min-height: 31px !important;
-  padding: 0 10px !important;
-  border: 0px solid var(--wl-button-2-border, var(--wl-button-2-border, #dfe5ed)) !important;
-  border-radius: 7px !important;
-  background: #000000 !important;
-  color: #ffffff !important;
-  font-size: 9px !important;
-  font-weight: 700 !important
-=======
   height: 44px !important;
   min-height: 44px !important;
   padding: 0 13px !important;
@@ -207,7 +196,6 @@
   font-size: 13px !important;
   font-weight: 650 !important;
   box-shadow: inset -2px 2px 0 1px #edf0f4 !important
->>>>>>> 01017e407332fe4702409f2e3fdd33b9e28ac0e8
 }
 
 .header-action:hover:not(:disabled) {
