@@ -147,7 +147,7 @@ const i = (
           </div>
         </div>
       </header>
-      <section class="page" qaiAdminStaticI18n><router-outlet /></section>
+      <div class="app-content" qaiAdminStaticI18n><router-outlet /></div>
     </main>
   </div>`,
 })
