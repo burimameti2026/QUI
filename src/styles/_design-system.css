@@ -6583,5 +6583,182 @@ main.app-main>router-outlet+* :where(.card, .panel, .section-card, .content-card
 }
 
 /* ============================================================
+   HEADER / SECTION ACTION BUTTON CONTRACT
+   Header actions use the same controls as the Dashboard.
+   Page components may control layout, but not visual button states.
+   ============================================================ */
+
+main.app-main>router-outlet+* :where(
+  .card-heading button,
+  .card-heading a,
+  .card-header button,
+  .card-header a,
+  .section-header button,
+  .section-header a,
+  .workspace-header button,
+  .workspace-header a,
+  .prospect-header button,
+  .prospect-header a,
+  .queue-header button,
+  .queue-header a,
+  .panel-header button,
+  .panel-header a
+) {
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 13px !important;
+  border-radius: var(--wl-button-radius) !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+/* Explicit primary actions stay orange and turn black on hover. */
+main.app-main>router-outlet+* :where(
+  .card-heading button.primary,
+  .card-heading a.primary,
+  .card-header button.primary,
+  .card-header a.primary,
+  .section-header button.primary,
+  .section-header a.primary,
+  .workspace-header button.primary,
+  .workspace-header a.primary,
+  .prospect-header button.primary,
+  .prospect-header a.primary,
+  .queue-header button.primary,
+  .queue-header a.primary,
+  .panel-header button.primary,
+  .panel-header a.primary,
+  .card-heading .btn-primary,
+  .card-header .btn-primary,
+  .section-header .btn-primary,
+  .workspace-header .btn-primary,
+  .prospect-header .btn-primary,
+  .panel-header .btn-primary
+) {
+  background: var(--wl-button-1-bg) !important;
+  border: 0 !important;
+  color: var(--wl-button-1-text) !important;
+  box-shadow: none !important;
+}
+
+main.app-main>router-outlet+* :where(
+  .card-heading button.primary:hover:not(:disabled),
+  .card-heading a.primary:hover,
+  .card-header button.primary:hover:not(:disabled),
+  .card-header a.primary:hover,
+  .section-header button.primary:hover:not(:disabled),
+  .section-header a.primary:hover,
+  .workspace-header button.primary:hover:not(:disabled),
+  .workspace-header a.primary:hover,
+  .prospect-header button.primary:hover:not(:disabled),
+  .prospect-header a.primary:hover,
+  .queue-header button.primary:hover:not(:disabled),
+  .queue-header a.primary:hover,
+  .panel-header button.primary:hover:not(:disabled),
+  .panel-header a.primary:hover,
+  .card-heading .btn-primary:hover:not(:disabled),
+  .card-header .btn-primary:hover:not(:disabled),
+  .section-header .btn-primary:hover:not(:disabled),
+  .workspace-header .btn-primary:hover:not(:disabled),
+  .prospect-header .btn-primary:hover:not(:disabled),
+  .panel-header .btn-primary:hover:not(:disabled)
+) {
+  background: var(--wl-button-1-hover) !important;
+  color: #fff !important;
+}
+
+/* Explicit secondary/header actions use the Dashboard black treatment. */
+main.app-main>router-outlet+* :where(
+  .card-heading button.secondary,
+  .card-heading a.secondary,
+  .card-header button.secondary,
+  .card-header a.secondary,
+  .section-header button.secondary,
+  .section-header a.secondary,
+  .workspace-header button.secondary,
+  .workspace-header a.secondary,
+  .prospect-header button.secondary,
+  .prospect-header a.secondary,
+  .queue-header button.secondary,
+  .queue-header a.secondary,
+  .panel-header button.secondary,
+  .panel-header a.secondary,
+  .card-heading .btn-secondary,
+  .card-header .btn-secondary,
+  .section-header .btn-secondary,
+  .workspace-header .btn-secondary,
+  .prospect-header .btn-secondary,
+  .panel-header .btn-secondary,
+  .card-heading .quiet-action,
+  .card-header .quiet-action,
+  .section-header .quiet-action,
+  .workspace-header .quiet-action,
+  .prospect-header .quiet-action,
+  .panel-header .quiet-action
+) {
+  background: #000 !important;
+  border: 0 !important;
+  color: #fff !important;
+  box-shadow: inset -2px 2px 0 1px #edf0f4 !important;
+}
+
+main.app-main>router-outlet+* :where(
+  .card-heading button.secondary:hover:not(:disabled),
+  .card-heading a.secondary:hover,
+  .card-header button.secondary:hover:not(:disabled),
+  .card-header a.secondary:hover,
+  .section-header button.secondary:hover:not(:disabled),
+  .section-header a.secondary:hover,
+  .workspace-header button.secondary:hover:not(:disabled),
+  .workspace-header a.secondary:hover,
+  .prospect-header button.secondary:hover:not(:disabled),
+  .prospect-header a.secondary:hover,
+  .queue-header button.secondary:hover:not(:disabled),
+  .queue-header a.secondary,
+  .panel-header button.secondary:hover:not(:disabled),
+  .panel-header a.secondary:hover,
+  .card-heading .btn-secondary:hover:not(:disabled),
+  .card-header .btn-secondary:hover:not(:disabled),
+  .section-header .btn-secondary:hover:not(:disabled),
+  .workspace-header .btn-secondary:hover:not(:disabled),
+  .prospect-header .btn-secondary:hover:not(:disabled),
+  .panel-header .btn-secondary:hover:not(:disabled),
+  .card-heading .quiet-action:hover:not(:disabled),
+  .card-header .quiet-action:hover:not(:disabled),
+  .section-header .quiet-action:hover:not(:disabled),
+  .workspace-header .quiet-action:hover:not(:disabled),
+  .prospect-header .quiet-action:hover:not(:disabled),
+  .panel-header .quiet-action:hover:not(:disabled)
+) {
+  background: var(--wl-accent) !important;
+  border-color: var(--wl-accent) !important;
+  color: #fff !important;
+}
+
+/* Unclassified header buttons get the same neutral secondary treatment,
+   while explicitly typed primary buttons above remain orange. */
+main.app-main>router-outlet+* :where(
+  .card-heading > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .card-heading > a:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .card-header > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .card-header > a:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .section-header > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .section-header > a:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .workspace-header > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .workspace-header > a:not(.primary):not(.btn-primary):not(.btn-secondary):not(.secondary):not(.quiet-action),
+  .prospect-header > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .prospect-header > a:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .panel-header > button:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action),
+  .panel-header > a:not(.primary):not(.btn-primary):not(.secondary):not(.btn-secondary):not(.quiet-action)
+) {
+  background: #000 !important;
+  border: 0 !important;
+  color: #fff !important;
+  box-shadow: inset -2px 2px 0 1px #edf0f4 !important;
+}
+
+/* ============================================================
    END CANONICAL APPLICATION DESIGN SYSTEM
    ============================================================ */
