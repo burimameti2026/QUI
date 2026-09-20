@@ -6770,14 +6770,15 @@ main.app-main>router-outlet+* :where(
 
 /* Final shell gutter alignment: the global header uses the same outer gutter as routed page content. */
 .app-header {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .page {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
+
 
 /* Final page-header control alignment: every header action shares one exact geometry. */
 qai-page-header .page-actions > button,
@@ -6846,7 +6847,7 @@ qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
 }
 
 .discovery-hero {
-  margin: 0px 0px 0px !important;
+  margin: 10px 0px 0px !important;
   padding: 10px 10px !important
 }
 
@@ -7629,7 +7630,7 @@ qai-page-header .page-actions {
 
 .group-heading {
   margin: 0 10px 7px !important;
-  color: #737373 !important;
+  color: #636363 !important;
   font-size: 10px !important;
   line-height: 1.2 !important;
   font-weight: 750 !important;
@@ -7644,10 +7645,10 @@ qai-page-header .page-actions {
 .reference-group .menu-item,
 .reference-group .child-item {
   box-sizing: border-box !important;
-  color: #333333 !important;
-  font-size: 13px !important;
+  color: #444444 !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
-  line-height: 1 !important;
+  line-height:    1.4 !important;
   transition: background-color .14s ease, color .14s ease, box-shadow .14s ease, transform .14s ease !important;
 }
 
@@ -7724,7 +7725,7 @@ qai-page-header .page-actions {
 .child-items {
   margin-left: 20px !important;
   padding-left: 13px !important;
-  border-left: 1px solid #e2e2e2 !important;
+  border-left: 0px solid #e2e2e2 !important;
 }
 
 .reference-group .child-item {
