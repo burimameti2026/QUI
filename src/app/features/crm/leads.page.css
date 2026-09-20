@@ -5,3 +5,11 @@
 qai-refined-tabs{display:block;margin-bottom:8px}.toolbar.actions button.active{background:var(--wl-accent);color:#fff;border-color:var(--wl-accent)}
 qai-data-grid{display:block;min-width:0}.table{overflow:hidden}.table .toolbar{margin:0;border:0;border-bottom:1px solid var(--wl-border);padding:8px}.table .toolbar .search{flex:1 1 280px;max-width:420px}.table .toolbar-spacer{flex:1 1 auto}.table .toolbar-button{white-space:nowrap}.table table{table-layout:auto;min-width:1100px}.table th{height:34px;padding:8px 10px;white-space:nowrap}.table td{padding:9px 10px;white-space:nowrap}.table tbody tr{height:46px}.table tbody tr:hover{background:#fafafa}.table .lead-person{min-width:170px;max-width:260px;overflow:hidden;text-overflow:ellipsis}.table .lead-person b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.table .check-col{width:36px}.table input[type=checkbox]{width:15px;min-height:15px;padding:0}.table .small{min-height:30px;padding:0 8px;font-size:11px}.table .actions{flex-wrap:nowrap;gap:4px}.lead-status{display:inline-flex;align-items:center;min-height:24px;padding:3px 7px;border:1px solid var(--wl-border-strong);font-size:10px;font-weight:700;background:#fff}.lead-status.hot{color:var(--wl-danger);border-color:#d6b1ad}.table .notice{margin:0;border:0;border-top:1px solid var(--wl-border);background:#fafafa}
 @media(max-width:720px){.page-header{align-items:flex-start;flex-direction:column}.page-header .actions{width:100%;justify-content:flex-start}.page-header .actions button{flex:1}.table{overflow-x:auto}.table .toolbar-spacer{display:none}}
+
+
+/* Leads surface consolidation. */
+.leads-kpi-panel{display:block;margin-bottom:10px;padding:8px;background:#fff;border:1px solid var(--wl-border)}
+.leads-kpi-panel qai-kpi-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.leads-kpi-panel .lead-kpi{min-height:104px;padding:12px 14px;background:#fff;border:1px solid var(--wl-border)}
+@media(max-width:900px){.leads-kpi-panel qai-kpi-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.leads-kpi-panel qai-kpi-strip{grid-template-columns:1fr}}
