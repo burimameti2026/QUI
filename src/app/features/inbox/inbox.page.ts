@@ -11,251 +11,112 @@ import { InboxService } from "./inbox.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   template: `
-    <qai-page-header
-      title="Inbox"
-      subtitle="Customer conversations with complete CRM and automation context."
-    >
-      <button (click)="load()">↻ Refresh</button
-      ><button class="primary" (click)="openConversation()">
-        + New conversation
-      </button>
-    </qai-page-header>
-    <div class="callout warning" *ngIf="error">
-      <span class="callout-icon">!</span>
-      <div>
-        <b>Inbox action failed</b>
-        <p>{{ error }}</p>
+    <main class="page">
+      <qai-page-header title="Inbox" subtitle="Customer conversations with complete CRM and automation context.">
+        <div class="page-actions">
+          <button class="button-quiet" (click)="load()">↻ Refresh</button>
+          <button class="button-primary" (click)="openConversation()">+ New conversation</button>
+        </div>
+      </qai-page-header>
+
+      <div class="alert" *ngIf="error">
+        <strong>Inbox action failed</strong><span>{{ error }}</span>
       </div>
-    </div>
-    <div class="inbox">
-      <aside class="conv-list">
-        <div class="tabs">
-          <button [class.active]="filter === 'open'" (click)="filter = 'open'">
-            Open</button
-          ><button [class.active]="filter === 'all'" (click)="filter = 'all'">
-            All
-          </button>
-        </div>
-        <input [(ngModel)]="query" placeholder="Search conversations" />
-        <div class="data-state" *ngIf="loading">Loading conversations…</div>
-        <button
-          class="conv"
-          *ngFor="let c of visible; trackBy: trackConversation"
-          [class.active]="selected?.id === c.id"
-          (click)="select(c)"
-        >
-          <i>{{ initials(c) }}</i>
-          <div>
-            <b>{{ name(c) }}</b
-            ><span>{{ preview(c) }}</span
-            ><small>{{
-              c.aiEnabled ? "Automated handling" : "Human assigned"
-            }}</small>
+
+      <section class="content-grid">
+        <aside class="card">
+          <div class="card-header">
+            <div><span class="eyebrow">Conversations</span><h2>Customer inbox</h2></div>
           </div>
-          <em>{{ status(c.status) }}</em>
-        </button>
-        <div class="data-state" *ngIf="!loading && !visible.length">
-          <b>No conversations</b
-          ><span>Open one from an existing CRM contact.</span>
-        </div>
-      </aside>
-      <section class="conversation" *ngIf="selected; else chooseConversation">
-        <header>
-          <div>
-            <b>{{ name(selected) }}</b
-            ><span>{{
-              selected.aiEnabled
-                ? "Automation is handling this conversation"
-                : "Human agent has control"
-            }}</span>
+          <div class="card-body">
+            <div class="toolbar">
+              <div class="actions">
+                <button class="button-quiet" [class.is-active]="filter === 'open'" (click)="filter = 'open'">Open</button>
+                <button class="button-quiet" [class.is-active]="filter === 'all'" (click)="filter = 'all'">All</button>
+              </div>
+              <label class="search"><span class="sr-only">Search conversations</span><input [(ngModel)]="query" placeholder="Search conversations" /></label>
+            </div>
+            <div class="notice" *ngIf="loading">Loading conversations…</div>
+            <div class="list" *ngIf="!loading">
+              <button class="list-item" *ngFor="let c of visible; trackBy: trackConversation" [class.is-active]="selected?.id === c.id" (click)="select(c)">
+                <span class="avatar">{{ initials(c) }}</span>
+                <span class="identity"><span class="stack"><strong>{{ name(c) }}</strong><span>{{ preview(c) }}</span><small>{{ c.aiEnabled ? "Automated handling" : "Human assigned" }}</small></span></span>
+                <span class="status">{{ status(c.status) }}</span>
+              </button>
+            </div>
+            <div class="empty" *ngIf="!loading && !visible.length"><strong>No conversations</strong><span>Open one from an existing CRM contact.</span></div>
           </div>
-          <div>
-            <button (click)="toggleTakeover()">
-              {{
-                selected.aiEnabled ? "Take over" : "Return to automation"
-              }}</button
-            ><button (click)="closeConversation()">Close</button>
+        </aside>
+
+        <section class="card" *ngIf="selected; else chooseConversation">
+          <div class="card-header">
+            <div class="identity">
+              <span class="avatar">{{ initials(selected) }}</span>
+              <span class="stack"><strong>{{ name(selected) }}</strong><span>{{ selected.aiEnabled ? "Automation is handling this conversation" : "Human agent has control" }}</span></span>
+            </div>
+            <div class="actions">
+              <button class="button-quiet" (click)="toggleTakeover()">{{ selected.aiEnabled ? "Take over" : "Return to automation" }}</button>
+              <button class="button-danger" (click)="closeConversation()">Close</button>
+            </div>
           </div>
-        </header>
-        <div class="messages">
-          <article
-            *ngFor="let item of messages"
-            [class.agent]="item.senderType !== 'visitor'"
-          >
-            <span>{{ item.senderType }}</span>
-            <p>{{ item.text }}</p>
-            <small>{{ item.createdAtUtc | date: "shortTime" }}</small>
-          </article>
-          <div class="data-state" *ngIf="!messages.length">
-            No messages in this conversation.
+          <div class="card-body">
+            <div class="list">
+              <article class="list-item" *ngFor="let item of messages">
+                <span class="avatar">{{ item.senderType === 'visitor' ? 'C' : 'A' }}</span>
+                <span class="stack"><strong>{{ item.senderType }}</strong><span>{{ item.text }}</span><small>{{ item.createdAtUtc | date: "shortTime" }}</small></span>
+              </article>
+            </div>
+            <div class="empty" *ngIf="!messages.length">No messages in this conversation.</div>
+            <div class="notice" *ngIf="selected.leadId"><strong>Lead qualification</strong><span>{{ selected.leadScore || 0 }}/100 · {{ selected.leadStatus || "new" }}</span></div>
           </div>
-          <div class="ai-event" *ngIf="selected.leadId">
-            Lead qualification · {{ selected.leadScore || 0 }}/100 ·
-            {{ selected.leadStatus || "new" }}
+          <div class="card-footer">
+            <div class="form">
+              <textarea [(ngModel)]="draft" placeholder="Reply to customer…"></textarea>
+              <div class="actions"><button class="button-quiet" (click)="note()">Internal note</button><button class="button-primary" [disabled]="!draft.trim()" (click)="send()">Send reply</button></div>
+            </div>
           </div>
-        </div>
-        <footer>
-          <textarea
-            [(ngModel)]="draft"
-            placeholder="Reply to customer…"
-          ></textarea>
-          <div>
-            <button (click)="note()">Internal note</button
-            ><button
-              class="primary"
-              [disabled]="!draft.trim()"
-              (click)="send()"
-            >
-              Send reply
-            </button>
-          </div>
-        </footer>
+        </section>
+        <ng-template #chooseConversation><section class="empty"><strong>Select a conversation</strong><span>Messages and real CRM context will appear here.</span></section></ng-template>
       </section>
-      <ng-template #chooseConversation
-        ><section class="conversation data-state">
-          <b>Select a conversation</b
-          ><span>Messages and real CRM context will appear here.</span>
-        </section></ng-template
-      >
-      <aside class="customer" *ngIf="selected">
-        <h3>Customer context</h3>
-        <div class="profile">
-          <i>{{ initials(selected) }}</i
-          ><b>{{ name(selected) }}</b
-          ><span>{{ selected.email || "No email recorded" }}</span>
+
+      <aside class="card" *ngIf="selected">
+        <div class="card-header"><div><span class="eyebrow">CRM context</span><h2>Customer</h2></div></div>
+        <div class="card-body">
+          <div class="identity"><span class="avatar">{{ initials(selected) }}</span><span class="stack"><strong>{{ name(selected) }}</strong><span>{{ selected.email || "No email recorded" }}</span></span></div>
+          <dl class="facts">
+            <div><dt>Lifecycle</dt><dd>{{ selected.lifecycleStage || "Not set" }}</dd></div>
+            <div><dt>Lead status</dt><dd>{{ selected.leadStatus || "No lead" }}</dd></div>
+            <div><dt>Lead score</dt><dd>{{ selected.leadScore == null ? "—" : selected.leadScore + " / 100" }}</dd></div>
+            <div><dt>Intent</dt><dd>{{ selected.intent || "No intent captured" }}</dd></div>
+            <div><dt>Potential value</dt><dd>{{ selected.estimatedValue == null ? "—" : money(selected.estimatedValue) }}</dd></div>
+          </dl>
+          <div class="actions">
+            <button class="button-primary" [disabled]="!selected.leadId" (click)="createOpportunity()">Create opportunity</button>
+            <button class="button-secondary" [disabled]="!selected.contactId" (click)="bookMeeting()">Schedule meeting</button>
+            <button class="button-secondary" [disabled]="!selected.contactId" (click)="openTicket()">Create support ticket</button>
+          </div>
         </div>
-        <dl>
-          <dt>Lifecycle</dt>
-          <dd>{{ selected.lifecycleStage || "Not set" }}</dd>
-          <dt>Lead status</dt>
-          <dd>{{ selected.leadStatus || "No lead" }}</dd>
-          <dt>Lead score</dt>
-          <dd>
-            {{
-              selected.leadScore == null ? "—" : selected.leadScore + " / 100"
-            }}
-          </dd>
-          <dt>Intent</dt>
-          <dd>{{ selected.intent || "No intent captured" }}</dd>
-          <dt>Potential value</dt>
-          <dd>
-            {{
-              selected.estimatedValue == null
-                ? "—"
-                : money(selected.estimatedValue)
-            }}
-          </dd>
-        </dl>
-        <button
-          class="primary full"
-          [disabled]="!selected.leadId"
-          (click)="createOpportunity()"
-        >
-          Create opportunity</button
-        ><button
-          class="full"
-          [disabled]="!selected.contactId"
-          (click)="bookMeeting()"
-        >
-          Schedule meeting
-        </button>
-        <button
-          class="full"
-          [disabled]="!selected.contactId"
-          (click)="openTicket()"
-        >
-          Create support ticket
-        </button>
       </aside>
-    </div>
-    <qai-modal
-      [open]="showCreate"
-      title="Open customer conversation"
-      (close)="showCreate = false"
-      ><form class="form" (ngSubmit)="createConversation()">
-        <label
-          >CRM contact<select
-            [(ngModel)]="conversationForm.contactId"
-            name="contact"
-            required
-          >
-            <option value="">Select contact</option>
-            <option *ngFor="let contact of contacts" [value]="contact.id">
-              {{ contactName(contact) }} · {{ contact.email }}
-            </option>
-          </select></label
-        ><label
-          >Initial message<textarea
-            rows="4"
-            [(ngModel)]="conversationForm.initialMessage"
-            name="message"
-          ></textarea></label
-        ><label class="checkline"
-          ><input
-            type="checkbox"
-            [(ngModel)]="conversationForm.aiEnabled"
-            name="automation"
-          />
-          Enable automated handling</label
-        >
-        <footer>
-          <button type="button" (click)="showCreate = false">Cancel</button
-          ><button
-            class="primary"
-            type="submit"
-            [disabled]="!conversationForm.contactId"
-          >
-            Open conversation
-          </button>
-        </footer>
-      </form></qai-modal
-    >
-    <qai-modal
-      [open]="showTicket"
-      title="Create support ticket"
-      (close)="showTicket = false"
-      ><form class="form" (ngSubmit)="createTicket()">
-        <label
-          >Subject<input
-            [(ngModel)]="ticketForm.subject"
-            name="ticketSubject"
-            required
-        /></label>
-        <label
-          >Description<textarea
-            rows="5"
-            [(ngModel)]="ticketForm.description"
-            name="ticketDescription"
-            required
-          ></textarea>
-        </label>
-        <label
-          >Priority<select
-            [(ngModel)]="ticketForm.priority"
-            name="ticketPriority"
-          >
-            <option [ngValue]="0">Low</option>
-            <option [ngValue]="1">Normal</option>
-            <option [ngValue]="2">High</option>
-            <option [ngValue]="3">Urgent</option>
-          </select></label
-        >
-        <footer>
-          <button type="button" (click)="showTicket = false">Cancel</button
-          ><button
-            class="primary"
-            type="submit"
-            [disabled]="
-              !ticketForm.subject.trim() || !ticketForm.description.trim()
-            "
-          >
-            Create ticket
-          </button>
-        </footer>
-      </form></qai-modal
-    >
+
+      <qai-modal [open]="showCreate" title="Open customer conversation" (close)="showCreate = false">
+        <form class="form" (ngSubmit)="createConversation()">
+          <label>CRM contact<select [(ngModel)]="conversationForm.contactId" name="contact" required><option value="">Select contact</option><option *ngFor="let contact of contacts" [value]="contact.id">{{ contactName(contact) }} · {{ contact.email }}</option></select></label>
+          <label>Initial message<textarea rows="4" [(ngModel)]="conversationForm.initialMessage" name="message"></textarea></label>
+          <label class="list-item"><input type="checkbox" [(ngModel)]="conversationForm.aiEnabled" name="automation" /> Enable automated handling</label>
+          <div class="actions"><button class="button-quiet" type="button" (click)="showCreate = false">Cancel</button><button class="button-primary" type="submit" [disabled]="!conversationForm.contactId">Open conversation</button></div>
+        </form>
+      </qai-modal>
+
+      <qai-modal [open]="showTicket" title="Create support ticket" (close)="showTicket = false">
+        <form class="form" (ngSubmit)="createTicket()">
+          <label>Subject<input [(ngModel)]="ticketForm.subject" name="ticketSubject" required /></label>
+          <label>Description<textarea rows="5" [(ngModel)]="ticketForm.description" name="ticketDescription" required></textarea></label>
+          <label>Priority<select [(ngModel)]="ticketForm.priority" name="ticketPriority"><option [ngValue]="0">Low</option><option [ngValue]="1">Normal</option><option [ngValue]="2">High</option><option [ngValue]="3">Urgent</option></select></label>
+          <div class="actions"><button class="button-quiet" type="button" (click)="showTicket = false">Cancel</button><button class="button-primary" type="submit" [disabled]="!ticketForm.subject.trim() || !ticketForm.description.trim()">Create ticket</button></div>
+        </form>
+      </qai-modal>
+    </main>
   `,
-  styleUrl: "./inbox.page.css",
 })
 export class InboxPage implements OnInit {
   items: any[] = [];
@@ -269,212 +130,78 @@ export class InboxPage implements OnInit {
   loading = false;
   showCreate = false;
   showTicket = false;
-  conversationForm: any = {
-    contactId: "",
-    initialMessage: "",
-    aiEnabled: true,
-  };
+  conversationForm: any = { contactId: "", initialMessage: "", aiEnabled: true };
   ticketForm: any = { subject: "", description: "", priority: 1 };
   private visibleCache: any[] = [];
   private visibleKey = "";
-  constructor(
-    private data: InboxService,
-    private api: ApiService,
-    private crm: CrmService,
-    private router: Router,
-  ) {}
-  ngOnInit() {
-    this.load();
-  }
+
+  constructor(private data: InboxService, private api: ApiService, private crm: CrmService, private router: Router) {}
+  ngOnInit() { this.load(); }
+
   load() {
-    this.loading = true;
-    this.error = "";
+    this.loading = true; this.error = "";
     this.data.conversations<any[]>().subscribe({
-      next: (rows) => {
-        this.items = rows || [];
-        this.visibleKey = "";
-        this.loading = false;
-        if (this.items.length && !this.selected) this.select(this.items[0]);
-      },
-      error: (e) => {
-        this.loading = false;
-        this.error = this.apiError(e);
-      },
+      next: (rows) => { this.items = rows || []; this.visibleKey = ""; this.loading = false; if (this.items.length && !this.selected) this.select(this.items[0]); },
+      error: (e) => { this.loading = false; this.error = this.apiError(e); },
     });
   }
   get visible() {
     const key = `${this.items.length}|${this.filter}|${this.query}`;
     if (key === this.visibleKey) return this.visibleCache;
-    const query = this.query.trim().toLowerCase();
-    this.visibleKey = key;
-    this.visibleCache = this.items.filter(
-      (item) =>
-        (this.filter === "all" || this.status(item.status) === "Open") &&
-        this.name(item).toLowerCase().includes(query),
-    );
+    const query = this.query.trim().toLowerCase(); this.visibleKey = key;
+    this.visibleCache = this.items.filter((item) => (this.filter === "all" || this.status(item.status) === "Open") && this.name(item).toLowerCase().includes(query));
     return this.visibleCache;
   }
-  trackConversation(_index: number, item: any) {
-    return item?.id ?? _index;
-  }
+  trackConversation(_index: number, item: any) { return item?.id ?? _index; }
   select(conversation: any) {
     this.selected = conversation;
-    this.data.messages<any[]>(conversation.id).subscribe({
-      next: (rows) => (this.messages = rows || []),
-      error: (e) => (this.error = this.apiError(e)),
-    });
+    this.data.messages<any[]>(conversation.id).subscribe({ next: (rows) => (this.messages = rows || []), error: (e) => (this.error = this.apiError(e)) });
   }
   send() {
     if (!this.draft.trim() || !this.selected) return;
-    this.data.send<any>(this.selected.id, this.draft).subscribe({
-      next: (item) => {
-        this.messages.push(item);
-        this.draft = "";
-      },
-      error: (e) => (this.error = this.apiError(e)),
-    });
+    this.data.send<any>(this.selected.id, this.draft).subscribe({ next: (item) => { this.messages.push(item); this.draft = ""; }, error: (e) => (this.error = this.apiError(e)) });
   }
   toggleTakeover() {
     if (!this.selected) return;
-    if (this.selected.aiEnabled)
-      this.data.takeover<any>(this.selected.id).subscribe({
-        next: (row) => Object.assign(this.selected, row),
-        error: (e) => (this.error = this.apiError(e)),
-      });
-    else
-      this.data
-        .update<any>(this.selected.id, {
-          status: this.status(this.selected.status),
-          aiEnabled: true,
-        })
-        .subscribe({
-          next: (row) => Object.assign(this.selected, row),
-          error: (e) => (this.error = this.apiError(e)),
-        });
+    if (this.selected.aiEnabled) this.data.takeover<any>(this.selected.id).subscribe({ next: (row) => Object.assign(this.selected, row), error: (e) => (this.error = this.apiError(e)) });
+    else this.data.update<any>(this.selected.id, { status: this.status(this.selected.status), aiEnabled: true }).subscribe({ next: (row) => Object.assign(this.selected, row), error: (e) => (this.error = this.apiError(e)) });
   }
   closeConversation() {
     if (!this.selected) return;
-    this.data
-      .update<any>(this.selected.id, {
-        status: "Closed",
-        aiEnabled: this.selected.aiEnabled,
-      })
-      .subscribe({
-        next: (row) => {
-          Object.assign(this.selected, row);
-          this.load();
-        },
-        error: (e) => (this.error = this.apiError(e)),
-      });
+    this.data.update<any>(this.selected.id, { status: "Closed", aiEnabled: this.selected.aiEnabled }).subscribe({ next: (row) => { Object.assign(this.selected, row); this.load(); }, error: (e) => (this.error = this.apiError(e)) });
   }
   note() {
     const text = prompt("Internal note");
-    if (text?.trim())
-      this.data
-        .note<any>(this.selected.id, text)
-        .subscribe({ error: (e) => (this.error = this.apiError(e)) });
+    if (text?.trim()) this.data.note<any>(this.selected.id, text).subscribe({ error: (e) => (this.error = this.apiError(e)) });
   }
   openConversation() {
     this.crm.contacts().subscribe({
-      next: (rows) => {
-        this.contacts = rows || [];
-        this.conversationForm = {
-          contactId: this.contacts[0]?.id || "",
-          initialMessage: "",
-          aiEnabled: true,
-        };
-        this.showCreate = true;
-      },
+      next: (rows) => { this.contacts = rows || []; this.conversationForm = { contactId: this.contacts[0]?.id || "", initialMessage: "", aiEnabled: true }; this.showCreate = true; },
       error: (e) => (this.error = this.apiError(e)),
     });
   }
   createConversation() {
-    this.data.create<any>(this.conversationForm).subscribe({
-      next: () => {
-        this.showCreate = false;
-        this.selected = null;
-        this.load();
-      },
-      error: (e) => (this.error = this.apiError(e)),
-    });
+    this.data.create<any>(this.conversationForm).subscribe({ next: () => { this.showCreate = false; this.selected = null; this.load(); }, error: (e) => (this.error = this.apiError(e)) });
   }
   createOpportunity() {
     if (!this.selected?.leadId) return;
-    this.api
-      .post<any>(`sales/leads/${this.selected.leadId}/convert`, {})
-      .subscribe({
-        next: () => this.router.navigate(["/pipeline"]),
-        error: (e) => (this.error = this.apiError(e)),
-      });
+    this.api.post<any>(`sales/leads/${this.selected.leadId}/convert`, {}).subscribe({ next: () => this.router.navigate(["/pipeline"]), error: (e) => (this.error = this.apiError(e)) });
   }
   bookMeeting() {
-    if (this.selected?.contactId)
-      this.router.navigate(["/meetings"], {
-        queryParams: { contactId: this.selected.contactId },
-      });
+    if (this.selected?.contactId) this.router.navigate(["/meetings"], { queryParams: { contactId: this.selected.contactId } });
   }
   openTicket() {
-    this.ticketForm = {
-      subject: this.selected?.intent || "Customer support request",
-      description: this.preview(this.selected),
-      priority: 1,
-    };
-    this.showTicket = true;
+    this.ticketForm = { subject: this.selected?.intent || "Customer support request", description: this.preview(this.selected), priority: 1 }; this.showTicket = true;
   }
   createTicket() {
-    const input = {
-      ...this.ticketForm,
-      conversationId: this.selected.id,
-      contactId: this.selected.contactId,
-      slaPolicyId: null,
-    };
-    this.api.post<any>("tickets", input).subscribe({
-      next: () => {
-        this.showTicket = false;
-        this.router.navigate(["/tickets"]);
-      },
-      error: (e) => (this.error = this.apiError(e)),
-    });
+    const input = { ...this.ticketForm, conversationId: this.selected.id, contactId: this.selected.contactId, slaPolicyId: null };
+    this.api.post<any>("tickets", input).subscribe({ next: () => { this.showTicket = false; this.router.navigate(["/tickets"]); }, error: (e) => (this.error = this.apiError(e)) });
   }
-  name(item: any) {
-    return item.contactName?.trim() || item.email || "Customer conversation";
-  }
-  preview(item: any) {
-    return item.lastMessage || item.intent || "No message yet";
-  }
-  initials(item: any) {
-    return this.name(item)
-      .split(" ")
-      .map((part: string) => part[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-  }
-  contactName(contact: any) {
-    return (
-      `${contact.firstName || ""} ${contact.lastName || ""}`.trim() ||
-      contact.email
-    );
-  }
-  status(value: any) {
-    return typeof value === "string"
-      ? value
-      : ["Open", "Pending", "Closed"][value] || String(value);
-  }
-  money(value: number) {
-    return new Intl.NumberFormat("de-DE", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0,
-    }).format(value || 0);
-  }
-  private apiError(error: any) {
-    return (
-      error?.error?.detail ||
-      error?.error?.error ||
-      (error?.status
-        ? `Inbox API returned ${error.status}.`
-        : "Inbox API is unavailable.")
-    );
-  }
+  name(item: any) { return item.contactName?.trim() || item.email || "Customer conversation"; }
+  preview(item: any) { return item.lastMessage || item.intent || "No message yet"; }
+  initials(item: any) { return this.name(item).split(" ").map((part: string) => part[0]).join("").slice(0, 2).toUpperCase(); }
+  contactName(contact: any) { return `${contact.firstName || ""} ${contact.lastName || ""}`.trim() || contact.email; }
+  status(value: any) { return typeof value === "string" ? value : ["Open", "Pending", "Closed"][value] || String(value); }
+  money(value: number) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value || 0); }
+  private apiError(error: any) { return error?.error?.detail || error?.error?.error || (error?.status ? `Inbox API returned ${error.status}.` : "Inbox API is unavailable."); }
 }
