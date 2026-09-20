@@ -23,14 +23,14 @@
     <footer class="actions"><button class="button-primary" type="button" (click)="saveSettings()" [disabled]="savingSettings">{{ savingSettings ? 'Saving…' : 'Save tenant settings' }}</button></footer>
   </section>
 
-  <section class="metric-grid">
-    <article class="metric"><span>Agents</span><strong>{{ agents.length }}</strong></article>
-    <article class="metric"><span>Active</span><strong>{{ active }}</strong></article>
-    <article class="metric"><span>Runs</span><strong>{{ runs.length }}</strong></article>
-    <article class="metric"><span>Completed</span><strong>{{ completed }}</strong></article>
-    <article class="metric"><span>Discovered</span><strong>{{ discovered }}</strong></article>
-    <article class="metric"><span>Qualified</span><strong>{{ qualified }}</strong></article>
-    <article class="metric"><span>Emails sent</span><strong>{{ emails }}</strong></article>
+  <section class="metric-grid acquisition-kpis">
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Agents</span></div><strong>{{ agents.length }}</strong><small>Configured acquisition agents</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Active</span></div><strong>{{ active }}</strong><small>Agents currently running</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">↻</span><span class="metric-label">Runs</span></div><strong>{{ runs.length }}</strong><small>Total discovery runs</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Completed</span></div><strong>{{ completed }}</strong><small>Completed workflow runs</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Discovered</span></div><strong>{{ discovered }}</strong><small>Accounts discovered</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ qualified }}</strong><small>Accounts qualified</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✉</span><span class="metric-label">Emails sent</span></div><strong>{{ emails }}</strong><small>Messages sent through approval</small></article>
   </section>
 
   <section *ngIf="editing" class="card">
