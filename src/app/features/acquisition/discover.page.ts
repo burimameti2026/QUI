@@ -171,6 +171,7 @@ import { AcquisitionService } from "./acquisition.service";
   </qai-modal>
 </div>
   `,
+  styleUrl: "./discover.page.css",
 })
 export class DiscoverPage implements OnInit {
   overview: any = {};
