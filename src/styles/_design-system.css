@@ -6825,16 +6825,7 @@ qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
    PROSPECT DISCOVERY — SHARED COMPOSITION CONTRACT
    Visual rules live here; route CSS is layout-free/deprecated.
    ============================================================ */
-/* Prospect Discovery visual styling lives in the shared global stylesheet. */
-
 /* Prospect Discovery card refinement — consistent workspace surfaces and readable density. */
-:host {
-  display: block;
-  min-height: 100%;
-  background: #f5f7fb;
-  color: #9da5b6 !important
-}
-
 .discovery-hero,
 .workspace-card,
 .prospect-card,
@@ -7454,11 +7445,6 @@ qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
 }
 
 
-/* Final route-local White Label overrides. */
-:host {
-  --discover-card-header: var(--brand-card-header)
-}
-
 .workspace-header,
 .prospect-header {
   background: var(--discover-card-header) !important;
@@ -7547,7 +7533,6 @@ qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
 }
 
 
-/* Final shared surface contract. */
 .discovery-hero,
 .workspace-card,
 .prospect-card {
@@ -7573,12 +7558,6 @@ qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
   overflow:hidden;
 }
 
-
-/* Final unified enterprise override: this route inherits the Prospect Discovery composition. */
-:host {
-  background: #f5f7fb !important;
-  color: var(--wl-text) !important
-}
 
 qai-page-header {
   background: #fff !important;
