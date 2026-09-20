@@ -1,11 +1,11 @@
 <section class="page">
-  <header class="catalog-hero">
+  <header class="hero">
     <div>
       <span class="eyebrow"> PRODUCT HUB</span>
       <h1>Product Catalog</h1>
       <p>Manage product information, markets, languages and publication from one workspace.</p>
     </div>
-    <div class="hero-actions">
+    <div class="actions">
       <button class="button-secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
       <a class="button-primary" routerLink="/catalog/new">+ Add Product</a>
     </div>
@@ -31,15 +31,15 @@
     </select>
   </div>
 
-  <div class="table-card">
+  <div class="card">
     <div class="row header"><span>PRODUCT</span><span>CODE</span><span>CATEGORY</span><span>LANGUAGES</span><span>STATUS</span><span></span></div>
-    <div class="row" *ngFor="let product of filteredProducts">
+    <div class="list-item" *ngFor="let product of filteredProducts">
       <div><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || ' product' }}</small></div>
       <span>{{ product.code }}</span>
       <span>{{ categoryName(product.productCategoryId) }}</span>
       <span>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</span>
       <span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span>
-      <a class="manage" [routerLink]="['/catalog', product.id]">Manage →</a>
+      <a class="actions" [routerLink]="['/catalog', product.id]">Manage →</a>
     </div>
     <div class="empty" *ngIf="!loading && products.length && !filteredProducts.length">No products match the current filters.</div>
     <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first  product to start the promotion workflow.</div>
