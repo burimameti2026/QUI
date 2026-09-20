@@ -124,7 +124,7 @@
   top:0;
   z-index:20;
   min-height:60px;
-  padding:10px 22px;
+  padding:10px;
 }
 
 .header-search-wrap{
@@ -224,12 +224,12 @@
   .brand{justify-content:center}
   .collapse-btn{margin-left:0}
   .menu-item{justify-content:center;padding:0}
-  .app-header{padding-left:18px;padding-right:18px}
+  .app-header{padding:10px;}
   .portal-link{display:none}
 }
 
 @media(max-width:620px){
   .shell{grid-template-columns:64px minmax(0,1fr)}
-  .app-header{padding:10px 12px}
+  .app-header{padding:10px;}
   .admin-copy,.admin-chevron{display:none}
 }
