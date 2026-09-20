@@ -8,3 +8,18 @@
 .discovery-kpis .metric-icon { flex:0 0 auto; }
 .discovery-kpis .metric > strong { display:block; margin-top:0; }
 @media (max-width:760px) { .discovery-summary { gap:6px; } }
+
+.discovery-timeline { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--wl-border); background:var(--wl-surface); overflow:hidden; }
+.discovery-timeline-step { position:relative; display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; min-width:0; padding:14px 12px; border-right:1px solid var(--wl-border); }
+.discovery-timeline-step:last-child { border-right:0; }
+.discovery-timeline-step:not(:last-child)::after { content:""; position:absolute; top:50%; right:-1px; width:10px; height:1px; background:var(--wl-border-strong); transform:translateX(50%); z-index:2; }
+.discovery-timeline-node { display:grid; place-items:center; width:30px; height:30px; border:1px solid var(--wl-border-strong); font-size:11px; font-weight:700; background:var(--wl-surface); }
+.discovery-timeline-copy { min-width:0; display:grid; gap:2px; }
+.discovery-timeline-copy strong { font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.discovery-timeline-copy small { color:var(--wl-muted); font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.discovery-timeline-step.is-current { background:#f7f8fa; border-top:2px solid var(--wl-accent); padding-top:12px; }
+.discovery-timeline-step.is-current .discovery-timeline-node { border-color:var(--wl-accent); color:var(--wl-accent); }
+.discovery-timeline-step.is-complete .discovery-timeline-node { background:var(--wl-text); color:var(--wl-surface); border-color:var(--wl-text); }
+.discovery-timeline-step.is-complete .discovery-timeline-copy strong { color:var(--wl-text); }
+@media (max-width:900px) { .discovery-timeline { grid-template-columns:1fr 1fr; } .discovery-timeline-step:nth-child(2) { border-right:0; } .discovery-timeline-step:nth-child(-n+2) { border-bottom:1px solid var(--wl-border); } }
+@media (max-width:520px) { .discovery-timeline { grid-template-columns:1fr; } .discovery-timeline-step { border-right:0; border-bottom:1px solid var(--wl-border); } .discovery-timeline-step:last-child { border-bottom:0; } .discovery-timeline-step::after { display:none; } }
