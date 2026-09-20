@@ -9,56 +9,152 @@ import { MeetingsService } from "./meetings.service";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  styleUrl: "./meetings.page.refined.css",
-  template: `<qai-page-header
+  template: `<main class="page">
+    <qai-page-header
       title="Demos & Meetings"
       subtitle="Schedule discovery calls and retain the booking against the real CRM contact."
-      ><button (click)="load()">↻ Refresh</button
-      ><button class="primary" (click)="open()">
-        + Schedule meeting
-      </button></qai-page-header>
     >
-    <section class="meeting-metrics">
-      <article><span class="metric-icon orange">◷</span><div><small>Total meetings</small><strong>{{ rows.length }}</strong><em>All scheduled activity</em></div></article>
-      <article><span class="metric-icon blue">↗</span><div><small>Booked</small><strong>{{ bookedCount }}</strong><em>Upcoming or pending calls</em></div></article>
-      <article><span class="metric-icon green">✓</span><div><small>Completed</small><strong>{{ completedCount }}</strong><em>Finished meetings</em></div></article>
-      <article><span class="metric-icon violet">◎</span><div><small>Calendars</small><strong>{{ syncedCount }}</strong><em>Externally synced</em></div></article>
+      <button class="button-quiet" (click)="load()">Refresh</button>
+      <button class="button-primary" (click)="open()">+ Schedule meeting</button>
+    </qai-page-header>
+
+    <section class="metric-grid">
+      <article class="metric">
+        <span class="eyebrow">TOTAL MEETINGS</span>
+        <strong>{{ rows.length }}</strong>
+        <span class="meta">All scheduled activity</span>
+      </article>
+      <article class="metric">
+        <span class="eyebrow">BOOKED</span>
+        <strong>{{ bookedCount }}</strong>
+        <span class="meta">Upcoming or pending calls</span>
+      </article>
+      <article class="metric">
+        <span class="eyebrow">COMPLETED</span>
+        <strong>{{ completedCount }}</strong>
+        <span class="meta">Finished meetings</span>
+      </article>
+      <article class="metric">
+        <span class="eyebrow">CALENDARS</span>
+        <strong>{{ syncedCount }}</strong>
+        <span class="meta">Externally synced</span>
+      </article>
     </section>
-    <div class="callout warning" *ngIf="error">
-      <span class="callout-icon">!</span>
-      <div>
-        <b>Meeting action failed</b>
-        <p>{{ error }}</p>
-      </div>
+
+    <div class="alert" *ngIf="error">
+      <strong>Meeting action failed</strong>
+      <span>{{ error }}</span>
     </div>
-    <section class="directory-card">
-      <header><div><span class="eyebrow">CALENDAR DIRECTORY</span><h2>Meeting workspace</h2><p>Every discovery call, demo and follow-up in one schedule.</p></div><div class="directory-summary"><span><b>{{ rows.length }}</b>Total</span><span><b>{{ bookedCount }}</b>Booked</span><span><b>{{ completedCount }}</b>Completed</span></div></header>
-      <div class="directory-toolbar"><label><span>⌕</span><input [(ngModel)]="query" placeholder="Search contact or meeting status" /></label><select [(ngModel)]="statusFilter"><option value="">All statuses</option><option>booked</option><option>completed</option><option>cancelled</option><option>no-show</option></select><strong>{{ visible.length }} shown</strong></div>
-      <div class="data-state" *ngIf="loading">Loading meetings…</div>
-      <div class="directory-empty" *ngIf="!loading && !visible.length">
-        <i>◷</i>
-        <strong>{{ rows.length ? "No meetings match the filters" : "No meetings booked" }}</strong
-        ><span>Schedule a discovery call from a qualified reply or CRM contact.</span
-        ><button class="primary" (click)="open()">Schedule first meeting</button>
+
+    <section class="card">
+      <header class="card-header">
+        <div>
+          <span class="eyebrow">CALENDAR DIRECTORY</span>
+          <h2>Meeting workspace</h2>
+          <p>Every discovery call, demo and follow-up in one schedule.</p>
+        </div>
+        <div class="facts">
+          <span><b>{{ rows.length }}</b>Total</span>
+          <span><b>{{ bookedCount }}</b>Booked</span>
+          <span><b>{{ completedCount }}</b>Completed</span>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <label class="search">
+          <span>Search</span>
+          <input [(ngModel)]="query" placeholder="Search contact or meeting status" />
+        </label>
+        <label class="filter-group">
+          <span>Status</span>
+          <select [(ngModel)]="statusFilter">
+            <option value="">All statuses</option>
+            <option>booked</option>
+            <option>completed</option>
+            <option>cancelled</option>
+            <option>no-show</option>
+          </select>
+        </label>
+        <span class="meta">{{ visible.length }} shown</span>
       </div>
-      <div class="table-wrap" *ngIf="!loading && visible.length"><table>
-        <thead><tr><th>Starts</th><th>Duration</th><th>Contact</th><th>Status</th><th>Calendar</th><th></th></tr></thead>
-        <tbody><tr *ngFor="let row of visible">
-          <td><div class="directory-identity"><i>◷</i><span><b>{{ row.startsAtUtc | date: "mediumDate" }}</b><small>{{ row.startsAtUtc | date: "shortTime" }}</small></span></div></td>
-          <td>{{ duration(row) }} min</td><td>{{ contactName(row.contactId) }}</td>
-          <td><span class="pill" [ngClass]="statusClass(row.status)">{{ row.status }}</span></td>
-          <td>{{ row.externalEventId ? "Synced" : "Internal booking" }}</td>
-          <td><div class="directory-actions"><button (click)="open(row)">Edit</button><button class="danger" (click)="remove(row)">Cancel</button></div></td>
-        </tr></tbody>
-      </table></div>
+
+      <div class="notice" *ngIf="loading">Loading meetings…</div>
+
+      <div class="empty" *ngIf="!loading && !visible.length">
+        <span class="icon">◷</span>
+        <strong>{{ rows.length ? "No meetings match the filters" : "No meetings booked" }}</strong>
+        <span>Schedule a discovery call from a qualified reply or CRM contact.</span>
+        <div class="actions">
+          <button class="button-primary" (click)="open()">Schedule first meeting</button>
+        </div>
+      </div>
+
+      <div class="table" *ngIf="!loading && visible.length">
+        <table>
+          <thead>
+            <tr><th>Starts</th><th>Duration</th><th>Contact</th><th>Status</th><th>Calendar</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of visible">
+              <td>
+                <div class="identity">
+                  <span class="avatar">◷</span>
+                  <span class="stack"><b>{{ row.startsAtUtc | date: "mediumDate" }}</b><span>{{ row.startsAtUtc | date: "shortTime" }}</span></span>
+                </div>
+              </td>
+              <td>{{ duration(row) }} min</td>
+              <td>{{ contactName(row.contactId) }}</td>
+              <td><span class="status" [ngClass]="statusClass(row.status)">{{ row.status }}</span></td>
+              <td>{{ row.externalEventId ? "Synced" : "Internal booking" }}</td>
+              <td>
+                <div class="actions">
+                  <button class="button-quiet" (click)="open(row)">Edit</button>
+                  <button class="button-danger" (click)="remove(row)">Cancel</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
-    <qai-modal [open]="show" [title]="form.id ? 'Edit meeting' : 'Schedule meeting'" (close)="show = false"><form class="form" (ngSubmit)="save()">
-      <label>Contact<select [(ngModel)]="form.contactId" name="contact" required><option value="">Select contact</option><option *ngFor="let contact of contacts" [value]="contact.id">{{ displayContact(contact) }}</option></select></label>
-      <label>Meeting type<select [(ngModel)]="form.meetingTypeId" name="type"><option value="">Discovery call (default)</option><option *ngFor="let type of types" [value]="type.id">{{ type.name }} · {{ type.durationMinutes }} min</option></select></label>
-      <div class="form2"><label>Date<input type="date" [(ngModel)]="date" name="date" required /></label><label>Time<input type="time" [(ngModel)]="time" name="time" required /></label></div>
-      <label>Status<select [(ngModel)]="form.status" name="status"><option>booked</option><option>completed</option><option>cancelled</option><option>no-show</option></select></label>
-      <footer><button type="button" (click)="show = false">Cancel</button><button class="primary" type="submit" [disabled]="saving || !form.contactId">{{ saving ? "Saving…" : "Save meeting" }}</button></footer>
-    </form></qai-modal>`,
+
+    <qai-modal
+      [open]="show"
+      [title]="form.id ? 'Edit meeting' : 'Schedule meeting'"
+      (close)="show = false"
+    >
+      <form class="form" (ngSubmit)="save()">
+        <label>Contact
+          <select [(ngModel)]="form.contactId" name="contact" required>
+            <option value="">Select contact</option>
+            <option *ngFor="let contact of contacts" [value]="contact.id">{{ displayContact(contact) }}</option>
+          </select>
+        </label>
+        <label>Meeting type
+          <select [(ngModel)]="form.meetingTypeId" name="type">
+            <option value="">Discovery call (default)</option>
+            <option *ngFor="let type of types" [value]="type.id">{{ type.name }} · {{ type.durationMinutes }} min</option>
+          </select>
+        </label>
+        <div class="content-grid">
+          <label>Date<input type="date" [(ngModel)]="date" name="date" required /></label>
+          <label>Time<input type="time" [(ngModel)]="time" name="time" required /></label>
+        </div>
+        <label>Status
+          <select [(ngModel)]="form.status" name="status">
+            <option>booked</option>
+            <option>completed</option>
+            <option>cancelled</option>
+            <option>no-show</option>
+          </select>
+        </label>
+        <footer class="actions">
+          <button type="button" class="button-secondary" (click)="show = false">Cancel</button>
+          <button class="button-primary" type="submit" [disabled]="saving || !form.contactId">{{ saving ? "Saving…" : "Save meeting" }}</button>
+        </footer>
+      </form>
+    </qai-modal>
+  </main>`,
 })
 export class MeetingsPage implements OnInit {
   rows: any[] = []; contacts: any[] = []; types: any[] = []; show = false;
