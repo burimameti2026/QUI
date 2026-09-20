@@ -45,39 +45,41 @@ import { AiAgentsService } from "./ai-agents.service";
           </div>
         </aside>
 
-        <section class="card" *ngIf="tab === 'behavior'">
-          <header class="card-header"><h3>Agent behavior</h3></header>
-          <div class="card-body form">
-            <div class="content-grid"><label>Name<input [(ngModel)]="agent.name" /></label><label>Role<input [(ngModel)]="agent.role" /></label></div>
-            <label>Instructions<textarea [(ngModel)]="agent.instructions"></textarea></label>
-            <div class="content-grid"><label>Tone<select [(ngModel)]="agent.tone"><option>professional</option><option>friendly</option><option>concise</option></select></label><label>Languages<input [(ngModel)]="agent.languagesCsv" /></label></div>
-            <label class="list-item"><input type="checkbox" [(ngModel)]="agent.active" /> Agent active</label>
-          </div>
-        </section>
+        <div class="stack">
+          <section class="card" *ngIf="tab === 'behavior'">
+            <header class="card-header"><h3>Agent behavior</h3></header>
+            <div class="card-body form">
+              <div class="content-grid"><label>Name<input [(ngModel)]="agent.name" /></label><label>Role<input [(ngModel)]="agent.role" /></label></div>
+              <label>Instructions<textarea [(ngModel)]="agent.instructions"></textarea></label>
+              <div class="content-grid"><label>Tone<select [(ngModel)]="agent.tone"><option>professional</option><option>friendly</option><option>concise</option></select></label><label>Languages<input [(ngModel)]="agent.languagesCsv" /></label></div>
+              <label class="list-item"><input type="checkbox" [(ngModel)]="agent.active" /> Agent active</label>
+            </div>
+          </section>
 
-        <section class="card" *ngIf="tab === 'tools'">
-          <header class="card-header"><div><h3>Tools & actions</h3><p>Actions available after tenant and permission checks.</p></div></header>
-          <div class="list"><article class="list-item" *ngFor="let t of tools"><span class="icon">⚡</span><div class="stack"><b>{{ t }}</b><span class="meta">{{ desc(t) }}</span></div><span class="status success">Enabled</span></article></div>
-        </section>
+          <section class="card" *ngIf="tab === 'tools'">
+            <header class="card-header"><div><h3>Tools & actions</h3><p>Actions available after tenant and permission checks.</p></div></header>
+            <div class="list"><article class="list-item" *ngFor="let t of tools"><span class="icon">⚡</span><div class="stack"><b>{{ t }}</b><span class="meta">{{ desc(t) }}</span></div><span class="status success">Enabled</span></article></div>
+          </section>
 
-        <section class="card" *ngIf="tab === 'model'">
-          <header class="card-header"><h3>Model routing</h3></header>
-          <div class="card-body form"><label>Primary model<select [(ngModel)]="agent.model"><option>local</option><option>gpt-5</option><option>azure-openai</option></select></label><p class="meta">External models require provider credentials in production configuration.</p></div>
-        </section>
+          <section class="card" *ngIf="tab === 'model'">
+            <header class="card-header"><h3>Model routing</h3></header>
+            <div class="card-body form"><label>Primary model<select [(ngModel)]="agent.model"><option>local</option><option>gpt-5</option><option>azure-openai</option></select></label><p class="meta">External models require provider credentials in production configuration.</p></div>
+          </section>
 
-        <section class="card" *ngIf="tab === 'guardrails'">
-          <header class="card-header"><h3>Guardrails</h3></header>
-          <div class="card-body form"><label>Operational policy<textarea [(ngModel)]="guardrails"></textarea></label></div>
-        </section>
+          <section class="card" *ngIf="tab === 'guardrails'">
+            <header class="card-header"><h3>Guardrails</h3></header>
+            <div class="card-body form"><label>Operational policy<textarea [(ngModel)]="guardrails"></textarea></label></div>
+          </section>
 
-        <aside class="card">
-          <header class="card-header"><div><h3>Agent test</h3><p>Safe sandbox only</p></div><span class="status">Not live</span></header>
-          <div class="card-body stack">
-            <div class="list"><p class="list-item" *ngIf="prompt">{{ prompt }}</p><p class="list-item" *ngIf="answer"><b>{{ agent.name }}</b>{{ answer }}</p></div>
-            <textarea [(ngModel)]="prompt" placeholder="Test a customer message"></textarea>
-            <button class="button-primary" (click)="runTest()">Run test</button>
-          </div>
-        </aside>
+          <aside class="card">
+            <header class="card-header"><div><h3>Agent test</h3><p>Safe sandbox only</p></div><span class="status">Not live</span></header>
+            <div class="card-body stack">
+              <div class="list"><p class="list-item" *ngIf="prompt">{{ prompt }}</p><p class="list-item" *ngIf="answer"><b>{{ agent.name }}</b>{{ answer }}</p></div>
+              <textarea [(ngModel)]="prompt" placeholder="Test a customer message"></textarea>
+              <button class="button-primary" (click)="runTest()">Run test</button>
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
 
