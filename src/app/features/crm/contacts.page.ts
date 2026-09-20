@@ -22,10 +22,10 @@ import { CrmService } from './crm.service';
           <div><span class="eyebrow">CRM DIRECTORY</span><h2>Contact workspace</h2><p>Search, review and manage every person in the customer lifecycle.</p></div>
           <div class="facts"><span><b>{{ rows.length }}</b>Total</span><span><b>{{ leadCount }}</b>Leads</span><span><b>{{ customerCount }}</b>Customers</span></div>
         </header>
-        <div class="toolbar">
-          <label><span>⌕</span><input [(ngModel)]="q" placeholder="Search name, email or phone" /></label>
+        <div class="toolbar directory-search">
+          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search name, email or phone" /></label>
           <select [(ngModel)]="stage"><option value="">All lifecycle stages</option><option>visitor</option><option>lead</option><option>customer</option></select>
-          <strong>{{ visible.length }} shown</strong>
+          <span class="status">{{ visible.length }} shown</span>
         </div>
         <div class="notice" *ngIf="loading">Loading contacts…</div>
         <div class="table" *ngIf="!loading && visible.length">
