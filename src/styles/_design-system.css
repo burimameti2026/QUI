@@ -52,7 +52,7 @@
 
 /* Reference shell: the dashboard uses the same navigation shell as every workspace. */
 .shell.hub-shell {
-  grid-template-columns: 308px minmax(0, 1fr) !important;
+  grid-template-columns: 236px minmax(0, 1fr) !important;
   background: var(--wl-surface, #fff) !important;
 }
 
@@ -151,7 +151,7 @@ a {
 }
 
 .shell.hub-shell {
-  grid-template-columns: 308px minmax(0, 1fr) !important;
+  grid-template-columns: 236px minmax(0, 1fr) !important;
   background: #fff !important
 }
 
@@ -163,6 +163,7 @@ a {
   min-width: 0
 }
 
+.app-header,
 .app-main,
 .page,
 .dashboard-content,
@@ -180,14 +181,22 @@ a {
 }
 
 qai-page-header {
-  display: block !important
+  display: block !important;
+  margin: 0 !important;
+  background: #fff !important;
+}
+
+.app-header {
+  background: #fff !important;
+  border-bottom: 1px solid var(--wl-border-soft, #edf0f4) !important;
+  box-shadow: none !important;
 }
 
 .page-header,
 qai-page-header .page-header {
   width: 100% !important;
   min-height: 76px !important;
-  padding: 20px 28px 16px !important;
+  padding: 10px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--ref-line) !important;
   background: transparent !important;
