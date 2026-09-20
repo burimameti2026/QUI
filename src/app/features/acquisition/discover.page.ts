@@ -9,21 +9,21 @@ import { AcquisitionService } from "./acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
-<div class="discover-page">
+<div class="page">
 <qai-page-header
       title="Prospect Discovery"
       subtitle="Define who you want to sell to, collect market evidence and prioritize companies showing real buying intent."
     >
 
 
-      <button class="quiet-action" (click)="load()">↻ Refresh data</button>
+      <button class="button-quiet" (click)="load()">↻ Refresh data</button>
       <button (click)="openIcp()">+ New ICP</button>
       <button (click)="prospectOpen = true">+ Add prospect</button>
-      <button class="primary" [disabled]="!activeIcp || discoveryRunning" (click)="openOnlineDiscovery()">⌕ Find online</button>
-      <button class="primary" [disabled]="!activeIcp" (click)="openBulk()">⇧ Import companies</button>
+      <button class="button-primary" [disabled]="!activeIcp || discoveryRunning" (click)="openOnlineDiscovery()">⌕ Find online</button>
+      <button class="button-primary" [disabled]="!activeIcp" (click)="openBulk()">⇧ Import companies</button>
     </qai-page-header>
-    <section class="discovery-hero">
-      <div class="hero-copy">
+    <section class="hero">
+      <div class="stack">
         <span class="section-kicker">Acquisition workflow</span>
         <h2>Build an evidence-backed target market</h2>
         <p>Define fit, import verified accounts and move only qualified prospects into controlled outreach.</p>
@@ -33,7 +33,7 @@ import { AcquisitionService } from "./acquisition.service";
           <span><b>{{ overview.hot || 0 }}</b> high priority</span>
         </div>
       </div>
-      <div class="journey-panel">
+      <div class="card">
         <span class="journey-label">Current workflow progress</span>
         <qai-wizard-steps
           [steps]="['Define ICP', 'Verify data', 'Build audience', 'Launch']"
@@ -43,37 +43,37 @@ import { AcquisitionService } from "./acquisition.service";
       </div>
     </section>
 
-    <section class="discovery-metrics">
-      <article class="metric-card blue"><i>◆</i><div><span>Discovered</span><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></div></article>
-      <article class="metric-card rose"><i>↗</i><div><span>Hot prospects</span><strong>{{ overview.hot || 0 }}</strong><small>Fit + buying intent</small></div></article>
-      <article class="metric-card violet"><i>◈</i><div><span>Active campaigns</span><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></div></article>
-      <article class="metric-card amber"><i>↩</i><div><span>Replies</span><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></div></article>
-      <article class="metric-card green"><i>✓</i><div><span>Demo ready</span><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></div></article>
-      <article class="metric-card teal"><i>◎</i><div><span>Selected</span><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></div></article>
+    <section class="metric-grid">
+      <article class="metric blue"><i>◆</i><div><span>Discovered</span><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></div></article>
+      <article class="metric rose"><i>↗</i><div><span>Hot prospects</span><strong>{{ overview.hot || 0 }}</strong><small>Fit + buying intent</small></div></article>
+      <article class="metric violet"><i>◈</i><div><span>Active campaigns</span><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></div></article>
+      <article class="metric amber"><i>↩</i><div><span>Replies</span><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></div></article>
+      <article class="metric green"><i>✓</i><div><span>Demo ready</span><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></div></article>
+      <article class="metric teal"><i>◎</i><div><span>Selected</span><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></div></article>
     </section>
 
     <div class="notice error-notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
     <div class="notice success-notice" *ngIf="message"><b>✓</b><span>{{ message }}</span></div>
 
-    <section class="workspace-grid">
-      <article class="workspace-card icp-card">
-        <header class="workspace-header">
+    <section class="content-grid">
+      <article class="card">
+        <header class="card-header">
           <div><span class="section-kicker">QUALIFICATION MODEL</span><h3>Ideal customer profiles</h3><p>Choose the rules used to qualify this audience.</p></div>
-          <button class="header-action" (click)="openIcp()">+ New profile</button>
+          <button class="button-secondary" (click)="openIcp()">+ New profile</button>
         </header>
-        <div class="profile-list" *ngIf="icps.length">
-          <label class="profile-option" *ngFor="let x of icps" [class.selected]="selectedIcpId === x.id" [class.paused]="!x.active">
+        <div class="list" *ngIf="icps.length">
+          <label class="list-item" *ngFor="let x of icps" [class.selected]="selectedIcpId === x.id" [class.paused]="!x.active">
             <input type="radio" name="activeIcp" [value]="x.id" [(ngModel)]="selectedIcpId" [disabled]="!x.active" />
             <span class="profile-mark">{{ x.name.charAt(0) }}</span>
-            <span class="profile-copy"><strong>{{ x.name }}</strong><small>{{ x.industry || 'All industries' }} · {{ x.countriesCsv || 'All countries' }}</small><em>{{ x.minimumEmployees || 0 }}–{{ x.maximumEmployees || '∞' }} employees</em></span>
+            <span class="stack"><strong>{{ x.name }}</strong><small>{{ x.industry || 'All industries' }} · {{ x.countriesCsv || 'All countries' }}</small><em>{{ x.minimumEmployees || 0 }}–{{ x.maximumEmployees || '∞' }} employees</em></span>
             <span class="profile-state">{{ x.active ? (selectedIcpId === x.id ? 'Selected' : 'Use profile') : 'Paused' }}</span>
           </label>
         </div>
-        <div class="empty-state" *ngIf="!icps.length"><i>◎</i><strong>No customer profile yet</strong><span>Create an ICP before importing company data.</span><button (click)="openIcp()">Create first profile</button></div>
+        <div class="empty" *ngIf="!icps.length"><i>◎</i><strong>No customer profile yet</strong><span>Create an ICP before importing company data.</span><button (click)="openIcp()">Create first profile</button></div>
       </article>
 
-      <article class="workspace-card audience-card">
-        <header class="workspace-header">
+      <article class="card">
+        <header class="card-header">
           <div><span class="section-kicker">AUDIENCE BUILDER</span><h3>Create target list</h3><p>Turn selected companies into a reusable campaign audience.</p></div>
         </header>
         <div class="selection-summary">
@@ -81,7 +81,7 @@ import { AcquisitionService } from "./acquisition.service";
           <div><strong>Prospects selected</strong><span>{{ selectedIds.size ? 'Ready to create an audience' : 'Select accounts from the grid below' }}</span></div>
         </div>
         <label class="list-name">Target list name<input [(ngModel)]="listName" placeholder="DACH manufacturers with freight demand" /></label>
-        <button class="primary create-list" [disabled]="!selectedIds.size || !listName.trim()" (click)="createList()">Create target list <span>→</span></button>
+        <button class="button-primary create-list" [disabled]="!selectedIds.size || !listName.trim()" (click)="createList()">Create target list <span>→</span></button>
         <small class="audience-help">Creating a list does not send outreach.</small>
       </article>
     </section>
@@ -126,7 +126,7 @@ import { AcquisitionService } from "./acquisition.service";
         </tbody>
       </table>
       </div>
-      <div class="empty-state prospects-empty" *ngIf="!prospects.length"><i>⌕</i><strong>No prospects match this score</strong><span>Lower the score filter or import a verified company dataset.</span><button class="primary" [disabled]="!activeIcp" (click)="openBulk()">Import companies</button></div>
+      <div class="empty prospects-empty" *ngIf="!prospects.length"><i>⌕</i><strong>No prospects match this score</strong><span>Lower the score filter or import a verified company dataset.</span><button class="button-primary" [disabled]="!activeIcp" (click)="openBulk()">Import companies</button></div>
     </section>
 
     <qai-modal [open]="onlineDiscoveryOpen" title="Find companies online" (close)="onlineDiscoveryOpen = false">
@@ -144,7 +144,7 @@ import { AcquisitionService } from "./acquisition.service";
           <label>Minimum qualification score <input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
         </div>
         <label>Review target list name <input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small class="field-help">Qualified accounts are placed here for human review; no outreach is sent.</small></label>
-        <footer><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured">{{ discoveryRunning ? 'Searching…' : 'Find and qualify companies' }}</button></footer>
+        <footer><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="button-primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured">{{ discoveryRunning ? 'Searching…' : 'Find and qualify companies' }}</button></footer>
       </form>
     </qai-modal>
 
@@ -260,7 +260,7 @@ import { AcquisitionService } from "./acquisition.service";
             (click)="icpStep ? (icpStep = icpStep - 1) : (icpOpen = false)"
           >
             {{ icpStep ? "Back" : "Cancel" }}</button
-          ><button class="primary" type="submit" [disabled]="!canContinueIcp">
+          ><button class="button-primary" type="submit" [disabled]="!canContinueIcp">
             {{ icpStep === 2 ? "Save profile" : "Continue" }}
           </button>
         </footer>
@@ -327,7 +327,7 @@ import { AcquisitionService } from "./acquisition.service";
         </div>
         <footer>
           <button type="button" (click)="prospectOpen = false">Cancel</button
-          ><button class="primary" type="submit">Add prospect</button>
+          ><button class="button-primary" type="submit">Add prospect</button>
         </footer>
       </form></qai-modal
     >
@@ -376,7 +376,7 @@ import { AcquisitionService } from "./acquisition.service";
               >Retained for compliance and audit purposes.</small
             ></label
           >
-          <p class="error" *ngIf="bulkError">{{ bulkError }}</p>
+          <p class="alert-error" *ngIf="bulkError">{{ bulkError }}</p>
         </section>
         <section *ngIf="bulkStep === 1">
           <h4 class="section-title">Map spreadsheet columns</h4>
@@ -385,7 +385,7 @@ import { AcquisitionService } from "./acquisition.service";
             <label *ngFor="let field of importFields">{{field.label}} <b *ngIf="field.required">Required</b><select [(ngModel)]="bulkMapping[field.key]" [name]="'map_'+field.key" (change)="rebuildMappedRows()"><option value="">Do not import</option><option *ngFor="let header of bulkPreview?.headers" [value]="header">{{header}}</option></select></label>
           </div>
           <div class="import-preview" *ngIf="bulkPreview?.sampleRows?.length"><table><thead><tr><th *ngFor="let field of mappedFields">{{field.label}}</th></tr></thead><tbody><tr *ngFor="let row of bulkRows.slice(0,5)"><td *ngFor="let field of mappedFields">{{row[field.key] || '—'}}</td></tr></tbody></table></div>
-          <p class="error" *ngIf="bulkError">{{bulkError}}</p>
+          <p class="alert-error" *ngIf="bulkError">{{bulkError}}</p>
         </section>
         <section *ngIf="bulkStep === 2">
           <h4 class="section-title">Validate before adding data</h4>
@@ -440,7 +440,7 @@ import { AcquisitionService } from "./acquisition.service";
           >
             {{ bulkStep ? "Back" : "Cancel" }}</button
           ><button
-            class="primary"
+            class="button-primary"
             type="submit"
             [disabled]="bulkImporting || !canContinueBulk"
           >
@@ -486,7 +486,7 @@ import { AcquisitionService } from "./acquisition.service";
         /></label>
         <footer>
           <button type="button" (click)="signalOpen = false">Cancel</button
-          ><button class="primary" type="submit">Add evidence</button>
+          ><button class="button-primary" type="submit">Add evidence</button>
         </footer>
       </form></qai-modal
     >
