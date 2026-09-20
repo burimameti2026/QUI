@@ -44,8 +44,6 @@ const i = (
   styleUrls: ["./shell.component.css"],
   template: ` <div
     class="shell"
-    [class.collapsed]="collapsed"
-    [class.hub-shell]="isHub"
   >
     <aside class="sidebar">
       <div class="brand">
@@ -55,9 +53,7 @@ const i = (
             ><strong>FindLeads<span> AI</span></strong
             ></span
           ></a
-        ><button type="button" class="collapse-btn" (click)="toggleSidebar()">
-          {{ collapsed ? "→" : "←" }}
-        </button>
+>
       </div>
       <nav class="reference-menu" aria-label="Primary navigation">
         <section
@@ -162,7 +158,6 @@ export class ShellComponent {
   private readonly router = inject(Router);
   readonly navigationTranslations = NAVIGATION_TRANSLATIONS;
   query = "";
-  collapsed = false;
   adminMenuOpen = false;
   private readonly expandedItems = new Set<string>();
   readonly navigationGroups: Group[] = [
@@ -299,9 +294,6 @@ export class ShellComponent {
         .join("")
         .toUpperCase() || "R"
     );
-  }
-  toggleSidebar() {
-    this.collapsed = !this.collapsed;
   }
   setLanguage(l: string) {
     this.i18n.setLanguage(l as any);
