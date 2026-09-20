@@ -35,13 +35,13 @@ import { AcquisitionService } from "./acquisition.service";
     </div>
   </section>
 
-  <section class="metric-grid">
-    <article class="metric"><i>◆</i><div><span>Discovered</span><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></div></article>
-    <article class="metric"><i>↗</i><div><span>Hot prospects</span><strong>{{ overview.hot || 0 }}</strong><small>Fit + buying intent</small></div></article>
-    <article class="metric"><i>◈</i><div><span>Active campaigns</span><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></div></article>
-    <article class="metric"><i>↩</i><div><span>Replies</span><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></div></article>
-    <article class="metric"><i>✓</i><div><span>Demo ready</span><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></div></article>
-    <article class="metric"><i>◎</i><div><span>Selected</span><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></div></article>
+  <section class="metric-grid discovery-kpis">
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◆</span><span class="metric-label">Discovered</span></div><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">↗</span><span class="metric-label">Hot prospects</span></div><strong>{{ overview.hot || 0 }}</strong><small>Fit + buying intent</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◈</span><span class="metric-label">Active campaigns</span></div><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">↩</span><span class="metric-label">Replies</span></div><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Demo ready</span></div><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Selected</span></div><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></article>
   </section>
 
   <div class="notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
