@@ -6759,6 +6759,56 @@ main.app-main>router-outlet+* :where(
   box-shadow: inset -2px 2px 0 1px #edf0f4 !important;
 }
 
+/* Final page-header control alignment: every header action shares one exact geometry. */
+qai-page-header .page-actions > button,
+qai-page-header .page-actions > a,
+qai-page-header .header-actions > button,
+qai-page-header .header-actions > a {
+  box-sizing: border-box !important;
+  width: auto !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 13px !important;
+  margin: 0 !important;
+  border-width: 0 !important;
+  border-radius: var(--wl-button-radius, 8px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  font-size: 13px !important;
+  font-weight: 650 !important;
+}
+
+qai-page-header .page-actions,
+qai-page-header .header-actions {
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+qai-page-header .page-actions > button.primary,
+qai-page-header .page-actions > a.primary,
+qai-page-header .header-actions > button.primary,
+qai-page-header .header-actions > a.primary,
+qai-page-header .page-actions > button.btn-primary,
+qai-page-header .header-actions > button.btn-primary {
+  background: var(--wl-button-1-bg) !important;
+  color: var(--wl-button-1-text) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+qai-page-header .page-actions > button.primary:hover:not(:disabled),
+qai-page-header .page-actions > a.primary:hover,
+qai-page-header .header-actions > button.primary:hover:not(:disabled),
+qai-page-header .header-actions > a.primary:hover,
+qai-page-header .page-actions > button.btn-primary:hover:not(:disabled),
+qai-page-header .header-actions > button.btn-primary:hover:not(:disabled) {
+  background: var(--wl-button-1-hover) !important;
+  color: #fff !important;
+}
+
 /* ============================================================
    END CANONICAL APPLICATION DESIGN SYSTEM
    ============================================================ */
