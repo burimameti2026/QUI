@@ -2,79 +2,39 @@
   title="Acquisition Approval Queue"
   subtitle="Review AI-prepared outreach before any external delivery is attempted."
 >
-  <button type="button" class="button-quiet" (click)="load()" [disabled]="loading">
-    {{ loading ? 'Loading…' : '↻ Refresh' }}
-  </button>
-  <a class="button-primary" href="/acquisition/autonomous">Open autonomous agent →</a>
+  <div class="page-actions">
+    <button type="button" class="button-quiet" (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : '↻ Refresh' }}</button>
+    <a class="button-primary" href="/acquisition/autonomous">Open autonomous agent →</a>
+  </div>
 </qai-page-header>
 
 <section class="hero">
   <div class="stack">
     <span class="eyebrow">HUMAN-IN-THE-LOOP CONTROL</span>
     <h2>Review once. Send only when the delivery gates are satisfied.</h2>
-    <p>
-      Prospecting, enrichment and message drafting can run autonomously. This queue is the
-      operational checkpoint for sender verification, suppression, provider configuration and
-      tenant safety rules before external delivery.
-    </p>
-    <div class="facts">
-      <span><i></i> Automation can prepare</span>
-      <span><i></i> Humans approve</span>
-      <span><i></i> Backend enforces delivery</span>
-    </div>
+    <p>Prospecting, enrichment and message drafting can run autonomously. This queue is the operational checkpoint for sender verification, suppression, provider configuration and tenant safety rules before external delivery.</p>
+    <div class="facts"><span>Automation can prepare</span><span>Humans approve</span><span>Backend enforces delivery</span></div>
   </div>
-  <aside class="status">
-    <div class="status-icon">✓</div>
-    <div><span class="eyebrow">DELIVERY GATE</span><strong>Safety controls active</strong><small>Approval is recorded separately from delivery.</small></div>
-  </aside>
+  <aside class="status"><strong>Safety controls active</strong><small>Approval is recorded separately from delivery.</small></aside>
 </section>
 
-<div class="alert" *ngIf="error">
-  <span class="alert-icon">!</span>
-  <div><strong>Queue error</strong><span>{{ error }}</span></div>
-</div>
-<div class="notice" *ngIf="notice">
-  <span class="notice-icon">✓</span>
-  <div><strong>Action recorded</strong><span>{{ notice }}</span></div>
-</div>
+<div class="alert" *ngIf="error"><strong>Queue error</strong><span>{{ error }}</span></div>
+<div class="notice" *ngIf="notice"><strong>Action recorded</strong><span>{{ notice }}</span></div>
 
 <section class="metric-grid">
-  <article>
-    <span class="metric-top"><span class="metric-icon button-primary">▱</span><span class="metric-label">Messages</span></span>
-    <strong>{{ messages.length }}</strong><small>Prepared by acquisition campaigns</small>
-  </article>
-  <article>
-    <span class="metric-top"><span class="metric-icon accent">✓</span><span class="metric-label">Approval requested</span></span>
-    <strong>{{ requested }}</strong><small>Awaiting human review</small>
-  </article>
-  <article>
-    <span class="metric-top"><span class="metric-icon neutral">◌</span><span class="metric-label">Still queued</span></span>
-    <strong>{{ pending }}</strong><small>No approval request recorded</small>
-  </article>
-  <article>
-    <span class="metric-top"><span class="metric-icon success">◉</span><span class="metric-label">Processed</span></span>
-    <strong>{{ approved + failed }}</strong><small>{{ approved }} sent · {{ failed }} blocked/failed</small>
-  </article>
+  <article class="metric"><span class="metric-label">Messages</span><strong>{{ messages.length }}</strong><small>Prepared by acquisition campaigns</small></article>
+  <article class="metric"><span class="metric-label">Approval requested</span><strong>{{ requested }}</strong><small>Awaiting human review</small></article>
+  <article class="metric"><span class="metric-label">Still queued</span><strong>{{ pending }}</strong><small>No approval request recorded</small></article>
+  <article class="metric"><span class="metric-label">Processed</span><strong>{{ approved + failed }}</strong><small>{{ approved }} sent · {{ failed }} blocked/failed</small></article>
 </section>
 
 <section class="card">
   <header class="card-header">
-    <div>
-      <span class="eyebrow">OUTREACH REVIEW</span>
-      <h3>Message queue</h3>
-      <p>Inspect recipient, campaign context and the exact message before approval.</p>
-    </div>
-    <div class="meta">
-      <span><b>{{ visibleMessages.length }}</b> shown</span>
-      <span><b>{{ pending }}</b> pending</span>
-    </div>
+    <div><span class="eyebrow">OUTREACH REVIEW</span><h3>Message queue</h3><p>Inspect recipient, campaign context and the exact message before approval.</p></div>
+    <div class="meta"><span><b>{{ visibleMessages.length }}</b> shown</span><span><b>{{ pending }}</b> pending</span></div>
   </header>
-
   <div class="toolbar">
-    <label class="search">
-      <span>⌕</span>
-      <input [(ngModel)]="query" placeholder="Search prospect, campaign, subject..." />
-    </label>
+    <label class="search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search prospect, campaign, subject..." /></label>
     <div class="filter-group" role="tablist" aria-label="Approval queue filters">
       <button type="button" [class.active]="filter === 'all'" (click)="setFilter('all')">All <b>{{ messages.length }}</b></button>
       <button type="button" [class.active]="filter === 'pending'" (click)="setFilter('pending')">Queued <b>{{ pending }}</b></button>
@@ -84,51 +44,20 @@
   </div>
 
   <div class="list" *ngIf="!loading; else loadingTpl">
-    <article class="card" *ngFor="let message of visibleMessages">
+    <article class="list-item" *ngFor="let message of visibleMessages">
       <header class="card-header">
-        <div class="identity">
-          <span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span>
-          <div>
-            <strong>{{ message.prospect || 'Unknown prospect' }}</strong>
-            <small>{{ message.contactName || 'Contact' }} · {{ message.email || 'No recipient' }}</small>
-          </div>
-        </div>
-        <span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && isProcessed(message)">
-          {{ statusLabel(message) }}
-        </span>
+        <div class="identity"><span class="avatar">{{ (message.prospect || '?').charAt(0) }}</span><div><strong>{{ message.prospect || 'Unknown prospect' }}</strong><small>{{ message.contactName || 'Contact' }} · {{ message.email || 'No recipient' }}</small></div></div>
+        <span class="status" [class.requested]="message.approvalRequested" [class.processed]="!message.approvalRequested && isProcessed(message)">{{ statusLabel(message) }}</span>
       </header>
-
-      <div class="meta">
-        <span class="status">{{ message.campaign || 'Campaign' }}</span>
-        <span class="stack"><b>Subject</b>{{ message.subject || 'No subject' }}</span>
-        <span class="stack"><b>Created</b>{{ message.createdAtUtc | date:'medium' }}</span>
-      </div>
-
-      <section class="card-body">
-        <span class="eyebrow">MESSAGE PREVIEW</span>
-        <p>{{ message.body || 'No message body available.' }}</p>
-      </section>
-
+      <div class="meta"><span class="status">{{ message.campaign || 'Campaign' }}</span><span class="stack"><b>Subject</b>{{ message.subject || 'No subject' }}</span><span class="stack"><b>Created</b>{{ message.createdAtUtc | date:'medium' }}</span></div>
+      <section class="card-body"><span class="eyebrow">MESSAGE PREVIEW</span><p>{{ message.body || 'No message body available.' }}</p></section>
       <footer class="actions">
-        <div class="notice">
-          <span class="status-dot"></span>
-          <span>Sender, suppression, provider and tenant safety checks remain enforced by the backend.</span>
-        </div>
-        <div class="actions">
-          <button type="button" class="button-quiet" (click)="requestApproval(message)" *ngIf="!message.approvalRequested">Request approval</button>
-          <button type="button" class="button-primary" (click)="approveAndSend(message)" [disabled]="!message.approvalRequested">Approve &amp; send</button>
-        </div>
+        <div class="notice"><span class="status-dot"></span><span>Sender, suppression, provider and tenant safety checks remain enforced by the backend.</span></div>
+        <div class="actions"><button type="button" class="button-quiet" (click)="requestApproval(message)" *ngIf="!message.approvalRequested">Request approval</button><button type="button" class="button-primary" (click)="approveAndSend(message)" [disabled]="!message.approvalRequested">Approve &amp; send</button></div>
       </footer>
     </article>
-
-    <div class="empty" *ngIf="!visibleMessages.length">
-      <div class="empty-icon">✓</div>
-      <strong>{{ messages.length ? 'No messages match this view.' : 'No outreach messages are waiting.' }}</strong>
-      <span>{{ messages.length ? 'Try a different filter or search term.' : 'Run the Renova acquisition agent or start a campaign to populate the review queue.' }}</span>
-    </div>
+    <div class="empty" *ngIf="!visibleMessages.length"><strong>{{ messages.length ? 'No messages match this view.' : 'No outreach messages are waiting.' }}</strong><span>{{ messages.length ? 'Try a different filter or search term.' : 'Run the Renova acquisition agent or start a campaign to populate the review queue.' }}</span></div>
   </div>
 </section>
 
-<ng-template #loadingTpl>
-  <div class="empty"><div class="status-dot"></div><strong>Loading approval queue…</strong><span>Retrieving the latest acquisition messages.</span></div>
-</ng-template>
+<ng-template #loadingTpl><div class="empty"><div class="status-dot"></div><strong>Loading approval queue…</strong><span>Retrieving the latest acquisition messages.</span></div></ng-template>
