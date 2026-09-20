@@ -15,10 +15,10 @@
   </div>
 
   <div class="steps" aria-label="Outreach pipeline">
-    <button class="button-quiet" type="button" (click)="openPipelineStep(1)"><b>01</b> Audience</button>
-    <button class="button-quiet" type="button" (click)="openPipelineStep(3)"><b>02</b> Message</button>
-    <button class="button-quiet" type="button" (click)="showApprovalQueue()"><b>03</b> Approval</button>
-    <button class="button-quiet" type="button" (click)="openDemos()"><b>04</b> Demo</button>
+    <div><b>01</b><span>Audience</span></div>
+    <div><b>02</b><span>Message</span></div>
+    <div><b>03</b><span>Approval</span></div>
+    <div><b>04</b><span>Demo</span></div>
   </div>
 </section>
 
@@ -69,13 +69,15 @@
           </div>
         </div>
 
-        <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
-        <button
-          class="button-primary"
-          *ngIf="campaign.status === 0 || campaign.status === 3"
-          (click)="start(campaign)"
-        >Start campaign</button>
-        <span class="status success" *ngIf="campaign.status === 2">● Live</span>
+        <div class="actions">
+          <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
+          <button
+            class="button-primary"
+            *ngIf="campaign.status === 0 || campaign.status === 3"
+            (click)="start(campaign)"
+          >Start campaign</button>
+          <span class="status success" *ngIf="campaign.status === 2">● Live</span>
+        </div>
       </article>
     </div>
 
@@ -117,10 +119,10 @@
   </header>
 
   <div class="metric-grid compact">
-    <article class="metric"><span>Recipients</span><strong>{{ selectedCampaign.recipients || 0 }}</strong></article>
-    <article class="metric"><span>Queued</span><strong>{{ selectedCampaign.queued || 0 }}</strong></article>
-    <article class="metric"><span>Sent</span><strong>{{ selectedCampaign.sent || 0 }}</strong></article>
-    <article class="metric"><span>Replies</span><strong>{{ selectedCampaign.replied || 0 }}</strong></article>
+    <article class="metric"><div class="metric-top"><span class="metric-label">Recipients</span></div><strong>{{ selectedCampaign.recipients || 0 }}</strong></article>
+    <article class="metric"><div class="metric-top"><span class="metric-label">Queued</span></div><strong>{{ selectedCampaign.queued || 0 }}</strong></article>
+    <article class="metric"><div class="metric-top"><span class="metric-label">Sent</span></div><strong>{{ selectedCampaign.sent || 0 }}</strong></article>
+    <article class="metric"><div class="metric-top"><span class="metric-label">Replies</span></div><strong>{{ selectedCampaign.replied || 0 }}</strong></article>
   </div>
 
   <div class="list" *ngIf="activity.length; else noActivity">
@@ -216,7 +218,7 @@
       [class.done]="builderStep > i + 1"
     >
       <b>{{ i + 1 }}</b>
-      {{ label }}
+      <span>{{ label }}</span>
     </button>
   </nav>
 
