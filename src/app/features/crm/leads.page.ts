@@ -12,13 +12,13 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   imports: [CommonModule, FormsModule, Modal, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
   styleUrls: ['./leads.page.css'],
   template: `
+    <section class="page">
     <section class="page-header">
       <div class="title"><h1>Leads <span class="count">{{ rows.length }}</span></h1><p>Manage your sales leads and move qualified demand into the CRM.</p></div>
       <div class="actions"><button type="button" (click)="load()">↻ Refresh data</button><button type="button" class="button-primary" (click)="openCreate()">+ Create Lead</button></div>
     </section>
     <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
-    <section class="page">
-      <section class="leads-kpi-panel"><qai-kpi-strip>
+    <section class="leads-kpi-panel"><qai-kpi-strip>
         <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
         <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">N</span><span class="metric-label">New</span></div><strong>{{ countNew() }}</strong><small>New or unqualified enquiries</small></article>
         <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ count(80,101) }}</strong><small>Score 80–100</small></article>
