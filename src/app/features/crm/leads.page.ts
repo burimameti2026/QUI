@@ -2,21 +2,21 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CrmService } from './crm.service';
-import { Modal } from '../../shared/ui';
+import { Modal, PageHeader } from '../../shared/ui';
 import { RefinedDataGrid } from '../../shared/components/refined-data-grid.component';
 import { RefinedKpiStrip } from '../../shared/components/refined-kpi-strip.component';
 import { RefinedTabs } from '../../shared/components/refined-tabs.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
+  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
   styleUrls: ['./leads.page.css'],
   template: `
     <section class="page">
-    <section class="page-header">
-      <div class="title"><h1>Leads <span class="count">{{ rows.length }}</span></h1><p>Manage your sales leads and move qualified demand into the CRM.</p></div>
-      <div class="actions"><button type="button" (click)="load()">↻ Refresh data</button><button type="button" class="button-primary" (click)="openCreate()">+ Create Lead</button></div>
-    </section>
+    <qai-page-header title="Leads" subtitle="Manage your sales leads and move qualified demand into the CRM.">
+      <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
+      <button class="button-primary" type="button" (click)="openCreate()">+ Create Lead</button>
+    </qai-page-header>
     <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
     <section class="leads-kpi-panel"><qai-kpi-strip>
         <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
