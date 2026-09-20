@@ -17,7 +17,7 @@
     <h2>Build an evidence-backed target market</h2>
     <p>The catalog is the source of truth for promotion. Autonomous acquisition finds and qualifies distributors. Campaigns prepare outreach. Human approval controls delivery. Public portal inquiries become inbound demand.</p>
   </div>
-  <div class="executive-context">
+  <div class="stack">
     <span><i class="status-dot"></i> Workspace</span>
     <span><b>{{ activeAgentCount }}</b> active agents</span>
     <span><b>{{ qualifiedProspects }}</b> high-fit prospects</span>
@@ -63,20 +63,20 @@
         <span class="eyebrow">ACQUISITION ENGINE</span>
         <h3>Latest discovery activity</h3>
       </div>
-      <button type="button" (click)="go('/acquisition/autonomous')">Open agent</button>
+      <button class="button-quiet" type="button" (click)="go('/acquisition/autonomous')">Open agent</button>
     </header>
     <div class="card-body">
-      <div class="revenue-highlight">
+      <div class="list-item">
         <span><small>Latest discovery run</small><strong>{{ recentRun?.discoveredCount || 0 }} prospects</strong></span>
       </div>
-      <div class="revenue-row">
+      <div class="list-item">
         <span><small>Passed autonomous scoring threshold</small><strong>{{ recentRun?.qualifiedCount || 0 }}</strong></span>
       </div>
-      <div class="revenue-row">
+      <div class="list-item">
         <span><small>Ready for targeted sales action</small><strong>{{ recentRun?.highScoreCount || 0 }}</strong></span>
       </div>
     </div>
-    <div class="revenue-note">
+    <div class="card-footer stack">
       <strong>{{ recentRun?.status || 'Ready' }}</strong>
       <span>Latest run status</span>
     </div>
@@ -88,14 +88,14 @@
         <span class="eyebrow">OUTREACH</span>
         <h3>Controlled delivery</h3>
       </div>
-      <button type="button" (click)="go('/campaigns')">View campaigns</button>
+      <button class="button-quiet" type="button" (click)="go('/campaigns')">View campaigns</button>
     </header>
-    <div class="impact-grid">
-      <div><span class="impact-icon blue-impact">↗</span><span><small>Running campaigns</small><strong>{{ campaigns.length }}</strong></span></div>
-      <div><span class="impact-icon violet-impact">✓</span><span><small>Queued messages</small><strong>{{ queuedMessages }}</strong></span></div>
-      <div><span class="impact-icon green-impact">↩</span><span><small>Replies</small><strong>{{ acquisition.replies || 0 }}</strong></span></div>
+    <div class="list">
+      <div><span class="icon">↗</span><span><small>Running campaigns</small><strong>{{ campaigns.length }}</strong></span></div>
+      <div><span class="icon">✓</span><span><small>Queued messages</small><strong>{{ queuedMessages }}</strong></span></div>
+      <div><span class="icon">↩</span><span><small>Replies</small><strong>{{ acquisition.replies || 0 }}</strong></span></div>
     </div>
-    <div class="automation-note"><span><i></i>Guardrail</span><strong>Approval before delivery</strong></div>
+    <div class="card-footer stack"><span><i></i>Guardrail</span><strong>Approval before delivery</strong></div>
   </article>
 </section>
 
@@ -106,21 +106,21 @@
         <span class="eyebrow">PROMOTION PROGRAMS</span>
         <h3>Active market programs</h3>
       </div>
-      <button type="button" (click)="go('/renova/promotion')">Manage plans</button>
+      <button class="button-quiet" type="button" (click)="go('/renova/promotion')">Manage plans</button>
     </header>
-    <div class="opportunity-table" *ngIf="programRows.length">
-      <div class="opportunity-columns">
+    <div class="list" *ngIf="programRows.length">
+      <div class="list-item">
         <span>Program</span><span>Language</span><span>Status</span><span>Automation</span>
       </div>
-      <div class="opportunity" *ngFor="let row of programRows">
-        <div class="opportunity-main"><strong>{{ row.program }}</strong></div>
-        <div class="intent-cell">{{ row.language }}</div>
+      <div class="list-item" *ngFor="let row of programRows">
+        <div class="stack"><strong>{{ row.program }}</strong></div>
+        <div class="meta">{{ row.language }}</div>
         <span class="status">{{ row.status }}</span>
         <b>{{ row.automation }}</b>
       </div>
     </div>
     <div class="list" *ngIf="!programRows.length">
-      <div class="list-item"><span class="gap-mark">◎</span><span class="stack"><strong>No promotion plans</strong><span>No promotion plans have been created.</span></span></div>
+      <div class="list-item"><span class="icon">◎</span><span class="stack"><strong>No promotion plans</strong><span>No promotion plans have been created.</span></span></div>
     </div>
   </article>
 
@@ -130,11 +130,11 @@
         <span class="eyebrow">PUBLIC EXPERIENCE</span>
         <h3>Renova portal</h3>
       </div>
-      <button type="button" (click)="go('/renova/portal')">Open portal</button>
+      <button class="button-quiet" type="button" (click)="go('/renova/portal')">Open portal</button>
     </header>
     <div class="list">
       <div class="list-item" *ngFor="let item of publicExperience">
-        <span class="gap-mark">{{ item.icon }}</span>
+        <span class="icon">{{ item.icon }}</span>
         <span class="stack"><strong>{{ item.title }}</strong><span>{{ item.subtitle }}</span></span>
         <em>{{ item.badge }}</em>
       </div>
@@ -149,11 +149,11 @@
         <span class="eyebrow">HUMAN REVIEW</span>
         <h3>Approval gate</h3>
       </div>
-      <button type="button" (click)="go('/acquisition/approval-queue')">Open queue</button>
+      <button class="button-quiet" type="button" (click)="go('/acquisition/approval-queue')">Open queue</button>
     </header>
     <div class="list">
       <div class="list-item">
-        <span class="gap-mark">✓</span>
+        <span class="icon">✓</span>
         <span class="stack">
           <strong>Review before delivery</strong>
           <span>Review the exact subject, body and destination before delivery. Backend controls still enforce sender verification, suppression and provider controls.</span>
@@ -171,7 +171,7 @@
     </header>
     <div class="list">
       <div class="list-item">
-        <span class="gap-mark">→</span>
+        <span class="icon">→</span>
         <span class="stack">
           <strong>Qualified demand moves downstream</strong>
           <span>LeadsAI stops at qualified marketing demand and commercial opportunity. Orders, operations, inventory and delivery remain in FusionFleet.</span>
