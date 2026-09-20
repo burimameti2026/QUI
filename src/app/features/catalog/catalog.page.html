@@ -44,6 +44,6 @@
     <div class="empty" *ngIf="!loading && products.length && !filteredProducts.length">No products match the current filters.</div>
     <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first  product to start the promotion workflow.</div>
     <div class="empty" *ngIf="loading">Loading catalog…</div>
-    <div class="empty error" *ngIf="!loading && error">{{ error }}</div>
+    <div class="empty alert-error" *ngIf="!loading && error">{{ error }}</div>
   </div>
 </section>
