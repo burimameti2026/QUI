@@ -19,25 +19,25 @@ import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive
 
   <section class="section"><header class="section-header"><div><span class="eyebrow">WORKSPACE</span><h3>Workspace management</h3><p>Provision and govern tenant-owned environments.</p></div></header>
    <div class="content-grid platform-card-grid">
-    <a routerLink="/platform/prepare-workspace" class="card"><span class="icon">✦</span><div><b>Prepare Real Workspace</b><p>Configure the use case, market and autonomous acquisition agent, then queue the first discovery run.</p></div><strong>Open →</strong></a>
-    <a routerLink="/platform/packages" class="card"><span class="icon">▦</span><div><b>Workspace Packages</b><p>Review reusable operating packages and controlled provisioning options.</p></div><strong>Open →</strong></a>
-    <a routerLink="/admin/modules" class="card"><span class="icon">◈</span><div><b>Tenants & Licensing</b><p>Control tenants, plans, modules and platform entitlements.</p></div><strong>Open →</strong></a>
+    <a routerLink="/platform/prepare-workspace" class="platform-link-card"><span class="icon">✦</span><div><b>Prepare Real Workspace</b><p>Configure the use case, market and autonomous acquisition agent, then queue the first discovery run.</p></div><strong>Open →</strong></a>
+    <a routerLink="/platform/packages" class="platform-link-card"><span class="icon">▦</span><div><b>Workspace Packages</b><p>Review reusable operating packages and controlled provisioning options.</p></div><strong>Open →</strong></a>
+    <a routerLink="/admin/modules" class="platform-link-card"><span class="icon">◈</span><div><b>Tenants & Licensing</b><p>Control tenants, plans, modules and platform entitlements.</p></div><strong>Open →</strong></a>
    </div>
   </section>
 
   <section class="section"><header class="section-header"><div><span class="eyebrow">ACCESS & COMMERCE</span><h3>Administration</h3><p>Keep access, subscriptions and accountability consistent.</p></div></header>
    <div class="content-grid">
-    <a routerLink="/users" class="card"><span class="icon">◎</span><div><b>Users & Roles</b><p>Manage users and role-based access across enabled modules.</p></div><strong>Open →</strong></a>
-    <a routerLink="/billing" class="card"><span class="icon">€</span><div><b>Billing & Subscription</b><p>Review subscriptions, usage and recurring billing controls.</p></div><strong>Open →</strong></a>
-    <a routerLink="/audit" class="card"><span class="icon">✓</span><div><b>Audit & Governance</b><p>Review administrative changes, permissions and lifecycle events.</p></div><strong>Open →</strong></a>
+    <a routerLink="/users" class="platform-link-card"><span class="icon">◎</span><div><b>Users & Roles</b><p>Manage users and role-based access across enabled modules.</p></div><strong>Open →</strong></a>
+    <a routerLink="/billing" class="platform-link-card"><span class="icon">€</span><div><b>Billing & Subscription</b><p>Review subscriptions, usage and recurring billing controls.</p></div><strong>Open →</strong></a>
+    <a routerLink="/audit" class="platform-link-card"><span class="icon">✓</span><div><b>Audit & Governance</b><p>Review administrative changes, permissions and lifecycle events.</p></div><strong>Open →</strong></a>
    </div>
   </section>
 
   <section class="section"><header class="section-header"><div><span class="eyebrow">AUTONOMOUS OPERATIONS</span><h3>Acquisition & automation</h3><p>Monitor the engine that turns discovery into qualified demand.</p></div></header>
    <div class="content-grid">
-    <a routerLink="/ai/agents" class="card"><span class="icon">✦</span><div><b>Acquisition Agents</b><p>Configure autonomous agents and their tenant use cases.</p></div><strong>Open →</strong></a>
-    <a routerLink="/automations" class="card"><span class="icon">⚡</span><div><b>Automations</b><p>Monitor schedules, queued runs and daily autonomous execution.</p></div><strong>Open →</strong></a>
-    <a routerLink="/acquisition/autonomous" class="card"><span class="icon">⌕</span><div><b>Daily Acquisition</b><p>Follow discovery → scoring → approval → promotion.</p></div><strong>Open →</strong></a>
+    <a routerLink="/ai/agents" class="platform-link-card"><span class="icon">✦</span><div><b>Acquisition Agents</b><p>Configure autonomous agents and their tenant use cases.</p></div><strong>Open →</strong></a>
+    <a routerLink="/automations" class="platform-link-card"><span class="icon">⚡</span><div><b>Automations</b><p>Monitor schedules, queued runs and daily autonomous execution.</p></div><strong>Open →</strong></a>
+    <a routerLink="/acquisition/autonomous" class="platform-link-card"><span class="icon">⌕</span><div><b>Daily Acquisition</b><p>Follow discovery → scoring → approval → promotion.</p></div><strong>Open →</strong></a>
    </div>
   </section>
  </main>`
