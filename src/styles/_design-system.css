@@ -52,4 +52,4 @@ input,select,textarea{width:100%;min-height:var(--wl-control-height);padding:8px
 
 
 /* Page-header actions stay on the right edge of the header. */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.page-header .actions,.page-header .header-actions,.page-header>div:last-child{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}@media(max-width:650px){.page-header{flex-direction:column}.page-header .actions,.page-header .header-actions,.page-header>div:last-child{width:100%;margin-left:0;justify-content:flex-start}}
+.page-header{display:block}.page-header-main{display:flex;align-items:center;justify-content:space-between;gap:14px}.page-header-main>.page-header-title{min-width:0;flex:1}.page-header-main>.page-actions{margin-left:auto;flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}@media(max-width:650px){.page-header-main{align-items:flex-start;flex-direction:column}.page-header-main>.page-actions{width:100%;margin-left:0;justify-content:flex-start}}
