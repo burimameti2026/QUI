@@ -30,7 +30,7 @@ import { CrmService } from './crm.service';
           <table>
             <thead><tr><th>Company</th><th>Domain</th><th>Industry</th><th>Country</th><th>Employees</th><th>Revenue</th><th>Actions</th></tr></thead>
             <tbody><tr *ngFor="let x of visible">
-              <td><div class="identity"><i>{{ initials(x.name) }}</i><span><b>{{ x.name }}</b><small>CRM account</small></span></div></td>
+              <td><div class="identity"><span class="avatar">{{ initials(x.name) }}</span><span class="stack"><b>{{ x.name }}</b><small>CRM account</small></span></div></td>
               <td><a class="button-quiet" [href]="companyUrl(x.domain)" target="_blank" rel="noopener">{{ x.domain || '—' }}</a></td>
               <td>{{ x.industry || '—' }}</td><td>{{ x.country || '—' }}</td><td>{{ x.employees || '—' }}</td><td>{{ x.annualRevenue ? money(x.annualRevenue) : '—' }}</td>
               <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
