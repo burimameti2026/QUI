@@ -348,3 +348,33 @@
   .security-section .section-label i,
   .contact-section .section-label i{font-size:17px}
 }
+
+
+/* Equal-height section bands */
+.platform-section,
+.operations-section{
+  min-height:0;
+}
+.platform-section .capability-grid,
+.operations-section .process{
+  min-height:330px;
+}
+.capability-grid article,
+.capability-grid .featured-capability,
+.process article,
+.process article:last-child{
+  height:330px;
+  min-height:330px;
+}
+@media(max-width:1100px){
+  .capability-grid article,
+  .capability-grid .featured-capability,
+  .process article,
+  .process article:last-child{height:300px;min-height:300px}
+}
+@media(max-width:650px){
+  .capability-grid article,
+  .capability-grid .featured-capability,
+  .process article,
+  .process article:last-child{height:auto;min-height:240px}
+}
