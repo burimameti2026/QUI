@@ -293,7 +293,7 @@ export class WhiteLabelConfigService {
         return this.normalizeStyles(JSON.parse(raw));
       }
     } catch {}
-    return JSON.parse(JSON.stringify(DEFAULT_STYLES));
+    return this.normalizeStyles(JSON.parse(JSON.stringify(DEFAULT_STYLES)));
   }
   saveStyles(styles: WhiteLabelStyles): WhiteLabelStyles {
     const normalized = this.normalizeStyles(JSON.parse(JSON.stringify(styles)));
@@ -373,12 +373,14 @@ export class WhiteLabelConfigService {
     const navigation = styles.navigation;
     const modals = styles.modals;
     const notices = styles.notices;
+    this.set(root, "--wl-app-bg", wlGlobal.appBackground);
+    this.set(root, "--wl-surface", wlGlobal.surface);
+    this.set(root, "--wl-text", wlGlobal.text);
+    this.set(root, "--wl-muted", wlGlobal.muted);
+    this.set(root, "--wl-border", wlGlobal.line);
+    this.set(root, "--wl-border-strong", wlGlobal.line);
+    this.set(root, "--wl-accent", wlGlobal.accent);
     this.set(root, "--wl-app-surface", card.surfaceColor);
-    this.set(root, "--wl-surface", card.surfaceColor);
-    this.set(root, "--wl-text", card.textColor);
-    this.set(root, "--wl-muted", card.mutedTextColor);
-    this.set(root, "--wl-border", card.borderColor);
-    this.set(root, "--wl-accent", card.accentColor);
     this.set(
       root,
       "--wl-accent-hover",
