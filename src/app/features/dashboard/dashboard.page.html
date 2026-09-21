@@ -25,37 +25,7 @@
   </div>
 </section>
 
-<section class="metric-grid">
-  <button class="metric" type="button" (click)="go('/catalog')">
-    <div class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Product catalog</span></div>
-    <strong>{{ products.length }}</strong>
-    <small>{{ publishedProducts }} public publications live</small>
-  </button>
-
-  <button class="metric" type="button" (click)="go('/renova/promotion')">
-    <div class="metric-top"><span class="metric-icon">✦</span><span class="metric-label">Promotion plans</span></div>
-    <strong>{{ activePlans }}</strong>
-    <small>active market programs</small>
-  </button>
-
-  <button class="metric" type="button" (click)="go('/acquisition/autonomous')">
-    <div class="metric-top"><span class="metric-icon">↯</span><span class="metric-label">Autonomous agents</span></div>
-    <strong>{{ activeAgentCount }}</strong>
-    <small>running acquisition engines</small>
-  </button>
-
-  <button class="metric" type="button" (click)="go('/discover')">
-    <div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Prospects discovered</span></div>
-    <strong>{{ acquisition.discovered || 0 }}</strong>
-    <small>{{ qualifiedProspects }} high-fit prospects</small>
-  </button>
-
-  <button class="metric" type="button" (click)="go('/acquisition/approval-queue')">
-    <div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Awaiting delivery</span></div>
-    <strong>{{ queuedMessages }}</strong>
-    <small>review the approval queue</small>
-  </button>
-</section>
+<qai-kpi-grid [metrics]="kpiMetrics" (selected)="go($event.path || '/kpis')"></qai-kpi-grid>
 
 <section class="content-grid">
   <article class="card">
