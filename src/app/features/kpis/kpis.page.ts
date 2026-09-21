@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { PageHeader } from '../../shared/ui';
-import { QaiKpiGrid, QaiKpiMetric } from '../../shared/components/kpi';
+import { QaiKpiGrid, QaiKpiMetric } from '../../shared/components/kpi/kpi-grid.component';
 
 @Component({
   standalone: true,
