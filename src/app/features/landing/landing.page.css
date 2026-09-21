@@ -120,3 +120,92 @@
   .process article,
   .process article:last-child{min-height:210px;padding:22px}
 }
+
+
+/* Compact platform capability band */
+.platform-section{padding-top:64px;padding-bottom:64px}
+.platform-section .section-intro{max-width:850px;margin-bottom:30px}
+.platform-section .section-intro h2{font-size:40px}
+.capability-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  border:0;
+}
+.capability-grid article,
+.capability-grid .featured-capability{
+  min-height:330px;
+  padding:22px 20px 24px;
+  border:0!important;
+  display:flex;
+  flex-direction:column;
+  color:#fff;
+}
+.capability-grid article:nth-child(odd){background:#ef5b20}
+.capability-grid article:nth-child(even){background:#191b1e}
+.capability-grid .featured-capability{
+  grid-column:auto;
+  grid-row:auto;
+  display:flex;
+}
+.cap-top{
+  margin:0 0 44px;
+  display:block;
+}
+.cap-top small{
+  display:block;
+  color:inherit;
+  opacity:.7;
+  font-size:8px;
+  line-height:1.2;
+  letter-spacing:.08em;
+}
+.capability-icon{display:none}
+.capability-grid h3{
+  max-width:none;
+  margin:0 0 10px;
+  color:inherit;
+  font-size:18px;
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+.capability-grid p{
+  max-width:none;
+  margin:0;
+  color:inherit;
+  opacity:.74;
+  font-size:9px;
+  line-height:1.55;
+}
+.capability-grid article>a{
+  margin-top:18px;
+  color:inherit;
+  font-size:8px;
+}
+.featured-capability .mini-prospects{
+  order:2;
+  margin-top:auto;
+  display:grid;
+  gap:0;
+  border-top:1px solid rgba(255,255,255,.28);
+}
+.mini-prospects span{
+  grid-template-columns:25px 1fr auto;
+  gap:7px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.22);
+}
+.mini-prospects i{width:25px;height:25px;background:rgba(255,255,255,.16);color:inherit}
+.mini-prospects b,.mini-prospects em{font-size:7px;color:inherit}
+.mini-prospects em{opacity:.72}
+@media(max-width:1100px){
+  .capability-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .capability-grid article,
+  .capability-grid .featured-capability{min-height:280px}
+}
+@media(max-width:650px){
+  .platform-section{padding-top:48px;padding-bottom:48px}
+  .platform-section .section-intro h2{font-size:32px}
+  .capability-grid{grid-template-columns:1fr}
+  .capability-grid article,
+  .capability-grid .featured-capability{min-height:240px}
+}
