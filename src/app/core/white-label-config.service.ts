@@ -520,14 +520,14 @@ export class WhiteLabelConfigService {
     this.set(root, "--wl-steps-text", steps.textColor);
     this.set(root, "--wl-steps-muted", steps.mutedTextColor);
     this.set(root, "--wl-steps-accent", steps.accentColor);
-    this.set(root, "--wl-steps-radius", (steps.radius || 12) + "px");
+    this.set(root, "--wl-steps-radius", "0px");
     this.set(root, "--wl-list-bg", lists.surfaceColor);
     this.set(root, "--wl-list-border", lists.borderColor);
     this.set(root, "--wl-list-title", lists.titleColor);
     this.set(root, "--wl-list-text", lists.textColor);
     this.set(root, "--wl-list-muted", lists.mutedTextColor);
     this.set(root, "--wl-list-accent", lists.accentColor);
-    this.set(root, "--wl-list-radius", (lists.radius || 12) + "px");
+    this.set(root, "--wl-list-radius", "0px");
     this.set(root, "--wl-table-bg", tables.surfaceColor);
     this.set(root, "--wl-table-header", tables.headerColor);
     this.set(root, "--wl-table-border", tables.borderColor);
@@ -535,49 +535,49 @@ export class WhiteLabelConfigService {
     this.set(root, "--wl-table-text", tables.textColor);
     this.set(root, "--wl-table-muted", tables.mutedTextColor);
     this.set(root, "--wl-table-accent", tables.accentColor);
-    this.set(root, "--wl-table-radius", (tables.radius || 8) + "px");
+    this.set(root, "--wl-table-radius", "0px");
     this.set(root, "--wl-badge-bg", badges.headerColor);
     this.set(root, "--wl-badge-border", badges.borderColor);
     this.set(root, "--wl-badge-text", badges.textColor);
     this.set(root, "--wl-badge-accent", badges.accentColor);
-    this.set(root, "--wl-badge-radius", (badges.radius || 999) + "px");
+    this.set(root, "--wl-badge-radius", "0px");
     this.set(root, "--wl-form-bg", forms.surfaceColor);
     this.set(root, "--wl-form-border", forms.borderColor);
     this.set(root, "--wl-form-text", forms.textColor);
     this.set(root, "--wl-form-muted", forms.mutedTextColor);
     this.set(root, "--wl-form-accent", forms.accentColor);
-    this.set(root, "--wl-form-radius", (forms.radius || 8) + "px");
+    this.set(root, "--wl-form-radius", "0px");
     this.set(root, "--wl-form-height", (forms.height || 40) + "px");
     this.set(root, "--wl-tabs-bg", tabs.surfaceColor);
     this.set(root, "--wl-tabs-border", tabs.borderColor);
     this.set(root, "--wl-tabs-text", tabs.textColor);
     this.set(root, "--wl-tabs-muted", tabs.mutedTextColor);
     this.set(root, "--wl-tabs-accent", tabs.accentColor);
-    this.set(root, "--wl-tabs-radius", (tabs.radius || 8) + "px");
+    this.set(root, "--wl-tabs-radius", "0px");
     this.set(root, "--wl-grid-bg", dataGrid.surfaceColor);
     this.set(root, "--wl-grid-header", dataGrid.headerColor);
     this.set(root, "--wl-grid-border", dataGrid.borderColor);
     this.set(root, "--wl-grid-text", dataGrid.textColor);
     this.set(root, "--wl-grid-muted", dataGrid.mutedTextColor);
     this.set(root, "--wl-grid-accent", dataGrid.accentColor);
-    this.set(root, "--wl-grid-radius", (dataGrid.radius || 8) + "px");
+    this.set(root, "--wl-grid-radius", "0px");
     this.set(root, "--wl-nav-bg", navigation.surfaceColor);
     this.set(root, "--wl-nav-border", navigation.borderColor);
     this.set(root, "--wl-nav-text", navigation.textColor);
     this.set(root, "--wl-nav-muted", navigation.mutedTextColor);
     this.set(root, "--wl-nav-accent", navigation.accentColor);
-    this.set(root, "--wl-nav-radius", (navigation.radius || 8) + "px");
+    this.set(root, "--wl-nav-radius", "0px");
     this.set(root, "--wl-modal-bg", modals.surfaceColor);
     this.set(root, "--wl-modal-header", modals.headerColor);
     this.set(root, "--wl-modal-border", modals.borderColor);
     this.set(root, "--wl-modal-title", modals.titleColor);
     this.set(root, "--wl-modal-text", modals.textColor);
-    this.set(root, "--wl-modal-radius", (modals.radius || 12) + "px");
+    this.set(root, "--wl-modal-radius", "0px");
     this.set(root, "--wl-notice-bg", notices.headerColor);
     this.set(root, "--wl-notice-border", notices.borderColor);
     this.set(root, "--wl-notice-text", notices.textColor);
     this.set(root, "--wl-notice-accent", notices.accentColor);
-    this.set(root, "--wl-notice-radius", (notices.radius || 8) + "px");
+    this.set(root, "--wl-notice-radius", "0px");
     this.set(root, "--wl-ready", "1");
   }
   private normalizeStyles(styles: any): WhiteLabelStyles {
@@ -641,8 +641,7 @@ export class WhiteLabelConfigService {
       out.cards.headerColor = "#ffffff";
     if (out.cards?.radius === 11 || out.cards?.radius === 12)
       out.cards.radius = 0;
-    if (out.buttons?.radius === 0 || out.buttons?.radius === 9)
-      out.buttons.radius = 8;
+    out.buttons.radius = 0;
     if (out.buttons?.height && out.buttons.height < 44) out.buttons.height = 44;
     if (out.buttons?.buttonBackgroundColor === "#f59e0b")
       out.buttons.buttonTextColor = "#ffffff";
