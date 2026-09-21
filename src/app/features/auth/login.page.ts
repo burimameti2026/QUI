@@ -43,7 +43,7 @@ import { adminText } from "../../core/admin-page-translations";
           <button class="button-primary" type="submit" [disabled]="submitting">{{ submitting ? t('Signing in…') : mfaRequired ? t('Verify & sign in') : t('Sign in') }}<span>→</span></button>
           <div class="alert" *ngIf="error">{{ t(error) }}</div>
         </form>
-        <div class="notice"><span class="eyebrow">{{ t('INITIAL ADMIN') }}</span><b>admin&#64;findleadsai.local</b><small>{{ t('Bootstrap credentials are configured for the initial platform administrator.') }}</small></div>
+        <div class="notice"><span class="eyebrow">{{ t('INITIAL ADMIN') }}</span><b>admin@findleadsai.local</b><small>{{ t('Bootstrap credentials are configured for the initial platform administrator.') }}</small></div>
         <small class="meta">FindLeadsAI · {{ t('Lead acquisition & business automation platform') }}</small>
       </div>
     </section>
@@ -53,7 +53,7 @@ import { adminText } from "../../core/admin-page-translations";
 export class LoginPage {
   readonly i18n = inject(AdminI18nService);
   tenant = "findleadsai";
-  email = "admin&#64;findleadsai.local";
+  email = "admin@findleadsai.local";
   password = "Admin123!ChangeMe";
   mfaCode = "";
   mfaRequired = false;
