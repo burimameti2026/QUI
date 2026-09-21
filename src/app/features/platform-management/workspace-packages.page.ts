@@ -77,9 +77,12 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         <div class="content-grid">
           <article class="card package-card" *ngFor="let item of packages" [class.selected]="selected === item.id">
             <div class="card-header">
-              <div>
-                <h3>{{ item.name }}</h3>
+              <div class="package-title">
+                <span class="package-index">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
+                <div>
+                  <h3>{{ item.name }}</h3>
                 <span class="status" *ngIf="item.id === 'fusionfleet-promotion'">Recommended</span>
+                </div>
               </div>
             </div>
             <div class="card-body">
