@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { PageHeader } from '../../shared/ui';
+import { QaiKpiGrid, QaiKpiMetric } from '../../shared/components/kpi';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, PageHeader, QaiKpiGrid],
   templateUrl: './kpis.page.html',
   styleUrl: './kpis.page.css'
 })
@@ -33,7 +34,7 @@ export class KpisPage implements OnInit {
   get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
   get qualified() { return Number(this.acquisition.hot || 0); }
 
-  get metrics() {
+  get metrics(): QaiKpiMetric[] {
     return [
       { label: 'Product catalog', value: this.products.length, detail: `${this.publishedProducts} published`, icon: '▦', path: '/catalog' },
       { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/renova/promotion' },
