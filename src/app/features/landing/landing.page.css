@@ -33,3 +33,15 @@
   .platform-section,.operations-section,.pricing-section,.contact-section{padding-left:12px;padding-right:12px}
   .security-section{padding-left:12px;padding-right:12px}
 }
+
+/* Audience timeline readability */
+.audience-strip{min-height:118px;padding-top:28px;padding-bottom:28px;grid-template-columns:280px 1fr;gap:70px}
+.timeline-intro>span{font-size:9px!important;letter-spacing:.12em}
+.timeline-intro small{font-size:12px!important;line-height:1.5}
+.audience-timeline{min-height:62px;padding:4px 0 0!important}
+.audience-timeline:before{top:17px;height:2px}
+.audience-timeline span{gap:12px;padding-right:26px;background:#fff}
+.audience-timeline i{width:34px;height:34px;font-size:9px}
+.audience-timeline b{font-size:11px!important;line-height:1.35}
+@media(max-width:1050px){.audience-strip{grid-template-columns:1fr;gap:20px}.audience-timeline{width:100%}}
+@media(max-width:650px){.audience-strip{min-height:auto}.timeline-intro small{font-size:11px!important}.audience-timeline b{font-size:10px!important}}
