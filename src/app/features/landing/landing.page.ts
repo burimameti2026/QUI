@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { AdminI18nService, AdminLanguage } from '../../core/admin-i18n.service';
+import { LANDING_I18N } from './i18n';
 
 @Component({
   standalone: true,
@@ -25,7 +26,7 @@ export class LandingPage {
   demoRequestMessage = '';
   demoRequestError = '';
 
-  t(key: string): string { return this.i18n.t(key); }
+  t(key: string): string { return LANDING_I18N[key]?.[this.i18n.language()] || this.i18n.t(key); }
 
   constructor(readonly auth: AuthService, private readonly api: ApiService, readonly i18n: AdminI18nService) {
     document.documentElement.lang = this.i18n.language();
