@@ -77,7 +77,6 @@ interface LayoutSection {
             <label *ngIf="activeStyle === 'buttons'">Button border<input type="color" [(ngModel)]="style.buttonBorderColor" /></label>
             <label *ngIf="activeStyle === 'buttons'">Button hover<input type="color" [(ngModel)]="style.buttonHoverBackgroundColor" /></label>
             <label>Height (px)<input type="number" min="0" max="1200" [(ngModel)]="style.height" /></label>
-            <label>Radius (px)<input type="number" min="0" max="40" [(ngModel)]="style.radius" /></label>
             <label>Padding (px)<input type="number" min="0" max="80" [(ngModel)]="style.padding" /></label>
             <label>Gap (px)<input type="number" min="0" max="80" [(ngModel)]="style.gap" /></label>
             <label>Font size (px)<input type="number" min="8" max="72" [(ngModel)]="style.fontSize" /></label>
