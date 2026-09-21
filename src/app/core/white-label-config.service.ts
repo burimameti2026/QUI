@@ -400,6 +400,7 @@ export class WhiteLabelConfigService {
     this.set(root, "--wl-header-font-size", (header.fontSize || 16) + "px");
     this.set(root, "--wl-card-bg", card.surfaceColor);
     this.set(root, "--wl-card-header-bg", card.headerColor);
+    this.set(root, "--wl-card-header-height", (card.height || 50) + "px");
     this.set(root, "--wl-card-border", card.borderColor);
     this.set(root, "--wl-card-title", card.titleColor);
     this.set(root, "--wl-card-text", card.textColor);
