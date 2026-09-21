@@ -144,11 +144,11 @@ const DEFAULT_GLOBAL_TOKENS: WhiteLabelGlobalTokens = {
   cardRadius: 0,
   cardPadding: 15,
   cardGap: 12,
-  cardShadow: "0 5px 16px rgba(15,23,42,.047)",
+  cardShadow: "0 10px 28px rgba(15,23,42,.10)",
   controlHeight: 36,
-  controlRadius: 8,
-  modalRadius: 12,
-  modalShadow: "0 25px 60px rgba(0,0,0,.20)",
+  controlRadius: 0,
+  modalRadius: 0,
+  modalShadow: "0 18px 48px rgba(15,23,42,.18)",
 };
 const DEFAULT_APPEARANCE: WhiteLabelStyle = {
   surfaceColor: "#ffffff",
@@ -163,7 +163,7 @@ const DEFAULT_APPEARANCE: WhiteLabelStyle = {
   buttonBorderColor: "#f5500bdb",
   buttonHoverBackgroundColor: "#000000",
   height: 0,
-  radius: 11,
+  radius: 0,
   padding: 15,
   gap: 12,
   fontSize: 13,
@@ -619,8 +619,21 @@ export class WhiteLabelConfigService {
       if (style.headerColor === "#edf4ff" && key !== "header")
         style.headerColor = ORANGE_SOFT;
     }
-    // Migrate the previous visual defaults so existing saved White Label settings follow the current system.
-    // The product visual language is intentionally flat: no component radius or shadow.\n    out.global.cardRadius = 0;\n    out.global.controlRadius = 0;\n    out.global.modalRadius = 0;\n    out.global.cardShadow = "none";\n    out.global.modalShadow = "none";\n    for (const key of Object.keys(DEFAULT_STYLES)) {\n      out[key].radius = 0;\n      out[key].shadow = "none";\n    }
+    // Keep the geometry flat, but use shadow for visual hierarchy instead of borders.
+    const SURFACE_SHADOW = "0 10px 28px rgba(15,23,42,.10)";
+    out.global.cardRadius = 0;
+    out.global.controlRadius = 0;
+    out.global.modalRadius = 0;
+    out.global.cardShadow = out.global.cardShadow && out.global.cardShadow !== "none" ? out.global.cardShadow : SURFACE_SHADOW;
+    out.global.modalShadow = out.global.modalShadow && out.global.modalShadow !== "none" ? out.global.modalShadow : "0 18px 48px rgba(15,23,42,.18)";
+    for (const key of Object.keys(DEFAULT_STYLES)) {
+      out[key].radius = 0;
+      if (key === "cards" || key === "kpis") {
+        out[key].shadow = out[key].shadow && out[key].shadow !== "none" ? out[key].shadow : SURFACE_SHADOW;
+      } else {
+        out[key].shadow = out[key].shadow || "none";
+      }
+    }
     if (
       out.cards?.headerColor === "#e4eaf3" ||
       out.cards?.headerColor === "#f2f5fb"
