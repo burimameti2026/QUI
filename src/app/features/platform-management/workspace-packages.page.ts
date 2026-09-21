@@ -71,8 +71,9 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
           </div>
           <span class="status">{{ packages.length }} packages</span>
         </header>
-        <div class="content-grid">
-          <article class="card" *ngFor="let item of packages">
+        <div class="card-body">
+          <div class="content-grid">
+            <article class="card" *ngFor="let item of packages">
             <header class="card-header">
               <div class="identity">
                 <span class="icon">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
@@ -94,7 +95,8 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
             <footer class="card-footer">
               <button class="button-primary" type="button" (click)="install(item)" [disabled]="installing">{{ installing && selected === item.id ? 'Installing…' : 'Install package' }}</button>
             </footer>
-          </article>
+            </article>
+          </div>
         </div>
       </section>
 
