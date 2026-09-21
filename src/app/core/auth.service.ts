@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, finalize, map, of, shareReplay, tap } from 'rxjs';
+import { Observable, finalize, map, of, shareReplay, tap, timeout } from 'rxjs';
 
 interface TokenResponse {
   access_token: string;
@@ -25,6 +25,8 @@ export class AuthService {
   private readonly accessTokenKey = 'qai-token';
   private readonly refreshTokenKey = 'qai-refresh-token';
   private readonly tenantKey = 'qai-tenant';
+  private readonly renovaTenant = 'renova';
+  private readonly renovaAdminDomain = '@renova.local';
   private refreshRequest?: Observable<string>;
 
   readonly loggedIn = signal(this.hasValidAccessToken());
@@ -34,19 +36,15 @@ export class AuthService {
 
   login(tenant:string,email:string,password:string,mfaCode:string=''){
     const normalizedTenant = tenant.trim().toLowerCase();
-    let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',email.trim()).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
+    const normalizedEmail = this.normalizeLoginEmail(normalizedTenant, email);
+    let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
     if(mfaCode) body=body.set('mfa_code',mfaCode.trim());
     return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}})
-      .pipe(tap(response => this.storeSession(response, normalizedTenant)));
+      .pipe(timeout(15000),tap(response => this.storeSession(response, normalizedTenant)));
   }
 
-  accessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
-  }
-
-  hasRefreshToken(): boolean {
-    return !!localStorage.getItem(this.refreshTokenKey);
-  }
+  accessToken(): string | null { return localStorage.getItem(this.accessTokenKey); }
+  hasRefreshToken(): boolean { return !!localStorage.getItem(this.refreshTokenKey); }
 
   hasValidAccessToken(): boolean {
     const token = this.accessToken();
@@ -89,20 +87,29 @@ export class AuthService {
     this.refreshRequest = this.http.post<TokenResponse>('/connect/token',body.toString(),{
       headers:{'Content-Type':'application/x-www-form-urlencoded'}
     }).pipe(
-      tap(response => this.storeSession(response)),
-      map(response => response.access_token),
+      timeout(5000),
+      tap((response: TokenResponse) => this.storeSession(response)),
+      map((response: TokenResponse) => response.access_token),
       finalize(() => this.refreshRequest = undefined),
       shareReplay({bufferSize:1,refCount:false})
     );
     return this.refreshRequest;
   }
 
-  logout(){
+  logout(): void {
+    this.refreshRequest = undefined;
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
     localStorage.removeItem(this.tenantKey);
+    sessionStorage.clear();
     this.loggedIn.set(false);
     this.session.set(null);
+  }
+
+  private normalizeLoginEmail(tenant:string,email:string):string {
+    const value = email.trim().toLowerCase();
+    if (tenant === this.renovaTenant && value === 'renovaadmin') return `renovaadmin${this.renovaAdminDomain}`;
+    return value;
   }
 
   private storeSession(response:TokenResponse, tenant?:string):void {
@@ -120,9 +127,7 @@ export class AuthService {
       if (!encoded) return null;
       const base64 = encoded.replace(/-/g,'+').replace(/_/g,'/').padEnd(Math.ceil(encoded.length/4)*4,'=');
       return JSON.parse(atob(base64)) as Record<string,unknown>;
-    } catch {
-      return null;
-    }
+    } catch { return null; }
   }
 
   private readSession(token:string|null):UserSession|null {

@@ -1,0 +1,44 @@
+<div class="page">
+  <qai-page-header title="KPIs" subtitle="One operational view of the metrics that matter across acquisition, promotion and delivery.">
+    <button class="button-quiet" type="button" (click)="refresh()">↻ Refresh data</button>
+  </qai-page-header>
+
+  <div class="alert alert-error" *ngIf="error">
+    <strong>Data warning</strong><span>{{ error }}</span>
+  </div>
+
+  <section class="kpi-overview">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">OPERATING METRICS</span>
+        <h2>Revenue operations at a glance</h2>
+        <p>All core KPIs are grouped on one page so the workspace has a single, consistent operational picture.</p>
+      </div>
+      <span class="live-state"><i></i>{{ loading ? 'Loading' : 'Live data' }}</span>
+    </div>
+
+    <qai-kpi-grid [metrics]="metrics" (selected)="open($event.path || '/kpis')"></qai-kpi-grid>
+  </section>
+
+  <section class="detail-grid">
+    <article class="panel">
+      <header><div><span class="eyebrow">ACQUISITION</span><h3>Discovery performance</h3></div><button class="button-quiet" type="button" (click)="open('/acquisition/autonomous')">Open</button></header>
+      <div class="rows">
+        <div><span>Discovered</span><strong>{{ acquisition.discovered || 0 }}</strong></div>
+        <div><span>High-fit</span><strong>{{ qualified }}</strong></div>
+        <div><span>Replies</span><strong>{{ acquisition.replies || 0 }}</strong></div>
+        <div><span>Queued messages</span><strong>{{ queuedMessages }}</strong></div>
+      </div>
+    </article>
+
+    <article class="panel">
+      <header><div><span class="eyebrow">ACTIVITY</span><h3>Current operating state</h3></div></header>
+      <div class="rows">
+        <div><span>Active campaigns</span><strong>{{ campaigns.length }}</strong></div>
+        <div><span>Active agents</span><strong>{{ activeAgents }}</strong></div>
+        <div><span>Active promotion plans</span><strong>{{ activePlans }}</strong></div>
+        <div><span>Latest run</span><strong>{{ runs[0]?.status || 'Ready' }}</strong></div>
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,1 +1,27 @@
-:host{display:block}.toolbar,.grid,.metrics,.actions,.row-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.toolbar{align-items:center}.toolbar input,.grid input,textarea{padding:10px;border:1px solid #dbe3ee;border-radius:8px;flex:1;min-width:180px;font:inherit}textarea{width:100%;min-height:100px}.toolbar button,.actions button,.row-actions button{padding:9px 13px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;cursor:pointer}.toolbar button:disabled{opacity:.6;cursor:not-allowed}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}.cards div,.panel{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;margin:16px 0}.cards b{display:block;font-size:28px;line-height:1.1}.cards span,.empty{color:#64748b}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px}td,th{padding:11px 10px;border-bottom:1px solid #e5e7eb;text-align:left;vertical-align:top}th{font-weight:600;color:#475569}.row-actions{margin:0}.metrics span{padding:8px 10px;background:#f8fafc;border-radius:8px;color:#475569}pre{max-height:260px;overflow:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;white-space:pre-wrap}.error{margin:16px 0;padding:12px;border:1px solid #fecaca;border-radius:8px;color:#b91c1c;background:#fef2f2}@media(max-width:700px){.panel{padding:14px}.toolbar,.grid{flex-direction:column}.toolbar input,.grid input{width:100%;box-sizing:border-box}}
+/* Autonomous Acquisition — Discovery-level visual structure. */
+:host{display:block;min-width:0}
+.page{width:100%;margin:0;padding:0 0 24px}
+.page>.hero{margin-bottom:10px}
+.acquisition-progress{padding-bottom:18px}
+.acquisition-timeline{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));min-width:0;padding:20px 6px 4px}
+.acquisition-track{position:absolute;top:35px;left:10%;right:10%;height:1px;background:var(--wl-border-strong)}
+.acquisition-step{position:relative;z-index:1;display:grid;justify-items:center;gap:7px;text-align:center;min-width:0}
+.acquisition-step>span{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--wl-border-strong);background:var(--wl-surface);font-size:10px;font-weight:800}
+.acquisition-step strong{font-size:11px}
+.acquisition-step small{font-size:9px;color:var(--wl-muted)}
+.acquisition-step.is-current>span{border:2px solid var(--wl-accent);color:var(--wl-accent)}
+.acquisition-step.is-current strong{color:var(--wl-accent)}
+.acquisition-kpis{margin-top:0}
+.acquisition-kpis .metric{min-width:0}
+.acquisition-kpis .metric-top{margin-bottom:10px}
+.tenant-settings{margin-top:10px}
+.tenant-settings .card-header{align-items:flex-start}
+.live-refresh{display:flex;align-items:center;gap:7px;font-size:11px;white-space:nowrap}
+.tenant-settings .content-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card .table{overflow:auto}
+.card .actions{display:flex;flex-wrap:wrap;gap:7px}
+.facts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0}
+.facts>*{padding:10px 12px;border-right:1px solid var(--wl-border);border-bottom:1px solid var(--wl-border)}
+@media(max-width:1050px){.tenant-settings .content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.facts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.page>.hero{grid-template-columns:1fr}.acquisition-timeline{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 0}.acquisition-track{display:none}.tenant-settings .content-grid{grid-template-columns:1fr}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.acquisition-timeline{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr}}

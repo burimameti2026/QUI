@@ -1,62 +1,117 @@
-<qai-page-header title="Autonomous Acquisition" subtitle="API-aligned autonomous discovery, qualification and outreach operations."></qai-page-header>
+<main class="page">
+  <qai-page-header title="Autonomous Acquisition" subtitle="Monitor autonomous discovery, qualification and approval-controlled outreach for the current tenant.">
+    <div class="page-actions">
+      <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : 'Refresh data' }}</button>
+      <button class="button-primary" type="button" (click)="create()">New agent</button>
+      <button class="button-secondary" type="button" (click)="verify()">Verify system</button>
+      <button class="button-secondary" type="button" (click)="e2e()">Run E2E check</button>
+    </div>
+  </qai-page-header>
 
-<div class="toolbar">
-  <input [(ngModel)]="tenantId" placeholder="Tenant ID" />
-  <button (click)="load()" [disabled]="loading">{{ loading ? 'Loading…' : 'Load' }}</button>
-  <button (click)="create()">New agent</button>
-  <button (click)="verify()">Verify system</button>
-  <button (click)="e2e()">Run E2E check</button>
-  <label><input type="checkbox" [(ngModel)]="autoRefresh" (change)="toggleRefresh()" /> Live refresh</label>
-</div>
+  <section class="hero">
+    <div class="stack">
+      <span class="eyebrow">AUTONOMOUS ACQUISITION</span>
+      <h2>Run discovery, qualification and outreach under controlled approval.</h2>
+      <p>Configure agents, monitor execution and keep every outbound action inside tenant safety limits.</p>
+      <div class="meta">
+        <span><i></i>{{ tenantId || 'Tenant unavailable' }}</span>
+        <span><b>{{ active }}</b> active agents</span>
+        <span><b>{{ qualified }}</b> qualified</span>
+      </div>
+    </div>
+    <div class="card acquisition-progress">
+      <span class="eyebrow">CURRENT WORKFLOW</span>
+      <div class="acquisition-timeline">
+        <div class="acquisition-track" aria-hidden="true"></div>
+        <div class="acquisition-step" [class.is-current]="!agents.length"><span>01</span><strong>Configure</strong><small>Agent + ICP</small></div>
+        <div class="acquisition-step" [class.is-current]="agents.length && !active"><span>02</span><strong>Activate</strong><small>Start agent</small></div>
+        <div class="acquisition-step" [class.is-current]="active && !runs.length"><span>03</span><strong>Discover</strong><small>Run market search</small></div>
+        <div class="acquisition-step" [class.is-current]="runs.length && !qualified"><span>04</span><strong>Qualify</strong><small>Score accounts</small></div>
+        <div class="acquisition-step" [class.is-current]="qualified > 0"><span>05</span><strong>Approve</strong><small>Controlled outreach</small></div>
+      </div>
+    </div>
+  </section>
 
-<section class="cards">
-  <div><b>{{ agents.length }}</b><span>Agents</span></div>
-  <div><b>{{ active }}</b><span>Active</span></div>
-  <div><b>{{ runs.length }}</b><span>Runs</span></div>
-  <div><b>{{ completed }}</b><span>Completed</span></div>
-  <div><b>{{ discovered }}</b><span>Discovered</span></div>
-  <div><b>{{ qualified }}</b><span>Qualified</span></div>
-  <div><b>{{ emails }}</b><span>Emails sent</span></div>
-</section>
+  <section class="metric-grid acquisition-kpis">
+    <div class="content-grid">
+      <label class="stack"><b>SerpAPI key</b><input [(ngModel)]="settings.serpApiApiKey" type="password" autocomplete="new-password" placeholder="Enter a tenant-specific key" /><small>{{ hasSerpApiKey ? 'A key is configured. Leave blank to keep it.' : 'No key configured.' }}</small></label>
+      <label class="stack"><b>Monthly safety limit</b><input [(ngModel)]="settings.monthlySafetyLimit" type="number" min="1" max="100000" /></label>
+      <label class="stack"><b>Schedule timezone</b><input [(ngModel)]="settings.timeZoneId" placeholder="Europe/Skopje" /></label>
+    </div>
+    <footer class="actions"><button class="button-primary" type="button" (click)="saveSettings()" [disabled]="savingSettings">{{ savingSettings ? 'Saving…' : 'Save tenant settings' }}</button></footer>
+  </section>
 
-<section *ngIf="editing" class="panel">
-  <h2>{{ editing.id ? 'Edit' : 'Create' }} agent</h2>
-  <div class="grid">
-    <input [(ngModel)]="editing.name" placeholder="Name" />
-    <input [(ngModel)]="editing.templateCode" placeholder="Template code" />
-    <input [(ngModel)]="editing.industry" placeholder="Industry" />
-    <input [(ngModel)]="editing.region" placeholder="Region" />
-    <input [(ngModel)]="editing.minimumScore" type="number" placeholder="Minimum score" />
-    <input [(ngModel)]="editing.dailyDiscoveryLimit" type="number" placeholder="Daily discovery limit" />
-    <input [(ngModel)]="editing.dailyEmailLimit" type="number" placeholder="Daily email limit" />
-    <input [(ngModel)]="editing.runTimeUtc" placeholder="Run time UTC" />
-  </div>
-  <textarea [(ngModel)]="editing.icpNotes" placeholder="ICP and qualification instructions"></textarea>
-  <div class="actions"><button (click)="save()">Save</button><button (click)="editing = null">Cancel</button></div>
-</section>
+  <section class="metric-grid acquisition-kpis">
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Agents</span></div><strong>{{ agents.length }}</strong><small>Configured acquisition agents</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Active</span></div><strong>{{ active }}</strong><small>Agents currently running</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">↻</span><span class="metric-label">Runs</span></div><strong>{{ runs.length }}</strong><small>Total discovery runs</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Completed</span></div><strong>{{ completed }}</strong><small>Completed workflow runs</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Discovered</span></div><strong>{{ discovered }}</strong><small>Accounts discovered</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ qualified }}</strong><small>Accounts qualified</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">✉</span><span class="metric-label">Emails sent</span></div><strong>{{ emails }}</strong><small>Messages sent through approval</small></article>
+  </section>
 
-<section class="panel">
-  <h2>Agent lifecycle</h2>
-  <div *ngIf="!agents.length" class="empty">No agents found for this tenant.</div>
-  <div class="table-wrap" *ngIf="agents.length"><table><thead><tr><th>Name</th><th>Template</th><th>Status</th><th>Score threshold</th><th>Schedule</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let a of agents"><td>{{ a.name }}</td><td>{{ a.templateCode }}</td><td>{{ a.status }}</td><td>{{ a.minimumScore }}</td><td>{{ a.runTimeUtc || '-' }}</td><td class="row-actions"><button (click)="edit(a)">Edit</button><button (click)="action(a, 'activate')">Activate</button><button (click)="action(a, 'pause')">Pause</button><button (click)="action(a, 'stop')">Stop</button><button (click)="action(a, 'run')">Run now</button></td></tr></tbody></table></div>
-</section>
+  <section class="card tenant-settings">
+    <header class="card-header"><div><span class="eyebrow">TENANT CONFIGURATION</span><h2>Tenant acquisition settings</h2><p>Configure discovery credentials, safety limits and the schedule used by autonomous acquisition.</p></div>
+      <label class="live-refresh"><input type="checkbox" [(ngModel)]="autoRefresh" (change)="toggleRefresh()" /> Live refresh</label>
+    </header>
+    <div class="content-grid">
+      <label class="stack"><b>SerpAPI key</b><input [(ngModel)]="settings.serpApiApiKey" type="password" autocomplete="new-password" placeholder="Enter a tenant-specific key" /><small>{{ hasSerpApiKey ? 'A key is configured. Leave blank to keep it.' : 'No key configured.' }}</small></label>
+      <label class="stack"><b>Monthly safety limit</b><input [(ngModel)]="settings.monthlySafetyLimit" type="number" min="1" max="100000" /></label>
+      <label class="stack"><b>Schedule timezone</b><input [(ngModel)]="settings.timeZoneId" placeholder="Europe/Skopje" /></label>
+      <label class="stack"><b>Current tenant</b><input [value]="tenantId" readonly /></label>
+    </div>
+    <footer class="actions"><button class="button-primary" type="button" (click)="saveSettings()" [disabled]="savingSettings">{{ savingSettings ? 'Saving…' : 'Save tenant settings' }}</button></footer>
+  </section>
 
-<section class="panel">
-  <h2>Run history & real metrics</h2>
-  <div *ngIf="!runs.length" class="empty">No runs yet.</div>
-  <div class="table-wrap" *ngIf="runs.length"><table><thead><tr><th>Scheduled</th><th>Status</th><th>Manual</th><th>Discovered</th><th>Qualified</th><th>High score</th><th>Emails sent</th></tr></thead><tbody><tr *ngFor="let r of runs"><td>{{ r.scheduledAtUtc || '-' }}</td><td>{{ r.status }}</td><td>{{ r.isManual ? 'Yes' : 'No' }}</td><td>{{ r.discoveredCount || 0 }}</td><td>{{ r.qualifiedCount || 0 }}</td><td>{{ r.highScoreCount || 0 }}</td><td>{{ r.emailsSentCount || 0 }}</td></tr></tbody></table></div>
-</section>
+  <section *ngIf="editing" class="card">
+    <header class="card-header"><div><span class="eyebrow">AGENT CONFIGURATION</span><h2>{{ editing.id ? 'Edit' : 'Create' }} agent</h2></div></header>
+    <div class="content-grid">
+      <label class="stack"><b>Name</b><input [(ngModel)]="editing.name" placeholder="Name" /></label>
+      <label class="stack"><b>Template code</b><input [(ngModel)]="editing.templateCode" placeholder="Template code" /></label>
+      <label class="stack"><b>Industry</b><input [(ngModel)]="editing.industry" placeholder="Industry" /></label>
+      <label class="stack"><b>Region</b><input [(ngModel)]="editing.region" placeholder="Region" /></label>
+      <label class="stack"><b>Minimum score</b><input [(ngModel)]="editing.minimumScore" type="number" placeholder="Minimum score" /></label>
+      <label class="stack"><b>Daily discovery limit</b><input [(ngModel)]="editing.dailyDiscoveryLimit" type="number" placeholder="Daily discovery limit" /></label>
+      <label class="stack"><b>Daily email limit</b><input [(ngModel)]="editing.dailyEmailLimit" type="number" placeholder="Daily email limit" /></label>
+      <label class="stack"><b>Run time UTC</b><input [(ngModel)]="editing.runTimeUtc" placeholder="Run time UTC" /></label>
+    </div>
+    <label class="stack"><b>ICP and qualification instructions</b><textarea [(ngModel)]="editing.icpNotes" placeholder="ICP and qualification instructions"></textarea></label>
+    <footer class="actions"><button class="button-primary" type="button" (click)="save()">Save</button><button class="button-quiet" type="button" (click)="editing = null">Cancel</button></footer>
+  </section>
 
-<section class="panel">
-  <h2>System verification</h2>
-  <div *ngIf="verification; else verifyEmpty"><b>Status: {{ verification.status }}</b><div class="metrics"><span>Database: {{ verification.database }}</span><span>Orchestrator: {{ verification.orchestrator }}</span><span>Templates: {{ verification.templates }}</span><span>Agents: {{ verification.agents }}</span><span>Runs: {{ verification.runs }}</span><span>Memory: {{ verification.memory }}</span></div><pre>{{ verification | json }}</pre></div>
-  <ng-template #verifyEmpty><div class="empty">Run verification to inspect database, orchestrator, templates, agents, runs and memory.</div></ng-template>
-</section>
+  <section class="card">
+    <header class="card-header"><div><span class="eyebrow">AGENTS</span><h2>Agent lifecycle</h2></div></header>
+    <div *ngIf="!agents.length" class="empty">No agents found for this tenant.</div>
+    <div class="table" *ngIf="agents.length"><table><thead><tr><th>Name</th><th>Template</th><th>Status</th><th>Score threshold</th><th>Schedule</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let a of agents"><td><div class="identity"><span class="avatar">{{ (a.name || '?').charAt(0) }}</span><span class="stack"><b>{{ a.name }}</b><small>{{ a.templateCode }}</small></span></div></td><td>{{ a.templateCode }}</td><td><span class="status">{{ a.status }}</span></td><td>{{ a.minimumScore }}</td><td>{{ a.runTimeUtc || '-' }}</td><td><div class="actions"><button class="button-quiet" type="button" (click)="edit(a)">Edit</button><button class="button-secondary" type="button" (click)="action(a, 'activate')">Activate</button><button class="button-secondary" type="button" (click)="action(a, 'pause')">Pause</button><button class="button-secondary" type="button" (click)="action(a, 'stop')">Stop</button><button class="button-primary" type="button" (click)="action(a, 'run')">Run now</button></div></td></tr></tbody></table></div>
+  </section>
 
-<section class="panel">
-  <h2>End-to-end readiness</h2>
-  <div *ngIf="e2eResult; else e2eEmpty"><b>Status: {{ e2eResult.status }}</b><div class="table-wrap"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr *ngFor="let c of e2eResult.checks"><td>{{ c.name }}</td><td>{{ c.ok ? 'PASS' : 'PENDING' }}</td></tr></tbody></table></div><h3>Summary</h3><div class="metrics"><span>Active: {{ e2eResult.summary?.active }}</span><span>Completed: {{ e2eResult.summary?.completed }}</span><span>Failed: {{ e2eResult.summary?.failed }}</span><span>Queued: {{ e2eResult.summary?.queued }}</span><span>Memory: {{ e2eResult.summary?.memory }}</span><span>High score: {{ e2eResult.summary?.highScore }}</span></div><pre>{{ e2eResult | json }}</pre></div>
-  <ng-template #e2eEmpty><div class="empty">Run the E2E check to validate configured agent → active agent → run → memory → discovery → qualification → outreach pipeline.</div></ng-template>
-</section>
+  <section class="card">
+    <header class="card-header"><div><span class="eyebrow">EXECUTION</span><h2>Run history &amp; real metrics</h2></div></header>
+    <div *ngIf="!runs.length" class="empty">No runs yet.</div>
+    <div class="table" *ngIf="runs.length"><table><thead><tr><th>Scheduled</th><th>Status</th><th>Manual</th><th>Discovered</th><th>Qualified</th><th>High score</th><th>Emails sent</th></tr></thead><tbody><tr *ngFor="let r of runs"><td>{{ r.scheduledAtUtc || '-' }}</td><td><span class="status">{{ r.status }}</span></td><td>{{ r.isManual ? 'Yes' : 'No' }}</td><td>{{ r.discoveredCount || 0 }}</td><td>{{ r.qualifiedCount || 0 }}</td><td>{{ r.highScoreCount || 0 }}</td><td>{{ r.emailsSentCount || 0 }}</td></tr></tbody></table></div>
+  </section>
 
-<div *ngIf="error" class="error">{{ error }}</div>
+  <section class="card">
+    <header class="card-header"><div><span class="eyebrow">SYSTEM</span><h2>System verification</h2></div></header>
+    <div *ngIf="verification; else verifyEmpty">
+      <div class="facts"><span><b>Status</b> {{ verification.status }}</span><span><b>Database</b> {{ verification.database }}</span><span><b>Orchestrator</b> {{ verification.orchestrator }}</span><span><b>Templates</b> {{ verification.templates }}</span><span><b>Agents</b> {{ verification.agents }}</span><span><b>Runs</b> {{ verification.runs }}</span><span><b>Memory</b> {{ verification.memory }}</span></div>
+      <pre>{{ verification | json }}</pre>
+    </div>
+    <ng-template #verifyEmpty><div class="empty">Run verification to inspect database, orchestrator, templates, agents, runs and memory.</div></ng-template>
+  </section>
+
+  <section class="card">
+    <header class="card-header"><div><span class="eyebrow">READINESS</span><h2>End-to-end readiness</h2></div></header>
+    <div *ngIf="e2eResult; else e2eEmpty">
+      <span class="status">Status: {{ e2eResult.status }}</span>
+      <div class="table"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr *ngFor="let c of e2eResult.checks"><td>{{ c.name }}</td><td><span class="status">{{ c.ok ? 'PASS' : 'PENDING' }}</span></td></tr></tbody></table></div>
+      <h3>Summary</h3>
+      <div class="facts"><span>Active: {{ e2eResult.summary?.active }}</span><span>Completed: {{ e2eResult.summary?.completed }}</span><span>Failed: {{ e2eResult.summary?.failed }}</span><span>Queued: {{ e2eResult.summary?.queued }}</span><span>Memory: {{ e2eResult.summary?.memory }}</span><span>High score: {{ e2eResult.summary?.highScore }}</span></div>
+      <pre>{{ e2eResult | json }}</pre>
+    </div>
+    <ng-template #e2eEmpty><div class="empty">Run the E2E check to validate configured agent → active agent → run → memory → discovery → qualification → outreach pipeline.</div></ng-template>
+  </section>
+
+  <div *ngIf="error" class="alert">{{ error }}</div>
+</main>

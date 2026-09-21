@@ -1,0 +1,56 @@
+<main class="page">
+  <header class="hero">
+    <div>
+      <span class="eyebrow">PRODUCT HUB</span>
+      <h1>Product Catalog</h1>
+      <p>Manage product information, markets, languages and publication from one workspace.</p>
+    </div>
+    <div class="actions">
+      <button class="button-secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
+      <a class="button-primary" routerLink="/catalog/new">+ Add Product</a>
+    </div>
+  </header>
+
+  <section class="metric-grid" aria-label="Catalog summary">
+    <article class="metric"><span class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Total products</span></span><strong>{{ products.length }}</strong><small>catalog records</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Published</span></span><strong>{{ publishedCount }}</strong><small>publications live</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Draft / review</span></span><strong>{{ draftCount }}</strong><small>awaiting publication</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Languages in use</span></span><strong>{{ languageCount }}</strong><small>localized catalog content</small></article>
+  </section>
+
+  <section class="toolbar" aria-label="Catalog filters">
+    <input [(ngModel)]="search" placeholder="Search products" aria-label="Search products" />
+    <select [(ngModel)]="categoryFilter" aria-label="Filter by category">
+      <option value="all">All categories</option>
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select>
+    <select [(ngModel)]="statusFilter" aria-label="Filter by publication status">
+      <option value="all">All statuses</option>
+      <option value="published">Published</option>
+      <option value="draft">Draft / review</option>
+    </select>
+  </section>
+
+  <section class="card" aria-label="Product directory">
+    <header class="card-header"><strong>Products</strong><span class="meta">{{ filteredProducts.length }} shown</span></header>
+    <div class="table" *ngIf="!loading && filteredProducts.length">
+      <table>
+        <thead><tr><th>Product</th><th>Code</th><th>Category</th><th>Languages</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+            <td><strong>{{ product.name }}</strong><small>{{ product.shortDescription || product.brand || 'product' }}</small></td>
+            <td>{{ product.code }}</td>
+            <td>{{ categoryName(product.productCategoryId) }}</td>
+            <td>{{ product.languages?.length ? product.languages.join(' · ').toUpperCase() : 'EN' }}</td>
+            <td><span class="status" [class.draft]="product.publication?.status !== 'Published'">{{ product.publication?.status || 'Draft' }}</span></td>
+            <td><a class="button-quiet" [routerLink]="['/catalog', product.id]">Manage →</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="empty" *ngIf="!loading && products.length && !filteredProducts.length">No products match the current filters.</div>
+    <div class="empty" *ngIf="!loading && !products.length">No products yet. Add the first product to start the promotion workflow.</div>
+    <div class="notice" *ngIf="loading">Loading catalog…</div>
+    <div class="alert" *ngIf="!loading && error">{{ error }}</div>
+  </section>
+</main>

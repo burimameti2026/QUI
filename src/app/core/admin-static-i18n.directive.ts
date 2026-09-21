@@ -1,0 +1,174 @@
+import { Directive, ElementRef, OnDestroy, effect, inject } from '@angular/core';
+import { AdminI18nService } from './admin-i18n.service';
+import { moduleTranslate } from './module-i18n-loader';
+import { adminText } from './admin-page-translations';
+import { adminExtraText } from './admin-extra-translations';
+import { adminCrmText } from './admin-crm-translations';
+import { ADMIN_CMS_TRANSLATIONS } from './admin-cms-translations';
+import { adminUiGapText } from './admin-ui-gap-translations';
+import { adminPageCopyText } from './admin-page-copy-translations';
+import { adminNavigationText } from './admin-navigation-translations';
+import { adminPageInteriorText } from './admin-page-interior-translations';
+import { adminPageInteriorDynamicText } from './admin-page-interior-dynamic-translations';
+import { adminPageInteriorGlobalText } from './admin-page-interior-global-translations';
+import { adminAcquisitionInteriorText } from './admin-page-interior-acquisition-translations';
+import { adminKnowledgeDiscoveryInteriorText } from './admin-page-interior-knowledge-discovery-translations';
+import { adminDashboardText } from './admin-dashboard-translations';
+import { adminLeadsText } from './admin-leads-translations';
+import { adminUniversalText } from './admin-universal-translations';
+import { ADMIN_ENTERPRISE_TRANSLATIONS } from './admin-enterprise-translations';
+
+@Directive({ selector: '[qaiAdminStaticI18n]', standalone: true })
+export class AdminStaticI18nDirective implements OnDestroy {
+  private readonly host = inject(ElementRef).nativeElement as HTMLElement;
+  private readonly i18n = inject(AdminI18nService);
+  private readonly originals = new WeakMap<Text, string>();
+  private readonly attributeOriginals = new WeakMap<HTMLElement, Map<string, string>>();
+  private readonly propertyOriginals = new WeakMap<HTMLElement, Map<string, string | string[]>>();
+  private translating = false;
+  private scheduled = false;
+  private readonly observer = new MutationObserver(records => this.scheduleMutations(records));
+  private readonly languageEffect = effect(() => { this.i18n.language(); this.scheduleTranslate(); });
+  private readonly uiAttributes = ['placeholder', 'title', 'aria-label'] as const;
+
+  constructor() {
+    this.observer.observe(this.host, { childList: true, subtree: true });
+    this.scheduleTranslate();
+  }
+
+  private scheduleMutations(records: MutationRecord[]): void {
+    if (this.translating || !records.length) return;
+    queueMicrotask(() => {
+      if (this.translating) return;
+      const roots = new Set<Node>();
+      for (const record of records) if (record.type === 'childList') record.addedNodes.forEach(node => roots.add(node));
+      if (roots.size) this.translateRoots([...roots]);
+    });
+  }
+
+  private scheduleTranslate(): void {
+    if (this.scheduled) return;
+    this.scheduled = true;
+    queueMicrotask(() => { this.scheduled = false; this.translate(); });
+  }
+
+  private observe(): void { this.observer.observe(this.host, { childList: true, subtree: true }); }
+
+  private translate(): void {
+    if (this.translating) return;
+    this.translating = true;
+    this.observer.disconnect();
+    try {
+      const walker = document.createTreeWalker(this.host, NodeFilter.SHOW_TEXT);
+      const nodes: Text[] = [];
+      let node: Node | null;
+      while ((node = walker.nextNode())) {
+        const text = node as Text;
+        const parent = text.parentElement;
+        if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
+        nodes.push(text);
+      }
+      this.translateTextNodes(nodes);
+      this.translateElements(Array.from(this.host.querySelectorAll('*')) as HTMLElement[]);
+    } finally { this.translating = false; this.observe(); }
+  }
+
+  private translateRoots(roots: Node[]): void {
+    if (this.translating) return;
+    this.translating = true;
+    this.observer.disconnect();
+    try {
+      const textNodes: Text[] = [];
+      const elements: HTMLElement[] = [];
+      for (const root of roots) {
+        if (root.nodeType === Node.TEXT_NODE) { textNodes.push(root as Text); continue; }
+        if (root.nodeType !== Node.ELEMENT_NODE) continue;
+        const element = root as HTMLElement;
+        elements.push(element);
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        let node: Node | null;
+        while ((node = walker.nextNode())) textNodes.push(node as Text);
+        element.querySelectorAll('*').forEach(el => elements.push(el as HTMLElement));
+      }
+      this.translateTextNodes(textNodes);
+      this.translateElements(elements);
+    } finally { this.translating = false; this.observe(); }
+  }
+
+  private translateTextNodes(nodes: Text[]): void {
+    for (const text of nodes) {
+      const parent = text.parentElement;
+      if (!parent || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(parent.tagName)) continue;
+      const current = text.nodeValue ?? '';
+      const original = this.originals.get(text) ?? current;
+      if (!this.originals.has(text)) this.originals.set(text, original);
+      const translated = this.translateValue(original.trim());
+      if (translated === original.trim()) continue;
+      const leading = original.match(/^\s*/)?.[0] ?? '';
+      const trailing = original.match(/\s*$/)?.[0] ?? '';
+      const nextValue = leading + translated + trailing;
+      if (current !== nextValue) text.nodeValue = nextValue;
+    }
+  }
+
+  private translateElements(elements: HTMLElement[]): void {
+    for (const element of elements) {
+      for (const attribute of this.uiAttributes) {
+        const value = element.getAttribute(attribute);
+        if (value === null || !value.trim() || value.trim().length > 400) continue;
+        let originals = this.attributeOriginals.get(element);
+        if (!originals) { originals = new Map(); this.attributeOriginals.set(element, originals); }
+        const original = originals.get(attribute) ?? value;
+        if (!originals.has(attribute)) originals.set(attribute, original);
+        const translated = this.translateValue(original.trim());
+        if (translated !== original.trim()) {
+          const leading = original.match(/^\s*/)?.[0] ?? '';
+          const trailing = original.match(/\s*$/)?.[0] ?? '';
+          element.setAttribute(attribute, leading + translated + trailing);
+        }
+      }
+    }
+    this.translateComponentInputs(elements);
+  }
+
+  private translateComponentInputs(elements: HTMLElement[]): void {
+    const scalarProps = ['title', 'subtitle', 'text', 'label'] as const;
+    for (const element of elements) {
+      const tag = element.tagName.toLowerCase();
+      if (!['qai-page-header', 'qai-modal', 'qai-callout', 'qai-wizard-steps'].includes(tag)) continue;
+      let originals = this.propertyOriginals.get(element);
+      if (!originals) { originals = new Map(); this.propertyOriginals.set(element, originals); }
+      for (const prop of scalarProps) {
+        const value = (element as any)[prop];
+        if (typeof value !== 'string' || !value.trim() || value.length > 400) continue;
+        const original = originals.get(prop);
+        if (!originals.has(prop)) originals.set(prop, value);
+        const source = typeof original === 'string' ? original : value;
+        const resolved = this.translateValue(source);
+        if (resolved !== source && (element as any)[prop] !== resolved) (element as any)[prop] = resolved;
+      }
+    }
+  }
+
+  private translateValue(value: string): string {
+    const language = this.i18n.language();
+    const enterprise = ADMIN_ENTERPRISE_TRANSLATIONS[value]?.[language];
+    if (enterprise) return enterprise;
+    const universal = adminUniversalText(value, language); if (universal !== value) return universal;
+    const leads = adminLeadsText(value, language); if (leads !== value) return leads;
+    const dashboard = adminDashboardText(value, language); if (dashboard !== value) return dashboard;
+    const module = moduleTranslate(value, language); if (module !== value) return module;
+    const knowledgeDiscovery = adminKnowledgeDiscoveryInteriorText(value, language); if (knowledgeDiscovery !== value) return knowledgeDiscovery;
+    const acquisition = adminAcquisitionInteriorText(value, language); if (acquisition !== value) return acquisition;
+    const global = adminPageInteriorGlobalText(value, language); if (global !== value) return global;
+    const interior = adminPageInteriorText(value, language); if (interior !== value) return interior;
+    const dynamicInterior = adminPageInteriorDynamicText(value, language); if (dynamicInterior !== value) return dynamicInterior;
+    const navigation = adminNavigationText(value, language); if (navigation !== value) return navigation;
+    const pageCopy = adminPageCopyText(value, language); if (pageCopy !== value) return pageCopy;
+    const gap = adminUiGapText(value, language); if (gap !== value) return gap;
+    const cms = ADMIN_CMS_TRANSLATIONS[value]?.[language]; if (cms) return cms;
+    return adminCrmText(adminExtraText(adminText(this.i18n, value), language), language);
+  }
+
+  ngOnDestroy(): void { this.observer.disconnect(); this.languageEffect.destroy(); }
+}

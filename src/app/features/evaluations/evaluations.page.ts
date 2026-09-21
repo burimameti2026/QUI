@@ -8,16 +8,94 @@ import { EvaluationsService } from './evaluations.service';
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrl: './evaluations.page.css',
-  template: `<qai-page-header title="Workflow Evaluations" subtitle="Prove that an assistant gives the expected answer before it is connected to a live customer workflow."><button (click)="createDataset()">+ Dataset</button><button [disabled]="!selected" (click)="caseOpen=true">+ Test case</button><button class="primary" [disabled]="!selected || !cases.length || !selectedAgentId || running" (click)="runSelected()">{{running ? 'Running…' : '▶ Run evaluation'}}</button></qai-page-header>
-  <section class="evaluation-flow panel"><div><span class="eyebrow">WHAT AN EVALUATION MEANS</span><h2>Dataset alone is not a score</h2><p>A dataset is a named regression suite. Add realistic test cases, select the assistant version, then compare each response against the expected business outcome. Results are stored so changes can be checked before release.</p></div><ol><li><b>1</b>Dataset</li><li><b>2</b>Test cases</li><li><b>3</b>Assistant</li><li><b>4</b>Evidence</li></ol></section>
-  <p class="notice error" *ngIf="error">{{error}}</p><p class="notice success" *ngIf="message">{{message}}</p>
-  <div class="evaluation-grid">
-    <section class="panel dataset-list"><header><span class="eyebrow">REGRESSION SUITES</span><h3>Datasets</h3></header><button *ngFor="let dataset of rows" [class.active]="selected?.id===dataset.id" (click)="select(dataset)"><b>{{dataset.name}}</b><small>{{dataset.description || 'No description yet'}}</small></button><p *ngIf="!rows.length">Create a dataset for acquisition, sales qualification, support or a specific workflow.</p></section>
-    <section class="panel case-workspace" *ngIf="selected; else empty"><header><div><span class="eyebrow">SELECTED DATASET</span><h2>{{selected.name}}</h2><p>{{selected.description || 'Define the customer situations and business outcomes this assistant must handle correctly.'}}</p></div><label>Assistant<select [(ngModel)]="selectedAgentId"><option value="">Select active assistant</option><option *ngFor="let agent of activeAgents" [value]="agent.id">{{agent.name}} · {{agent.role}}</option></select></label></header><div class="case-heading"><div><h3>Test cases</h3><p>Each case sends a realistic input to the selected assistant and checks whether the expected outcome is present.</p></div><b>{{cases.length}} cases</b></div><div class="case-empty" *ngIf="!cases.length"><b>No evidence yet</b><span>Add the real questions, replies or scenarios you want this assistant to pass before release.</span><button class="primary" (click)="caseOpen=true">Add first test case</button></div><table *ngIf="cases.length"><thead><tr><th>Customer input</th><th>Expected outcome</th><th>Expected tool</th><th></th></tr></thead><tbody><tr *ngFor="let test of cases"><td>{{test.input}}</td><td>{{test.expectedAnswer}}</td><td>{{test.expectedTool || 'Answer only'}}</td><td><button class="danger-link" (click)="removeCase(test)">Remove</button></td></tr></tbody></table><section class="run-summary" *ngIf="runs.length"><span class="eyebrow">RECENT RUNS</span><article *ngFor="let run of runs"><b>{{run.overallScore|percent:'1.0-0'}}</b><span>{{run.status}} · {{run.createdAtUtc|date:'medium'}}</span></article></section></section>
-    <ng-template #empty><section class="panel empty-state"><b>Select a dataset</b><span>Start with a regression suite, then add test cases.</span></section></ng-template>
-    <aside class="panel evaluation-help"><span class="eyebrow">RELEASE GUIDE</span><h3>What to test</h3><ol><li><b>Answer quality</b><span>Does it give the promised information?</span></li><li><b>Grounding</b><span>Does it stay within verified knowledge?</span></li><li><b>Tool choice</b><span>Does it choose the allowed business action?</span></li><li><b>Safe conversion</b><span>Does it ask approval before external action?</span></li></ol><div><b>Current result</b><p>{{cases.length ? 'Run the suite against an active assistant to produce evidence.' : 'No test cases configured — there is nothing meaningful to evaluate yet.'}}</p></div></aside>
+  template: `<main class="page">
+  <qai-page-header title="Workflow Evaluations" subtitle="Prove that an assistant gives the expected answer before it is connected to a live customer workflow.">
+    <button class="button-secondary" (click)="createDataset()">+ Dataset</button>
+    <button class="button-secondary" [disabled]="!selected" (click)="caseOpen=true">+ Test case</button>
+    <button class="button-primary" [disabled]="!selected || !cases.length || !selectedAgentId || running" (click)="runSelected()">{{running ? 'Running…' : '▶ Run evaluation'}}</button>
+  </qai-page-header>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">WHAT AN EVALUATION MEANS</span>
+      <h2>Dataset alone is not a score</h2>
+      <p>A dataset is a named regression suite. Add realistic test cases, select the assistant version, then compare each response against the expected business outcome. Results are stored so changes can be checked before release.</p>
+    </div>
+    <ol class="steps">
+      <li><b>1</b><span>Dataset</span></li>
+      <li><b>2</b><span>Test cases</span></li>
+      <li><b>3</b><span>Assistant</span></li>
+      <li><b>4</b><span>Evidence</span></li>
+    </ol>
+  </section>
+
+  <div class="stack">
+    <div class="alert" *ngIf="error">{{error}}</div>
+    <div class="notice" *ngIf="message">{{message}}</div>
   </div>
-  <qai-modal [open]="caseOpen" title="Add evaluation test case" (close)="caseOpen=false"><form class="form" (ngSubmit)="saveCase()"><label>Customer input<textarea [(ngModel)]="form.input" name="input" required placeholder="We need weekly transport of 18 pallets from Stuttgart to Milan."></textarea></label><label>Expected outcome<input [(ngModel)]="form.expectedAnswer" name="expected" required placeholder="For example: I can help with that"></label><label>Expected tool <input [(ngModel)]="form.expectedTool" name="tool" placeholder="Optional: CreateOpportunity"></label><p class="form-note">The evaluator compares the returned response with the expected outcome and records answer, grounding and tool checks.</p><footer><button type="button" (click)="caseOpen=false">Cancel</button><button class="primary" type="submit">Save test case</button></footer></form></qai-modal>`,
+
+  <section class="metric-grid" aria-label="Evaluation summary">
+    <article class="metric"><span class="metric-top"><span class="metric-icon">▣</span><span class="metric-label">Datasets</span></span><strong>{{ rows.length }}</strong><small>Regression suites</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Test cases</span></span><strong>{{ cases.length }}</strong><small>Selected suite</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Runs</span></span><strong>{{ runs.length }}</strong><small>Evaluation history</small></article>
+    <article class="metric"><span class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Active assistants</span></span><strong>{{ activeAgents.length }}</strong><small>Available evaluators</small></article>
+  </section>
+
+  <div class="content-grid">
+    <section class="stack">
+      <section class="card">
+        <header class="card-header"><div><span class="eyebrow">REGRESSION SUITES</span><h3>Datasets</h3></div><span class="meta">{{ rows.length }} suites</span></header>
+        <div class="list" *ngIf="rows.length">
+          <button class="list-item" *ngFor="let dataset of rows" [class.active]="selected?.id===dataset.id" (click)="select(dataset)">
+            <span class="stack"><b>{{dataset.name}}</b><small>{{dataset.description || 'No description yet'}}</small></span>
+          </button>
+        </div>
+        <div class="empty" *ngIf="!rows.length">Create a dataset for acquisition, sales qualification, support or a specific workflow.</div>
+      </section>
+
+      <section class="card" *ngIf="selected; else emptyDataset">
+        <header class="card-header">
+          <div><span class="eyebrow">SELECTED DATASET</span><h2>{{selected.name}}</h2><p>{{selected.description || 'Define the customer situations and business outcomes this assistant must handle correctly.'}}</p></div>
+          <label class="filter-group">Assistant<select [(ngModel)]="selectedAgentId"><option value="">Select active assistant</option><option *ngFor="let agent of activeAgents" [value]="agent.id">{{agent.name}} · {{agent.role}}</option></select></label>
+        </header>
+        <div class="card-body">
+          <div class="section-header"><div><h3>Test cases</h3><p>Each case sends a realistic input to the selected assistant and checks whether the expected outcome is present.</p></div><span class="meta">{{cases.length}} cases</span></div>
+          <div class="empty" *ngIf="!cases.length"><strong>No evidence yet</strong><p>Add the real questions, replies or scenarios you want this assistant to pass before release.</p><button class="button-primary" (click)="caseOpen=true">Add first test case</button></div>
+          <div class="table" *ngIf="cases.length">
+            <table><thead><tr><th>Customer input</th><th>Expected outcome</th><th>Expected tool</th><th></th></tr></thead><tbody>
+              <tr *ngFor="let test of cases"><td>{{test.input}}</td><td>{{test.expectedAnswer}}</td><td>{{test.expectedTool || 'Answer only'}}</td><td><button class="button-quiet" (click)="removeCase(test)">Remove</button></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <footer class="card-footer" *ngIf="runs.length">
+          <div class="stack"><span class="eyebrow">RECENT RUNS</span><div class="list"><div class="list-item" *ngFor="let run of runs"><strong>{{run.overallScore|percent:'1.0-0'}}</strong><span class="meta">{{run.status}} · {{run.createdAtUtc|date:'medium'}}</span></div></div></div>
+        </footer>
+      </section>
+      <ng-template #emptyDataset><section class="empty"><strong>Select a dataset</strong><span>Start with a regression suite, then add test cases.</span></section></ng-template>
+    </section>
+
+    <aside class="card">
+      <header class="card-header"><div><span class="eyebrow">RELEASE GUIDE</span><h3>What to test</h3></div></header>
+      <div class="list">
+        <div class="list-item"><span class="stack"><b>Answer quality</b><small>Does it give the promised information?</small></span></div>
+        <div class="list-item"><span class="stack"><b>Grounding</b><small>Does it stay within verified knowledge?</small></span></div>
+        <div class="list-item"><span class="stack"><b>Tool choice</b><small>Does it choose the allowed business action?</small></span></div>
+        <div class="list-item"><span class="stack"><b>Safe conversion</b><small>Does it ask approval before external action?</small></span></div>
+      </div>
+      <div class="card-body"><span class="eyebrow">CURRENT RESULT</span><p>{{cases.length ? 'Run the suite against an active assistant to produce evidence.' : 'No test cases configured — there is nothing meaningful to evaluate yet.'}}</p></div>
+    </aside>
+  </div>
+
+  <qai-modal [open]="caseOpen" title="Add evaluation test case" (close)="caseOpen=false">
+    <form class="form" (ngSubmit)="saveCase()">
+      <label>Customer input<textarea [(ngModel)]="form.input" name="input" required placeholder="We need weekly transport of 18 pallets from Stuttgart to Milan."></textarea></label>
+      <label>Expected outcome<input [(ngModel)]="form.expectedAnswer" name="expected" required placeholder="For example: I can help with that"></label>
+      <label>Expected tool<input [(ngModel)]="form.expectedTool" name="tool" placeholder="Optional: CreateOpportunity"></label>
+      <p class="meta">The evaluator compares the returned response with the expected outcome and records answer, grounding and tool checks.</p>
+      <footer class="actions"><button class="button-secondary" type="button" (click)="caseOpen=false">Cancel</button><button class="button-primary" type="submit">Save test case</button></footer>
+    </form>
+  </qai-modal>
+</main>`,
 })
 export class EvaluationsPage implements OnInit {
   rows: any[] = []; cases: any[] = []; runs: any[] = []; agents: any[] = []; selected: any; selectedAgentId = ''; running = false; caseOpen = false; error = ''; message = ''; form = { input: '', expectedAnswer: '', expectedTool: '' };

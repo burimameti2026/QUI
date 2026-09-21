@@ -1,10 +1,9 @@
 export const ModuleCodes = {
   crm: 'crm',
   goldenPipeline: 'golden_pipeline',
-  aiAgents: 'ai_agents',
+  aiAgents: 'ai',
   knowledge: 'knowledge',
-  workflows: 'workflows',
-  automations: 'automations',
+  automation: 'automation',
   integrations: 'integrations',
   analytics: 'analytics',
   inbox: 'inbox',
@@ -16,10 +15,10 @@ export const ModuleCodes = {
 export type ModuleCode = typeof ModuleCodes[keyof typeof ModuleCodes];
 
 const aliases: Record<string, ModuleCode> = {
-  ai: ModuleCodes.aiAgents,
   agents: ModuleCodes.aiAgents,
-  automation: ModuleCodes.automations,
-  workflows: ModuleCodes.workflows
+  ai_agents: ModuleCodes.aiAgents,
+  automations: ModuleCodes.automation,
+  workflows: ModuleCodes.automation
 };
 
 export function normalizeModuleCode(code: string): string {

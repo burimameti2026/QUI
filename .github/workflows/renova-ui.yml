@@ -1,0 +1,25 @@
+name: QUI UI CI
+
+on:
+  push:
+    branches: [renova, newstyle]
+  pull_request:
+    branches: [renova, newstyle]
+
+concurrency:
+  group: qui-ui-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build

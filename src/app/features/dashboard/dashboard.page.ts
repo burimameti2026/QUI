@@ -1,142 +1,121 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
-import { DashboardService } from './dashboard.service';
-
-interface DashboardOpportunity {
-  company: string;
-  country: string;
-  intent: string;
-  score: number;
-  value: number;
-}
-interface DashboardGap {
-  topic: string;
-  count: number;
-  impact: string;
-}
-interface DashboardSummary {
-  contacts: number;
-  leads: number;
-  hotLeads: number;
-  pipeline: number;
-  openConversations: number;
-  openTickets: number;
-  influencedRevenue: number;
-  wonRevenue: number;
-  automationActions: number;
-  meetingsBooked: number;
-  completedRuns: number;
-  estimatedHoursSaved: number;
-  opportunities: DashboardOpportunity[];
-  knowledgeGaps: DashboardGap[];
-}
+import { QaiKpiGrid, QaiKpiMetric } from '../../shared/components/kpi/kpi-grid.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, PageHeader, QaiKpiGrid],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.css'
 })
 export class DashboardPage implements OnInit {
-  summary: Partial<DashboardSummary> = {};
-  loaded = false;
-  installing = false;
-  resetting = false;
-  error = '';
-  readonly tenantLabel = localStorage.getItem('qai-tenant') || 'current tenant';
+  private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
-  constructor(
-    private readonly dashboard: DashboardService,
-    private readonly router: Router
-  ) {}
+  loaded = false;
+  error = '';
+  products: any[] = [];
+  plans: any[] = [];
+  agents: any[] = [];
+  runs: any[] = [];
+  acquisition: any = {};
+  campaigns: any[] = [];
+
+  get tenantId() { return this.auth.session()?.tenantId || ''; }
+  get tenantName() { return this.auth.session()?.tenantSlug || this.auth.session()?.tenantId || 'Workspace'; }
+  get activeAgentCount() {
+    return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length;
+  }
+  get publishedProducts() {
+    return this.products.filter(x => String(x.publication?.status || '').toLowerCase() === 'published').length;
+  }
+  get activePlans() {
+    return this.plans.filter(x => String(x.status).toLowerCase() === 'active').length;
+  }
+  get recentRun() { return this.runs[0]; }
+  get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
+  get qualifiedProspects() { return Number(this.acquisition.hot || 0); }
+  get kpiMetrics(): QaiKpiMetric[] {
+    return [
+      { label: 'Product catalog', value: this.products.length, detail: this.publishedProducts + ' public publications live', icon: '▦', path: '/catalog' },
+      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/renova/promotion' },
+      { label: 'Autonomous agents', value: this.activeAgentCount, detail: 'running acquisition engines', icon: '↯', path: '/acquisition/autonomous' },
+      { label: 'Prospects discovered', value: Number(this.acquisition.discovered || 0), detail: this.qualifiedProspects + ' high-fit prospects', icon: '⌕', path: '/discover' },
+      { label: 'Awaiting delivery', value: this.queuedMessages, detail: 'review the approval queue', icon: '✓', path: '/acquisition/approval-queue' }
+    ];
+  }
 
   ngOnInit(): void {
-    this.refresh();
+    void this.refresh();
   }
 
-  get hasData(): boolean {
-    const d = this.summary;
-    return (
-      Number(d.contacts || 0) +
-        Number(d.leads || 0) +
-        Number(d.openConversations || 0) +
-        Number(d.openTickets || 0) +
-        Number(d.pipeline || 0) >
-      0
-    );
-  }
+  async refresh() {
+    this.loaded = false;
+    this.error = '';
+    try {
+      const requests = await Promise.all([
+        firstValueFrom(this.api.get<any[]>('renova/catalog/products')),
+        firstValueFrom(this.api.get<any[]>('renova/catalog/promotion-plans')),
+        firstValueFrom(this.api.get<any[]>('acquisition/campaigns')),
+        firstValueFrom(this.api.get<any>('acquisition/overview')),
+        this.tenantId
+          ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`))
+          : Promise.resolve([]),
+        this.tenantId
+          ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/runs`))
+          : Promise.resolve([])
+      ]);
 
-  get revenueConversion(): number {
-    const influenced = Number(this.summary.influencedRevenue || 0);
-    const won = Number(this.summary.wonRevenue || 0);
-
-    if (influenced <= 0 || won <= 0) {
-      return 0;
+      [this.products, this.plans, this.campaigns, this.acquisition, this.agents, this.runs] = requests;
+    } catch (error: any) {
+      this.error = error?.error?.detail || 'Dashboard could not load live workspace data.';
+    } finally {
+      this.loaded = true;
     }
-
-    return Math.min(100, Math.round((won / influenced) * 100));
   }
 
-  refresh(): void {
-    this.error = '';
-    this.dashboard.summary<DashboardSummary>().subscribe({
-      next: (response) => {
-        this.summary = response;
-        this.loaded = true;
-      },
-      error: (response) => {
-        this.loaded = true;
-        this.error =
-          response?.error?.detail ||
-          response?.error?.title ||
-          `Dashboard request failed (${response.status || 'network error'}).`;
-      }
-    });
-  }
-
-  loadPresentationDemo(): void {
-    if (!confirm('Load the presentation demo for this tenant? This clears current business data, then adds only [PRESENTATION] .example prospects, a sample campaign, demo meeting, workflows and support records. It never sends real email.')) return;
-    this.installing = true;
-    this.error = '';
-    this.dashboard.resetAndInstallDemo().subscribe({
-      next: () => {
-        this.installing = false;
-        this.refresh();
-      },
-      error: (response) => {
-        this.installing = false;
-        this.error =
-          response?.error?.detail || response?.error?.title || 'Presentation demo could not be loaded.';
-      }
-    });
-  }
-
-  prepareRealWorkspace(): void {
-    if (!confirm('Prepare this tenant for real imported data? This removes existing business and presentation records: prospects, lists, CRM, pipelines, meetings, agents, automations and support scenario records. Identity users, licenses and settings remain.')) return;
-    this.resetting = true;
-    this.error = '';
-    this.dashboard.resetDemo().subscribe({
-      next: () => {
-        this.resetting = false;
-        void this.router.navigateByUrl('/acquisition/discover');
-      },
-      error: (response) => {
-        this.resetting = false;
-        this.error = response?.error?.detail || response?.error?.title || 'Workspace reset could not be completed.';
-      }
-    });
-  }
-
-  go(path: string): void {
+  go(path: string) {
     void this.router.navigateByUrl(path);
   }
-  money(value: number | undefined): string {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
-      maximumFractionDigits: 0
-    }).format(value || 0);
+
+  get programRows(): Array<Record<string, unknown>> {
+    return this.plans.map(plan => ({
+      program: plan.name || '',
+      language: String(plan.campaignLanguage || '').toUpperCase(),
+      status: plan.status || '',
+      automation: plan.enableAutonomousProspecting ? 'Autonomous' : 'Manual'
+    }));
+  }
+
+  get publicExperience() {
+    return [
+      {
+        icon: '▦',
+        title: `${this.products.length} catalog products`,
+        subtitle: `${this.publishedProducts} are published to the public ${this.tenantName} portal.`,
+        badge: 'LIVE',
+        tone: 'success'
+      },
+      {
+        icon: '◎',
+        title: '4-language content',
+        subtitle: 'EN, MK, SQ and DE localization is seeded for the demo workspace.',
+        badge: 'READY',
+        tone: 'success'
+      },
+      {
+        icon: '↯',
+        title: 'Inbound inquiry path',
+        subtitle: 'Distributor inquiries enter the tenant workspace as structured portal inquiries.',
+        badge: 'CONNECTED',
+        tone: 'success'
+      }
+    ];
   }
 }

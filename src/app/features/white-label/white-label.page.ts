@@ -1,1 +1,407 @@
-import { CommonModule } from '@angular/common';import { Component,OnInit } from '@angular/core';import { FormsModule } from '@angular/forms';import { ApiService } from '../../core/api.service';import { PageHeader } from '../../shared/ui';@Component({standalone:true,imports:[CommonModule,FormsModule,PageHeader],template:`<qai-page-header title="White Label" subtitle="Customize product identity, widget branding and customer-facing domains."></qai-page-header><div class="settings-grid"><section class="panel form"><h3>Brand identity</h3><label>Product name<input [(ngModel)]="brand.productName"></label><label>Support email<input [(ngModel)]="brand.supportEmail"></label><div class="form2"><label>Primary color<input type="color" [(ngModel)]="brand.primaryColor"></label><label>Accent color<input type="color" [(ngModel)]="brand.accentColor"></label></div><button class="primary" (click)="saveBrand()">Save branding</button></section><section class="panel"><h3>Widget preview</h3><div class="widget-preview" [style.--brand]="brand.primaryColor"><header>{{brand.productName||'QualifyAI'}}</header><p>Hi! How can I help with your request today?</p><button type="button" disabled title="Preview only">Start conversation</button></div></section></div>`})export class WhiteLabelPage implements OnInit{brand:any={productName:'QualifyAI',supportEmail:'support@company.com',primaryColor:'#2563eb',accentColor:'#0f172a'};constructor(private api:ApiService){}ngOnInit(){this.api.get<any>('white-label/branding').subscribe(r=>{if(r)this.brand=r})}saveBrand(){this.api.put<any>('white-label/branding',this.brand).subscribe({next:r=>{this.brand=r;alert('Branding saved.')},error:()=>alert('Branding endpoint unavailable.')})}}
+import { CommonModule } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { WhiteLabelConfigService, WhiteLabelSection, WhiteLabelStyles } from "../../core/white-label-config.service";
+import { PageHeader } from "../../shared/ui";
+
+type LayoutSectionKind = "header" | "kpis" | "cards" | "grid" | "buttons" | "text" | "steps" | "lists" | "tables" | "badges" | "forms" | "tabs" | "dataGrid" | "navigation" | "modals" | "notices";
+
+interface LayoutItem {
+  id: string;
+  label: string;
+  value?: string;
+  template: string;
+  enabled: boolean;
+}
+
+interface LayoutSection {
+  id: string;
+  kind: LayoutSectionKind;
+  label: string;
+  description: string;
+  expanded: boolean;
+  columns: 1 | 2 | 3 | 4 | 5;
+  items: LayoutItem[];
+}
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule, PageHeader],
+  styleUrl: "./white-label.page.css",
+  template: `
+    <qai-page-header
+      title="White Label"
+      subtitle="Configure the page structure, component templates and customer-facing brand without putting visual styling into page data."
+    ></qai-page-header>
+
+    <section class="builder-shell">
+      <div class="builder-intro">
+        <div>
+          <span class="eyebrow">PAGE BUILDER</span>
+          <h2>Configure the experience section by section</h2>
+          <p>Expand one section, configure its content and choose a component template. Collapse it and continue to the next section. The renderer owns the visual design; this editor owns the values and structure.</p>
+        </div>
+        <div class="builder-actions">
+          <button type="button" class="secondary" (click)="resetLayout()">Reset layout</button>
+          <button type="button" class="primary" (click)="saveLayout()">Save page configuration</button>
+        </div>
+      </div>
+
+      <section class="style-system">
+        <div class="style-system-head">
+          <div>
+            <span class="eyebrow">GLOBAL COMPONENT STYLES</span>
+            <h2>Define once. Use everywhere.</h2>
+            <p>Each component type has one reusable visual style. Change it here and every shared component of that type uses the same definition across the application.</p>
+          </div>
+          <div class="style-save-actions"><span class="save-status" *ngIf="styleSaveMessage">{{ styleSaveMessage }}</span><button type="button" class="primary" (click)="saveStyles()">Save component styles</button></div>
+        </div>
+        <div class="style-tabs">
+          <button type="button" *ngFor="let type of styleTypes" [class.selected]="activeStyle === type.id" (click)="activeStyle = type.id">{{ type.label }}</button>
+        </div>
+        <div class="style-editor" *ngIf="styles[activeStyle] as style">
+          <div class="style-editor-title">
+            <strong>{{ styleLabel(activeStyle) }} Style</strong>
+            <span>This is the global style for all {{ styleLabel(activeStyle) }} components.</span>
+          </div>
+          <div class="style-fields">
+            <label>Surface<input type="color" [(ngModel)]="style.surfaceColor" /></label>
+            <label>Header / soft background<input type="color" [(ngModel)]="style.headerColor" /></label>
+            <label>Border<input type="color" [(ngModel)]="style.borderColor" /></label>
+            <label>Title<input type="color" [(ngModel)]="style.titleColor" /></label>
+            <label>Text<input type="color" [(ngModel)]="style.textColor" /></label>
+            <label>Muted text<input type="color" [(ngModel)]="style.mutedTextColor" /></label>
+            <label>Accent<input type="color" [(ngModel)]="style.accentColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button background<input type="color" [(ngModel)]="style.buttonBackgroundColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button text<input type="color" [(ngModel)]="style.buttonTextColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button border<input type="color" [(ngModel)]="style.buttonBorderColor" /></label>
+            <label *ngIf="activeStyle === 'buttons'">Button hover<input type="color" [(ngModel)]="style.buttonHoverBackgroundColor" /></label>
+            <label>Height (px)<input type="number" min="0" max="1200" [(ngModel)]="style.height" /></label>
+            <label>Padding (px)<input type="number" min="0" max="80" [(ngModel)]="style.padding" /></label>
+            <label>Gap (px)<input type="number" min="0" max="80" [(ngModel)]="style.gap" /></label>
+            <label>Font size (px)<input type="number" min="8" max="72" [(ngModel)]="style.fontSize" /></label>
+            <label>Font weight<input type="number" min="300" max="900" step="100" [(ngModel)]="style.fontWeight" /></label>
+            <label>Shadow<input type="text" [(ngModel)]="style.shadow" placeholder="0 4px 14px rgba(...)" /></label>
+          </div>
+        </div>
+      </section>
+
+      <div class="builder-grid">
+        <aside class="section-list">
+          <div class="list-title">Page sections</div>
+          <button
+            type="button"
+            class="section-nav"
+            *ngFor="let section of layoutSections; let i = index"
+            [class.active]="section.expanded"
+            (click)="openSection(section.id)"
+          >
+            <span class="section-number">{{ (i + 1).toString().padStart(2, "0") }}</span>
+            <span><strong>{{ section.label }}</strong><small>{{ section.items.length }} configurable items</small></span>
+            <span class="chevron">{{ section.expanded ? "⌄" : "›" }}</span>
+          </button>
+        </aside>
+
+        <main class="section-editor">
+          <article class="editor-section" *ngFor="let section of layoutSections">
+            <button type="button" class="editor-head" (click)="toggleSection(section)">
+              <span class="drag-handle">⋮⋮</span>
+              <span class="editor-title">
+                <small>{{ section.kind | uppercase }} SECTION</small>
+                <strong>{{ section.label }}</strong>
+                <em>{{ section.description }}</em>
+              </span>
+              <span class="head-meta">{{ section.items.length }} items</span>
+              <span class="arrow">{{ section.expanded ? "⌃" : "⌄" }}</span>
+            </button>
+
+            <div class="editor-body" *ngIf="section.expanded">
+              <div class="config-row top-row">
+                <label>
+                  Section label
+                  <input [(ngModel)]="section.label" />
+                </label>
+                <label>
+                  Columns
+                  <select [(ngModel)]="section.columns">
+                    <option [ngValue]="1">1 column</option>
+                    <option [ngValue]="2">2 columns</option>
+                    <option [ngValue]="3">3 columns</option>
+                    <option [ngValue]="4">4 columns</option>
+                    <option [ngValue]="5">5 columns</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="component-heading">
+                <div>
+                  <strong>{{ section.kind === "kpis" ? "KPI configuration" : section.kind === "cards" ? "Card configuration" : section.kind === "buttons" ? "Button configuration" : "Component configuration" }}</strong>
+                  <span>Choose a template for each item. Values remain data; templates remain reusable code.</span>
+                </div>
+                <button *ngIf="section.kind !== 'header'" type="button" class="quiet" (click)="addItem(section)">+ Add item</button>
+              </div>
+
+              <div class="item-card" *ngFor="let item of section.items; let itemIndex = index">
+                <div class="item-top">
+                  <div class="item-id"><span>{{ itemIndex + 1 }}</span><strong>{{ item.label || "Untitled item" }}</strong></div>
+                  <label class="switch"><input type="checkbox" [(ngModel)]="item.enabled" /><i></i> Enabled</label>
+                </div>
+
+                <div class="item-fields">
+                  <label>Label<input [(ngModel)]="item.label" placeholder="Component label" /></label>
+                  <label *ngIf="section.kind !== 'text'">Value / content<input [(ngModel)]="item.value" placeholder="Value or binding key" /></label>
+                </div>
+
+                <div class="template-area">
+                  <div class="template-label">Templates</div>
+                  <div class="template-options">
+                    <button
+                      type="button"
+                      *ngFor="let template of templatesFor(section.kind)"
+                      [class.selected]="item.template === template.id"
+                      (click)="item.template = template.id"
+                    >
+                      <span class="template-preview" [attr.data-type]="template.id">{{ template.mark }}</span>
+                      <span><strong>{{ template.label }}</strong><small>{{ template.description }}</small></span>
+                      <b *ngIf="item.template === template.id">✓</b>
+                    </button>
+                  </div>
+                </div>
+                <div class="item-footer">
+                  <span>Template ID: <code>{{ item.template }}</code></span>
+                  <button type="button" class="remove" (click)="removeItem(section, itemIndex)">Remove</button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </main>
+      </div>
+    </section>
+
+`,
+})
+export class WhiteLabelPage implements OnInit {
+  styles: WhiteLabelStyles = this.whiteLabel.loadStyles();
+  activeStyle: keyof WhiteLabelStyles = "header";
+  styleSaveMessage = "";
+  readonly styleTypes: { id: keyof WhiteLabelStyles; label: string }[] = [
+    { id: "header", label: "Header" },
+    { id: "grid", label: "Grid" },
+    { id: "kpis", label: "KPI" },
+    { id: "cards", label: "Card" },
+    { id: "buttons", label: "Button" },
+    { id: "text", label: "Text" },
+    { id: "steps", label: "Steps" },
+    { id: "lists", label: "List" },
+    { id: "tables", label: "Table" },
+    { id: "badges", label: "Badge" },
+    { id: "forms", label: "Form / Input" },
+    { id: "tabs", label: "Tabs" },
+    { id: "dataGrid", label: "Data Grid" },
+    { id: "navigation", label: "Navigation" },
+    { id: "modals", label: "Modal" },
+    { id: "notices", label: "Notice" },
+  ];
+
+  readonly templates: Record<LayoutSectionKind, { id: string; label: string; description: string; mark: string }[]> = {
+    header: [
+      { id: "header-01", label: "Enterprise header", description: "Title, subtitle and actions", mark: "H" },
+      { id: "header-02", label: "Compact header", description: "Condensed title treatment", mark: "H2" },
+    ],
+    kpis: [
+      { id: "kpi-01", label: "KPI / Standard", description: "Value, label and supporting text", mark: "123" },
+      { id: "kpi-02", label: "KPI / Highlight", description: "Emphasis for a key metric", mark: "★" },
+      { id: "kpi-03", label: "KPI / Compact", description: "Dense operational metric", mark: "▦" },
+      { id: "kpi-04", label: "KPI / Trend", description: "Metric with secondary signal", mark: "↗" },
+    ],
+    cards: [
+      { id: "card-01", label: "Card / Standard", description: "Title, body and action", mark: "□" },
+      { id: "card-02", label: "Card / Split", description: "Primary value and details", mark: "▣" },
+      { id: "card-03", label: "Card / Highlight", description: "Emphasized operational card", mark: "✦" },
+      { id: "card-04", label: "Card / Action", description: "Action-focused card", mark: "→" },
+    ],
+    grid: [
+      { id: "grid-01", label: "Grid / Equal", description: "Equal responsive columns", mark: "▦" },
+      { id: "grid-02", label: "Grid / Sidebar", description: "Main content with side panel", mark: "▤" },
+    ],
+    buttons: [
+      { id: "button-01", label: "Button / Primary", description: "Primary action", mark: "→" },
+      { id: "button-02", label: "Button / Secondary", description: "Secondary action", mark: "＋" },
+      { id: "button-03", label: "Button / Quiet", description: "Low emphasis action", mark: "⋯" },
+      { id: "button-04", label: "Button / Icon", description: "Compact icon action", mark: "↗" },
+    ],
+    text: [
+      { id: "text-01", label: "Text / Standard", description: "Heading and supporting copy", mark: "T" },
+      { id: "text-02", label: "Text / Callout", description: "Highlighted explanatory copy", mark: "!" },
+    ],
+    steps: [
+      { id: "steps-01", label: "Steps / Workflow", description: "Horizontal operational workflow", mark: "1→" },
+    ],
+    lists: [
+      { id: "list-01", label: "List / Standard", description: "Icon, content and status", mark: "☷" },
+    ],
+    tables: [
+      { id: "table-01", label: "Table / Standard", description: "Enterprise data table", mark: "▤" },
+    ],
+    badges: [
+      { id: "badge-01", label: "Badge / Status", description: "Status and state indicator", mark: "●" },
+    ],
+    forms: [
+      { id: "form-01", label: "Form / Standard", description: "Inputs, selects and controls", mark: "□" },
+    ],
+    tabs: [
+      { id: "tabs-01", label: "Tabs / Standard", description: "Workspace navigation tabs", mark: "T" },
+    ],
+    dataGrid: [
+      { id: "grid-data-01", label: "Data Grid / Standard", description: "Dense enterprise data grid", mark: "▤" },
+    ],
+    navigation: [
+      { id: "nav-01", label: "Navigation / Standard", description: "Sidebar and navigation shell", mark: "☰" },
+    ],
+    modals: [
+      { id: "modal-01", label: "Modal / Standard", description: "Dialog and workspace action", mark: "□" },
+    ],
+    notices: [
+      { id: "notice-01", label: "Notice / Standard", description: "Information and status callout", mark: "i" },
+    ],
+  };
+
+  layoutSections: LayoutSection[] = [
+    {
+      id: "header",
+      kind: "header",
+      label: "Header",
+      description: "The common page header shared by every page.",
+      expanded: true,
+      columns: 1,
+      items: [
+        { id: "header-main", label: "Page header", value: "Dashboard", template: "header-01", enabled: true },
+      ],
+    },
+    {
+      id: "kpis",
+      kind: "kpis",
+      label: "KPIs",
+      description: "Operational metrics. Each KPI can select its own reusable template.",
+      expanded: false,
+      columns: 5,
+      items: [
+        { id: "kpi-1", label: "Product catalog", value: "products.count", template: "kpi-01", enabled: true },
+        { id: "kpi-2", label: "Promotion plans", value: "plans.active", template: "kpi-02", enabled: true },
+        { id: "kpi-3", label: "Autonomous agents", value: "agents.active", template: "kpi-03", enabled: true },
+        { id: "kpi-4", label: "Prospects discovered", value: "acquisition.discovered", template: "kpi-04", enabled: true },
+        { id: "kpi-5", label: "Awaiting delivery", value: "acquisition.queuedMessages", template: "kpi-01", enabled: true },
+      ],
+    },
+    {
+      id: "cards",
+      kind: "cards",
+      label: "Cards",
+      description: "Operational cards with their own title, content and actions.",
+      expanded: false,
+      columns: 2,
+      items: [
+        { id: "card-1", label: "Acquisition engine", value: "acquisition.latestRun", template: "card-03", enabled: true },
+        { id: "card-2", label: "Active outreach", value: "campaigns.active", template: "card-01", enabled: true },
+      ],
+    },
+    {
+      id: "grid",
+      kind: "grid",
+      label: "Grids",
+      description: "Layout container controlling how child components are arranged.",
+      expanded: false,
+      columns: 2,
+      items: [
+        { id: "grid-1", label: "Operations grid", value: "operations", template: "grid-01", enabled: true },
+      ],
+    },
+    {
+      id: "buttons",
+      kind: "buttons",
+      label: "Buttons",
+      description: "Semantic actions available to the page and components.",
+      expanded: false,
+      columns: 2,
+      items: [
+        { id: "button-1", label: "Open promotion plan", value: "/renova/promotion", template: "button-01", enabled: true },
+        { id: "button-2", label: "Refresh data", value: "refresh", template: "button-03", enabled: true },
+      ],
+    },
+    {
+      id: "text",
+      kind: "text",
+      label: "Text & content",
+      description: "Supporting copy that can be bound to workspace data.",
+      expanded: false,
+      columns: 1,
+      items: [
+        { id: "text-1", label: "Operating picture", value: "workspace.operatingPicture", template: "text-01", enabled: true },
+      ],
+    },
+  ];
+
+  constructor(private whiteLabel: WhiteLabelConfigService) {}
+
+  ngOnInit() {
+    this.styles = this.whiteLabel.loadStyles();
+    this.loadLayout();
+  }
+
+  openSection(id: string) {
+    this.layoutSections.forEach(section => section.expanded = section.id === id);
+  }
+
+  toggleSection(section: LayoutSection) {
+    section.expanded = !section.expanded;
+  }
+
+  templatesFor(kind: LayoutSectionKind) {
+    return this.templates[kind];
+  }
+
+  styleLabel(type: keyof WhiteLabelStyles): string {
+    return this.styleTypes.find(x => x.id === type)?.label || type;
+  }
+
+  saveStyles() {
+    this.styles = this.whiteLabel.saveStyles(this.styles);
+    this.styleSaveMessage = "Component styles saved";
+    window.setTimeout(() => this.styleSaveMessage = "", 2500);
+  }
+
+  addItem(section: LayoutSection) {
+    const templates = this.templatesFor(section.kind);
+    const first = templates[0];
+    section.items.push({
+      id: `${section.id}-${Date.now()}`,
+      label: `New ${section.kind} item`,
+      value: "",
+      template: first?.id || "text-01",
+      enabled: true,
+      
+    });
+  }
+
+  removeItem(section: LayoutSection, index: number) {
+    section.items.splice(index, 1);
+  }
+
+  saveLayout() {
+    this.whiteLabel.save(this.layoutSections as WhiteLabelSection[]);
+  }
+
+  loadLayout() {
+    const saved = this.whiteLabel.load();
+    if (!saved.length) return;
+    this.layoutSections = saved as LayoutSection[];
+
+  }
+
+  resetLayout() {
+    localStorage.removeItem("qai-white-label-page-layout-v2");
+    localStorage.removeItem("qai-white-label-component-styles-v2");
+    window.location.reload();
+  }
+
+}
