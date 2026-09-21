@@ -17,13 +17,7 @@
       <span class="live-state"><i></i>{{ loading ? 'Loading' : 'Live data' }}</span>
     </div>
 
-    <div class="kpi-grid">
-      <button class="kpi-card" type="button" *ngFor="let metric of metrics" (click)="open(metric.path)">
-        <div class="kpi-top"><span class="kpi-icon">{{ metric.icon }}</span><span class="kpi-label">{{ metric.label }}</span><span class="kpi-arrow">→</span></div>
-        <strong>{{ metric.value }}</strong>
-        <small>{{ metric.detail }}</small>
-      </button>
-    </div>
+    <qai-kpi-grid [metrics]="metrics" (selected)="open($event.path || '/kpis')"></qai-kpi-grid>
   </section>
 
   <section class="detail-grid">
