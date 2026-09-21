@@ -168,7 +168,7 @@ const DEFAULT_APPEARANCE: WhiteLabelStyle = {
   gap: 12,
   fontSize: 13,
   fontWeight: 600,
-  shadow: "0 1px 2px rgba(16,24,40,.03), 0 4px 14px rgba(36,60,88,.045)",
+  shadow: "none",
 };
 const DEFAULT_STYLES: WhiteLabelStyles = {
   global: DEFAULT_GLOBAL_TOKENS,
@@ -181,7 +181,7 @@ const DEFAULT_STYLES: WhiteLabelStyles = {
     gap: 14,
     fontSize: 16,
   },
-  grid: { ...DEFAULT_APPEARANCE, height: 0, radius: 12 },
+  grid: { ...DEFAULT_APPEARANCE, height: 0, radius: 0 },
   kpis: { ...DEFAULT_APPEARANCE, headerColor: "#ffffff", height: 0, radius: 0 },
   cards: {
     ...DEFAULT_APPEARANCE,
@@ -222,7 +222,7 @@ const DEFAULT_STYLES: WhiteLabelStyles = {
     headerColor: "#fff4df",
     accentColor: "#f5500bdb",
     height: 0,
-    radius: 999,
+    radius: 0,
   },
   forms: {
     ...DEFAULT_APPEARANCE,
@@ -230,7 +230,7 @@ const DEFAULT_STYLES: WhiteLabelStyles = {
     height: 36,
     radius: 8,
   },
-  tabs: { ...DEFAULT_APPEARANCE, headerColor: "#ffffff", height: 0, radius: 8 },
+  tabs: { ...DEFAULT_APPEARANCE, headerColor: "#ffffff", height: 0, radius: 0 },
   dataGrid: {
     ...DEFAULT_APPEARANCE,
     headerColor: "#f8fafc",
@@ -620,7 +620,7 @@ export class WhiteLabelConfigService {
         style.headerColor = ORANGE_SOFT;
     }
     // Migrate the previous visual defaults so existing saved White Label settings follow the current system.
-    if (out.global.cardRadius === 11) out.global.cardRadius = 0;
+    // The product visual language is intentionally flat: no component radius or shadow.\n    out.global.cardRadius = 0;\n    out.global.controlRadius = 0;\n    out.global.modalRadius = 0;\n    out.global.cardShadow = "none";\n    out.global.modalShadow = "none";\n    for (const key of Object.keys(DEFAULT_STYLES)) {\n      out[key].radius = 0;\n      out[key].shadow = "none";\n    }
     if (
       out.cards?.headerColor === "#e4eaf3" ||
       out.cards?.headerColor === "#f2f5fb"
