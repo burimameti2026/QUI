@@ -1,2 +1,50 @@
-export type ModuleLanguage='en'|'mk'|'sq'|'de';
-export const LANDING_I18N={ 'Module':{en:'Welcome',mk:'Добредојде',sq:'Mirë se vini',de:'Willkommen'}, 'Refresh':{en:'Refresh',mk:'Освежи',sq:'Rifresko',de:'Aktualisieren'},'Search':{en:'Search',mk:'Пребарај',sq:'Kërko',de:'Suchen'},'Save':{en:'Save',mk:'Зачувај',sq:'Ruaj',de:'Speichern'},'Cancel':{en:'Cancel',mk:'Откажи',sq:'Anulo',de:'Abbrechen'},'Create':{en:'Create',mk:'Креирај',sq:'Krijo',de:'Erstellen'},'Edit':{en:'Edit',mk:'Уреди',sq:'Ndrysho',de:'Bearbeiten'},'Delete':{en:'Delete',mk:'Избриши',sq:'Fshi',de:'Löschen'},'Close':{en:'Close',mk:'Затвори',sq:'Mbyll',de:'Schließen'},'Loading…':{en:'Loading…',mk:'Се вчитува…',sq:'Duke ngarkuar…',de:'Wird geladen…'},'No data yet':{en:'No data yet',mk:'Сè уште нема податоци',sq:'Ende nuk ka të dhëna',de:'Noch keine Daten'},'Status':{en:'Status',mk:'Статус',sq:'Statusi',de:'Status'},'Actions':{en:'Actions',mk:'Дејства',sq:'Veprimet',de:'Aktionen'},'Settings':{en:'Settings',mk:'Поставки',sq:'Cilësimet',de:'Einstellungen'},'Back':{en:'Back',mk:'Назад',sq:'Kthehu',de:'Zurück'} } as const;
+export type ModuleLanguage = 'en' | 'mk' | 'sq' | 'de';
+
+type Localized = Record<ModuleLanguage, string>;
+
+export const LANDING_I18N: Record<string, Localized> = {
+  'Features': {en:'Features',mk:'Функционалности',sq:'Veçoritë',de:'Funktionen'},
+  'How It Works': {en:'How It Works',mk:'Како функционира',sq:'Si funksionon',de:'So funktioniert es'},
+  'Pricing': {en:'Pricing',mk:'Цени',sq:'Çmimet',de:'Preise'},
+  'About': {en:'About',mk:'За нас',sq:'Rreth nesh',de:'Über uns'},
+  'Open workspace': {en:'Open workspace',mk:'Отвори workspace',sq:'Hap workspace',de:'Workspace öffnen'},
+  'Sign In': {en:'Sign In',mk:'Најава',sq:'Hyr',de:'Anmelden'},
+  'Get Started': {en:'Get Started',mk:'Започни',sq:'Fillo',de:'Loslegen'},
+  'AI-POWERED REVENUE OPERATIONS': {en:'AI-POWERED REVENUE OPERATIONS',mk:'AI-ПОДДРЖАНИ ПРИХОДНИ ОПЕРАЦИИ',sq:'OPERACIONE TË TË ARDHURAVE ME AI',de:'KI-GESTEUERTE REVENUE OPERATIONS'},
+  'Find. Qualify. Engage. Grow.': {en:'Find. Qualify. Engage. Grow.',mk:'Најди. Квалификувај. Ангажирај. Расти.',sq:'Gjej. Kualifiko. Angazho. Rritu.',de:'Finden. Qualifizieren. Engagieren. Wachsen.'},
+  'AI-powered platform that automates prospecting, qualifies leads and runs targeted outreach — so you can focus on closing more deals.': {en:'AI-powered platform that automates prospecting, qualifies leads and runs targeted outreach — so you can focus on closing more deals.',mk:'AI платформа што го автоматизира пронаоѓањето потенцијални клиенти, ги квалификува лидовите и спроведува таргетиран outreach — за да се фокусирате на затворање повеќе зделки.',sq:'Platformë me AI që automatizon prospektimin, kualifikon lead-et dhe kryen outreach të targetuar — që ju të fokusoheni në mbylljen e më shumë marrëveshjeve.',de:'KI-Plattform für automatisierte Lead-Suche, Qualifizierung und gezielte Ansprache – damit Ihr Team mehr Abschlüsse erzielen kann.'},
+  'Get Started Free': {en:'Get Started Free',mk:'Започни бесплатно',sq:'Fillo falas',de:'Kostenlos starten'},
+  'Watch Demo': {en:'Watch Demo',mk:'Погледни демо',sq:'Shiko demonstrimin',de:'Demo ansehen'},
+  'Human approval controls': {en:'Human approval controls',mk:'Контрола со човечко одобрување',sq:'Kontrolle me miratim njerëzor',de:'Menschliche Freigabekontrolle'},
+  'Tenant-safe by design': {en:'Tenant-safe by design',mk:'Безбедност по tenant по дизајн',sq:'Siguri për tenant sipas dizajnit',de:'Mandanten­sicher konzipiert'},
+  'Full operational audit trail': {en:'Full operational audit trail',mk:'Целосна оперативна трага за ревизија',sq:'Gjurmë e plotë operative auditimi',de:'Vollständiger operativer Audit-Trail'},
+  'BUILT FOR MODERN REVENUE TEAMS': {en:'BUILT FOR MODERN REVENUE TEAMS',mk:'КРЕИРАНО ЗА МОДЕРНИ REVENUE ТИМОВИ',sq:'NDËRTUAR PËR EKIPE MODERNE TË TË ARDHURAVE',de:'FÜR MODERNE REVENUE-TEAMS ENTWICKELT'},
+  'Demand generation': {en:'Demand generation',mk:'Генерирање побарувачка',sq:'Gjenerimi i kërkesës',de:'Demand Generation'},
+  'Sales operations': {en:'Sales operations',mk:'Продажни операции',sq:'Operacionet e shitjeve',de:'Vertriebs­betrieb'},
+  'Customer support': {en:'Customer support',mk:'Поддршка на клиенти',sq:'Mbështetja e klientëve',de:'Kundensupport'},
+  'Automation teams': {en:'Automation teams',mk:'Тимови за автоматизација',sq:'Ekipe automatizimi',de:'Automation-Teams'},
+  'Business leaders': {en:'Business leaders',mk:'Бизнис лидери',sq:'Udhëheqës biznesi',de:'Geschäftsführung'},
+  'ONE CONNECTED PLATFORM': {en:'ONE CONNECTED PLATFORM',mk:'ЕДНА ПОВРЗАНА ПЛАТФОРМА',sq:'NJË PLATFORMË E LIDHUR',de:'EINE VERBUNDENE PLATTFORM'},
+  'From first signal to lasting customer value.': {en:'From first signal to lasting customer value.',mk:'Од првиот сигнал до долгорочна вредност за клиентот.',sq:'Nga sinjali i parë te vlera afatgjatë për klientin.',de:'Vom ersten Signal bis zum nachhaltigen Kundenwert.'},
+  'Replace disconnected tools and manual handoffs with one clear operating model for acquisition, sales and customer work.': {en:'Replace disconnected tools and manual handoffs with one clear operating model for acquisition, sales and customer work.',mk:'Заменете ги неповрзаните алатки и рачните преноси со еден јасен оперативен модел за аквизиција, продажба и работа со клиенти.',sq:'Zëvendësoni mjetet e shkëputura dhe kalimet manuale me një model të qartë operativ për akvizim, shitje dhe punë me klientët.',de:'Ersetzen Sie isolierte Tools und manuelle Übergaben durch ein klares Betriebsmodell für Akquise, Vertrieb und Kundenarbeit.'},
+  'Discover accounts that fit your market.': {en:'Discover accounts that fit your market.',mk:'Откријте компании што одговараат на вашиот пазар.',sq:'Zbuloni kompani që përshtaten me tregun tuaj.',de:'Finden Sie Unternehmen, die zu Ihrem Markt passen.'},
+  'Engage safely, with people in control.': {en:'Engage safely, with people in control.',mk:'Ангажирајте безбедно, со луѓе во контрола.',sq:'Angazhohuni në mënyrë të sigurt, me njerëzit në kontroll.',de:'Sicher kommunizieren – mit Menschen in Kontrolle.'},
+  'Convert intent into pipeline.': {en:'Convert intent into pipeline.',mk:'Претворете го интересот во pipeline.',sq:'Kthejeni interesin në pipeline.',de:'Kaufinteresse in Pipeline verwandeln.'},
+  'Unify conversations and issues.': {en:'Unify conversations and issues.',mk:'Обединете ги разговорите и проблемите.',sq:'Unifikoni bisedat dhe çështjet.',de:'Gespräche und Anliegen zentralisieren.'},
+  'Automate repeatable operations.': {en:'Automate repeatable operations.',mk:'Автоматизирајте ги повторливите операции.',sq:'Automatizoni operacionet e përsëritshme.',de:'Wiederkehrende Abläufe automatisieren.'},
+  'CLEAR, MODULAR PRICING': {en:'CLEAR, MODULAR PRICING',mk:'ЈАСНИ, МОДУЛАРНИ ЦЕНИ',sq:'ÇMIME TË QARTA, MODULARE',de:'KLARE, MODULARE PREISE'},
+  'Start with the work you need. Scale into one operating system.': {en:'Start with the work you need. Scale into one operating system.',mk:'Започнете со потребното. Скалирајте во еден оперативен систем.',sq:'Filloni me atë që ju nevojitet. Shkallëzohuni në një sistem të vetëm operativ.',de:'Starten Sie mit dem, was Sie brauchen. Skalieren Sie zu einem Betriebssystem.'},
+  'VISIBLE OPERATIONS': {en:'VISIBLE OPERATIONS',mk:'ВИДЛИВИ ОПЕРАЦИИ',sq:'OPERACIONE TË DUKSHME',de:'TRANSPARENTE ABLÄUFE'},
+  'Know what is happening, why it matters and what comes next.': {en:'Know what is happening, why it matters and what comes next.',mk:'Знајте што се случува, зошто е важно и што следува.',sq:'Shihni çfarë po ndodh, pse ka rëndësi dhe çfarë vjen më pas.',de:'Sehen Sie, was passiert, warum es zählt und was als Nächstes kommt.'},
+  'GOVERNED BY DESIGN': {en:'GOVERNED BY DESIGN',mk:'КОНТРОЛИРАНО ПО ДИЗАЈН',sq:'I QEVERISUR QË NGA DIZAJNI',de:'GOVERNED BY DESIGN'},
+  'Automation your team can trust.': {en:'Automation your team can trust.',mk:'Автоматизација на која тимот може да ѝ верува.',sq:'Automatizim të cilit ekipi juaj mund t’i besojë.',de:'Automatisierung, der Ihr Team vertrauen kann.'},
+  'PRODUCT DEMO': {en:'PRODUCT DEMO',mk:'ДЕМО НА ПРОДУКТОТ',sq:'DEMO E PRODUKTIT',de:'PRODUKT-DEMO'},
+  'See how RaiseLead AI fits your revenue operation.': {en:'See how RaiseLead AI fits your revenue operation.',mk:'Видете како RaiseLead AI се вклопува во вашите revenue операции.',sq:'Shihni si RaiseLead AI përshtatet me operacionet tuaja të të ardhurave.',de:'Sehen Sie, wie RaiseLead AI in Ihre Revenue-Prozesse passt.'},
+  'Request a tailored demo': {en:'Request a tailored demo',mk:'Побарајте персонализирано демо',sq:'Kërkoni një demo të përshtatur',de:'Individuelles Demo anfordern'},
+  'Your name': {en:'Your name',mk:'Вашето име',sq:'Emri juaj',de:'Ihr Name'},
+  'Work email': {en:'Work email',mk:'Работен email',sq:'Email i punës',de:'Geschäftliche E-Mail'},
+  'Company': {en:'Company',mk:'Компанија',sq:'Kompania',de:'Unternehmen'},
+  'What would you like to improve?': {en:'What would you like to improve?',mk:'Што сакате да подобрите?',sq:'Çfarë dëshironi të përmirësoni?',de:'Was möchten Sie verbessern?'},
+  'Request demo': {en:'Request demo',mk:'Побарај демо',sq:'Kërko demo',de:'Demo anfordern'},
+  'optional': {en:'optional',mk:'опционално',sq:'opsionale',de:'optional'}
+};
