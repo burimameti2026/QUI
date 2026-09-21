@@ -287,3 +287,17 @@
   .capability-grid .cap-top small,
   .process article small{font-size:17px}
 }
+
+
+/* Remove standalone numbered markers; keep only combined "01 · LABEL" headlines */
+.capability-grid .capability-icon,
+.process .step{display:none!important}
+.process article,
+.process article:last-child{
+  display:block;
+  padding:24px 24px 26px;
+}
+.process article small{
+  display:block;
+  margin:0 0 22px;
+}
