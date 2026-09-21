@@ -441,6 +441,12 @@ export class WhiteLabelConfigService {
         );
       },
     );
+    this.set(root, "--wl-kpi-accent", kpis.accentColor);
+    this.set(root, "--wl-kpi-accent-soft", wlGlobal.accentSoft);
+    this.set(root, "--wl-kpi-hover", wlGlobal.accentSoft);
+    this.set(root, "--wl-kpi-height", (kpis.height || 104) + "px");
+    this.set(root, "--wl-kpi-padding-y", Math.max(10, Math.round((kpis.padding || 16) * 0.75)) + "px");
+    this.set(root, "--wl-kpi-padding-x", (kpis.padding || 16) + "px");
     this.set(root, "--wl-kpi-1", kpis.accentColor);
     this.set(root, "--wl-kpi-2", kpis.accentColor);
     this.set(root, "--wl-kpi-3", kpis.accentColor);
