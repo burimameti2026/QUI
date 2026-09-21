@@ -1,6 +1,6 @@
 /* Focused Discovery refinements; canonical tokens and surfaces remain global. */
 .discovery-summary { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-.discovery-summary .status { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:5px 9px; border:1px solid var(--wl-border); background:var(--wl-surface); font-size:11px; font-weight:600; }
+.discovery-summary .status { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:5px 9px; border:0; box-shadow:var(--wl-card-shadow); background:var(--wl-surface); font-size:11px; font-weight:600; }
 .discovery-summary .status b { font-size:12px; }
 .discovery-summary .status-priority { border-color:var(--wl-accent); }
 .discovery-kpis .metric { min-width:0; }
