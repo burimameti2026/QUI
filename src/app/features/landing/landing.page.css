@@ -479,3 +479,37 @@
   .process article,
   .process article:last-child{padding:17px 20px 19px}
 }
+
+/* Keep black alternating blocks; reduce only top padding */
+.capability-grid article:nth-child(even),
+.process article:nth-of-type(even){
+  background:#191b1e!important;
+  color:#fff!important;
+}
+.capability-grid article:nth-child(odd),
+.process article:nth-of-type(odd){
+  background:#fff!important;
+  color:#191b1e!important;
+}
+.capability-grid article,
+.capability-grid .featured-capability,
+.process article,
+.process article:last-child{
+  padding-top:10px!important;
+}
+.capability-grid .cap-top{
+  margin-top:0;
+  margin-bottom:14px;
+}
+.process article small{
+  margin-top:0;
+  margin-bottom:12px;
+}
+.capability-grid article:nth-child(even) h3,
+.capability-grid article:nth-child(even) p,
+.capability-grid article:nth-child(even) .cap-top small,
+.process article:nth-of-type(even) h3,
+.process article:nth-of-type(even) p,
+.process article:nth-of-type(even) small{
+  color:#fff!important;
+}
