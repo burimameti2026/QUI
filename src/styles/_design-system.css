@@ -253,3 +253,29 @@ qai-modal{display:contents}
   .hero>.steps>li,.hero>.steps>div,.hero>.steps>span{border-right:0}
   .enterprise-hero + .metric-grid,.golden-kpis,.golden-board{grid-template-columns:1fr}
 }
+
+
+/* Platform workspace cards — shared with all administration pages. */
+.card-link{
+  min-width:0;
+  min-height:96px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:var(--wl-text);
+  background:#fff;
+  border-top:2px solid transparent;
+}
+.card-link:hover{background:#fff;border-top-color:var(--wl-accent)}
+.card-link .icon{background:#f5f6f8;color:var(--wl-accent);box-shadow:none}
+.card-link b{display:block;font-size:12px}
+.card-link p{margin:4px 0 0;color:var(--wl-muted);font-size:10px;line-height:1.45}
+.card-link>strong{color:var(--wl-accent);font-size:11px;white-space:nowrap}
+.platform-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.platform-hero-status{display:flex;align-items:center;gap:9px;padding:12px;background:#fafafa}
+.platform-hero-status small{display:block;color:var(--wl-muted);font-size:10px}
+@media(max-width:950px){.platform-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.platform-card-grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}}
