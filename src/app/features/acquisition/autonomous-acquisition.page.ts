@@ -15,9 +15,11 @@ import { PageHeader } from '../../shared/ui';
 export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
+
   tenantId = '';
   agents: any[] = [];
   runs: any[] = [];
+  templates: any[] = [];
   verification: any = null;
   e2eResult: any = null;
   editing: any = null;
@@ -29,6 +31,7 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   autoRefresh = false;
   timer?: ReturnType<typeof setInterval>;
 
+  get logisticsTemplate() { return this.templates.find(x => x.code === 'logistics'); }
   get active() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
   get completed() { return this.runs.filter(x => String(x.status).toLowerCase().includes('completed') || x.status === 2).length; }
   get discovered() { return this.runs.reduce((n, x) => n + Number(x.discoveredCount || 0), 0); }
@@ -43,23 +46,25 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   ngOnDestroy(): void { this.stopRefresh(); }
 
   async load() {
-    if (!this.tenantId) { this.error = 'No authenticated tenant is available.'; return; }
+    if (!this.tenantId) { this.error = 'No authenticated client is available.'; return; }
     this.loading = true;
     this.error = '';
     try {
       const base = `autonomous-acquisition/tenants/${this.tenantId}`;
-      const [agents, runs, settings] = await Promise.all([
+      const [agents, runs, settings, templates] = await Promise.all([
         firstValueFrom(this.api.get<any[]>(`${base}/agents`)),
         firstValueFrom(this.api.get<any[]>(`${base}/runs`)),
-        firstValueFrom(this.api.get<any>('autonomous-acquisition/settings'))
+        firstValueFrom(this.api.get<any>('autonomous-acquisition/settings')),
+        firstValueFrom(this.api.get<any[]>('autonomous-acquisition/templates'))
       ]);
       this.agents = agents || [];
       this.runs = runs || [];
+      this.templates = templates || [];
       this.hasSerpApiKey = !!settings?.hasSerpApiKey;
       this.settings.monthlySafetyLimit = Number(settings?.monthlySafetyLimit || 200);
       this.settings.timeZoneId = settings?.timeZoneId || 'UTC';
     } catch (error: any) {
-      this.error = error?.error?.detail || 'Could not load autonomous acquisition data.';
+      this.error = error?.error?.detail || 'Could not load acquisition automation.';
     } finally { this.loading = false; }
   }
 
@@ -86,8 +91,9 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
       this.settings.serpApiApiKey = '';
       this.settings.monthlySafetyLimit = Number(result?.monthlySafetyLimit || this.settings.monthlySafetyLimit);
       this.settings.timeZoneId = result?.timeZoneId || this.settings.timeZoneId;
-    } catch (error: any) { this.error = error?.error?.detail || 'Could not save tenant acquisition settings.'; }
-    finally { this.savingSettings = false; }
+    } catch (error: any) {
+      this.error = error?.error?.detail || 'Could not save acquisition settings.';
+    } finally { this.savingSettings = false; }
   }
 
   async verify() {
@@ -97,24 +103,35 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   }
 
   async e2e() {
-    if (!this.tenantId) { this.error = 'No authenticated tenant is available for E2E.'; return; }
+    if (!this.tenantId) { this.error = 'No authenticated client is available for E2E.'; return; }
     this.error = '';
     try { this.e2eResult = await firstValueFrom(this.api.get<any>(`autonomous-acquisition/tenants/${this.tenantId}/e2e`)); }
     catch (error: any) { this.error = error?.error?.detail || 'E2E verification failed.'; }
   }
 
   create() {
+    const t = this.logisticsTemplate;
     this.editing = {
-      name: 'Renova Balkan Distributor Acquisition Agent',
-      templateCode: 'construction-materials',
-      industry: 'Construction Materials',
-      region: 'Balkans',
-      minimumScore: 75,
+      name: 'Logistics Automation Acquisition',
+      templateCode: 'logistics',
+      industry: t?.industry || 'Logistics & Transport',
+      region: t?.region || 'Europe',
+      minimumScore: t?.minimumScore || 75,
       dailyDiscoveryLimit: 25,
       dailyEmailLimit: 10,
       runTimeUtc: '08:00',
-      countries: ['AL', 'MK', 'XK'],
-      icpNotes: 'Building-material distributors, wholesalers, construction companies and professional contractors; evidence of market presence and commercial contact required.'
+      countries: ['DE', 'FR', 'IT', 'NL', 'BE', 'AT'],
+      icpNotes: t?.painPoints || 'Find logistics, transport, 3PL and distribution companies with evidence of manual operational work that can be automated.'
+    };
+  }
+
+  selectTemplate(template: any) {
+    this.editing = {
+      ...this.editing,
+      templateCode: template.code,
+      industry: template.industry,
+      region: template.region,
+      minimumScore: template.minimumScore || this.editing.minimumScore
     };
   }
 
@@ -129,7 +146,7 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
       await firstValueFrom(request);
       this.editing = null;
       await this.load();
-    } catch (error: any) { this.error = error?.error?.detail || 'Could not save agent.'; }
+    } catch (error: any) { this.error = error?.error?.detail || 'Could not save acquisition agent.'; }
   }
 
   async action(agent: any, action: string) {
@@ -137,6 +154,6 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
     try {
       await firstValueFrom(this.api.post(`autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/${action}`, {}));
       await this.load();
-    } catch (error: any) { this.error = error?.error?.detail || 'Agent action failed.'; }
+    } catch (error: any) { this.error = error?.error?.detail || 'Acquisition agent action failed.'; }
   }
 }
