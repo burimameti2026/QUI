@@ -18,12 +18,12 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
       <button class="button-primary" type="button" (click)="openCreate()">+ Create Lead</button>
     </qai-page-header>
     <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
-    <section class="leads-kpi-panel"><qai-kpi-strip>
-        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
-        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">N</span><span class="metric-label">New</span></div><strong>{{ countNew() }}</strong><small>New or unqualified enquiries</small></article>
-        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ count(80,101) }}</strong><small>Score 80–100</small></article>
-        <article class="lead-kpi"><div class="metric-top"><span class="metric-icon">€</span><span class="metric-label">Pipeline value</span></div><strong>{{ money(total()) }}</strong><small>Estimated value across leads</small></article>
-      </qai-kpi-strip></section>
+    <qai-kpi-strip>
+        <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
+        <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">N</span><span class="metric-label">New</span></div><strong>{{ countNew() }}</strong><small>New or unqualified enquiries</small></article>
+        <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ count(80,101) }}</strong><small>Score 80–100</small></article>
+        <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">€</span><span class="metric-label">Pipeline value</span></div><strong>{{ money(total()) }}</strong><small>Estimated value across leads</small></article>
+      </qai-kpi-strip>
       <qai-refined-tabs>
         <button [class.active]="activeTab==='All'" (click)="setTab('All')" type="button">All</button><button [class.active]="activeTab==='Favourite'" (click)="setTab('Favourite')" type="button">Favourite</button><button [class.active]="activeTab==='New'" (click)="setTab('New')" type="button">New</button><button [class.active]="activeTab==='Assigned to me'" (click)="setTab('Assigned to me')" type="button">Assigned to me</button><button [class.active]="activeTab==='Overdue'" (click)="setTab('Overdue')" type="button">Overdue</button><button [class.active]="activeTab==='Hot'" (click)="setTab('Hot')" type="button">Hot</button>
       </qai-refined-tabs>
