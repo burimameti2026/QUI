@@ -301,3 +301,50 @@
   display:block;
   margin:0 0 22px;
 }
+
+
+/* Main section headings: same large single-line treatment */
+.platform-section .section-intro .section-label,
+.operations-section .section-intro .section-label,
+.pricing-section .section-intro .section-label,
+.security-section .section-label,
+.contact-section .section-label{
+  font-size:24px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.025em;
+  color:#191b1e;
+  white-space:nowrap;
+}
+.platform-section .section-intro .section-label i,
+.operations-section .section-intro .section-label i,
+.pricing-section .section-intro .section-label i,
+.security-section .section-label i,
+.contact-section .section-label i{
+  font-size:24px;
+  color:inherit;
+}
+@media(max-width:900px){
+  .platform-section .section-intro .section-label,
+  .operations-section .section-intro .section-label,
+  .pricing-section .section-intro .section-label,
+  .security-section .section-label,
+  .contact-section .section-label,
+  .platform-section .section-intro .section-label i,
+  .operations-section .section-intro .section-label i,
+  .pricing-section .section-intro .section-label i,
+  .security-section .section-label i,
+  .contact-section .section-label i{font-size:20px}
+}
+@media(max-width:650px){
+  .platform-section .section-intro .section-label,
+  .operations-section .section-intro .section-label,
+  .pricing-section .section-intro .section-label,
+  .security-section .section-label,
+  .contact-section .section-label,
+  .platform-section .section-intro .section-label i,
+  .operations-section .section-intro .section-label i,
+  .pricing-section .section-intro .section-label i,
+  .security-section .section-label i,
+  .contact-section .section-label i{font-size:17px}
+}
