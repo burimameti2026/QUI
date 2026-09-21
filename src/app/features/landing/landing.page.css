@@ -424,3 +424,58 @@
   .capability-grid p,
   .process p{font-size:11px}
 }
+
+
+/* Landing cards: neutral white surface and tighter top spacing */
+.capability-grid article,
+.capability-grid .featured-capability,
+.process article,
+.process article:last-child{
+  background:#fff!important;
+  color:#191b1e!important;
+  border:0!important;
+  border-bottom:1px solid #d9dad7!important;
+}
+.capability-grid article:nth-child(odd),
+.capability-grid article:nth-child(even),
+.process article:nth-of-type(odd),
+.process article:nth-of-type(even){
+  background:#fff!important;
+  color:#191b1e!important;
+}
+.platform-section,
+.operations-section{
+  padding-top:42px;
+}
+.platform-section .section-intro,
+.operations-section>.section-intro{
+  margin-bottom:22px;
+}
+.capability-grid article,
+.capability-grid .featured-capability,
+.process article,
+.process article:last-child{
+  padding:18px 24px 20px;
+}
+.capability-grid .cap-top{
+  margin-bottom:18px;
+}
+.process article small{
+  margin-bottom:14px;
+}
+.capability-grid p,
+.process p{
+  color:#686c72!important;
+  opacity:1;
+}
+.capability-grid article>a{
+  color:#ef5b20!important;
+}
+@media(max-width:650px){
+  .platform-section,
+  .operations-section{padding-top:34px}
+  .capability-grid article,
+  .capability-grid .featured-capability,
+  .process article,
+  .process article:last-child{padding:17px 20px 19px}
+}
