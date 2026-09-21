@@ -1,6 +1,6 @@
 /* Workspace packages — structure only; visual language comes from the canonical design system. */
-:host{display:block}
-.page{max-width:1440px;margin:0 auto}
+:host{display:block;min-width:0}
+.page{width:100%;margin:0;padding:0 0 24px}
 .page>.metric-grid{margin-top:0}
 .page>.hero{align-items:center}
 .hero-copy{min-width:0}
@@ -9,17 +9,23 @@
 .workspace-target .form{max-width:720px}
 .content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .package-card{min-height:100%}
-.package-card.selected{box-shadow:0 12px 30px rgba(15,23,42,.14)}
+.package-card.selected{border-color:var(--wl-accent);border-top:2px solid var(--wl-accent)}
 .package-card .card-header{align-items:flex-start}
 .package-card .card-header>div{min-width:0}
+.package-title{display:flex;align-items:flex-start;gap:12px}
+.package-index{flex:0 0 30px;height:30px;display:grid;place-items:center;background:var(--wl-accent);color:#fff;font-size:11px;font-weight:800}
+.package-title>div{min-width:0}
 .package-card .card-header h3{margin:0 0 6px}
 .package-card .card-body{display:flex;flex-direction:column;gap:14px}
 .package-description{margin:0;color:var(--wl-muted);line-height:1.55}
 .package-card .facts{margin-top:auto}
 .package-card .list{box-shadow:none;border:0}
-.package-card .list-item{min-height:38px;padding:8px 0}
+.package-card .list-item{min-height:38px;padding:9px 0;border-bottom:1px solid var(--wl-border)}
+.package-card .list-item:last-child{border-bottom:0}
 .package-card .card-footer{display:flex;align-items:center;justify-content:space-between}
 .install-result .facts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
-.page>.notice,.page>.alert{margin-top:0}
+.page>.notice,.page>.alert{margin-top:10px}
+.install-result{border-top:2px solid var(--wl-accent)}
+.install-result .facts>div{padding:10px 12px;border-right:1px solid var(--wl-border);border-bottom:1px solid var(--wl-border)}
 @media(max-width:900px){.install-result .facts{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.content-grid{grid-template-columns:1fr}.install-result .facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
