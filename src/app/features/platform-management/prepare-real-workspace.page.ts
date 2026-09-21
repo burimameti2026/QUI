@@ -59,18 +59,18 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
         <div actions class="page-actions"><a class="button-secondary" routerLink="/platform">Back to Platform</a></div>
       </qai-page-header>
 
-      <nav class="steps workspace-steps" aria-label="Workspace setup progress">
-        <span [class.active]="step===1" [class.done]="step>1"><b>01</b> Area</span>
-        <span [class.active]="step===2" [class.done]="step>2"><b>02</b> Target</span>
-        <span [class.active]="step===3"><b>03</b> Automation</span>
+      <nav class="steps" aria-label="Workspace setup progress">
+        <div [class.active]="step===1" [class.done]="step>1"><b>01</b> Area</div>
+        <div [class.active]="step===2" [class.done]="step>2"><b>02</b> Target</div>
+        <div [class.active]="step===3"><b>03</b> Automation</div>
       </nav>
 
       <section *ngIf="step===1" class="card setup-card">
         <header class="card-header"><div><span class="eyebrow">WORKSPACE PURPOSE</span><h2>What should this workspace do?</h2></div><span class="status">Step 1 of 3</span></header>
         <div class="card-body">
           <p class="meta">Select the operating area. This determines which acquisition automation is provisioned for this tenant.</p>
-          <div class="content-grid setup-choice-grid">
-            <button type="button" class="setup-choice" *ngFor="let item of options?.useCases" [class.selected]="useCase===item.id" (click)="selectArea(item.id)">
+          <div class="content-grid workspace-choice-grid">
+            <button type="button" class="workspace-choice" *ngFor="let item of options?.useCases" [class.selected]="useCase===item.id" (click)="selectArea(item.id)">
               <div class="identity"><span class="avatar">→</span><span class="stack"><strong>{{item.name}}</strong><small>{{item.description}}</small></span></div>
               <div class="actions"><span class="button-quiet">Select operating area →</span></div>
             </button>
@@ -107,10 +107,10 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
               <input type="number" [(ngModel)]="minimumScore" min="1" max="100"/>
             </label>
           </div>
-          <section class="section automation-plan">
+          <section class="section">
             <header class="section-header"><div><span class="eyebrow">AUTONOMOUS LOOP</span><h3>Automation plan</h3></div></header>
             <p class="meta">Once started, the background worker continues the tenant's scheduled acquisition runs.</p>
-            <div class="steps automation-steps"><span><b>01</b> Configure Agent</span><span><b>02</b> Discover</span><span><b>03</b> Enrich</span><span><b>04</b> Qualify</span><span><b>05</b> Route to Campaign</span></div>
+            <div class="steps"><span><b>01</b> Configure Agent</span><span><b>02</b> Discover</span><span><b>03</b> Enrich</span><span><b>04</b> Qualify</span><span><b>05</b> Route to Campaign</span></div>
           </section>
         </div>
         <footer class="card-footer actions"><button type="button" class="button-primary" [disabled]="!ready||saving" (click)="start()">{{saving?'Preparing automation…':'Prepare & Start Automation'}}</button></footer>
