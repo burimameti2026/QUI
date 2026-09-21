@@ -52,7 +52,7 @@ import { adminText } from "../../core/admin-page-translations";
 })
 export class LoginPage {
   readonly i18n = inject(AdminI18nService);
-  tenant = "admin";
+  tenant = "master";
   email = "admin&#64;qualifyai.local";
   password = "Admin123!ChangeMe";
   mfaCode = "";
