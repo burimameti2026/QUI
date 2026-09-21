@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
-import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive';
 
 @Component({
- standalone:true,imports:[CommonModule,RouterLink,PageHeader,AdminStaticI18nDirective],
+ standalone:true,imports:[CommonModule,RouterLink,PageHeader],
  template:`
  <main class="page">
   <qai-page-header title="Platform Management" subtitle="Control tenants, access, automation and workspace provisioning from one place.">
@@ -40,6 +39,6 @@ import { AdminStaticI18nDirective } from '../../core/admin-static-i18n.directive
     <a routerLink="/acquisition/autonomous" class="card-link"><span class="icon">⌕</span><div><b>Daily Acquisition</b><p>Follow discovery → scoring → approval → promotion.</p></div><strong>Open →</strong></a>
    </div>
   </section>
- </main>`
+ </main>`,
 })
 export class PlatformManagementPage {}
