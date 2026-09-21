@@ -5,10 +5,11 @@ import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
+import { QaiKpiGrid, QaiKpiMetric } from '../../shared/components/kpi';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, PageHeader, QaiKpiGrid],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.css'
 })
@@ -39,6 +40,15 @@ export class DashboardPage implements OnInit {
   get recentRun() { return this.runs[0]; }
   get queuedMessages() { return Number(this.acquisition.queuedMessages || 0); }
   get qualifiedProspects() { return Number(this.acquisition.hot || 0); }
+  get kpiMetrics(): QaiKpiMetric[] {
+    return [
+      { label: 'Product catalog', value: this.products.length, detail: this.publishedProducts + ' public publications live', icon: '▦', path: '/catalog' },
+      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/renova/promotion' },
+      { label: 'Autonomous agents', value: this.activeAgentCount, detail: 'running acquisition engines', icon: '↯', path: '/acquisition/autonomous' },
+      { label: 'Prospects discovered', value: Number(this.acquisition.discovered || 0), detail: this.qualifiedProspects + ' high-fit prospects', icon: '⌕', path: '/discover' },
+      { label: 'Awaiting delivery', value: this.queuedMessages, detail: 'review the approval queue', icon: '✓', path: '/acquisition/approval-queue' }
+    ];
+  }
 
   ngOnInit(): void {
     void this.refresh();
