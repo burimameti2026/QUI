@@ -179,10 +179,8 @@ export class ShellComponent {
       i("Demos & Meetings", "/meetings", "◷"),
       i("Replies & Inbox", "/inbox", "▱"),
     ]},
-    { label: "CATALOG & PROMOTIONS", items: [
+    { label: "CATALOG", items: [
       i("Product Catalog", "/catalog", "▦"),
-      i("Promotion Automation", "/promotion", "✦"),
-      i("Content", "/content", "▤"),
     ]},
     { label: "OPERATIONS", items: [
       i("Enterprise Operations", "/enterprise", "◉", [
@@ -219,14 +217,6 @@ export class ShellComponent {
   ];
   get session() {
     return this.auth.session();
-  }
-  get workspaceName() {
-    return (
-      this.session?.tenantSlug || this.session?.tenantId || "Workspace"
-    );
-  }
-  get workspaceLabel() {
-    return "All workspaces";
   }
   get isHub() {
     return this.router.url === "/dashboard" || this.router.url === "/";
@@ -288,7 +278,7 @@ export class ShellComponent {
         .slice(0, 2)
         .map((x) => x[0])
         .join("")
-        .toUpperCase() || "R"
+        .toUpperCase() || "A"
     );
   }
   setLanguage(l: string) {
