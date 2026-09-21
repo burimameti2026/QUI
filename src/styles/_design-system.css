@@ -279,3 +279,28 @@ qai-modal{display:contents}
 .platform-hero-status small{display:block;color:var(--wl-muted);font-size:10px}
 @media(max-width:950px){.platform-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.platform-card-grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}}
+
+.workspace-choice-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.workspace-choice{
+  width:100%;
+  min-height:118px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:space-between;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--wl-border);
+  box-shadow:none;
+}
+.workspace-choice:hover{background:#fff;border-color:var(--wl-accent)}
+.workspace-choice.selected{border:2px solid var(--wl-accent);padding:13px}
+.workspace-choice .avatar{background:#f5f6f8;color:var(--wl-accent);box-shadow:none}
+.workspace-choice strong{font-size:13px}
+.workspace-choice small{font-size:10px;line-height:1.4;color:var(--wl-muted)}
+.workspace-choice .actions{margin-top:14px}
+.workspace-choice .button-quiet{min-height:30px;padding:0;background:#f5f6f8;font-size:10px}
+.workspace-choice:hover .button-quiet{background:#000;color:#fff}
+@media(max-width:1050px){.workspace-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.workspace-choice-grid{grid-template-columns:1fr}}
