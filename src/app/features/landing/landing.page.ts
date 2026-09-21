@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
+import { AdminI18nService, AdminLanguage } from '../../core/admin-i18n.service';
 
 @Component({
   standalone: true,
@@ -12,13 +13,26 @@ import { AuthService } from '../../core/auth.service';
   styleUrl: './landing.page.css'
 })
 export class LandingPage {
+  readonly languages = [
+    { code: 'en' as AdminLanguage, label: 'EN' },
+    { code: 'mk' as AdminLanguage, label: 'MK' },
+    { code: 'sq' as AdminLanguage, label: 'SQ' },
+    { code: 'de' as AdminLanguage, label: 'DE' }
+  ];
   readonly year = new Date().getFullYear();
   demoRequest = { name: '', email: '', company: '', message: '', website: '' };
   submittingDemo = false;
   demoRequestMessage = '';
   demoRequestError = '';
 
-  constructor(readonly auth: AuthService, private readonly api: ApiService) {}
+  t(key: string): string { return this.i18n.t(key); }
+
+  constructor(readonly auth: AuthService, private readonly api: ApiService, readonly i18n: AdminI18nService) {
+    document.documentElement.lang = this.i18n.language();
+  }
+
+  get language(): AdminLanguage { return this.i18n.language(); }
+  setLanguage(language: AdminLanguage): void { this.i18n.setLanguage(language); }
 
   requestDemo(): void {
     if (!this.demoRequest.name.trim() || !this.demoRequest.email.includes('@')) {
