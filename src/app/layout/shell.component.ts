@@ -163,6 +163,7 @@ export class ShellComponent {
   readonly navigationGroups: Group[] = [
     { label: "COMMAND CENTER", items: [
       i("Dashboard", "/dashboard", "⌂"),
+      i("KPIs", "/kpis", "▥"),
     ]},
     { label: "ACQUISITION", items: [
       i("Prospect Discovery", "/discover", "⌕"),
