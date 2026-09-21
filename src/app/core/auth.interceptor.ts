@@ -8,7 +8,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const isTokenRequest = request.url.includes('/connect/token');
-  const tenant = localStorage.getItem('qai-tenant') || 'renova';
+  const tenant = localStorage.getItem('qai-tenant') || 'findleadsai';
   const withContext = (token: string | null) => {
     const headers: Record<string, string> = { 'X-Tenant': tenant };
     if (token && !isTokenRequest) headers.Authorization = `Bearer ${token}`;
