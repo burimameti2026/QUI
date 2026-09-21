@@ -71,31 +71,16 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
           </div>
           <span class="status">{{ packages.length }} packages</span>
         </header>
-        <div class="card-body">
-          <div class="content-grid">
-            <article class="card" *ngFor="let item of packages">
-            <header class="card-header">
-              <div class="identity">
-                <span class="icon">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
-                <div>
-                  <h3>{{ item.name }}</h3>
-                  <span class="status" *ngIf="item.id === 'fusionfleet-promotion'">Recommended</span>
-                </div>
-              </div>
-            </header>
-            <div class="card-body">
-              <p class="package-description">{{ item.description }}</p>
-              <div class="facts">
-                <div><span>Required modules</span><strong>{{ item.requiredModules.length || 'Manual setup' }}</strong></div>
-              </div>
-              <div class="list" *ngIf="item.requiredModules.length">
-                <div class="list-item" *ngFor="let module of item.requiredModules"><span>{{ module }}</span></div>
-              </div>
-            </div>
-            <footer class="card-footer">
-              <button class="button-primary" type="button" (click)="install(item)" [disabled]="installing">{{ installing && selected === item.id ? 'Installing…' : 'Install package' }}</button>
-            </footer>
-            </article>
+        <div class="list">
+          <div class="list-item" *ngFor="let item of packages">
+            <span class="icon">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
+            <span class="stack">
+              <strong>{{ item.name }}</strong>
+              <span>{{ item.description }}</span>
+              <small *ngIf="item.requiredModules.length">Required modules: {{ item.requiredModules.join(', ') }}</small>
+            </span>
+            <span class="status" *ngIf="item.id === 'fusionfleet-promotion'">Recommended</span>
+            <button class="button-primary" type="button" (click)="install(item)" [disabled]="installing">{{ installing && selected === item.id ? 'Installing…' : 'Install package' }}</button>
           </div>
         </div>
       </section>
