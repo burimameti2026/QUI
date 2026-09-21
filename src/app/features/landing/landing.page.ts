@@ -37,7 +37,7 @@ export class LandingPage {
 
   requestDemo(): void {
     if (!this.demoRequest.name.trim() || !this.demoRequest.email.includes('@')) {
-      this.demoRequestError = 'Enter your name and a valid work email.';
+      this.demoRequestError = this.t('Enter your name and a valid work email.');
       return;
     }
     this.submittingDemo = true;
@@ -46,12 +46,12 @@ export class LandingPage {
     this.api.post<any>('public/demo-requests', this.demoRequest).subscribe({
       next: () => {
         this.submittingDemo = false;
-        this.demoRequestMessage = 'Thanks — your request is with our product team. We will reply shortly.';
+        this.demoRequestMessage = this.t('Thanks — your request is with our product team. We will reply shortly.');
         this.demoRequest = { name: '', email: '', company: '', message: '', website: '' };
       },
       error: error => {
         this.submittingDemo = false;
-        this.demoRequestError = error?.error?.detail || 'Your request could not be sent right now. Please try again.';
+        this.demoRequestError = error?.error?.detail || this.t('Your request could not be sent right now. Please try again.');
       }
     });
   }
