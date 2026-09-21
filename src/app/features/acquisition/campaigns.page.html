@@ -1,7 +1,7 @@
 <div class="page">
 <qai-page-header
-  title="Campaign Command Center"
-  subtitle="Turn a qualified audience into controlled conversations and booked demos."
+  title="Logistics Outreach"
+  subtitle="Turn qualified logistics accounts into targeted English conversations about process automation."
 >
   <button class="button-quiet" (click)="load()">↻ Refresh data</button>
   <button class="button-primary" (click)="openBuilder()">+ Build campaign</button>
@@ -9,9 +9,9 @@
 
 <section class="hero">
   <div class="stack">
-    <span class="eyebrow">OUTREACH PIPELINE</span>
+    <span class="eyebrow">LOGISTICS OUTREACH</span>
     <h2>{{ rows.length }} campaigns · {{ running }} running</h2>
-    <p>Every recipient passes sender verification, suppression and human approval.</p>
+    <p>We target logistics operations, prepare English messages about automation software and require human approval before sending.</p>
   </div>
 
 </section>
@@ -34,7 +34,7 @@
       <div>
         <span class="eyebrow">Campaigns</span>
         <h3>Acquisition processes</h3>
-        <p>Manage the audience, sender, sequence and launch state of every process.</p>
+        <p>Manage the target accounts, sender, English sequence and approval state of every outreach process.</p>
       </div>
       <span class="status">{{ rows.length }} total</span>
     </header>
@@ -95,7 +95,7 @@
       <div>
         <span class="eyebrow">Launch guardrails</span>
         <h3>Safe by design</h3>
-        <p>Every launch is checked before a real message can leave the workspace.</p>
+        <p>Every launch is checked before a real message can leave the platform.</p>
       </div>
       <span class="status">Protected</span>
     </header>
@@ -217,7 +217,7 @@
 
 <qai-modal
   [open]="show"
-  title="Build an outreach campaign"
+  title="Build logistics outreach"
   (close)="show = false"
 >
   <nav class="steps">
@@ -235,7 +235,7 @@
   <form class="form" (ngSubmit)="save()">
     <section *ngIf="builderStep === 1">
       <h3>Who should enter?</h3>
-      <p>Choose the reviewed list created by Prospect Discovery.</p>
+      <p>Choose the qualified logistics target list created by Prospect Discovery.</p>
 
       <label>
         Campaign name
@@ -253,7 +253,7 @@
 
     <section *ngIf="builderStep === 2">
       <h3>Who is sending?</h3>
-      <p>The exact address must also be verified under Integrations.</p>
+      <p>The sender address must be verified before any real message can be sent.</p>
 
       <div class="content-grid">
         <label>
@@ -269,7 +269,7 @@
 
     <section *ngIf="builderStep === 3">
       <h3>What happens?</h3>
-      <p>Messages stop after a reply. Variables: company, contact, industry and country.</p>
+      <p>Messages are written in English, stop after a reply and use verified company and contact data.</p>
 
       <article class="card" *ngFor="let step of form.steps; let i = index">
         <div class="card-body">
@@ -300,7 +300,7 @@
         <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
       </dl>
 
-      <p>Creating does not send email. Start queues recipients; each real message still requires approval.</p>
+      <p>Creating does not send email. Starting prepares recipients; each real message still requires human approval.</p>
     </section>
 
     <p class="alert" *ngIf="error">{{ error }}</p>
