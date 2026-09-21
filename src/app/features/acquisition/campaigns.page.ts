@@ -218,16 +218,16 @@ export class CampaignsPage implements OnInit {
 
   private emptyForm(): any {
     return {
-      name: "European logistics growth",
+      name: "Logistics Process Automation Outreach",
       targetListId: "",
       goal: "book-demo",
-      senderName: "Sales team",
-      senderEmail: "sales@company.com",
+      senderName: "Logistics Automation Team",
+      senderEmail: "sales@yourcompany.com",
       startsAtUtc: null,
       steps: [
-        { stepNumber: 1, delayHours: 0, channel: "email", subjectTemplate: "A question about {{company}} logistics", bodyTemplate: "Hi {{contact}}, I noticed {{company}} is growing in {{country}}. Are freight capacity or delivery reliability priorities this quarter?" },
-        { stepNumber: 2, delayHours: 72, channel: "email", subjectTemplate: "Freight planning for {{company}}", bodyTemplate: "Following up with a short example of how similar {{industry}} companies reduced manual quoting and delivery exceptions." },
-        { stepNumber: 3, delayHours: 96, channel: "email", subjectTemplate: "Should I close this?", bodyTemplate: "If logistics improvement is not a priority now, I will close this. If it is, I can arrange a focused 20-minute demo." },
+        { stepNumber: 1, delayHours: 0, channel: "email", subjectTemplate: "A practical way to automate logistics at {{company}}", bodyTemplate: "Hi {{contact}}, I noticed {{company}} operates in {{industry}}. Logistics teams often lose time to repetitive coordination, email follow-ups and manual exception handling. We provide software that automates these processes. Would a short conversation be useful?" },
+        { stepNumber: 2, delayHours: 72, channel: "email", subjectTemplate: "Automating logistics operations at {{company}}", bodyTemplate: "Following up with a practical example of how logistics teams reduce manual coordination, quoting and delivery exceptions with automation." },
+        { stepNumber: 3, delayHours: 96, channel: "email", subjectTemplate: "Should I close this conversation?", bodyTemplate: "If process automation is not a priority now, I will close this. If it is, I can arrange a focused 20-minute demo." },
       ],
     };
   }
