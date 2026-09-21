@@ -31,7 +31,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
 
       <qai-kpi-grid [metrics]="kpiMetrics"></qai-kpi-grid>
 
-      <section class="content-grid package-layout">
+      <section class="content-grid">
         <article class="card workspace-target">
           <header class="card-header">
             <div>
@@ -63,7 +63,7 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         </article>
       </section>
 
-      <section class="card package-library">
+      <section class="card">
         <header class="card-header">
           <div>
             <span class="eyebrow">PACKAGE LIBRARY</span>
@@ -71,11 +71,11 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
           </div>
           <span class="status">{{ packages.length }} packages</span>
         </header>
-        <div class="content-grid package-grid">
-          <article class="card package-card" *ngFor="let item of packages" [class.selected]="selected === item.id">
+        <div class="content-grid">
+          <article class="card" *ngFor="let item of packages">
             <header class="card-header">
-              <div class="package-title">
-                <span class="package-index">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
+              <div class="identity">
+                <span class="icon">{{ packages.indexOf(item) + 1 | number:'2.0' }}</span>
                 <div>
                   <h3>{{ item.name }}</h3>
                   <span class="status" *ngIf="item.id === 'fusionfleet-promotion'">Recommended</span>
@@ -98,13 +98,13 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
         </div>
       </section>
 
-      <section *ngIf="result" class="card install-result">
+      <section *ngIf="result" class="card">
         <header class="card-header">
           <div><span class="eyebrow">INSTALLATION COMPLETE</span><h3>{{ result.scenario }}</h3></div>
           <span class="status">Installed</span>
         </header>
         <div class="card-body">
-          <div class="facts result-facts">
+          <div class="facts">
             <div><span>Prospects</span><strong>{{ result.prospects }}</strong></div>
             <div><span>Campaigns</span><strong>{{ result.campaigns }}</strong></div>
             <div><span>Opportunities</span><strong>{{ result.opportunities }}</strong></div>
@@ -123,7 +123,6 @@ import { PackageInstallResult, WorkspacePackage, WorkspacePackageId, WorkspacePa
 
       <div *ngIf="status" [class.alert]="error" [class.notice]="!error">{{ status }}</div>
     </main> `,
-  styleUrl: './workspace-packages.page.css'
 })
 export class WorkspacePackagesPage {
   private readonly service = inject(WorkspacePackagesService);
