@@ -209,3 +209,35 @@
   .capability-grid article,
   .capability-grid .featured-capability{min-height:240px}
 }
+
+
+/* Large single-line capability labels */
+.capability-grid .cap-top{
+  margin:0 0 34px;
+}
+.capability-grid .cap-top small{
+  white-space:nowrap;
+  font-size:16px;
+  line-height:1;
+  letter-spacing:.01em;
+  font-weight:900;
+  opacity:1;
+}
+.capability-grid .cap-top small::first-letter{font-weight:900}
+.capability-grid h3{font-size:20px}
+.process article small{
+  white-space:nowrap;
+  font-size:16px;
+  line-height:1;
+  letter-spacing:.01em;
+  font-weight:900;
+  opacity:1;
+}
+@media(max-width:1100px){
+  .capability-grid .cap-top small,
+  .process article small{font-size:14px}
+}
+@media(max-width:650px){
+  .capability-grid .cap-top small,
+  .process article small{font-size:14px}
+}
