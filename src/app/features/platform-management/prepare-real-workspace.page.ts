@@ -9,6 +9,49 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, PageHeader, AdminStaticI18nDirective],
+  styles: [`
+    :host{display:block;min-width:0}
+    .workspace-steps{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:10px}
+    .workspace-steps>span{position:relative;min-width:0;padding:12px 14px;border-right:1px solid var(--wl-border);background:#fff;color:var(--wl-muted);display:flex;align-items:center;gap:9px;font-size:11px;font-weight:650}
+    .workspace-steps>span:last-child{border-right:0}
+    .workspace-steps>span b{display:inline-flex;width:26px;height:26px;align-items:center;justify-content:center;background:#f1f2f4;color:var(--wl-text);font-size:10px}
+    .workspace-steps>span.active{color:var(--wl-text);background:#fff}
+    .workspace-steps>span.active:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--wl-accent)}
+    .workspace-steps>span.done b{background:var(--wl-accent);color:#fff}
+    .setup-card{margin-bottom:10px}
+    .setup-choice-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .setup-choice{width:100%;min-height:118px;padding:14px;background:#fff;border:1px solid var(--wl-border);display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;text-align:left;box-shadow:none}
+    .setup-choice:hover{border-color:var(--wl-accent);background:#fff}
+    .setup-choice.selected{border:2px solid var(--wl-accent);padding:13px}
+    .setup-choice .identity{align-items:flex-start}
+    .setup-choice .avatar{background:#f5f6f8;color:var(--wl-accent);box-shadow:none}
+    .setup-choice strong{font-size:13px}
+    .setup-choice small{font-size:10px;line-height:1.4;color:var(--wl-muted)}
+    .setup-choice .actions{margin-top:14px}
+    .setup-choice .button-quiet{min-height:30px;padding:0;background:#f5f6f8;font-size:10px}
+    .setup-choice:hover .button-quiet{background:#000;color:#fff}
+    .target-form{grid-template-columns:repeat(3,minmax(0,1fr));padding:0;margin-bottom:12px}
+    .target-form label{font-size:11px}
+    .automation-plan{margin:0;padding:14px;border:1px solid var(--wl-border);box-shadow:none}
+    .automation-steps{grid-template-columns:repeat(5,minmax(0,1fr));margin:12px 0 0}
+    .automation-steps>span{position:relative;min-width:0;padding:12px 10px;border-right:1px solid var(--wl-border);background:#fff;display:flex;align-items:center;gap:7px;font-size:10px;font-weight:650}
+    .automation-steps>span:last-child{border-right:0}
+    .automation-steps b{display:inline-flex;width:23px;height:23px;align-items:center;justify-content:center;background:#000;color:#fff;font-size:9px;flex:0 0 23px}
+    .result-metrics{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:12px}
+    .lifecycle{margin:0;box-shadow:none;border:1px solid var(--wl-border)}
+    .lifecycle .section-header{padding:0 0 11px}
+    @media(max-width:1050px){
+      .setup-choice-grid,.target-form{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .result-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .automation-steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .automation-steps>span{border-bottom:1px solid var(--wl-border)}
+    }
+    @media(max-width:650px){
+      .workspace-steps,.setup-choice-grid,.target-form,.result-metrics,.automation-steps{grid-template-columns:1fr}
+      .workspace-steps>span,.automation-steps>span{border-right:0;border-bottom:1px solid var(--wl-border)}
+      .workspace-steps>span:last-child,.automation-steps>span:last-child{border-bottom:0}
+    }
+  `],
   template: `
     <main class="page" qaiAdminStaticI18n>
       <qai-page-header title="Prepare Real Workspace" subtitle="Configure a tenant-owned acquisition workspace and start its autonomous operating loop.">
@@ -38,7 +81,7 @@ import { RealWorkspaceOptions, RealWorkspaceRequest, RealWorkspaceResult, RealWo
         <header class="card-header"><div><span class="eyebrow">TARGET MARKET</span><h2>Define the target market</h2><p class="meta">Business context for this tenant's prospecting, enrichment, qualification and campaign routing.</p></div><button type="button" class="button-secondary" (click)="step=1">← Back</button></header>
         <div class="card-body">
           <div class="form content-grid target-form">
-            <label>Template<select [(ngModel)]="templateKey"><option value="">Select template</option><option *ngFor="let t of templates" [value]="t.id">{{t.name}}</option></select></label>
+            <label>Template<select [(ngModel)]="templateKey"><option value="">Select template</option><option *ngFor="let t of templates" [value]="t.id">{{t.name}}</option></label>
             <label>Industry<input [(ngModel)]="industry" placeholder="Logistics, SaaS, Manufacturing..."/></label>
             <label>Region<input [(ngModel)]="region" placeholder="DACH, Europe, North America..."/></label>
             <label>Countries<input [(ngModel)]="countries" placeholder="Germany, Austria, Switzerland"/></label>
