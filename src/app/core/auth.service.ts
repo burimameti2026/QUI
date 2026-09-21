@@ -24,7 +24,7 @@ export class AuthService {
   login(tenant:string,email:string,password:string,mfaCode:string=''){
     const normalizedTenant = tenant.trim().toLowerCase();
     const normalizedEmail = email.trim().toLowerCase();
-    let body=new HttpParams().set('grant_type','password').set('client_id','qualifyai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access qualifyai-api');
+    let body=new HttpParams().set('grant_type','password').set('client_id','findleadsai-admin').set('username',normalizedEmail).set('password',password).set('tenant',normalizedTenant).set('scope','openid profile email offline_access leadsai-api');
     if(mfaCode) body=body.set('mfa_code',mfaCode.trim());
     return this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}})
       .pipe(timeout(15000),tap(response => this.storeSession(response, normalizedTenant)));
@@ -52,7 +52,7 @@ export class AuthService {
     if(this.refreshRequest) return this.refreshRequest;
     const refreshToken=localStorage.getItem(this.refreshTokenKey);
     if(!refreshToken) throw new Error('Refresh token is unavailable.');
-    const body=new HttpParams().set('grant_type','refresh_token').set('client_id','qualifyai-admin').set('refresh_token',refreshToken).set('scope','openid profile email offline_access qualifyai-api');
+    const body=new HttpParams().set('grant_type','refresh_token').set('client_id','findleadsai-admin').set('refresh_token',refreshToken).set('scope','openid profile email offline_access leadsai-api');
     this.refreshRequest=this.http.post<TokenResponse>('/connect/token',body.toString(),{headers:{'Content-Type':'application/x-www-form-urlencoded'}}).pipe(
       timeout(5000),tap((response:TokenResponse)=>this.storeSession(response)),map((response:TokenResponse)=>response.access_token),
       finalize(()=>this.refreshRequest=undefined),shareReplay({bufferSize:1,refCount:false}));
