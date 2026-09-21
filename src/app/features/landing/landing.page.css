@@ -241,3 +241,49 @@
   .capability-grid .cap-top small,
   .process article small{font-size:14px}
 }
+
+
+/* Section labels: headline treatment everywhere */
+.section-label{
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  font-size:24px;
+  line-height:1;
+  letter-spacing:-.025em;
+  font-weight:900;
+  color:#191b1e;
+}
+.section-label i{
+  font-size:24px;
+  line-height:1;
+  color:inherit;
+  font-weight:900;
+}
+.hero .section-label{font-size:24px}
+.hero .section-label i{font-size:24px}
+.capability-grid .cap-top small,
+.process article small{
+  font-size:24px;
+  line-height:1;
+  letter-spacing:-.025em;
+  font-weight:900;
+  white-space:nowrap;
+}
+@media(max-width:900px){
+  .section-label,
+  .section-label i,
+  .hero .section-label,
+  .hero .section-label i,
+  .capability-grid .cap-top small,
+  .process article small{font-size:20px}
+}
+@media(max-width:650px){
+  .section-label,
+  .section-label i,
+  .hero .section-label,
+  .hero .section-label i,
+  .capability-grid .cap-top small,
+  .process article small{font-size:17px}
+}
