@@ -8,6 +8,7 @@ export const routes: Routes = [
  { path: 'renova/portal', redirectTo:'renova', pathMatch:'full' },
  { path: '', canActivate:[authGuard], loadComponent:()=>import('./layout/shell.component').then(m=>m.ShellComponent), children:[
   {path:'dashboard',loadComponent:()=>import('./features/dashboard/dashboard.page').then(m=>m.DashboardPage)},
+  {path:'kpis',loadComponent:()=>import('./features/kpis/kpis.page').then(m=>m.KpisPage)},
   {path:'enterprise',loadComponent:()=>import('./features/enterprise/enterprise.page').then(m=>m.EnterprisePage)},
   {path:'enterprise/:section',loadComponent:()=>import('./features/enterprise/enterprise-operations.page').then(m=>m.EnterpriseOperationsPage)},
   {path:'catalog',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/catalog.page').then(m=>m.CatalogPage)},
