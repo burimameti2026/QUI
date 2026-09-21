@@ -181,8 +181,8 @@ export class ShellComponent {
     ]},
     { label: "CATALOG & PROMOTIONS", items: [
       i("Product Catalog", "/catalog", "▦"),
-      i("Promotion Automation", "/renova/promotion", "✦"),
-      i("Content", "/renova/content", "▤"),
+      i("Promotion Automation", "/promotion", "✦"),
+      i("Content", "/content", "▤"),
     ]},
     { label: "OPERATIONS", items: [
       i("Enterprise Operations", "/enterprise", "◉", [
@@ -208,16 +208,13 @@ export class ShellComponent {
       i("Integrations", "/integrations", "⊕"),
     ]},
     { label: "ADMINISTRATION", items: [
-      i("Platform Management", "/platform", "⚙", [
-        i("Prepare Real Workspace", "/platform/prepare-workspace", "＋"),
-        i("Workspace Packages", "/platform/packages", "▦"),
-      ]),
+      i("Admin Workspace", "/platform", "⚙"),
       i("Users & Roles", "/users", "◎"),
       i("Security", "/security", "◇"),
       i("White Label", "/white-label", "□"),
       i("Industry Packs", "/industry-packs", "▤"),
       i("Audit & Governance", "/audit", "▤"),
-      i("Module Administration", "/admin/modules", "⚙"),
+      i("Clients & Licenses", "/admin/modules", "▦"),
     ]},
   ];
   get session() {
