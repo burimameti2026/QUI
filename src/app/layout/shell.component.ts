@@ -182,7 +182,7 @@ export class ShellComponent {
     { label: "CATALOG & PROMOTIONS", items: [
       i("Product Catalog", "/catalog", "▦"),
       i("Promotion Automation", "/renova/promotion", "✦"),
-      i("Renova Content", "/renova/content", "▤"),
+      i("Content", "/renova/content", "▤"),
     ]},
     { label: "OPERATIONS", items: [
       i("Enterprise Operations", "/enterprise", "◉", [
@@ -225,7 +225,7 @@ export class ShellComponent {
   }
   get workspaceName() {
     return (
-      this.session?.tenantSlug || this.session?.tenantId || "Renova Workspace"
+      this.session?.tenantSlug || this.session?.tenantId || "Workspace"
     );
   }
   get workspaceLabel() {
