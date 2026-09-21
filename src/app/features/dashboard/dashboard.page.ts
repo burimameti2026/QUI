@@ -28,6 +28,7 @@ export class DashboardPage implements OnInit {
   campaigns: any[] = [];
 
   get tenantId() { return this.auth.session()?.tenantId || ''; }
+  get tenantName() { return this.auth.session()?.tenantSlug || this.auth.session()?.tenantId || 'Workspace'; }
   get activeAgentCount() {
     return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length;
   }
@@ -97,7 +98,7 @@ export class DashboardPage implements OnInit {
       {
         icon: '▦',
         title: `${this.products.length} catalog products`,
-        subtitle: `${this.publishedProducts} are published to the public Renova portal.`,
+        subtitle: `${this.publishedProducts} are published to the public ${this.tenantName} portal.`,
         badge: 'LIVE',
         tone: 'success'
       },
