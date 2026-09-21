@@ -8,13 +8,31 @@
     </div>
   </qai-page-header>
 
-  <section class="toolbar">
-    <label class="search"><span>Tenant</span><input [value]="tenantId" readonly aria-label="Current tenant" /></label>
-    <label class="status"><input type="checkbox" [(ngModel)]="autoRefresh" (change)="toggleRefresh()" /> <span>Live refresh</span></label>
+  <section class="hero">
+    <div class="stack">
+      <span class="eyebrow">AUTONOMOUS ACQUISITION</span>
+      <h2>Run discovery, qualification and outreach under controlled approval.</h2>
+      <p>Configure agents, monitor execution and keep every outbound action inside tenant safety limits.</p>
+      <div class="meta">
+        <span><i></i>{{ tenantId || 'Tenant unavailable' }}</span>
+        <span><b>{{ active }}</b> active agents</span>
+        <span><b>{{ qualified }}</b> qualified</span>
+      </div>
+    </div>
+    <div class="card acquisition-progress">
+      <span class="eyebrow">CURRENT WORKFLOW</span>
+      <div class="acquisition-timeline">
+        <div class="acquisition-track" aria-hidden="true"></div>
+        <div class="acquisition-step" [class.is-current]="!agents.length"><span>01</span><strong>Configure</strong><small>Agent + ICP</small></div>
+        <div class="acquisition-step" [class.is-current]="agents.length && !active"><span>02</span><strong>Activate</strong><small>Start agent</small></div>
+        <div class="acquisition-step" [class.is-current]="active && !runs.length"><span>03</span><strong>Discover</strong><small>Run market search</small></div>
+        <div class="acquisition-step" [class.is-current]="runs.length && !qualified"><span>04</span><strong>Qualify</strong><small>Score accounts</small></div>
+        <div class="acquisition-step" [class.is-current]="qualified > 0"><span>05</span><strong>Approve</strong><small>Controlled outreach</small></div>
+      </div>
+    </div>
   </section>
 
-  <section class="card">
-    <header class="card-header"><div><span class="eyebrow">TENANT CONFIGURATION</span><h2>Tenant acquisition settings</h2><p>Configure discovery credentials, safety limits and the schedule used by autonomous acquisition.</p></div></header>
+  <section class="metric-grid acquisition-kpis">
     <div class="content-grid">
       <label class="stack"><b>SerpAPI key</b><input [(ngModel)]="settings.serpApiApiKey" type="password" autocomplete="new-password" placeholder="Enter a tenant-specific key" /><small>{{ hasSerpApiKey ? 'A key is configured. Leave blank to keep it.' : 'No key configured.' }}</small></label>
       <label class="stack"><b>Monthly safety limit</b><input [(ngModel)]="settings.monthlySafetyLimit" type="number" min="1" max="100000" /></label>
@@ -31,6 +49,19 @@
     <article class="metric"><div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Discovered</span></div><strong>{{ discovered }}</strong><small>Accounts discovered</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ qualified }}</strong><small>Accounts qualified</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">✉</span><span class="metric-label">Emails sent</span></div><strong>{{ emails }}</strong><small>Messages sent through approval</small></article>
+  </section>
+
+  <section class="card tenant-settings">
+    <header class="card-header"><div><span class="eyebrow">TENANT CONFIGURATION</span><h2>Tenant acquisition settings</h2><p>Configure discovery credentials, safety limits and the schedule used by autonomous acquisition.</p></div>
+      <label class="live-refresh"><input type="checkbox" [(ngModel)]="autoRefresh" (change)="toggleRefresh()" /> Live refresh</label>
+    </header>
+    <div class="content-grid">
+      <label class="stack"><b>SerpAPI key</b><input [(ngModel)]="settings.serpApiApiKey" type="password" autocomplete="new-password" placeholder="Enter a tenant-specific key" /><small>{{ hasSerpApiKey ? 'A key is configured. Leave blank to keep it.' : 'No key configured.' }}</small></label>
+      <label class="stack"><b>Monthly safety limit</b><input [(ngModel)]="settings.monthlySafetyLimit" type="number" min="1" max="100000" /></label>
+      <label class="stack"><b>Schedule timezone</b><input [(ngModel)]="settings.timeZoneId" placeholder="Europe/Skopje" /></label>
+      <label class="stack"><b>Current tenant</b><input [value]="tenantId" readonly /></label>
+    </div>
+    <footer class="actions"><button class="button-primary" type="button" (click)="saveSettings()" [disabled]="savingSettings">{{ savingSettings ? 'Saving…' : 'Save tenant settings' }}</button></footer>
   </section>
 
   <section *ngIf="editing" class="card">
