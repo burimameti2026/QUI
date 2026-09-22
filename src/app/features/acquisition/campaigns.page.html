@@ -235,11 +235,18 @@
   <form class="form" (ngSubmit)="save()">
     <section *ngIf="builderStep === 1">
       <h3>Who should enter?</h3>
-      <p>Choose the qualified logistics target list created by Prospect Discovery.</p>
+      <p>Choose the offer and the qualified audience. The campaign will only use recipients that match this audience.</p>
 
       <label>
         Campaign name
         <input [(ngModel)]="form.name" name="name" required />
+      </label>
+      <label>
+        Offer / package
+        <select [(ngModel)]="form.offerId" name="offer" required>
+          <option value="">Select offer</option>
+          <option *ngFor="let offer of packages" [value]="offer.id">{{ offer.name }}</option>
+        </select>
       </label>
 
       <label>
@@ -268,26 +275,41 @@
     </section>
 
     <section *ngIf="builderStep === 3">
-      <h3>What happens?</h3>
+      <h3>Messages & automation</h3>
       <p>Messages are written in English, stop after a reply and use verified company and contact data.</p>
 
       <article class="card" *ngFor="let step of form.steps; let i = index">
         <div class="card-body">
-          <strong>Step {{ i + 1 }}</strong>
-          <label>
-            Wait hours
-            <input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" />
-          </label>
-          <label>
-            Subject
-            <input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" />
-          </label>
-          <label>
-            Message
-            <textarea rows="4" [(ngModel)]="step.bodyTemplate" [name]="'body' + i"></textarea>
-          </label>
+          <header class="card-header">
+            <div><span class="eyebrow">MESSAGE {{ i + 1 }}</span><h3>{{ i === 0 ? 'Initial outreach' : 'Follow-up ' + i }}</h3></div>
+            <button type="button" class="button-quiet" *ngIf="form.steps.length > 1" (click)="removeStep(i)">Remove</button>
+          </header>
+          <div class="content-grid">
+            <label>Wait hours<input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" /></label>
+            <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="step.minimumScore" [name]="'score' + i" /></label>
+            <label>Qualification
+              <select [(ngModel)]="step.qualification" [name]="'qualification' + i">
+                <option value="qualified">Qualified</option><option value="any">Any</option>
+              </select>
+            </label>
+            <label>Industry<input [(ngModel)]="step.industry" [name]="'industry' + i" placeholder="Logistics" /></label>
+            <label>Countries<input [(ngModel)]="step.countries" [name]="'countries' + i" placeholder="North Macedonia, Albania" /></label>
+            <label>Contact roles<input [(ngModel)]="step.contactRoles" [name]="'roles' + i" placeholder="Owner, Operations Manager" /></label>
+          </div>
+          <label>Subject<input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" placeholder="Subject for {{company}}" /></label>
+          <label>Message<textarea rows="6" [(ngModel)]="step.bodyTemplate" [name]="'body' + i" placeholder="Hi {{contactName}}, ..."></textarea></label>
+          <div class="notice"><strong>Automation</strong><span>Reply → STOP · No reply → next message after {{ step.delayHours }}h</span></div>
+          <label><input type="checkbox" [(ngModel)]="step.stopOnReply" [name]="'stop' + i" /> Stop sequence when the recipient replies</label>
         </div>
       </article>
+      <button type="button" class="button-secondary" (click)="addStep()">+ Add message</button>
+      <section class="card">
+        <div class="card-body">
+          <span class="eyebrow">LIVE PREVIEW</span>
+          <h3>{{ form.steps[0]?.subjectTemplate || 'Message subject' }}</h3>
+          <p>{{ form.steps[0]?.bodyTemplate || 'Write Message 1 to see the exact message preview here.' }}</p>
+        </div>
+      </section>
     </section>
 
     <section class="card-body" *ngIf="builderStep === 4">
@@ -296,6 +318,7 @@
       <dl>
         <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
         <div><dt>Audience</dt><dd>{{ selectedList?.name }}</dd></div>
+        <div><dt>Offer</dt><dd>{{ selectedPackage?.name || "Not selected" }}</dd></div>
         <div><dt>Sender</dt><dd>{{ form.senderName }} · {{ form.senderEmail }}</dd></div>
         <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
       </dl>
