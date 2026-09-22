@@ -62,6 +62,12 @@
       <span class="step-state">{{ pendingCount }} waiting</span>
       <span class="step-arrow">→</span>
     </button>
+    <button class="step-card" type="button" (click)="go('/campaigns')">
+      <span class="step-number">07</span>
+      <span class="step-copy"><strong>Maintenance & Results</strong><small>Edit, pause and monitor campaigns</small></span>
+      <span class="step-state">{{ campaignCount }} managed</span>
+      <span class="step-arrow">→</span>
+    </button>
   </div>
 
   <section class="content-grid">
