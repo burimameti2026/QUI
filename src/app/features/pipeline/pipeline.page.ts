@@ -5,18 +5,7 @@ import { Opportunity } from "../../core/models/platform.models";
 import { Modal, PageHeader } from "../../shared/ui";
 import { PipelineService } from "./pipeline.service";
 
-interface SalesPipeline {
-  id: string;
-  name: string;
-  isDefault: boolean;
-}
-interface PipelineStage {
-  id: string;
-  pipelineId: string;
-  name: string;
-  sortOrder: number;
-  probability: number;
-}
+import { PipelineService, PipelineStage, SalesPipeline } from "./pipeline.service";
 
 @Component({
   standalone: true,
@@ -45,29 +34,22 @@ export class PipelinePage implements OnInit {
   load() {
     this.loading = true;
     this.error = "";
-    this.data.load().subscribe({
-      next: (r) => {
-        this.pipelines = r.pipelines || [];
-        this.stages = r.stages || [];
-        if (
-          this.selectedId &&
-          !this.pipelines.some((x) => x.id === this.selectedId)
-        )
+    this.data.snapshot().subscribe({
+      next: ({ sales, opportunities }) => {
+        this.pipelines = sales.pipelines || [];
+        this.stages = sales.stages || [];
+        this.opps = opportunities || [];
+        if (this.selectedId && !this.pipelines.some((x) => x.id === this.selectedId)) {
           this.selectedId = "";
+          this.view = "overview";
+        }
         this.loading = false;
       },
       error: (e) => {
-        this.error = this.apiError(e, "Pipelines could not be loaded.");
+        this.error = this.apiError(e, "Pipeline data could not be loaded.");
         this.loading = false;
       },
     });
-    this.data
-      .opportunities()
-      .subscribe({
-        next: (r) => (this.opps = r || []),
-        error: (e) =>
-          (this.error = this.apiError(e, "Opportunities could not be loaded.")),
-      });
   }
   open(pipeline: SalesPipeline, view: "board" | "configuration" = "board") {
     this.selectedId = pipeline.id;
@@ -122,9 +104,7 @@ export class PipelinePage implements OnInit {
     return this.cards(id).reduce((sum, x) => sum + Number(x.amount || 0), 0);
   }
   get total() {
-    return this.selectedId
-      ? this.pipelineValue(this.selectedId)
-      : this.openValue;
+    return this.selectedId ? this.pipelineValue(this.selectedId) : 0;
   }
   get weighted() {
     return this.selectedStages.reduce(
@@ -207,14 +187,19 @@ export class PipelinePage implements OnInit {
       });
   }
   dropOn(id: string) {
-    if (!this.drag) return;
-    const x = this.drag,
-      before = x.pipelineStageId;
-    x.pipelineStageId = id;
-    this.data.move(x.id, id).subscribe({
-      next: (r) => Object.assign(x, r),
+    const opportunity = this.drag;
+    this.drag = null;
+    if (!opportunity || opportunity.pipelineStageId === id) return;
+
+    const before = opportunity.pipelineStageId;
+    opportunity.pipelineStageId = id;
+    this.data.move(opportunity.id, id).subscribe({
+      next: (saved) => {
+        Object.assign(opportunity, saved);
+        this.load();
+      },
       error: (e) => {
-        x.pipelineStageId = before;
+        opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be moved.");
       },
     });
@@ -224,7 +209,10 @@ export class PipelinePage implements OnInit {
     const before = opportunity.pipelineStageId;
     opportunity.pipelineStageId = stageId;
     this.data.move(opportunity.id, stageId).subscribe({
-      next: (saved) => Object.assign(opportunity, saved),
+      next: (saved) => {
+        Object.assign(opportunity, saved);
+        this.load();
+      },
       error: (e) => {
         opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be assigned.");
@@ -262,9 +250,8 @@ export class PipelinePage implements OnInit {
     });
   }
   opportunityStatus(value: any) {
-    return typeof value === "string"
-      ? value
-      : ["Open", "Won", "Lost"][value] || String(value);
+    if (typeof value === "string") return value;
+    return ["Open", "Won", "Lost"][Number(value)] || String(value);
   }
   money(v: number) {
     return new Intl.NumberFormat("de-DE", {
