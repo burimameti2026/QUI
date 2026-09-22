@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AcquisitionService } from '../acquisition/acquisition.service';
 
 interface PackageBlock {
   id: string;
@@ -38,42 +39,49 @@ export class PackageBuilderPage {
     { id: 'cta', type: 'cta', title: 'Call to action', visible: true }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private acquisition: AcquisitionService) {}
 
   buildWithAi(): void {
     const text = this.prompt.trim();
     if (!text) return;
     this.aiWorking = true;
     this.saved = false;
-    this.aiMessage = 'Understanding the offer, target customer and positioning…';
+    this.aiMessage = 'AI is understanding the offer and preparing a customer-ready structure…';
 
-    setTimeout(() => {
-      const lower = text.toLowerCase();
-      const fusion = lower.includes('fusionfleet') || lower.includes('fleet') || lower.includes('logistics') || lower.includes('transport');
-
-      if (fusion) {
-        this.packageName = 'FusionFleet OPS';
-        this.headline = 'Run your transport operation from one place.';
-        this.subheadline = 'Orders, fleet, drivers, tracking and operational visibility in one platform.';
-        this.price = '299';
-        this.billing = 'month';
-        this.audience = 'Logistics and transport companies · 10–500 employees';
-        this.features = ['Transport orders', 'Live shipment tracking', 'Fleet management', 'Driver management', 'Operational analytics', 'Customer communication'];
-        this.aiMessage = 'I built a first FusionFleet OPS offer. I also identified the main ICP and prepared a customer-facing structure. Review it, change anything you want, then save it.';
-      } else {
-        const name = text.split(/\s+/).slice(0, 4).join(' ');
-        this.packageName = name || 'New Package';
-        this.headline = text;
-        this.subheadline = 'A customer-ready offer generated from your business description.';
-        this.price = '';
-        this.audience = 'Define the target customer';
-        this.features = ['Core capability', 'Business outcome', 'Operational visibility'];
-        this.aiMessage = 'I created a first structure from your description. Tell me what to change — audience, positioning, pricing, sections or wording — and I will adapt the preview.';
+    this.acquisition.buildWorkspacePackage(text).subscribe({
+      next: (result) => {
+        this.packageName = result.name || 'New Package';
+        this.headline = result.headline || '';
+        this.subheadline = result.subheadline || '';
+        this.price = result.price || '';
+        this.billing = result.billing || 'month';
+        this.audience = result.audience || '';
+        this.features = result.features || [];
+        this.blocks = (result.sections || []).map((title: string, index: number) => ({
+          id: title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + index,
+          type: this.sectionType(title),
+          title,
+          visible: true
+        }));
+        this.selectedId = this.blocks[0]?.id || 'hero';
+        this.aiMessage = 'I built the first version from your business context. Review the preview, change anything you want, or ask AI to refine it.';
+        this.aiWorking = false;
+      },
+      error: (err) => {
+        this.aiWorking = false;
+        this.aiMessage = err?.error?.detail || 'AI could not build the offer right now.';
       }
+    });
+  }
 
-      this.aiWorking = false;
-      this.selectedId = 'hero';
-    }, 450);
+  sectionType(title: string): PackageBlock['type'] {
+    const value = title.toLowerCase();
+    if (value.includes('feature')) return 'features';
+    if (value.includes('benefit')) return 'benefits';
+    if (value.includes('how')) return 'how-it-works';
+    if (value.includes('pricing')) return 'pricing';
+    if (value.includes('call') || value.includes('action')) return 'cta';
+    return 'hero';
   }
 
   askAi(text: string): void {
