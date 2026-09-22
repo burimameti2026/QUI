@@ -58,6 +58,9 @@ export class AcquisitionService {
   workspacePackages() {
     return this.api.get<any[]>("workspace-packages");
   }
+  buildWorkspacePackage(prompt: string) {
+    return this.api.post<any>("workspace-packages/ai/build", { prompt });
+  }
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
