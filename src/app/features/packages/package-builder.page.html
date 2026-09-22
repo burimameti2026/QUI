@@ -113,9 +113,9 @@
     </section>
 
     <aside class="inspector">
-      <div class="panel-title"><div><span class="eyebrow">AI INSPECTOR</span><strong>{{ blocks.find(x => x.id === selectedId)?.title || 'Section' }}</strong></div></div>
+      <div class="panel-title"><div><span class="eyebrow">AI INSPECTOR</span><strong>{{ selectedBlock?.title || 'Section' }}</strong></div></div>
 
-      <ng-container [ngSwitch]="blocks.find(x => x.id === selectedId)?.type">
+      <ng-container [ngSwitch]="selectedBlock?.type">
         <div class="field-group" *ngSwitchCase="'hero'">
           <label>Headline</label>
           <textarea [(ngModel)]="headline" rows="4"></textarea>
