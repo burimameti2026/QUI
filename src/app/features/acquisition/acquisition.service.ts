@@ -82,6 +82,9 @@ export class AcquisitionService {
       {},
     );
   }
+  rejectApproval(id: string) {
+    return this.api.post<any>(`email-operations/messages/${id}/reject`, {});
+  }
   retryMessage(id: string) {
     return this.api.post<any>(`email-operations/messages/${id}/retry`, {});
   }
