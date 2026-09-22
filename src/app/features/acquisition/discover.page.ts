@@ -222,6 +222,7 @@ export class DiscoverPage implements OnInit {
   prospects: any[] = [];
   minimumScore = 0;
   qualificationMode = false;
+  qualifiedTargetListId = "";
   qualificationScore = 70;
   qualificationMessage = "";
   selectedIds = new Set<string>();
@@ -258,21 +259,65 @@ export class DiscoverPage implements OnInit {
     { key: "companyName", label: "Company name", required: true }, { key: "domain", label: "Website / domain", required: true }, { key: "contactName", label: "Contact name", required: false }, { key: "email", label: "Business email", required: false }, { key: "jobTitle", label: "Job title", required: false }, { key: "industry", label: "Industry", required: false }, { key: "country", label: "Country", required: false }, { key: "source", label: "Row source", required: false }, { key: "priority", label: "Priority tier", required: false }, { key: "contactReadiness", label: "Contact readiness", required: false }, { key: "suggestedBuyer", label: "Suggested buyer", required: false }, { key: "sizeBand", label: "Company size band", required: false }, { key: "painHypothesis", label: "Pain hypothesis", required: false }, { key: "offer", label: "Recommended offer", required: false }, { key: "sourceUrl", label: "Evidence source URL", required: false }, { key: "verificationStatus", label: "Verification status", required: false }, { key: "outreachStatus", label: "Outreach status", required: false }, { key: "datasetOrigin", label: "Dataset origin", required: false }, { key: "fitScore", label: "Fit score", required: false }, { key: "intentScore", label: "Intent score", required: false },
   ];
   constructor(private data: AcquisitionService, private router: Router, private route: ActivatedRoute) {}
-  ngOnInit() { this.qualificationMode = this.route.snapshot.routeConfig?.path === "qualification"; this.loadOfferContext(); this.load(); }
+  ngOnInit() {
+    this.qualificationMode = this.route.snapshot.routeConfig?.path === "qualification";
+    this.qualifiedTargetListId = this.route.snapshot.queryParamMap.get("targetListId") || "";
+    const icpId = this.route.snapshot.queryParamMap.get("icpId") || "";
+    if (icpId) this.selectedIcpId = icpId;
+    this.loadOfferContext();
+    this.load();
+  }
   loadOfferContext() { this.data.workspacePackages().subscribe({ next: (packages) => { this.workspaceOffer = packages?.[0] || null; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); }, error: () => (this.workspaceOffer = null) }); }
   applyOfferToIcp(offer: any) { const context = [offer.name, offer.audience, ...(offer.features || [])].filter(Boolean).join(' · '); if (!this.icp.name || this.icp.name === 'Logistics growth accounts') this.icp.name = (offer.name || 'Offer') + ' target market'; if (!this.icp.industry || this.icp.industry === 'Manufacturing, e-commerce, distribution') this.icp.industry = offer.audience || this.icp.industry; if (context && (!this.icp.criteriaJson || this.icp.criteriaJson === '{}')) this.icp.criteriaJson = JSON.stringify({ offerId: offer.id || null, offerName: offer.name, context }); }
   load() {
     this.data.overview().subscribe((r) => (this.overview = r));
     this.data.discoveryProviders().subscribe({ next: (r) => (this.discoveryProviders = r), error: () => (this.discoveryProviders = []) });
-    this.data.icps().subscribe((r) => { this.icps = r; if (!this.activeIcp) this.selectedIcpId = r.find((x) => x.active)?.id || ""; });
+    this.data.icps().subscribe((r) => {
+      this.icps = r;
+      const requestedIcpId = this.route.snapshot.queryParamMap.get("icpId") || "";
+      if (requestedIcpId && r.some((x) => x.id === requestedIcpId && x.active)) this.selectedIcpId = requestedIcpId;
+      else if (!this.activeIcp) this.selectedIcpId = r.find((x) => x.active)?.id || "";
+    });
     this.loadProspects();
   }
   loadProspects() { this.data.prospects(this.minimumScore).subscribe((r) => { this.prospects = r; this.selectedIds = new Set([...this.selectedIds].filter((id) => r.some((x) => x.id === id))); }); }
   get activeIcp() { return this.icps.find((x) => x.id === this.selectedIcpId && x.active); }
   get qualifiedProspects() { return this.prospects.filter((x) => this.priority(x) >= Number(this.qualificationScore)); }
   applyQualificationScore() { this.minimumScore = Number(this.qualificationScore) || 0; this.loadProspects(); }
-  createQualifiedAudience() { const rows = this.qualifiedProspects; if (!rows.length) { this.qualificationMessage = "No prospects meet this threshold yet."; return; } const name = `${this.activeIcp?.name || "Qualified audience"} · Score ${this.qualificationScore}+`; this.data.createTargetList({ name, description: "Qualified audience from Acquisition Qualification & Score", icpProfileId: this.selectedIcpId || null, dynamic: false }).subscribe({ next: (list) => this.data.addMembers(list.id, rows.map((x) => x.id)).subscribe({ next: () => { this.qualificationMessage = `${rows.length} prospects qualified and added to the audience.`; }, error: (e) => this.error = e?.error?.detail || "Audience members could not be added." }), error: (e) => this.error = e?.error?.detail || "Qualified audience could not be created." }); }
-  continueToCampaigns() { this.router.navigate(["/campaigns"]); }
+  createQualifiedAudience() {
+    const rows = this.qualifiedProspects;
+    if (!rows.length) {
+      this.qualificationMessage = "No prospects meet this threshold yet.";
+      return;
+    }
+    const name = `${this.activeIcp?.name || "Qualified audience"} · Score ${this.qualificationScore}+`;
+    this.error = "";
+    this.data.createTargetList({
+      name,
+      description: "Qualified audience from Acquisition Qualification & Score",
+      icpProfileId: this.selectedIcpId || null,
+      dynamic: false,
+    }).subscribe({
+      next: (list) => this.data.addMembers(list.id, rows.map((x) => x.id)).subscribe({
+        next: () => {
+          this.qualifiedTargetListId = list.id;
+          this.qualificationMessage = `${rows.length} prospects qualified and added to the audience. The audience is ready for campaign setup.`;
+        },
+        error: (e) => this.error = e?.error?.detail || "Audience members could not be added.",
+      }),
+      error: (e) => this.error = e?.error?.detail || "Qualified audience could not be created.",
+    });
+  }
+  continueToCampaigns() {
+    const targetListId = this.qualifiedTargetListId || this.route.snapshot.queryParamMap.get("targetListId") || "";
+    if (!targetListId) {
+      this.qualificationMessage = "Create the qualified audience first. Campaign setup needs a target audience.";
+      return;
+    }
+    this.router.navigate(["/campaigns"], {
+      queryParams: { targetListId, icpId: this.selectedIcpId || null },
+    });
+  }
   get selectedDiscoveryProvider() { return this.discoveryProviders.find((x) => x.name === this.onlineDiscovery.source); }
   get journeyStep() { if (!this.activeIcp) return 0; if (!this.prospects.length) return 1; if (!this.selectedIds.size) return 2; return 3; }
   goToProspecting() { if (!this.activeIcp) return; this.router.navigate(['/discover'], { queryParams: { icpId: this.activeIcp.id } }); }
