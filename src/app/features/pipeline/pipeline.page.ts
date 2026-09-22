@@ -96,22 +96,27 @@ export class PipelinePage implements OnInit {
     );
   }
   pipelineStages(id: string) {
-    return this.stages.filter((x) => x.pipelineId === id);
+    return this.stages
+      .filter((x) => x.pipelineId === id)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
   }
   pipelineOpps(id: string) {
     const ids = new Set(this.pipelineStages(id).map((x) => x.id));
-    return this.opps.filter(
-      (x) => !!x.pipelineStageId && ids.has(x.pipelineStageId),
-    );
+    return this.opps.filter((x) => !!x.pipelineStageId && ids.has(x.pipelineStageId));
+  }
+  pipelineOpenOpps(id: string) {
+    return this.pipelineOpps(id).filter((x) => this.opportunityStatus(x.status) === "Open");
   }
   pipelineValue(id: string) {
-    return this.pipelineOpps(id).reduce(
+    return this.pipelineOpenOpps(id).reduce(
       (sum, x) => sum + Number(x.amount || 0),
       0,
     );
   }
   cards(id: string) {
-    return this.opps.filter((x) => x.pipelineStageId === id);
+    return this.opps.filter(
+      (x) => x.pipelineStageId === id && this.opportunityStatus(x.status) === "Open",
+    );
   }
   stageTotal(id: string) {
     return this.cards(id).reduce((sum, x) => sum + Number(x.amount || 0), 0);
@@ -119,7 +124,7 @@ export class PipelinePage implements OnInit {
   get total() {
     return this.selectedId
       ? this.pipelineValue(this.selectedId)
-      : this.opps.reduce((sum, x) => sum + Number(x.amount || 0), 0);
+      : this.openValue;
   }
   get weighted() {
     return this.selectedStages.reduce(
@@ -161,7 +166,9 @@ export class PipelinePage implements OnInit {
     const input = {
       name: this.stageForm.name.trim(),
       probability: Number(this.stageForm.probability),
-      sortOrder: this.selectedStages.length,
+      sortOrder: this.selectedStages.length
+        ? Math.max(...this.selectedStages.map((x) => Number(x.sortOrder || 0))) + 1
+        : 0,
     };
     this.data.createStage(this.selected.id, input).subscribe({
       next: (s) => {
@@ -265,9 +272,6 @@ export class PipelinePage implements OnInit {
       currency: "EUR",
       maximumFractionDigits: 0,
     }).format(v || 0);
-  }
-  scoreFor(x: Opportunity) {
-    return x.amount > 30000 ? 93 : x.amount > 15000 ? 84 : 71;
   }
   get openOpportunities() {
     return this.opps.filter((x) => this.opportunityStatus(x.status) === "Open");
