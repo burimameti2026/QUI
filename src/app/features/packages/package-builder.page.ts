@@ -29,6 +29,7 @@ export class PackageBuilderPage {
   price = '';
   billing = 'month';
   audience = '';
+  packageId = '';
   features: string[] = [];
   blocks: PackageBlock[] = [
     { id: 'hero', type: 'hero', title: 'Hero', visible: true },
@@ -140,8 +141,34 @@ export class PackageBuilderPage {
   }
 
   save(): void {
-    this.saved = true;
-    this.aiMessage = 'Saved. Next I would connect this offer to ICP, Prospecting and Qualification so the system can tell you who matches it.';
+    if (!this.packageName.trim()) {
+      this.aiMessage = 'Add a package name before saving.';
+      return;
+    }
+    this.aiWorking = true;
+    this.acquisition.saveWorkspacePackage({
+      id: this.packageId || null,
+      name: this.packageName,
+      headline: this.headline,
+      subheadline: this.subheadline,
+      audience: this.audience,
+      price: this.price,
+      billing: this.billing,
+      features: this.features,
+      sections: this.blocks.map(x => x.title),
+      hiddenSections: this.blocks.filter(x => !x.visible).map(x => x.title)
+    }).subscribe({
+      next: (result) => {
+        this.packageId = result.id;
+        this.saved = true;
+        this.aiWorking = false;
+        this.aiMessage = 'Saved. The offer is now available to the Acquisition workflow and can be used as the context for ICP, Prospecting and Qualification.';
+      },
+      error: (err) => {
+        this.aiWorking = false;
+        this.aiMessage = err?.error?.detail || 'The offer could not be saved.';
+      }
+    });
   }
 
   continueToIcp(): void {
