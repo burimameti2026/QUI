@@ -91,4 +91,13 @@ export class AcquisitionService {
   startCampaign(id: string) {
     return this.api.post<any>(`acquisition/campaigns/${id}/start`, {});
   }
+  pauseCampaign(id: string) {
+    return this.api.post<any>(`acquisition/campaigns/${id}/pause`, {});
+  }
+  resumeCampaign(id: string) {
+    return this.api.post<any>(`acquisition/campaigns/${id}/resume`, {});
+  }
+  updateCampaign(id: string, input: any) {
+    return this.api.put<any>(`acquisition/campaigns/${id}`, input);
+  }
 }
