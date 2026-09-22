@@ -55,6 +55,9 @@ export class AcquisitionService {
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
+  workspacePackages() {
+    return this.api.get<any[]>("workspace-packages");
+  }
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
