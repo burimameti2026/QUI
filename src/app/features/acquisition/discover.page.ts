@@ -73,7 +73,10 @@ import { AcquisitionService } from "./acquisition.service";
     <article class="card">
       <header class="card-header">
         <div><span class="eyebrow">Qualification model</span><h3>Ideal customer profiles</h3><p>Choose the rules used to qualify this audience.</p></div>
-        <button class="button-secondary" (click)="openIcp()">+ New profile</button>
+        <div class="actions">
+          <button class="button-secondary" (click)="openIcp()">+ New profile</button>
+          <button class="button-primary" *ngIf="activeIcp" (click)="goToProspecting()">Find companies →</button>
+        </div>
       </header>
       <div class="list" *ngIf="icps.length">
         <label class="list-item" *ngFor="let x of icps" [class.selected]="selectedIcpId === x.id" [class.paused]="!x.active">
@@ -234,6 +237,7 @@ export class DiscoverPage implements OnInit {
   get activeIcp() { return this.icps.find((x) => x.id === this.selectedIcpId && x.active); }
   get selectedDiscoveryProvider() { return this.discoveryProviders.find((x) => x.name === this.onlineDiscovery.source); }
   get journeyStep() { if (!this.activeIcp) return 0; if (!this.prospects.length) return 1; if (!this.selectedIds.size) return 2; return 3; }
+  goToProspecting() { if (!this.activeIcp) return; this.router.navigate(['/discover'], { queryParams: { icpId: this.activeIcp.id } }); }
   get canContinueIcp() { if (this.icpStep === 0) return !!this.icp.name?.trim() && !!this.icp.countriesCsv?.trim(); if (this.icpStep === 1) return Number(this.icp.minimumEmployees) > 0 && Number(this.icp.maximumEmployees) >= Number(this.icp.minimumEmployees); return !!this.icp.intentKeywordsCsv?.trim(); }
   get canContinueBulk() { if (this.bulkStep === 0) return !!this.bulkPreview && !!this.bulkSource.trim() && !this.bulkError; if (this.bulkStep === 1) return !!this.bulkMapping["companyName"] && !!this.bulkMapping["domain"] && !!this.bulkRows.length && !this.bulkError; if (this.bulkStep === 2) return this.bulkConfirmed; return !!this.bulkListName.trim(); }
   get mappedFields() { return this.importFields.filter((field) => !!this.bulkMapping[field.key]); }
@@ -248,7 +252,7 @@ export class DiscoverPage implements OnInit {
   status(v: number) { return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || v; }
   toggle(id: string) { this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id); }
   toggleAll() { this.allSelected ? this.selectedIds.clear() : this.prospects.forEach((x) => this.selectedIds.add(x.id)); }
-  saveIcp() { if (this.workspaceOffer) this.icp.criteriaJson = JSON.stringify({ ...JSON.parse(this.icp.criteriaJson || '{}'), offerId: this.workspaceOffer.id || null, offerName: this.workspaceOffer.name || '' }); this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Import verified companies to build its target audience."; }); }
+  saveIcp() { if (this.workspaceOffer) this.icp.criteriaJson = JSON.stringify({ ...JSON.parse(this.icp.criteriaJson || '{}'), offerId: this.workspaceOffer.id || null, offerName: this.workspaceOffer.name || '' }); this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Your next step is to find companies that match this ICP."; }); }
   saveProspect() { this.data.addProspect(this.prospect).subscribe((r) => { this.prospects.unshift(r); this.prospectOpen = false; this.data.overview().subscribe((x) => (this.overview = x)); }); }
   selectDataset(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; this.bulkFile = file; this.bulkPreview = undefined; this.bulkRows = []; this.bulkError = ""; if (!file) return; if (file.size > 15_000_000) { this.bulkError = "The import file must be smaller than 15 MB."; return; } this.loadPreview(); }
   reloadSheet() { if (this.bulkFile) this.loadPreview(this.bulkSheet); }
