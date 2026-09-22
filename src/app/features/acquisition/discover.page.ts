@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Callout, Modal, PageHeader, WizardSteps } from "../../shared/ui";
 import { AcquisitionService } from "./acquisition.service";
 
@@ -9,7 +9,38 @@ import { AcquisitionService } from "./acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
-<div class="page">
+<div class="page" *ngIf="qualificationMode">
+  <qai-page-header title="Qualification & Score" subtitle="Turn discovered prospects into a controlled, reusable audience before messaging.">
+    <button class="button-quiet" (click)="load()">↻ Refresh data</button>
+    <button class="button-secondary" (click)="router.navigate(['/discover'])">← Prospecting</button>
+    <button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="createQualifiedAudience()">Create qualified audience</button>
+  </qai-page-header>
+  <section class="hero">
+    <div class="stack"><span class="eyebrow">03 · QUALIFICATION</span><h2>Choose who is ready for outreach</h2><p>Score the prospects already discovered for this ICP. Nothing is sent from this step.</p></div>
+    <div class="card"><span class="eyebrow">Current audience</span><h3>{{ prospects.length }} discovered</h3><p>{{ qualifiedProspects.length }} meet the current threshold.</p></div>
+  </section>
+  <div class="notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
+  <div class="notice success" *ngIf="qualificationMessage"><b>✓</b><span>{{ qualificationMessage }}</span></div>
+  <section class="content-grid">
+    <article class="card">
+      <header class="card-header"><div><span class="eyebrow">Qualification rule</span><h3>Minimum combined score</h3><p>Fit contributes 55% and intent contributes 45% to the priority score.</p></div></header>
+      <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="qualificationScore" (change)="applyQualificationScore()"></label>
+      <div class="notice"><strong>{{ qualifiedProspects.length }}</strong><span><b>Qualified prospects</b><small>Ready to become a campaign audience</small></span></div>
+      <div class="actions"><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="createQualifiedAudience()">Create audience →</button></div>
+    </article>
+    <article class="card">
+      <header class="card-header"><div><span class="eyebrow">Selected ICP</span><h3>{{ activeIcp?.name || 'No ICP selected' }}</h3><p>{{ activeIcp?.industry || 'Create/select an ICP first.' }}</p></div></header>
+      <div class="list-item" *ngIf="activeIcp"><span class="status">Active</span><span class="stack"><strong>{{ activeIcp.countriesCsv || 'All markets' }}</strong><small>{{ activeIcp.minimumEmployees || 0 }}–{{ activeIcp.maximumEmployees || '∞' }} employees</small></span></div>
+      <div class="empty" *ngIf="!activeIcp"><strong>ICP required</strong><span>Go back to Prospecting and select or create an ICP.</span><button (click)="router.navigate(['/acquisition/icp'])">Open ICP</button></div>
+    </article>
+  </section>
+  <section class="card">
+    <header class="card-header"><div><span class="eyebrow">Qualified audience</span><h3>Review before campaigns</h3><p>Only prospects above the threshold are included. You can change the rule and rebuild the audience.</p></div><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="continueToCampaigns()">Continue to Campaigns →</button></header>
+    <div class="table" *ngIf="qualifiedProspects.length"><table><thead><tr><th>Company</th><th>Contact</th><th>Fit</th><th>Intent</th><th>Score</th><th>Status</th></tr></thead><tbody><tr *ngFor="let x of qualifiedProspects"><td><b>{{ x.companyName }}</b><small>{{ x.domain }}</small></td><td><b>{{ x.contactName || 'Research needed' }}</b><small>{{ x.jobTitle || 'Role unknown' }}</small></td><td>{{ x.fitScore }}</td><td>{{ x.intentScore }}</td><td><span class="status">{{ priority(x) }}</span></td><td>{{ status(x.status) }}</td></tr></tbody></table></div>
+    <div class="empty" *ngIf="!qualifiedProspects.length"><strong>No prospects qualify yet</strong><span>Lower the threshold or return to Prospecting to discover/import more companies.</span></div>
+  </section>
+</div>
+<div class="page" *ngIf="!qualificationMode">
   <qai-page-header title="Prospect Discovery" subtitle="Define who you want to sell to, collect market evidence and prioritize companies showing real buying intent.">
     <button class="button-quiet" (click)="load()">↻ Refresh data</button>
     <button (click)="openIcp()">+ New ICP</button>
@@ -190,6 +221,9 @@ export class DiscoverPage implements OnInit {
   icps: any[] = [];
   prospects: any[] = [];
   minimumScore = 0;
+  qualificationMode = false;
+  qualificationScore = 70;
+  qualificationMessage = "";
   selectedIds = new Set<string>();
   listName = "";
   selectedIcpId = "";
@@ -223,8 +257,8 @@ export class DiscoverPage implements OnInit {
   readonly importFields = [
     { key: "companyName", label: "Company name", required: true }, { key: "domain", label: "Website / domain", required: true }, { key: "contactName", label: "Contact name", required: false }, { key: "email", label: "Business email", required: false }, { key: "jobTitle", label: "Job title", required: false }, { key: "industry", label: "Industry", required: false }, { key: "country", label: "Country", required: false }, { key: "source", label: "Row source", required: false }, { key: "priority", label: "Priority tier", required: false }, { key: "contactReadiness", label: "Contact readiness", required: false }, { key: "suggestedBuyer", label: "Suggested buyer", required: false }, { key: "sizeBand", label: "Company size band", required: false }, { key: "painHypothesis", label: "Pain hypothesis", required: false }, { key: "offer", label: "Recommended offer", required: false }, { key: "sourceUrl", label: "Evidence source URL", required: false }, { key: "verificationStatus", label: "Verification status", required: false }, { key: "outreachStatus", label: "Outreach status", required: false }, { key: "datasetOrigin", label: "Dataset origin", required: false }, { key: "fitScore", label: "Fit score", required: false }, { key: "intentScore", label: "Intent score", required: false },
   ];
-  constructor(private data: AcquisitionService, private router: Router) {}
-  ngOnInit() { this.loadOfferContext(); this.load(); }
+  constructor(private data: AcquisitionService, private router: Router, private route: ActivatedRoute) {}
+  ngOnInit() { this.qualificationMode = this.route.snapshot.routeConfig?.path === "qualification"; this.loadOfferContext(); this.load(); }
   loadOfferContext() { this.data.workspacePackages().subscribe({ next: (packages) => { this.workspaceOffer = packages?.[0] || null; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); }, error: () => (this.workspaceOffer = null) }); }
   applyOfferToIcp(offer: any) { const context = [offer.name, offer.audience, ...(offer.features || [])].filter(Boolean).join(' · '); if (!this.icp.name || this.icp.name === 'Logistics growth accounts') this.icp.name = (offer.name || 'Offer') + ' target market'; if (!this.icp.industry || this.icp.industry === 'Manufacturing, e-commerce, distribution') this.icp.industry = offer.audience || this.icp.industry; if (context && (!this.icp.criteriaJson || this.icp.criteriaJson === '{}')) this.icp.criteriaJson = JSON.stringify({ offerId: offer.id || null, offerName: offer.name, context }); }
   load() {
@@ -235,6 +269,10 @@ export class DiscoverPage implements OnInit {
   }
   loadProspects() { this.data.prospects(this.minimumScore).subscribe((r) => { this.prospects = r; this.selectedIds = new Set([...this.selectedIds].filter((id) => r.some((x) => x.id === id))); }); }
   get activeIcp() { return this.icps.find((x) => x.id === this.selectedIcpId && x.active); }
+  get qualifiedProspects() { return this.prospects.filter((x) => this.priority(x) >= Number(this.qualificationScore)); }
+  applyQualificationScore() { this.minimumScore = Number(this.qualificationScore) || 0; this.loadProspects(); }
+  createQualifiedAudience() { const rows = this.qualifiedProspects; if (!rows.length) { this.qualificationMessage = "No prospects meet this threshold yet."; return; } const name = `${this.activeIcp?.name || "Qualified audience"} · Score ${this.qualificationScore}+`; this.data.createTargetList({ name, description: "Qualified audience from Acquisition Qualification & Score", icpProfileId: this.selectedIcpId || null, dynamic: false }).subscribe({ next: (list) => this.data.addMembers(list.id, rows.map((x) => x.id)).subscribe({ next: () => { this.qualificationMessage = `${rows.length} prospects qualified and added to the audience.`; }, error: (e) => this.error = e?.error?.detail || "Audience members could not be added." }), error: (e) => this.error = e?.error?.detail || "Qualified audience could not be created." }); }
+  continueToCampaigns() { this.router.navigate(["/campaigns"]); }
   get selectedDiscoveryProvider() { return this.discoveryProviders.find((x) => x.name === this.onlineDiscovery.source); }
   get journeyStep() { if (!this.activeIcp) return 0; if (!this.prospects.length) return 1; if (!this.selectedIds.size) return 2; return 3; }
   goToProspecting() { if (!this.activeIcp) return; this.router.navigate(['/discover'], { queryParams: { icpId: this.activeIcp.id } }); }
