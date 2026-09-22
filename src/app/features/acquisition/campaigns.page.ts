@@ -20,6 +20,7 @@ export class CampaignsPage implements OnInit {
   selectedCampaign: any = null;
   editingCampaign: any = null;
   activity: any[] = [];
+  resultMessages: any[] = [];
   loading = false;
   show = false;
   builderStep = 1;
@@ -261,8 +262,12 @@ export class CampaignsPage implements OnInit {
   inspect(campaign: any): void {
     this.selectedCampaign = campaign;
     this.activity = [];
+    this.resultMessages = this.messages.filter((x: any) => x.campaignId === campaign.id);
     this.data.campaignActivity(campaign.id).subscribe({
-      next: (rows) => (this.activity = rows || []),
+      next: (rows) => {
+        this.activity = rows || [];
+        this.resultMessages = this.messages.filter((x: any) => x.campaignId === campaign.id);
+      },
       error: (e) => (this.error = this.apiError(e, "Campaign activity could not be loaded.")),
     });
   }
