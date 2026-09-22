@@ -22,6 +22,8 @@ export class PipelinePage implements OnInit {
   error = "";
   pipelineQuery = "";
   drag: Opportunity | null = null;
+  private movingIds = new Set<string>();
+  private savingStageIds = new Set<string>();
   selectedOpportunity: Opportunity | null = null;
   pipelineForm = { name: "", isDefault: false };
   stageForm = { name: "", probability: 0 };
@@ -132,6 +134,7 @@ export class PipelinePage implements OnInit {
         existing ? Object.assign(existing, p) : this.pipelines.push(p);
         this.selectedId = p.id;
         this.saving = false;
+        this.load();
       },
       error: (e) => {
         this.error = this.apiError(e, "Pipeline could not be saved.");
@@ -140,7 +143,7 @@ export class PipelinePage implements OnInit {
     });
   }
   addStage() {
-    if (!this.selected || !this.stageForm.name.trim()) return;
+    if (!this.selected || !this.stageForm.name.trim() || this.saving) return;
     const input = {
       name: this.stageForm.name.trim(),
       probability: Number(this.stageForm.probability),
@@ -149,15 +152,17 @@ export class PipelinePage implements OnInit {
         : 0,
     };
     this.data.createStage(this.selected.id, input).subscribe({
-      next: (s) => {
-        this.stages.push(s);
+      next: () => {
         this.stageForm = { name: "", probability: 0 };
+        this.load();
       },
       error: (e) =>
         (this.error = this.apiError(e, "Stage could not be added.")),
     });
   }
   saveStage(stage: PipelineStage) {
+    if (this.savingStageIds.has(stage.id)) return;
+    this.savingStageIds.add(stage.id);
     this.data
       .updateStage(stage.pipelineId, stage.id, {
         name: stage.name,
@@ -165,29 +170,34 @@ export class PipelinePage implements OnInit {
         sortOrder: Number(stage.sortOrder),
       })
       .subscribe({
-        next: (s) => Object.assign(stage, s),
+        next: () => this.load(),
         error: (e) =>
           (this.error = this.apiError(e, "Stage could not be saved.")),
+        complete: () => this.savingStageIds.delete(stage.id),
       });
   }
   removeStage(stage: PipelineStage) {
+    if (this.savingStageIds.has(stage.id)) return;
     if (!confirm(`Delete stage “${stage.name}”?`)) return;
+    this.savingStageIds.add(stage.id);
     this.data
       .deleteStage(stage.pipelineId, stage.id)
       .subscribe({
-        next: () =>
-          (this.stages = this.stages.filter((x) => x.id !== stage.id)),
+        next: () => this.load(),
         error: (e) =>
           (this.error = this.apiError(
             e,
             "Stage could not be deleted. Move its opportunities first.",
           )),
+        complete: () => this.savingStageIds.delete(stage.id),
       });
   }
   dropOn(id: string) {
     const opportunity = this.drag;
     this.drag = null;
-    if (!opportunity || opportunity.pipelineStageId === id) return;
+    if (!opportunity || opportunity.pipelineStageId === id || this.movingIds.has(opportunity.id)) return;
+    if (!this.selectedStages.some((stage) => stage.id === id)) return;
+    this.movingIds.add(opportunity.id);
 
     const before = opportunity.pipelineStageId;
     opportunity.pipelineStageId = id;
@@ -200,10 +210,12 @@ export class PipelinePage implements OnInit {
         opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be moved.");
       },
+      complete: () => this.movingIds.delete(opportunity.id),
     });
   }
   assignUnassigned(opportunity: Opportunity, stageId: string) {
-    if (!stageId) return;
+    if (!stageId || this.movingIds.has(opportunity.id) || !this.selectedStages.some((stage) => stage.id === stageId)) return;
+    this.movingIds.add(opportunity.id);
     const before = opportunity.pipelineStageId;
     opportunity.pipelineStageId = stageId;
     this.data.move(opportunity.id, stageId).subscribe({
@@ -215,6 +227,7 @@ export class PipelinePage implements OnInit {
         opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be assigned.");
       },
+      complete: () => this.movingIds.delete(opportunity.id),
     });
   }
   closeSelected(won: boolean) {
@@ -271,9 +284,9 @@ export class PipelinePage implements OnInit {
   }
   get weightedValue() {
     const stageProbabilities = new Map(
-      this.stages.map((stage) => [stage.id, Number(stage.probability || 0)]),
+      this.selectedStages.map((stage) => [stage.id, Number(stage.probability || 0)]),
     );
-    return this.openOpportunities.reduce(
+    return this.pipelineOpenOpps(this.selectedId).reduce(
       (sum, x) =>
         sum +
         Number(x.amount || 0) *
