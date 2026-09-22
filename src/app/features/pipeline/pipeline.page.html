@@ -16,12 +16,10 @@
     <p>{{ error }}</p>
   </div>
 
-  <section class="metric-grid" *ngIf="view === 'overview'">
+  <section class="metric-grid pipeline-summary" *ngIf="view === 'overview'">
     <article class="metric"><span class="eyebrow">PIPELINES</span><strong>{{ pipelines.length }}</strong><small>Sales processes configured</small></article>
     <article class="metric"><span class="eyebrow">OPEN DEALS</span><strong>{{ openOpportunities.length }}</strong><small>Active opportunities</small></article>
-    <article class="metric"><span class="eyebrow">OPEN VALUE</span><strong>{{ money(openValue) }}</strong><small>Current active pipeline</small></article>
-    <article class="metric"><span class="eyebrow">WEIGHTED VALUE</span><strong>{{ money(weightedValue) }}</strong><small>Stage probability adjusted</small></article>
-    <article class="metric"><span class="eyebrow">WON VALUE</span><strong>{{ money(wonValue) }}</strong><small>Closed-won opportunities</small></article>
+    <article class="metric"><span class="eyebrow">OPEN VALUE</span><strong>{{ money(openValue) }}</strong><small>Active opportunity value</small></article>
   </section>
 
   <ng-container *ngIf="view === 'overview'">
@@ -72,11 +70,10 @@
         <button class="button-secondary" (click)="view='configuration'">Configure stages</button>
       </header>
     </section>
-    <section class="metric-grid">
-      <article class="metric"><span class="eyebrow">OPEN PIPELINE</span><strong>{{ money(total) }}</strong></article>
-      <article class="metric"><span class="eyebrow">WEIGHTED PIPELINE</span><strong>{{ money(weighted) }}</strong></article>
-      <article class="metric"><span class="eyebrow">DEALS</span><strong>{{ pipelineOpps(selected.id).length }}</strong></article>
-      <article class="metric"><span class="eyebrow">STAGES</span><strong>{{ selectedStages.length }}</strong></article>
+    <section class="metric-grid pipeline-summary">
+      <article class="metric"><span class="eyebrow">OPEN PIPELINE</span><strong>{{ money(total) }}</strong><small>{{ pipelineOpenOpps(selected.id).length }} active deals</small></article>
+      <article class="metric"><span class="eyebrow">WEIGHTED PIPELINE</span><strong>{{ money(weighted) }}</strong><small>Probability adjusted</small></article>
+      <article class="metric"><span class="eyebrow">STAGES</span><strong>{{ selectedStages.length }}</strong><small>Configured sales steps</small></article>
     </section>
 
     <section class="card" *ngIf="unassignedOpen.length">
@@ -89,8 +86,10 @@
       </div>
     </section>
 
-    <div class="content-grid" *ngIf="selectedStages.length; else noStages">
-      <section class="card" *ngFor="let stage of selectedStages">
+    <div class="content-grid pipeline-board" *ngIf="selectedStages.length; else noStages">
+      <section class="card pipeline-stage" *ngFor="let stage of selectedStages"
+        (dragover)="$event.preventDefault()"
+        (drop)="$event.preventDefault(); dropOn(stage.id)">
         <header class="card-header"><div><h3>{{ stage.name }}</h3><span class="meta">{{ cards(stage.id).length }} deals</span></div><strong>{{ money(stageTotal(stage.id)) }}</strong></header>
         <div class="list">
           <article class="list-item" draggable="true" *ngFor="let opportunity of cards(stage.id)" (dragstart)="drag=opportunity" (dragend)="drag=null" (click)="selectedOpportunity=opportunity">
@@ -98,7 +97,7 @@
             <span class="status">{{ stage.probability }}% probability</span>
           </article>
         </div>
-        <div class="notice" (dragover)="$event.preventDefault()" (drop)="dropOn(stage.id)">Drop opportunity here</div>
+        <div class="notice stage-drop-hint">{{ drag ? 'Release to move opportunity here' : 'Drag an open opportunity into this stage' }}</div>
       </section>
     </div>
     <ng-template #noStages><section class="empty"><strong>This pipeline has no stages</strong><p>Add stages before assigning and moving opportunities.</p><button class="button-primary" (click)="view='configuration'">Configure stages</button></section></ng-template>
