@@ -73,11 +73,19 @@
 
         <div class="actions">
           <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
+          <button class="button-secondary" *ngIf="campaign.status !== 4" (click)="openEdit(campaign)">Edit</button>
           <button
             class="button-primary"
-            *ngIf="campaign.status === 0 || campaign.status === 3"
-            (click)="start(campaign)"
-          >Start campaign</button>
+            *ngIf="campaign.status === 0"
+            (click)="start(campaign)">Start campaign</button>
+          <button
+            class="button-secondary"
+            *ngIf="campaign.status === 2"
+            (click)="pause(campaign)">Pause</button>
+          <button
+            class="button-primary"
+            *ngIf="campaign.status === 3"
+            (click)="resume(campaign)">Resume</button>
           <span class="status success" *ngIf="campaign.status === 2">● Live</span>
         </div>
       </article>
@@ -217,7 +225,7 @@
 
 <qai-modal
   [open]="show"
-  title="Build outreach"
+  [title]="editingCampaign ? 'Edit campaign' : 'Build outreach'"
   (close)="show = false"
 >
   <nav class="steps">
@@ -329,7 +337,7 @@
     <p class="alert" *ngIf="error">{{ error }}</p>
 
     <footer class="actions">
-      <button type="button" (click)="show = false">Cancel</button>
+      <button type="button" (click)="show = false; editingCampaign = null">Cancel</button>
       <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
       <button class="button-primary" type="button" *ngIf="builderStep < 4" [disabled]="!canContinue" (click)="next()">Continue</button>
       <button class="button-primary" type="submit" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Finishing…' : 'FINISH & READY FOR APPROVAL' }}</button>
