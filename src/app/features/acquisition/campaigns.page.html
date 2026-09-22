@@ -144,10 +144,10 @@
   </div>
 
   <div class="result-summary">
-    <div><span>Delivered</span><b>{{ resultMessages.filter(x => x.status === 2).length }}</b></div>
-    <div><span>Interested</span><b>{{ resultMessages.filter(x => x.classification === 'interested' || x.interested === true).length }}</b></div>
-    <div><span>Failed</span><b>{{ resultMessages.filter(x => x.status === 4).length }}</b></div>
-    <div><span>Suppressed</span><b>{{ resultMessages.filter(x => x.status === 5).length }}</b></div>
+    <div><span>Delivered</span><b>{{ deliveredResults }}</b></div>
+    <div><span>Interested</span><b>{{ interestedResults }}</b></div>
+    <div><span>Failed</span><b>{{ failedResults }}</b></div>
+    <div><span>Suppressed</span><b>{{ suppressedResults }}</b></div>
   </div>
 
   <div class="table" *ngIf="resultMessages.length">
