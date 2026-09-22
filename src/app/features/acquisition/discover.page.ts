@@ -175,6 +175,7 @@ import { AcquisitionService } from "./acquisition.service";
 })
 export class DiscoverPage implements OnInit {
   overview: any = {};
+  workspaceOffer: any = null;
   icps: any[] = [];
   prospects: any[] = [];
   minimumScore = 0;
@@ -212,7 +213,9 @@ export class DiscoverPage implements OnInit {
     { key: "companyName", label: "Company name", required: true }, { key: "domain", label: "Website / domain", required: true }, { key: "contactName", label: "Contact name", required: false }, { key: "email", label: "Business email", required: false }, { key: "jobTitle", label: "Job title", required: false }, { key: "industry", label: "Industry", required: false }, { key: "country", label: "Country", required: false }, { key: "source", label: "Row source", required: false }, { key: "priority", label: "Priority tier", required: false }, { key: "contactReadiness", label: "Contact readiness", required: false }, { key: "suggestedBuyer", label: "Suggested buyer", required: false }, { key: "sizeBand", label: "Company size band", required: false }, { key: "painHypothesis", label: "Pain hypothesis", required: false }, { key: "offer", label: "Recommended offer", required: false }, { key: "sourceUrl", label: "Evidence source URL", required: false }, { key: "verificationStatus", label: "Verification status", required: false }, { key: "outreachStatus", label: "Outreach status", required: false }, { key: "datasetOrigin", label: "Dataset origin", required: false }, { key: "fitScore", label: "Fit score", required: false }, { key: "intentScore", label: "Intent score", required: false },
   ];
   constructor(private data: AcquisitionService, private router: Router) {}
-  ngOnInit() { this.load(); }
+  ngOnInit() { this.loadOfferContext(); this.load(); }
+  loadOfferContext() { this.data.workspacePackages().subscribe({ next: (packages) => { this.workspaceOffer = packages?.[0] || null; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); }, error: () => (this.workspaceOffer = null) }); }
+  applyOfferToIcp(offer: any) { const context = [offer.name, offer.audience, ...(offer.features || [])].filter(Boolean).join(' · '); if (!this.icp.name || this.icp.name === 'Logistics growth accounts') this.icp.name = (offer.name || 'Offer') + ' target market'; if (!this.icp.industry || this.icp.industry === 'Manufacturing, e-commerce, distribution') this.icp.industry = offer.audience || this.icp.industry; if (context && (!this.icp.criteriaJson || this.icp.criteriaJson === '{}')) this.icp.criteriaJson = JSON.stringify({ offerId: offer.id || null, offerName: offer.name, context }); }
   load() {
     this.data.overview().subscribe((r) => (this.overview = r));
     this.data.discoveryProviders().subscribe({ next: (r) => (this.discoveryProviders = r), error: () => (this.discoveryProviders = []) });
@@ -226,7 +229,7 @@ export class DiscoverPage implements OnInit {
   get canContinueIcp() { if (this.icpStep === 0) return !!this.icp.name?.trim() && !!this.icp.countriesCsv?.trim(); if (this.icpStep === 1) return Number(this.icp.minimumEmployees) > 0 && Number(this.icp.maximumEmployees) >= Number(this.icp.minimumEmployees); return !!this.icp.intentKeywordsCsv?.trim(); }
   get canContinueBulk() { if (this.bulkStep === 0) return !!this.bulkPreview && !!this.bulkSource.trim() && !this.bulkError; if (this.bulkStep === 1) return !!this.bulkMapping["companyName"] && !!this.bulkMapping["domain"] && !!this.bulkRows.length && !this.bulkError; if (this.bulkStep === 2) return this.bulkConfirmed; return !!this.bulkListName.trim(); }
   get mappedFields() { return this.importFields.filter((field) => !!this.bulkMapping[field.key]); }
-  openIcp() { this.icpStep = 0; this.icpOpen = true; }
+  openIcp() { this.icpStep = 0; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); this.icpOpen = true; }
   nextIcp() { if (this.canContinueIcp && this.icpStep < 2) this.icpStep++; }
   openBulk() { this.bulkStep = 0; this.bulkError = ""; this.bulkConfirmed = false; this.bulkPreview = undefined; this.bulkFile = undefined; this.bulkRows = []; this.bulkMapping = {}; this.bulkRejected = 0; this.bulkOpen = true; }
   openOnlineDiscovery() { if (!this.activeIcp) return; this.error = ""; this.message = ""; this.onlineDiscovery.targetListName = `Review — ${this.activeIcp.name} — ${new Date().toISOString().slice(0, 10)}`; this.onlineDiscoveryOpen = true; }
@@ -237,7 +240,7 @@ export class DiscoverPage implements OnInit {
   status(v: number) { return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || v; }
   toggle(id: string) { this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id); }
   toggleAll() { this.allSelected ? this.selectedIds.clear() : this.prospects.forEach((x) => this.selectedIds.add(x.id)); }
-  saveIcp() { this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Import verified companies to build its target audience."; }); }
+  saveIcp() { if (this.workspaceOffer) this.icp.criteriaJson = JSON.stringify({ ...JSON.parse(this.icp.criteriaJson || '{}'), offerId: this.workspaceOffer.id || null, offerName: this.workspaceOffer.name || '' }); this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Import verified companies to build its target audience."; }); }
   saveProspect() { this.data.addProspect(this.prospect).subscribe((r) => { this.prospects.unshift(r); this.prospectOpen = false; this.data.overview().subscribe((x) => (this.overview = x)); }); }
   selectDataset(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; this.bulkFile = file; this.bulkPreview = undefined; this.bulkRows = []; this.bulkError = ""; if (!file) return; if (file.size > 15_000_000) { this.bulkError = "The import file must be smaller than 15 MB."; return; } this.loadPreview(); }
   reloadSheet() { if (this.bulkFile) this.loadPreview(this.bulkSheet); }
