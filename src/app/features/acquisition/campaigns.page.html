@@ -143,6 +143,27 @@
     <article class="metric"><div class="metric-top"><span class="metric-label">Replies</span></div><strong>{{ selectedCampaign.replied || 0 }}</strong></article>
   </div>
 
+  <div class="result-summary">
+    <div><span>Delivered</span><b>{{ resultMessages.filter(x => x.status === 2).length }}</b></div>
+    <div><span>Interested</span><b>{{ resultMessages.filter(x => x.classification === 'interested' || x.interested === true).length }}</b></div>
+    <div><span>Failed</span><b>{{ resultMessages.filter(x => x.status === 4).length }}</b></div>
+    <div><span>Suppressed</span><b>{{ resultMessages.filter(x => x.status === 5).length }}</b></div>
+  </div>
+
+  <div class="table" *ngIf="resultMessages.length">
+    <table>
+      <thead><tr><th>Recipient</th><th>Message</th><th>Status</th><th>Next</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let item of resultMessages">
+          <td><b>{{ item.prospect }}</b><small>{{ item.email }}</small></td>
+          <td>{{ item.subject }}</td>
+          <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
+          <td>{{ item.nextRunAtUtc ? (item.nextRunAtUtc | date: 'short') : '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="list" *ngIf="activity.length; else noActivity">
     <article class="list-item" *ngFor="let item of activity">
       <span class="status">{{ item.status }}</span>
