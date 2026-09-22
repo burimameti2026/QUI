@@ -183,6 +183,7 @@ export class ShellComponent {
       i("Replies & Inbox", "/inbox", "▱"),
     ]},
     { label: "CATALOG", items: [
+      i("Packages & Offers", "/packages/new", "✦"),
       i("Product Catalog", "/catalog", "▦"),
     ]},
     { label: "OPERATIONS", items: [
