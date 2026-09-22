@@ -11,6 +11,7 @@ export const routes: Routes = [
   {path:'enterprise/:section',loadComponent:()=>import('./features/enterprise/enterprise-operations.page').then(m=>m.EnterpriseOperationsPage)},
   {path:'catalog',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/catalog.page').then(m=>m.CatalogPage)},
   {path:'catalog/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
+  {path:'packages/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/packages/package-builder.page').then(m=>m.PackageBuilderPage)},
   {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'acquisition',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/acquisition.page').then(m=>m.AcquisitionPage)},
   {path:'acquisition/icp',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
