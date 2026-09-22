@@ -16,7 +16,7 @@ export class ModuleAdminService {
   private readonly identity='/identity/api/identity';
   constructor(private api:ApiService,private http:HttpClient){}
   catalog(){return this.http.get<LicenseCatalog>(`${this.identity}/licenses/catalog`)} tenants(){return this.http.get<TenantSummary[]>(`${this.identity}/tenants`)}
-  createTenant(payload:{name:string;slug:string;contactEmail:string}){return this.http.post<TenantSummary>(`${this.identity}/tenants`,payload)}
+  provisionTenant(payload:{name:string;slug:string;contactEmail:string;plan:string;startsAtUtc:string;expiresAtUtc:string|null;gracePeriodEndsAtUtc:string|null;maxUsers:number;modules:string[];ownerEmail:string;ownerPassword:string;ownerFirstName:string;ownerLastName:string}){return this.http.post<any>(`${this.identity}/tenants/provision`,payload)}
   createTenantAdmin(tenantId:string,payload:{email:string;password:string;firstName:string;lastName:string}){return this.http.post<any>(`${this.identity}/tenants/${tenantId}/admin`,payload)}
   entitlements(tenantId:string){return this.http.get<TenantEntitlements>(`${this.identity}/licenses/tenant/${tenantId}/entitlements`)}
   assign(tenantId:string,payload:{plan:string;startsAtUtc:string;maxUsers:number;expiresAtUtc:string|null;modules:string[]}){return this.http.post<TenantEntitlements>(`${this.identity}/licenses/tenant/${tenantId}`,payload)}
