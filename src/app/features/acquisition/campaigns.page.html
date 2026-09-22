@@ -217,13 +217,13 @@
 
 <qai-modal
   [open]="show"
-  title="Build logistics outreach"
+  title="Build outreach"
   (close)="show = false"
 >
   <nav class="steps">
     <button
       class="button-quiet"
-      *ngFor="let label of ['Audience', 'Sender', 'Sequence', 'Review']; let i = index"
+      *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index"
       [class.active]="builderStep === i + 1"
       [class.done]="builderStep > i + 1"
     >
@@ -291,7 +291,7 @@
     </section>
 
     <section class="card-body" *ngIf="builderStep === 4">
-      <h3>Ready to create draft</h3>
+      <h3>Final review — ready for approval</h3>
 
       <dl>
         <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
@@ -300,7 +300,7 @@
         <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
       </dl>
 
-      <p>Creating does not send email. Starting prepares recipients; each real message still requires human approval.</p>
+      <p>FINISH saves this campaign as a controlled draft. It does not send email. Start only when the audience, sender and messages are correct; every real message still requires human approval.</p>
     </section>
 
     <p class="alert" *ngIf="error">{{ error }}</p>
@@ -309,7 +309,7 @@
       <button type="button" (click)="show = false">Cancel</button>
       <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
       <button class="button-primary" type="button" *ngIf="builderStep < 4" [disabled]="!canContinue" (click)="next()">Continue</button>
-      <button class="button-primary" type="submit" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Creating…' : 'Create draft' }}</button>
+      <button class="button-primary" type="submit" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Finishing…' : 'FINISH & READY FOR APPROVAL' }}</button>
     </footer>
   </form>
 </qai-modal>
