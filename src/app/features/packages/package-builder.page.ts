@@ -110,6 +110,10 @@ export class PackageBuilderPage implements OnInit {
     });
   }
 
+  get selectedBlock(): PackageBlock | undefined {
+    return this.blocks.find((block) => block.id === this.selectedId);
+  }
+
   sectionType(title: string): PackageBlock['type'] {
     const value = title.toLowerCase();
     if (value.includes('feature')) return 'features';
