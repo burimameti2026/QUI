@@ -61,7 +61,15 @@ import { AcquisitionService } from "./acquisition.service";
   <div class="notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
   <div class="notice" *ngIf="message"><b>✓</b><span>{{ message }}</span></div>
 
-  <section class="content-grid">
+  <section class="card offer-context" *ngIf="workspaceOffer">
+      <header class="card-header">
+        <div><span class="eyebrow">Offer context</span><h3>{{ workspaceOffer.name }}</h3><p>{{ workspaceOffer.headline || workspaceOffer.audience }}</p></div>
+        <button class="button-secondary" (click)="router.navigateByUrl('/packages/new')">Edit offer</button>
+      </header>
+      <div class="notice"><strong>ICP starts from this offer</strong><span>{{ workspaceOffer.audience || 'Define the target customer from the saved offer.' }}<small *ngIf="workspaceOffer.features?.length">{{ workspaceOffer.features.slice(0, 4).join(' · ') }}</small></span></div>
+    </section>
+
+    <section class="content-grid">
     <article class="card">
       <header class="card-header">
         <div><span class="eyebrow">Qualification model</span><h3>Ideal customer profiles</h3><p>Choose the rules used to qualify this audience.</p></div>
