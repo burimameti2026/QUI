@@ -3,8 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Opportunity } from "../../core/models/platform.models";
 import { Modal, PageHeader } from "../../shared/ui";
-import { PipelineService } from "./pipeline.service";
-
 import { PipelineService, PipelineStage, SalesPipeline } from "./pipeline.service";
 
 @Component({
