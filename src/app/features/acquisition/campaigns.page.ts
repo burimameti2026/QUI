@@ -15,6 +15,7 @@ export class CampaignsPage implements OnInit {
   @ViewChild("approvalQueue") approvalQueue?: ElementRef<HTMLElement>;
   rows: any[] = [];
   lists: any[] = [];
+  packages: any[] = [];
   messages: any[] = [];
   selectedCampaign: any = null;
   activity: any[] = [];
@@ -48,6 +49,10 @@ export class CampaignsPage implements OnInit {
     return this.rows.filter((x) => x.status === 2).length;
   }
 
+  get selectedPackage(): any {
+    return this.packages.find((x) => x.id === this.form.offerId);
+  }
+
   get selectedList(): any {
     return this.lists.find((x) => x.id === this.form.targetListId);
   }
@@ -74,6 +79,10 @@ export class CampaignsPage implements OnInit {
         this.loading = false;
         this.error = this.apiError(e, "Campaigns could not be loaded.");
       },
+    });
+    this.data.workspacePackages().subscribe({
+      next: (r) => (this.packages = r || []),
+      error: (e) => (this.error = this.apiError(e, "Offers could not be loaded.")),
     });
     this.data.targetLists().subscribe({
       next: (r) => {
@@ -216,18 +225,33 @@ export class CampaignsPage implements OnInit {
     return error?.error?.detail || error?.error?.error || (error?.status ? `${fallback} API returned ${error.status}.` : fallback);
   }
 
+  addStep(): void {
+    this.form.steps.push(this.emptyStep(this.form.steps.length + 1, 72));
+  }
+
+  removeStep(index: number): void {
+    if (this.form.steps.length <= 1) return;
+    this.form.steps.splice(index, 1);
+    this.form.steps.forEach((x: any, i: number) => x.stepNumber = i + 1);
+  }
+
+  private emptyStep(stepNumber: number, delayHours: number): any {
+    return { stepNumber, delayHours, channel: "email", subjectTemplate: "", bodyTemplate: "", qualification: "qualified", minimumScore: 70, industry: "", countries: "", companySizeMin: null, companySizeMax: null, contactRoles: "", stopOnReply: true };
+  }
+
   private emptyForm(): any {
     return {
       name: "New outreach campaign",
       targetListId: "",
+      offerId: "",
       goal: "book-demo",
       senderName: "",
       senderEmail: "",
       startsAtUtc: null,
       steps: [
-        { stepNumber: 1, delayHours: 0, channel: "email", subjectTemplate: "", bodyTemplate: "" },
-        { stepNumber: 2, delayHours: 72, channel: "email", subjectTemplate: "", bodyTemplate: "" },
-        { stepNumber: 3, delayHours: 96, channel: "email", subjectTemplate: "", bodyTemplate: "" },
+        this.emptyStep(1, 0),
+        this.emptyStep(2, 72),
+        this.emptyStep(3, 96),
       ],
     };
   }
