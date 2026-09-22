@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { finalize } from "rxjs";
 import { Opportunity } from "../../core/models/platform.models";
 import { Modal, PageHeader } from "../../shared/ui";
 import { PipelineService, PipelineStage, SalesPipeline } from "./pipeline.service";
@@ -169,11 +170,11 @@ export class PipelinePage implements OnInit {
         probability: Number(stage.probability),
         sortOrder: Number(stage.sortOrder),
       })
+      .pipe(finalize(() => this.savingStageIds.delete(stage.id)))
       .subscribe({
         next: () => this.load(),
         error: (e) =>
           (this.error = this.apiError(e, "Stage could not be saved.")),
-        complete: () => this.savingStageIds.delete(stage.id),
       });
   }
   removeStage(stage: PipelineStage) {
@@ -182,6 +183,7 @@ export class PipelinePage implements OnInit {
     this.savingStageIds.add(stage.id);
     this.data
       .deleteStage(stage.pipelineId, stage.id)
+      .pipe(finalize(() => this.savingStageIds.delete(stage.id)))
       .subscribe({
         next: () => this.load(),
         error: (e) =>
@@ -189,7 +191,6 @@ export class PipelinePage implements OnInit {
             e,
             "Stage could not be deleted. Move its opportunities first.",
           )),
-        complete: () => this.savingStageIds.delete(stage.id),
       });
   }
   dropOn(id: string) {
@@ -201,7 +202,9 @@ export class PipelinePage implements OnInit {
 
     const before = opportunity.pipelineStageId;
     opportunity.pipelineStageId = id;
-    this.data.move(opportunity.id, id).subscribe({
+    this.data.move(opportunity.id, id)
+      .pipe(finalize(() => this.movingIds.delete(opportunity.id)))
+      .subscribe({
       next: (saved) => {
         Object.assign(opportunity, saved);
         this.load();
@@ -210,7 +213,6 @@ export class PipelinePage implements OnInit {
         opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be moved.");
       },
-      complete: () => this.movingIds.delete(opportunity.id),
     });
   }
   assignUnassigned(opportunity: Opportunity, stageId: string) {
@@ -218,7 +220,9 @@ export class PipelinePage implements OnInit {
     this.movingIds.add(opportunity.id);
     const before = opportunity.pipelineStageId;
     opportunity.pipelineStageId = stageId;
-    this.data.move(opportunity.id, stageId).subscribe({
+    this.data.move(opportunity.id, stageId)
+      .pipe(finalize(() => this.movingIds.delete(opportunity.id)))
+      .subscribe({
       next: (saved) => {
         Object.assign(opportunity, saved);
         this.load();
@@ -227,7 +231,6 @@ export class PipelinePage implements OnInit {
         opportunity.pipelineStageId = before;
         this.error = this.apiError(e, "Opportunity could not be assigned.");
       },
-      complete: () => this.movingIds.delete(opportunity.id),
     });
   }
   closeSelected(won: boolean) {
