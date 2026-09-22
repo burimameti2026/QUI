@@ -59,6 +59,22 @@ export class CampaignsPage implements OnInit {
     return this.lists.find((x) => x.id === this.form.targetListId);
   }
 
+  get deliveredResults(): number {
+    return this.resultMessages.filter((x) => x.status === 2).length;
+  }
+
+  get interestedResults(): number {
+    return this.resultMessages.filter((x) => x.classification === "interested" || x.interested === true).length;
+  }
+
+  get failedResults(): number {
+    return this.resultMessages.filter((x) => x.status === 4).length;
+  }
+
+  get suppressedResults(): number {
+    return this.resultMessages.filter((x) => x.status === 5).length;
+  }
+
   get pendingMessages(): number {
     return this.messages.filter((x) => x.status === 0).length;
   }
