@@ -18,6 +18,7 @@ export class CampaignsPage implements OnInit {
   packages: any[] = [];
   messages: any[] = [];
   selectedCampaign: any = null;
+  editingCampaign: any = null;
   activity: any[] = [];
   loading = false;
   show = false;
@@ -101,7 +102,30 @@ export class CampaignsPage implements OnInit {
     });
   }
 
+  openEdit(campaign: any): void {
+    this.editingCampaign = campaign;
+    this.form = this.formFromCampaign(campaign);
+    this.builderStep = 1;
+    this.error = "";
+    this.show = true;
+  }
+
+  pause(campaign: any): void {
+    this.data.pauseCampaign(campaign.id).subscribe({
+      next: (result) => { campaign.status = result.status; this.message = "Campaign paused. No new messages will be queued."; this.load(); },
+      error: (e) => (this.error = this.apiError(e, "Campaign could not be paused.")),
+    });
+  }
+
+  resume(campaign: any): void {
+    this.data.resumeCampaign(campaign.id).subscribe({
+      next: (result) => { campaign.status = result.status; this.message = "Campaign resumed."; this.load(); },
+      error: (e) => (this.error = this.apiError(e, "Campaign could not be resumed.")),
+    });
+  }
+
   openBuilder(): void {
+    this.editingCampaign = null;
     this.form = this.emptyForm();
     this.builderStep = 1;
     this.error = "";
@@ -149,16 +173,26 @@ export class CampaignsPage implements OnInit {
   save(): void {
     if (!this.canContinue) return;
     this.busy = true;
-    this.data.createCampaign(this.form).subscribe({
+    const request$ = this.editingCampaign
+      ? this.data.updateCampaign(this.editingCampaign.id, this.form)
+      : this.data.createCampaign(this.form);
+    request$.subscribe({
       next: (campaign) => {
         this.busy = false;
-        this.rows.unshift(campaign);
+        if (this.editingCampaign) {
+          const index = this.rows.findIndex((x) => x.id === campaign.id);
+          if (index >= 0) this.rows[index] = campaign;
+          this.message = "Campaign updated. Changes apply to future messages; sent messages remain unchanged.";
+        } else {
+          this.rows.unshift(campaign);
+          this.message = "Campaign created as draft. Review it, then start to queue approval-controlled messages.";
+        }
+        this.editingCampaign = null;
         this.show = false;
-        this.message = "Campaign created as draft. Review it, then start to queue approval-controlled messages.";
       },
       error: (error) => {
         this.busy = false;
-        this.error = error?.error?.detail || "Campaign could not be created.";
+        this.error = error?.error?.detail || "Campaign could not be saved.";
       },
     });
   }
@@ -233,6 +267,20 @@ export class CampaignsPage implements OnInit {
     if (this.form.steps.length <= 1) return;
     this.form.steps.splice(index, 1);
     this.form.steps.forEach((x: any, i: number) => x.stepNumber = i + 1);
+  }
+
+  private formFromCampaign(campaign: any): any {
+    return {
+      name: campaign.name || "", targetListId: campaign.targetListId || "", offerId: campaign.offerId || "",
+      goal: campaign.goal || "book-demo", senderName: campaign.senderName || "", senderEmail: campaign.senderEmail || "",
+      startsAtUtc: campaign.startsAtUtc || null,
+      steps: (campaign.steps || []).map((x: any, i: number) => ({
+        stepNumber: x.stepNumber || i + 1, delayHours: x.delayHours || 0, channel: x.channel || "email",
+        subjectTemplate: x.subjectTemplate || "", bodyTemplate: x.bodyTemplate || "", qualification: x.qualification || "qualified",
+        minimumScore: x.minimumScore ?? 70, industry: x.industry || "", countries: x.countries || "",
+        companySizeMin: x.companySizeMin ?? null, companySizeMax: x.companySizeMax ?? null, contactRoles: x.contactRoles || "", stopOnReply: x.stopOnReply !== false,
+      }))
+    };
   }
 
   private emptyStep(stepNumber: number, delayHours: number): any {
