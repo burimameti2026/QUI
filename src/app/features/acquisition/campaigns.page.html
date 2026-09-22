@@ -190,6 +190,7 @@
             <div class="actions">
               <button class="button-secondary" *ngIf="item.status === 0 && !item.approvalRequested" (click)="requestApproval(item)">Request approval</button>
               <button class="button-primary" *ngIf="item.status === 0 && item.approvalRequested" (click)="approveAndSend(item)">Approve &amp; send</button>
+              <button class="button-secondary" *ngIf="item.status === 0 && item.approvalRequested" (click)="rejectApproval(item)">Reject</button>
               <button class="button-danger" *ngIf="item.status === 4" (click)="retryMessage(item)">Retry failed send</button>
             </div>
           </td>
