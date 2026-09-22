@@ -1,0 +1,148 @@
+<main class="page package-builder">
+  <header class="builder-header">
+    <div>
+      <span class="eyebrow">AI PACKAGE STUDIO</span>
+      <h1>Build an offer with AI</h1>
+      <p>Describe what you sell. AI builds the first version, then you refine it visually or by telling it what to change.</p>
+    </div>
+    <div class="header-actions">
+      <button class="button-secondary" type="button" (click)="save()">Save</button>
+      <button class="button-primary" type="button" (click)="continueToIcp()">Save & continue →</button>
+    </div>
+  </header>
+
+  <section class="ai-command">
+    <div class="ai-mark">✦</div>
+    <div class="ai-command-body">
+      <strong>What are we selling?</strong>
+      <div class="prompt-row">
+        <input [(ngModel)]="prompt" (keyup.enter)="buildWithAi()" placeholder="e.g. FusionFleet OPS for logistics companies in North Macedonia and Albania" />
+        <button class="button-primary" type="button" [disabled]="aiWorking" (click)="buildWithAi()">{{ aiWorking ? 'Thinking…' : 'Build with AI' }}</button>
+      </div>
+      <div class="quick-prompts">
+        <button type="button" (click)="askAi('FusionFleet OPS for logistics and transport companies')">Try FusionFleet OPS</button>
+        <button type="button" (click)="askAi('Premium enterprise transport operations platform')">Try enterprise positioning</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="workspace">
+    <aside class="structure">
+      <div class="panel-title">
+        <div><span class="eyebrow">STRUCTURE</span><strong>Customer page</strong></div>
+        <span>{{ blocks.length }} blocks</span>
+      </div>
+
+      <div class="block-list">
+        <div *ngFor="let block of blocks" class="block-row" [class.selected]="selectedId === block.id" [class.hidden]="!block.visible"
+             draggable="true" (dragstart)="dragStart($event, block.id)" (dragover)="dragOver($event)" (drop)="drop($event, block.id)"
+             (click)="select(block.id)">
+          <span class="drag">⋮⋮</span>
+          <span class="block-index">{{ blocks.indexOf(block) + 1 | number:'2.0-0' }}</span>
+          <strong>{{ block.title }}</strong>
+          <button type="button" (click)="$event.stopPropagation(); toggle(block.id)">{{ block.visible ? '●' : '○' }}</button>
+        </div>
+      </div>
+
+      <div class="add-block">
+        <span class="eyebrow">ADD SECTION</span>
+        <div class="add-grid">
+          <button type="button" (click)="addBlock('features')">+ Features</button>
+          <button type="button" (click)="addBlock('benefits')">+ Benefits</button>
+          <button type="button" (click)="addBlock('how-it-works')">+ How it works</button>
+          <button type="button" (click)="addBlock('cta')">+ CTA</button>
+        </div>
+      </div>
+
+      <div class="ai-next">
+        <span class="eyebrow">AI NEXT</span>
+        <p>{{ aiMessage }}</p>
+      </div>
+    </aside>
+
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div><span class="eyebrow">LIVE PREVIEW</span><strong>{{ packageName || 'Your package' }}</strong></div>
+        <span class="live"><i></i> Live</span>
+      </div>
+
+      <div class="preview-page">
+        <ng-container *ngFor="let block of blocks">
+          <section *ngIf="block.visible" class="preview-block" [class.active]="selectedId === block.id" (click)="select(block.id)">
+            <span class="edit-hint" *ngIf="selectedId === block.id">Click to edit</span>
+
+            <ng-container [ngSwitch]="block.type">
+              <div *ngSwitchCase="'hero'" class="hero-preview">
+                <span class="preview-kicker">{{ audience || 'CUSTOMER OFFER' }}</span>
+                <h2>{{ headline || 'Your product headline appears here.' }}</h2>
+                <p>{{ subheadline || 'Describe the value your product creates for customers.' }}</p>
+                <button type="button" class="preview-cta">Request a Demo</button>
+              </div>
+
+              <div *ngSwitchCase="'features'" class="section-preview">
+                <h3>Everything your operation needs</h3>
+                <div class="feature-grid">
+                  <article *ngFor="let feature of features"><span>✓</span><strong>{{ feature }}</strong><small>Included in {{ packageName || 'this package' }}</small></article>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'benefits'" class="section-preview">
+                <h3>Built around business outcomes</h3>
+                <div class="benefit-grid"><span>More visibility</span><span>Less manual work</span><span>Faster operations</span></div>
+              </div>
+
+              <div *ngSwitchCase="'how-it-works'" class="section-preview">
+                <h3>How it works</h3>
+                <div class="steps"><span><b>01</b> Order</span><span><b>02</b> Assign</span><span><b>03</b> Track</span><span><b>04</b> Deliver</span></div>
+              </div>
+
+              <div *ngSwitchCase="'pricing'" class="section-preview price-preview">
+                <h3>{{ packageName || 'Package' }}</h3>
+                <strong *ngIf="price">€{{ price }} <small>/ {{ billing }}</small></strong>
+                <span *ngIf="!price">Pricing to be configured</span>
+              </div>
+
+              <div *ngSwitchCase="'cta'" class="cta-preview">
+                <div><h3>Ready to improve your operation?</h3><p>Talk to our team and see the platform in action.</p></div>
+                <button type="button" class="preview-cta">Request a Demo</button>
+              </div>
+            </ng-container>
+          </section>
+        </ng-container>
+      </div>
+    </section>
+
+    <aside class="inspector">
+      <div class="panel-title"><div><span class="eyebrow">AI INSPECTOR</span><strong>{{ blocks.find(x => x.id === selectedId)?.title || 'Section' }}</strong></div></div>
+
+      <ng-container [ngSwitch]="blocks.find(x => x.id === selectedId)?.type">
+        <div class="field-group" *ngSwitchCase="'hero'">
+          <label>Headline</label>
+          <textarea [(ngModel)]="headline" rows="4"></textarea>
+          <label>Subheadline</label>
+          <textarea [(ngModel)]="subheadline" rows="4"></textarea>
+          <button class="ai-action" type="button" (click)="askAi('Improve the FusionFleet headline and make it more enterprise')">✦ Improve with AI</button>
+        </div>
+
+        <div class="field-group" *ngSwitchCase="'features'">
+          <label>Features</label>
+          <div class="feature-edit" *ngFor="let feature of features; let i = index">
+            <input [(ngModel)]="features[i]" />
+            <button type="button" (click)="features.splice(i,1)">×</button>
+          </div>
+          <button class="add-inline" type="button" (click)="features.push('New capability')">+ Add feature</button>
+        </div>
+
+        <div class="field-group" *ngSwitchCase="'pricing'">
+          <label>Price</label><input [(ngModel)]="price" type="number" />
+          <label>Billing</label><select [(ngModel)]="billing"><option value="month">month</option><option value="year">year</option><option value="one-time">one-time</option></select>
+        </div>
+
+        <div class="field-group" *ngSwitchDefault>
+          <p class="inspector-copy">This section is controlled by the package context. You can reorder it, hide it, or ask AI to change its content.</p>
+          <button class="ai-action" type="button" (click)="askAi('Improve the selected section for an enterprise logistics buyer')">✦ Improve this section with AI</button>
+        </div>
+      </ng-container>
+    </aside>
+  </div>
+</main>
