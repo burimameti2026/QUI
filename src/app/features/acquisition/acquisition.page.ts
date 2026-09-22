@@ -45,7 +45,7 @@ export class AcquisitionPage implements OnInit {
 
   get nextRoute(): string {
     const routes: Record<string, string> = {
-      "Packages & Offers": "/catalog",
+      "Packages & Offers": "/packages/new",
       ICP: "/acquisition/icp",
       Prospecting: "/discover",
       "Qualification & Score": "/acquisition/qualification",
