@@ -1,0 +1,90 @@
+<div class="page acquisition-hub">
+  <qai-page-header
+    title="Acquisition"
+    subtitle="Move from market definition to approved outreach without unnecessary setup."
+  >
+    <button class="button-quiet" type="button" (click)="refresh()">↻ Refresh</button>
+    <button class="button-primary" type="button" (click)="startCampaign()">Start acquisition process</button>
+  </qai-page-header>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">ACQUISITION WORKSPACE</span>
+      <h2>Everything you need to turn prospects into qualified conversations.</h2>
+      <p>Use the steps in order. Each step has one job and takes you to the next part of the process.</p>
+    </div>
+    <div class="hero-state">
+      <span class="status">READY</span>
+      <strong>{{ readyCount }} active building blocks</strong>
+      <small>{{ prospectCount }} prospects · {{ icpCount }} ICPs · {{ campaignCount }} campaigns</small>
+    </div>
+  </section>
+
+  <div class="step-grid">
+    <button class="step-card" type="button" (click)="go('/catalog')">
+      <span class="step-number">01</span>
+      <span class="step-copy"><strong>Packages & Offers</strong><small>What are we selling?</small></span>
+      <span class="step-state">{{ packageCount }} available</span>
+      <span class="step-arrow">→</span>
+    </button>
+
+    <button class="step-card" type="button" (click)="go('/acquisition/icp')">
+      <span class="step-number">02</span>
+      <span class="step-copy"><strong>ICP</strong><small>Who is the right customer?</small></span>
+      <span class="step-state">{{ icpCount }} configured</span>
+      <span class="step-arrow">→</span>
+    </button>
+
+    <button class="step-card" type="button" (click)="go('/discover')">
+      <span class="step-number">03</span>
+      <span class="step-copy"><strong>Prospecting</strong><small>Find companies and contacts</small></span>
+      <span class="step-state">{{ prospectCount }} prospects</span>
+      <span class="step-arrow">→</span>
+    </button>
+
+    <button class="step-card" type="button" (click)="go('/acquisition/qualification')">
+      <span class="step-number">04</span>
+      <span class="step-copy"><strong>Qualification & Score</strong><small>Choose who qualifies</small></span>
+      <span class="step-state">{{ qualifiedCount }} qualified</span>
+      <span class="step-arrow">→</span>
+    </button>
+
+    <button class="step-card" type="button" (click)="go('/campaigns')">
+      <span class="step-number">05</span>
+      <span class="step-copy"><strong>Campaigns & Messages</strong><small>Choose what we send</small></span>
+      <span class="step-state">{{ campaignCount }} campaigns</span>
+      <span class="step-arrow">→</span>
+    </button>
+
+    <button class="step-card" type="button" (click)="go('/acquisition/approval-queue')">
+      <span class="step-number">06</span>
+      <span class="step-copy"><strong>Approval & Delivery</strong><small>Review before anything leaves</small></span>
+      <span class="step-state">{{ pendingCount }} waiting</span>
+      <span class="step-arrow">→</span>
+    </button>
+  </div>
+
+  <section class="content-grid">
+    <article class="card process-card">
+      <header class="card-header">
+        <div><span class="eyebrow">HOW IT WORKS</span><h3>One simple operating path</h3></div>
+      </header>
+      <div class="card-body process-line">
+        <span>Package</span><i>→</i><span>ICP</span><i>→</i><span>Prospecting</span><i>→</i><span>Score</span><i>→</i><span>Message</span><i>→</i><span>Approval</span>
+      </div>
+    </article>
+
+    <article class="card next-card">
+      <header class="card-header">
+        <div><span class="eyebrow">NEXT ACTION</span><h3>{{ nextTitle }}</h3></div>
+        <span class="status">{{ nextStatus }}</span>
+      </header>
+      <div class="card-body">
+        <p>{{ nextDescription }}</p>
+        <button class="button-primary" type="button" (click)="go(nextRoute)">Open {{ nextTitle }}</button>
+      </div>
+    </article>
+  </section>
+
+  <p class="notice alert-error" *ngIf="error">{{ error }}</p>
+</div>
