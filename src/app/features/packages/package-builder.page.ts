@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AcquisitionService } from '../acquisition/acquisition.service';
 
@@ -17,7 +18,7 @@ interface PackageBlock {
   templateUrl: './package-builder.page.html',
   styleUrls: ['./package-builder.page.css']
 })
-export class PackageBuilderPage {
+export class PackageBuilderPage implements OnInit {
   prompt = '';
   saved = false;
   selectedId = 'hero';
