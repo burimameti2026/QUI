@@ -164,10 +164,13 @@ export class ShellComponent {
       i("KPIs", "/kpis", "▥"),
     ]},
     { label: "ACQUISITION", items: [
-      i("Prospect Discovery", "/discover", "⌕"),
-      i("Autonomous Acquisition", "/acquisition/autonomous", "✦"),
-      i("Campaigns", "/campaigns", "↗"),
-      i("Approval Queue", "/acquisition/approval-queue", "◌"),
+      i("Acquisition", "/acquisition", "↗", [
+        i("ICP & Audience", "/acquisition/icp", "◎"),
+        i("Prospecting", "/discover", "⌕"),
+        i("Qualification & Score", "/acquisition/qualification", "◇"),
+        i("Campaigns & Messages", "/campaigns", "✦"),
+        i("Approval Queue", "/acquisition/approval-queue", "◌"),
+      ]),
     ]},
     { label: "CRM & SALES", items: [
       i("Leads", "/crm/leads", "▣"),
