@@ -30,6 +30,7 @@ export class PackageBuilderPage {
   billing = 'month';
   audience = '';
   packageId = '';
+  loadingPackage = false;
   features: string[] = [];
   blocks: PackageBlock[] = [
     { id: 'hero', type: 'hero', title: 'Hero', visible: true },
@@ -41,6 +42,39 @@ export class PackageBuilderPage {
   ];
 
   constructor(private router: Router, private acquisition: AcquisitionService) {}
+
+  ngOnInit(): void { this.loadExistingPackage(); }
+
+  loadExistingPackage(): void {
+    this.loadingPackage = true;
+    this.acquisition.workspacePackages().subscribe({
+      next: (packages) => {
+        const current = packages?.[0];
+        if (current) this.applyPackage(current);
+        this.loadingPackage = false;
+      },
+      error: () => { this.loadingPackage = false; }
+    });
+  }
+
+  applyPackage(result: any): void {
+    this.packageId = result.id || '';
+    this.packageName = result.name || '';
+    this.headline = result.headline || '';
+    this.subheadline = result.subheadline || '';
+    this.price = result.price || '';
+    this.billing = result.billing || 'month';
+    this.audience = result.audience || '';
+    this.features = result.features || [];
+    const hidden = new Set(result.hiddenSections || []);
+    this.blocks = (result.sections || []).map((title: string, index: number) => ({
+      id: title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + index,
+      type: this.sectionType(title), title, visible: !hidden.has(title)
+    }));
+    this.selectedId = this.blocks.find(x => x.visible)?.id || this.blocks[0]?.id || 'hero';
+    this.saved = true;
+    this.aiMessage = 'Loaded your saved offer. You can continue editing it or refine it with AI.';
+  }
 
   buildWithAi(): void {
     const text = this.prompt.trim();
