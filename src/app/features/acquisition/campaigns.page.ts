@@ -62,7 +62,7 @@ export class CampaignsPage implements OnInit {
   }
 
   get canContinue(): boolean {
-    if (this.builderStep === 1) return Boolean(this.form.targetListId && this.form.name.trim());
+    if (this.builderStep === 1) return Boolean(this.form.targetListId && this.form.offerId && this.form.name.trim());
     if (this.builderStep === 2) return Boolean(this.form.senderName.trim() && this.form.senderEmail.includes("@"));
     return this.form.steps.every((x: any) => x.subjectTemplate.trim() && x.bodyTemplate.trim());
   }
