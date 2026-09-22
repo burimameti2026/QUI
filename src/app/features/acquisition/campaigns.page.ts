@@ -218,6 +218,18 @@ export class CampaignsPage implements OnInit {
     });
   }
 
+  rejectApproval(message: any): void {
+    this.data.rejectApproval(message.id).subscribe({
+      next: () => {
+        message.status = 5;
+        message.approvalRequested = false;
+        this.message = "Message rejected. It will not be sent."; 
+        this.load();
+      },
+      error: (e) => (this.error = this.apiError(e, "Message could not be rejected.")),
+    });
+  }
+
   approveAndSend(message: any): void {
     this.data.approveAndSend(message.id).subscribe({
       next: (result) => {
