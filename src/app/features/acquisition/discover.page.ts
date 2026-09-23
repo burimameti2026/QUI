@@ -60,25 +60,19 @@ import { AcquisitionService } from "./acquisition.service";
         <span><b>{{ overview.hot || 0 }}</b> high priority</span>
       </div>
     </div>
-    <div class="card discovery-progress">
-      <span class="eyebrow">Current workflow progress</span>
-      <div class="discovery-timeline" role="list" aria-label="Current workflow progress">
-        <div class="discovery-timeline-track" aria-hidden="true"></div>
-        <div class="discovery-timeline-step" *ngFor="let step of [
-          { number: '01', title: 'Define ICP', description: 'Target market' },
-          { number: '02', title: 'Verify data', description: 'Trusted source' },
-          { number: '03', title: 'Build audience', description: 'Qualified accounts' },
-          { number: '04', title: 'Launch', description: 'Approval gate' }
-        ]; let i = index" [class.is-complete]="i < journeyStep" [class.is-current]="i === journeyStep" role="listitem">
-          <span class="discovery-timeline-node">{{ step.number }}</span>
-          <span class="discovery-timeline-copy">
-            <strong>{{ step.title }}</strong>
-            <small>{{ step.description }}</small>
-          </span>
-        </div>
+    <div class="card">
+      <header class="card-header"><div><span class="eyebrow">CURRENT WORKFLOW</span><h3>Discovery to controlled outreach</h3></div></header>
+      <div class="card-body">
+        <nav class="wizard" aria-label="Current workflow progress">
+          <ol>
+            <li [class.active]="journeyStep === 0" [class.done]="journeyStep > 0"><span>01</span><div><b>Define ICP</b><small>Target market</small></div></li>
+            <li [class.active]="journeyStep === 1" [class.done]="journeyStep > 1"><span>02</span><div><b>Verify data</b><small>Trusted source</small></div></li>
+            <li [class.active]="journeyStep === 2" [class.done]="journeyStep > 2"><span>03</span><div><b>Build audience</b><small>Qualified accounts</small></div></li>
+            <li [class.active]="journeyStep === 3"><span>04</span><div><b>Launch</b><small>Approval gate</small></div></li>
+          </ol>
+        </nav>
       </div>
-    </div>
-  </section>
+    </div></section>
 
   <section class="metric-grid discovery-kpis">
     <article class="metric"><div class="metric-top"><span class="metric-icon">◆</span><span class="metric-label">Discovered</span></div><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></article>
