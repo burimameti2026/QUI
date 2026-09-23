@@ -48,7 +48,9 @@
       <section class="card-body"><span class="eyebrow">MESSAGE PREVIEW</span><p>{{ message.body || 'No message body available.' }}</p></section>
       <footer class="actions">
         <div class="notice"><span class="status-dot"></span><span>Sender, suppression, provider and tenant safety checks remain enforced by the backend.</span></div>
-        <div class="actions"><button type="button" class="button-quiet" (click)="requestApproval(message)" *ngIf="!message.approvalRequested">Request approval</button><button type="button" class="button-primary" (click)="approveAndSend(message)" [disabled]="!message.approvalRequested">Approve &amp; send</button></div>
+        <div class="actions"><button type="button" class="button-quiet" (click)="requestApproval(message)" *ngIf="!message.approvalRequested">Request approval</button><button type="button" class="button-primary" (click)="approveAndSend(message)" [disabled]="!message.approvalRequested">Approve &amp; send</button>
+          <button type="button" class="button-quiet" (click)="reject(message)" *ngIf="message.approvalRequested">Reject</button>
+          <button type="button" class="button-danger" (click)="retry(message)" *ngIf="messageStatus(message) === 'Failed'">Retry</button></div>
       </footer>
     </article>
     <div class="empty" *ngIf="!visibleMessages.length"><strong>{{ messages.length ? 'No messages match this view.' : 'No outreach messages are waiting.' }}</strong><span>{{ messages.length ? 'Try a different filter or search term.' : 'Run an acquisition campaign or start a campaign to populate the review queue.' }}</span></div>
