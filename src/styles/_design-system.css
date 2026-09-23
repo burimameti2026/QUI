@@ -304,3 +304,24 @@ qai-modal{display:contents}
 .workspace-choice:hover .button-quiet{background:#000;color:#fff}
 @media(max-width:1050px){.workspace-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.workspace-choice-grid{grid-template-columns:1fr}}
+
+
+/* Canonical semantic layer: every page uses the same readable hierarchy and status language. */
+.card-body,.card-footer{color:var(--wl-card-text,var(--wl-text))}
+.card-body h1,.card-body h2,.card-body h3,.card-body h4,.card-body strong{color:var(--wl-card-text,var(--wl-text))}
+.card-body p,.card-body small{color:var(--wl-muted)}
+.card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong{color:var(--wl-card-title,var(--wl-accent))}
+.card-header .status{margin-left:auto}
+.status{border:1px solid var(--wl-border);box-shadow:none;background:#fff;color:var(--wl-text)}
+.status.success,.status.processed,.status.done,.status.active{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
+.status.warning,.status.pending,.status.queued,.status.in-progress{color:var(--wl-accent);background:#fff7f2;border-color:#f3c9b6}
+.status.error,.status.failed,.status.rejected,.status.danger{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
+.status.info,.status.new,.status.draft{color:#475467;background:#f5f6f8;border-color:var(--wl-border-strong)}
+.status-dot.success,.status-dot.done{background:var(--wl-success)}
+.status-dot.error,.status-dot.failed{background:var(--wl-danger)}
+.status-dot.warning,.status-dot.pending,.status-dot.queued{background:var(--wl-accent)}
+.badge,.tag,.pill{display:inline-flex;align-items:center;min-height:22px;padding:4px 8px;border:1px solid var(--wl-border);background:#f5f6f8;color:var(--wl-text);font-size:10px;font-weight:700;line-height:1;white-space:nowrap}
+.badge-accent,.tag-accent,.pill-accent{background:#fff7f2;border-color:#f3c9b6;color:var(--wl-accent)}
+.badge-success,.tag-success,.pill-success{background:#f2faf6;border-color:#b9ddca;color:var(--wl-success)}
+.badge-danger,.tag-danger,.pill-danger{background:#fff5f4;border-color:#e4b8b3;color:var(--wl-danger)}
+.card-body .text-danger{color:var(--wl-danger)!important}.card-body .text-success{color:var(--wl-success)!important}.card-body .text-muted{color:var(--wl-muted)!important}
