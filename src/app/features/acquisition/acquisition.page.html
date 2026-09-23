@@ -1,4 +1,4 @@
-<div class="page acquisition-hub">
+<div class="page">
   <qai-page-header
     title="Acquisition"
     subtitle="Move from market definition to approved outreach without unnecessary setup."
@@ -13,74 +13,84 @@
       <h2>Everything you need to turn prospects into qualified conversations.</h2>
       <p>Use the steps in order. Each step has one job and takes you to the next part of the process.</p>
     </div>
-    <div class="hero-state">
-      <span class="status">READY</span>
-      <strong>{{ readyCount }} active building blocks</strong>
-      <small>{{ prospectCount }} prospects · {{ icpCount }} ICPs · {{ campaignCount }} campaigns</small>
+    <div class="stack">
+      <span><i class="status-dot success"></i> <b>READY</b></span>
+      <span><b>{{ readyCount }}</b> active building blocks</span>
+      <span><small>{{ prospectCount }} prospects · {{ icpCount }} ICPs · {{ campaignCount }} campaigns</small></span>
     </div>
   </section>
 
-  <div class="step-grid">
-    <button class="step-card" type="button" (click)="go('/packages/new')">
-      <span class="step-number">01</span>
-      <span class="step-copy"><strong>Packages & Offers</strong><small>What are we selling?</small></span>
-      <span class="step-state">{{ packageCount }} available</span>
-      <span class="step-arrow">→</span>
-    </button>
+  <section class="card">
+    <header class="card-header">
+      <div>
+        <span class="eyebrow">ACQUISITION PATH</span>
+        <h3>Move from definition to controlled delivery</h3>
+      </div>
+      <span class="status success">7 steps</span>
+    </header>
+    <div class="list">
+      <button class="list-item" type="button" (click)="go('/packages/new')">
+        <span class="badge badge-accent">01</span>
+        <span class="stack"><strong>Packages &amp; Offers</strong><small>What are we selling?</small></span>
+        <span class="status">{{ packageCount }} available</span><span aria-hidden="true">→</span>
+      </button>
 
-    <button class="step-card" type="button" (click)="go('/acquisition/icp')">
-      <span class="step-number">02</span>
-      <span class="step-copy"><strong>ICP</strong><small>Who is the right customer?</small></span>
-      <span class="step-state">{{ icpCount }} configured</span>
-      <span class="step-arrow">→</span>
-    </button>
+      <button class="list-item" type="button" (click)="go('/acquisition/icp')">
+        <span class="badge badge-accent">02</span>
+        <span class="stack"><strong>ICP</strong><small>Who is the right customer?</small></span>
+        <span class="status">{{ icpCount }} configured</span><span aria-hidden="true">→</span>
+      </button>
 
-    <button class="step-card" type="button" (click)="go('/discover')">
-      <span class="step-number">03</span>
-      <span class="step-copy"><strong>Prospecting</strong><small>Find companies and contacts</small></span>
-      <span class="step-state">{{ prospectCount }} prospects</span>
-      <span class="step-arrow">→</span>
-    </button>
+      <button class="list-item" type="button" (click)="go('/discover')">
+        <span class="badge badge-accent">03</span>
+        <span class="stack"><strong>Prospecting</strong><small>Find companies and contacts</small></span>
+        <span class="status">{{ prospectCount }} prospects</span><span aria-hidden="true">→</span>
+      </button>
 
-    <button class="step-card" type="button" (click)="go('/acquisition/qualification')">
-      <span class="step-number">04</span>
-      <span class="step-copy"><strong>Qualification & Score</strong><small>Choose who qualifies</small></span>
-      <span class="step-state">{{ qualifiedCount }} qualified</span>
-      <span class="step-arrow">→</span>
-    </button>
+      <button class="list-item" type="button" (click)="go('/acquisition/qualification')">
+        <span class="badge badge-accent">04</span>
+        <span class="stack"><strong>Qualification &amp; Score</strong><small>Choose who qualifies</small></span>
+        <span class="status">{{ qualifiedCount }} qualified</span><span aria-hidden="true">→</span>
+      </button>
 
-    <button class="step-card" type="button" (click)="go('/campaigns')">
-      <span class="step-number">05</span>
-      <span class="step-copy"><strong>Campaigns & Messages</strong><small>Choose what we send</small></span>
-      <span class="step-state">{{ campaignCount }} campaigns</span>
-      <span class="step-arrow">→</span>
-    </button>
+      <button class="list-item" type="button" (click)="go('/campaigns')">
+        <span class="badge badge-accent">05</span>
+        <span class="stack"><strong>Campaigns &amp; Messages</strong><small>Choose what we send</small></span>
+        <span class="status">{{ campaignCount }} campaigns</span><span aria-hidden="true">→</span>
+      </button>
 
-    <button class="step-card" type="button" (click)="go('/acquisition/approval-queue')">
-      <span class="step-number">06</span>
-      <span class="step-copy"><strong>Approval & Delivery</strong><small>Review before anything leaves</small></span>
-      <span class="step-state">{{ pendingCount }} waiting</span>
-      <span class="step-arrow">→</span>
-    </button>
-    <button class="step-card" type="button" (click)="go('/campaigns')">
-      <span class="step-number">07</span>
-      <span class="step-copy"><strong>Maintenance & Results</strong><small>Edit, pause and monitor campaigns</small></span>
-      <span class="step-state">{{ campaignCount }} managed</span>
-      <span class="step-arrow">→</span>
-    </button>
-  </div>
+      <button class="list-item" type="button" (click)="go('/acquisition/approval-queue')">
+        <span class="badge badge-accent">06</span>
+        <span class="stack"><strong>Approval &amp; Delivery</strong><small>Review before anything leaves</small></span>
+        <span class="status">{{ pendingCount }} waiting</span><span aria-hidden="true">→</span>
+      </button>
+
+      <button class="list-item" type="button" (click)="go('/campaigns')">
+        <span class="badge badge-accent">07</span>
+        <span class="stack"><strong>Maintenance &amp; Results</strong><small>Edit, pause and monitor campaigns</small></span>
+        <span class="status">{{ campaignCount }} managed</span><span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
 
   <section class="content-grid">
-    <article class="card process-card">
+    <article class="card">
       <header class="card-header">
         <div><span class="eyebrow">HOW IT WORKS</span><h3>One simple operating path</h3></div>
       </header>
-      <div class="card-body process-line">
-        <span>Package</span><i>→</i><span>ICP</span><i>→</i><span>Prospecting</span><i>→</i><span>Score</span><i>→</i><span>Message</span><i>→</i><span>Approval</span>
+      <div class="card-body">
+        <div class="meta">
+          <span class="badge">Package</span><span>→</span>
+          <span class="badge">ICP</span><span>→</span>
+          <span class="badge">Prospecting</span><span>→</span>
+          <span class="badge">Score</span><span>→</span>
+          <span class="badge">Message</span><span>→</span>
+          <span class="badge">Approval</span>
+        </div>
       </div>
     </article>
 
-    <article class="card next-card">
+    <article class="card">
       <header class="card-header">
         <div><span class="eyebrow">NEXT ACTION</span><h3>{{ nextTitle }}</h3></div>
         <span class="status">{{ nextStatus }}</span>
@@ -92,5 +102,7 @@
     </article>
   </section>
 
-  <p class="notice alert-error" *ngIf="error">{{ error }}</p>
+  <div class="alert alert-error" *ngIf="error">
+    <strong>Live workspace warning</strong><span>{{ error }}</span>
+  </div>
 </div>
