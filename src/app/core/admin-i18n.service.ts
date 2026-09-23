@@ -107,8 +107,6 @@ const COMMON_MISSING: Record<string, Record<AdminLanguage, string>> = {
   'PROCESS MAP': {en:'PROCESS MAP',mk:'МАПА НА ПРОЦЕСОТ',sq:'HARTA E PROCESIT',de:'PROZESSKARTE'},
   'STEP SETTINGS': {en:'STEP SETTINGS',mk:'ПОСТАВКИ НА ЧЕКОРОТ',sq:'CILËSIMET E HAPIT',de:'SCHRITTEINSTELLUNGEN'}
 };
-};
-
 
 const SHELL_I18N: Record<string, Record<AdminLanguage, string>> = {
   'Search leads, contacts, invoices...': {en:'Search leads, contacts, invoices...',mk:'Пребарај лидови, контакти, фактури...',sq:'Kërko lead-e, kontakte, fatura...',de:'Leads, Kontakte, Rechnungen suchen...'},
@@ -119,6 +117,7 @@ const SHELL_I18N: Record<string, Record<AdminLanguage, string>> = {
   'Primary navigation': {en:'Primary navigation',mk:'Главна навигација',sq:'Navigimi kryesor',de:'Hauptnavigation'},
   'LeadsAI home': {en:'LeadsAI home',mk:'Почетна на LeadsAI',sq:'Faqja kryesore e LeadsAI',de:'LeadsAI-Startseite'}
 };
+
 @Injectable({ providedIn: 'root' })
 export class AdminI18nService {
   readonly language = signal<AdminLanguage>((localStorage.getItem('qai.admin.language') as AdminLanguage) || 'en');
