@@ -11,6 +11,7 @@ import { AuthService } from "../core/auth.service";
 import { TenantRuntimeService } from "../core/tenant-runtime.service";
 import { AdminI18nService } from "../core/admin-i18n.service";
 import { NAVIGATION_TRANSLATIONS } from "../core/navigation-translations";
+import { AdminStaticI18nDirective } from "../core/admin-static-i18n.directive";
 interface Item {
   label: string;
   url: string;
@@ -38,6 +39,7 @@ const i = (
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    AdminStaticI18nDirective,
   ],
   styleUrls: ["./shell.component.css"],
   template: ` <div
@@ -145,7 +147,7 @@ const i = (
           </div>
         </div>
       </header>
-      <div class="app-content"><router-outlet /></div>
+      <div class="app-content" qaiAdminStaticI18n><router-outlet /></div>
     </main>
   </div>`,
 })
