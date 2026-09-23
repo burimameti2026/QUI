@@ -211,7 +211,7 @@ export class FusionFleetSalesPage {
             dailyDiscoveryLimit: 50,
             dailyEmailLimit: 0,
             runTimeUtc: '08:00:00',
-            status: 'Active'
+            status: 1
           };
 
           this.api.post<any>('autonomous-acquisition/tenants/' + this.tenantId + '/agents', payload).subscribe({
