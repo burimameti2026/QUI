@@ -185,7 +185,7 @@ const DEFAULT_STYLES: WhiteLabelStyles = {
   kpis: { ...DEFAULT_APPEARANCE, headerColor: "#ffffff", height: 0, radius: 0 },
   cards: {
     ...DEFAULT_APPEARANCE,
-    headerColor: "#55555552",
+    headerColor: "#000000",
     titleColor: "#f5500bdb",
     height: 0,
     radius: 0,
@@ -647,9 +647,10 @@ export class WhiteLabelConfigService {
     if (
       out.cards?.headerColor === "#e4eaf3" ||
       out.cards?.headerColor === "#f2f5fb" ||
-      out.cards?.headerColor === "#ffffff"
+      out.cards?.headerColor === "#ffffff" ||
+      out.cards?.headerColor === "#55555552"
     )
-      out.cards.headerColor = "#55555552";
+      out.cards.headerColor = "#000000";
     if (
       out.cards?.titleColor === "#101828" ||
       out.cards?.titleColor === "#344054" ||
