@@ -7,8 +7,8 @@
     <strong>Data warning</strong><span>{{ error }}</span>
   </div>
 
-  <section class="kpi-overview">
-    <div class="section-heading">
+  <section class="card">
+    <header class="card-header">
       <div>
         <span class="eyebrow">OPERATING METRICS</span>
         <h2>Revenue operations at a glance</h2>
@@ -20,24 +20,24 @@
     <qai-kpi-grid [metrics]="metrics" (selected)="open($event.path || '/kpis')"></qai-kpi-grid>
   </section>
 
-  <section class="detail-grid">
-    <article class="panel">
+  <section class="content-grid">
+    <article class="card">
       <header><div><span class="eyebrow">ACQUISITION</span><h3>Discovery performance</h3></div><button class="button-quiet" type="button" (click)="open('/acquisition/autonomous')">Open</button></header>
-      <div class="rows">
-        <div><span>Discovered</span><strong>{{ acquisition.discovered || 0 }}</strong></div>
-        <div><span>High-fit</span><strong>{{ qualified }}</strong></div>
-        <div><span>Replies</span><strong>{{ acquisition.replies || 0 }}</strong></div>
-        <div><span>Queued messages</span><strong>{{ queuedMessages }}</strong></div>
+      <div class="list">
+        <div class="list-item"><span>Discovered</span><strong>{{ acquisition.discovered || 0 }}</strong></div>
+        <div class="list-item"><span>High-fit</span><strong>{{ qualified }}</strong></div>
+        <div class="list-item"><span>Replies</span><strong>{{ acquisition.replies || 0 }}</strong></div>
+        <div class="list-item"><span>Queued messages</span><strong>{{ queuedMessages }}</strong></div>
       </div>
     </article>
 
-    <article class="panel">
+    <article class="card">
       <header><div><span class="eyebrow">ACTIVITY</span><h3>Current operating state</h3></div></header>
       <div class="rows">
-        <div><span>Active campaigns</span><strong>{{ campaigns.length }}</strong></div>
-        <div><span>Active agents</span><strong>{{ activeAgents }}</strong></div>
-        <div><span>Active promotion plans</span><strong>{{ activePlans }}</strong></div>
-        <div><span>Latest run</span><strong>{{ runs[0]?.status || 'Ready' }}</strong></div>
+        <div class="list-item"><span>Active campaigns</span><strong>{{ campaigns.length }}</strong></div>
+        <div class="list-item"><span>Active agents</span><strong>{{ activeAgents }}</strong></div>
+        <div class="list-item"><span>Active promotion plans</span><strong>{{ activePlans }}</strong></div>
+        <div class="list-item"><span>Latest run</span><strong>{{ runs[0]?.status || 'Ready' }}</strong></div>
       </div>
     </article>
   </section>
