@@ -52,7 +52,7 @@ export class KpisPage implements OnInit {
     try {
       [this.products, this.plans, this.campaigns, this.acquisition, this.agents, this.runs] = await Promise.all([
         firstValueFrom(this.api.get<any[]>('catalog/products')),
-        firstValueFrom(this.api.get<any[]>('catalog/promotion-plans')),
+        firstValueFrom(this.api.get<any[]>('catalog/promotions')),
         firstValueFrom(this.api.get<any[]>('acquisition/campaigns')),
         firstValueFrom(this.api.get<any>('acquisition/overview')),
         this.tenantId ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`)) : Promise.resolve([]),
