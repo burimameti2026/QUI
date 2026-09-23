@@ -165,6 +165,7 @@ export class ShellComponent {
     ]},
     { label: "ACQUISITION", items: [
       i("Acquisition", "/acquisition", "↗", [
+        i("FusionFleet Sales", "/acquisition/fusionfleet-sales", "◆"),
         i("ICP & Audience", "/acquisition/icp", "◎"),
         i("Prospecting", "/discover", "⌕"),
         i("Qualification & Score", "/acquisition/qualification", "◇"),
