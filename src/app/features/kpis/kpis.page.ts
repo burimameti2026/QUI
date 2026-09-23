@@ -37,7 +37,7 @@ export class KpisPage implements OnInit {
   get metrics(): QaiKpiMetric[] {
     return [
       { label: 'Product catalog', value: this.products.length, detail: `${this.publishedProducts} published`, icon: '▦', path: '/catalog' },
-      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/promotion' },
+      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/catalog' },
       { label: 'Autonomous agents', value: this.activeAgents, detail: 'active acquisition engines', icon: '↯', path: '/acquisition/autonomous' },
       { label: 'Prospects discovered', value: Number(this.acquisition.discovered || 0), detail: `${this.qualified} high-fit prospects`, icon: '⌕', path: '/discover' },
       { label: 'Awaiting delivery', value: this.queuedMessages, detail: 'messages in approval queue', icon: '✓', path: '/acquisition/approval-queue' }
