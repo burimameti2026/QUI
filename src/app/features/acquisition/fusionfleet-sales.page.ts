@@ -69,7 +69,7 @@ type Market = {
             </div>
 
             <div class="actions">
-              <button class="primary" (click)="activateAll()" [disabled]="loading || market.loading || !!market.agentId">
+              <button class="primary" (click)="activateMarket(market)" [disabled]="loading || market.loading || !!market.agentId">
                 {{ market.agentId ? 'Activated' : 'Activate market' }}
               </button>
               <button class="secondary" *ngIf="market.agentId" (click)="runDiscovery(market)" [disabled]="market.loading">
@@ -112,7 +112,8 @@ type Market = {
     .kpi span,.numbers span { display:block; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
     .kpi strong { display:block; margin-top:5px; font-size:24px; }
     .section { border-top:1px solid #e5e7eb; padding:20px 0; }
-    .section-head { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:16px; }\n    .section-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .section-head { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:16px; }
+    .section-actions { display:flex; gap:8px; flex-wrap:wrap; }
     .section-head h2 { font-size:18px; }
     .markets { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
     .market { background:#fff; border:1px solid #dfe3e8; padding:16px; }
@@ -172,6 +173,43 @@ export class FusionFleetSalesPage {
         this.loading = false;
       },
       error: e => { this.error = e?.error?.detail || 'Could not load FusionFleet acquisition markets.'; this.loading = false; }
+    });
+  }
+
+  activateMarket(market: Market): void {
+    if (!this.tenantId || market.agentId) return;
+    market.loading = true;
+    market.error = '';
+    this.error = '';
+
+    const payload = {
+      name: 'FusionFleet — ' + market.country + ' Logistics',
+      templateCode: 'logistics',
+      industry: 'Logistics & Transport',
+      region: 'Europe',
+      countriesJson: JSON.stringify([market.country]),
+      icpJson: JSON.stringify({
+        industries: ['Logistics', 'Transportation', 'Freight Forwarding', '3PL', 'Warehousing', 'Distribution'],
+        employeeRange: '20-1000',
+        decisionMakerTitles: ['CEO', 'Owner', 'Managing Director', 'Sales Director', 'Commercial Director', 'Operations Director', 'Fleet Manager', 'Logistics Director'],
+        minimumScore: 70
+      }),
+      minimumScore: 70,
+      dailyDiscoveryLimit: 50,
+      dailyEmailLimit: 0,
+      runTimeUtc: '08:00:00',
+      status: 1
+    };
+
+    this.api.post<any>('autonomous-acquisition/tenants/' + this.tenantId + '/agents', payload).subscribe({
+      next: () => {
+        market.loading = false;
+        this.refresh();
+      },
+      error: e => {
+        market.loading = false;
+        market.error = e?.error?.detail || 'FusionFleet sales activation failed.';
+      }
     });
   }
 
