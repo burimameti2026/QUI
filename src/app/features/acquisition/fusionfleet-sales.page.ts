@@ -160,13 +160,14 @@ export class FusionFleetSalesPage {
     if (!this.tenantId) { this.error = 'No active tenant session.'; return; }
     this.loading = true;
     this.error = '';
-    this.api.get<any[]>('fusionfleet/sales').subscribe({
-      next: rows => {
+    this.api.get<any[]>('autonomous-acquisition/tenants/' + this.tenantId + '/agents').subscribe({
+      next: agents => {
         for (const market of this.markets) {
-          const row = rows.find(x => String(x.country).toLowerCase() === market.country.toLowerCase());
-          market.agentId = row?.agentId;
-          market.status = row?.status || 'Not configured';
-          market.run = row ? { discoveredCount: row.discovered, qualifiedCount: row.qualified, highScoreCount: row.highScore, emailsSentCount: row.emailsSent } : null;
+          const agent = (agents || []).find(x => String(x.name || '').toLowerCase() === ('fusionfleet — ' + market.country + ' logistics').toLowerCase());
+          market.agentId = agent?.id;
+          market.status = agent?.status || 'Not configured';
+          market.run = null;
+          if (market.agentId) this.loadRuns(market);
         }
         this.loading = false;
       },
@@ -175,15 +176,61 @@ export class FusionFleetSalesPage {
   }
 
   activateAll(): void {
+    if (!this.tenantId) return;
     this.loading = true;
     this.error = '';
-    this.api.post<any>('fusionfleet/sales/activate', {}).subscribe({
-      next: () => this.refresh(),
+    this.api.get<any[]>('autonomous-acquisition/tenants/' + this.tenantId + '/agents').subscribe({
+      next: agents => {
+        const existing = agents || [];
+        const missing = this.markets.filter(market =>
+          !existing.some(x => String(x.name || '').toLowerCase() === ('fusionfleet — ' + market.country + ' logistics').toLowerCase())
+        );
+
+        if (!missing.length) {
+          this.refresh();
+          return;
+        }
+
+        let remaining = missing.length;
+        let failed = false;
+
+        for (const market of missing) {
+          const payload = {
+            name: 'FusionFleet — ' + market.country + ' Logistics',
+            templateCode: 'logistics',
+            industry: 'Logistics & Transport',
+            region: 'Europe',
+            countriesJson: JSON.stringify([market.country]),
+            icpJson: JSON.stringify({
+              industries: ['Logistics', 'Transportation', 'Freight Forwarding', '3PL', 'Warehousing', 'Distribution'],
+              employeeRange: '20-1000',
+              decisionMakerTitles: ['CEO', 'Owner', 'Managing Director', 'Sales Director', 'Commercial Director', 'Operations Director', 'Fleet Manager', 'Logistics Director'],
+              minimumScore: 70
+            }),
+            minimumScore: 70,
+            dailyDiscoveryLimit: 50,
+            dailyEmailLimit: 0,
+            runTimeUtc: '08:00:00',
+            status: 'Active'
+          };
+
+          this.api.post<any>('autonomous-acquisition/tenants/' + this.tenantId + '/agents', payload).subscribe({
+            next: () => {
+              remaining--;
+              if (remaining === 0 && !failed) this.refresh();
+            },
+            error: e => {
+              failed = true;
+              this.error = e?.error?.detail || 'FusionFleet sales activation failed.';
+              remaining--;
+              if (remaining === 0) this.loading = false;
+            }
+          });
+        }
+      },
       error: e => { this.error = e?.error?.detail || 'FusionFleet sales activation failed.'; this.loading = false; }
     });
   }
-
-  activate(_market: Market): void { this.activateAll(); }
 
   runDiscovery(market: Market): void {
     if (!market.agentId) return;
