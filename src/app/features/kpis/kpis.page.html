@@ -15,7 +15,7 @@
         <p>All core KPIs are grouped on one page so the workspace has a single, consistent operational picture.</p>
       </div>
       <span class="live-state"><i></i>{{ loading ? 'Loading' : 'Live data' }}</span>
-    </div>
+    </header>
 
     <qai-kpi-grid [metrics]="metrics" (selected)="open($event.path || '/kpis')"></qai-kpi-grid>
   </section>
@@ -33,7 +33,7 @@
 
     <article class="card">
       <header><div><span class="eyebrow">ACTIVITY</span><h3>Current operating state</h3></div></header>
-      <div class="rows">
+      <div class="list">
         <div class="list-item"><span>Active campaigns</span><strong>{{ campaigns.length }}</strong></div>
         <div class="list-item"><span>Active agents</span><strong>{{ activeAgents }}</strong></div>
         <div class="list-item"><span>Active promotion plans</span><strong>{{ activePlans }}</strong></div>
