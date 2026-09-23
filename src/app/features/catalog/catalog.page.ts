@@ -34,13 +34,13 @@ export class CatalogPage implements OnInit {
   load(): void {
     this.loading = true;
     this.error = '';
-    this.api.get<Category[]>('renova/catalog/categories').subscribe({
+    this.api.get<Category[]>('catalog/categories').subscribe({
       next: categories => this.categoriesList = categories || [],
       error: () => this.categoriesList = []
     });
-    this.api.get<ProductRow[]>('renova/catalog/products').subscribe({
+    this.api.get<ProductRow[]>('catalog/products').subscribe({
       next: rows => { this.products = rows || []; this.loading = false; },
-      error: err => { this.error = err?.error?.detail || err?.error?.title || 'Unable to load the Renova catalog.'; this.loading = false; }
+      error: err => { this.error = err?.error?.detail || err?.error?.title || 'Unable to load the product catalog.'; this.loading = false; }
     });
   }
 
