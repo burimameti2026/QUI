@@ -37,6 +37,76 @@ const COMMON: Record<string, Record<AdminLanguage, string>> = {
   'Translations': {en:'Translations',mk:'Преводи',sq:'Përkthime',de:'Übersetzungen'}, 'Persist localized product content for EN, MK, SQ and DE.': {en:'Persist localized product content for EN, MK, SQ and DE.',mk:'Зачувајте локализирана содржина за EN, MK, SQ и DE.',sq:'Ruani përmbajtjen e lokalizuar për EN, MK, SQ dhe DE.',de:'Lokalisierte Inhalte für EN, MK, SQ und DE speichern.'}, 'Portal': {en:'Portal',mk:'Портал',sq:'Portal',de:'Portal'}, 'Publish approved product content to the  portal.': {en:'Publish approved product content to the  portal.',mk:'Објавете одобрена содржина на  порталот.',sq:'Publikoni përmbajtjen e aprovuar në portalin .',de:'Freigegebene Produktinhalte im -Portal veröffentlichen.'}, 'Promotion': {en:'Promotion',mk:'Промоција',sq:'Promovimi',de:'Promotion'}, 'Make the product available to promotion planning and acquisition.': {en:'Make the product available to promotion planning and acquisition.',mk:'Ставете го производот на располагање за промоција и аквизиција.',sq:'Bëjeni produktin të disponueshëm për promovim dhe akvizim.',de:'Produkt für Promotionsplanung und Akquise verfügbar machen.'},
   'Publishing': {en:'Publishing',mk:'Објавување',sq:'Publikimi',de:'Veröffentlichung'}, 'Website visibility and AI promotion are separate controls.': {en:'Website visibility and AI promotion are separate controls.',mk:'Видливоста на веб-страницата и AI промоцијата се одделни контроли.',sq:'Dukshmëria në faqe dhe promovimi me AI janë kontrolle të ndara.',de:'Website-Sichtbarkeit und KI-Promotion sind getrennte Einstellungen.'}, 'Publish to  portal': {en:'Publish to portal',mk:'Објави на портал',sq:'Publiko në portal',de:'Im Portal veröffentlichen'}, 'Make available for AI promotion': {en:'Make available for AI promotion',mk:'Достапно за AI промоција',sq:'Bëje të disponueshëm për promovim me AI',de:'Für KI-Promotion verfügbar machen'}, 'Product saved to the  catalog.': {en:'Product saved to the catalog.',mk:'Производот е зачуван во каталогот.',sq:'Produkti u ruajt në katalog.',de:'Produkt wurde im Katalog gespeichert.'},
   'Product name, product code and category are required.': {en:'Product name, product code and category are required.',mk:'Името, кодот и категоријата на производот се задолжителни.',sq:'Emri, kodi dhe kategoria e produktit janë të detyrueshme.',de:'Produktname, Produktcode und Kategorie sind erforderlich.'}, 'The API did not return a product id.': {en:'The API did not return a product id.',mk:'API не врати ID на производот.',sq:'API nuk ktheu ID-në e produktit.',de:'Die API hat keine Produkt-ID zurückgegeben.'}, 'Unable to save the product.': {en:'Unable to save the product.',mk:'Производот не може да се зачува.',sq:'Produkti nuk mund të ruhet.',de:'Produkt konnte nicht gespeichert werden.'}, 'Workspace action': {en:'Workspace action',mk:'Акција во workspace',sq:'Veprim në workspace',de:'Workspace-Aktion'}, 'Close': {en:'Close',mk:'Затвори',sq:'Mbyll',de:'Schließen'}, 'No data': {en:'No data',mk:'Нема податоци',sq:'Nuk ka të dhëna',de:'Keine Daten'}, 'Setup progress': {en:'Setup progress',mk:'Напредок на поставувањето',sq:'Progresi i konfigurimit',de:'Einrichtungsfortschritt'}
+
+const COMMON_MISSING: Record<string, Record<AdminLanguage, string>> = {
+  'ACQUISITION WORKSPACE': {en:'ACQUISITION WORKSPACE',mk:'РАБОТЕН ПРОСТОР ЗА АКВИЗИЦИЈА',sq:'HAPËSIRA E PUNËS SË AKVIZIMIT',de:'AKQUISE-ARBEITSBEREICH'},
+  'Start acquisition process': {en:'Start acquisition process',mk:'Започни процес на аквизиција',sq:'Fillo procesin e akvizimit',de:'Akquiseprozess starten'},
+  'Everything you need to turn prospects into qualified conversations.': {en:'Everything you need to turn prospects into qualified conversations.',mk:'Сè што ви е потребно за да ги претворите потенцијалните клиенти во квалификувани разговори.',sq:'Gjithçka që ju nevojitet për t’i kthyer prospektet në biseda të kualifikuara.',de:'Alles, was Sie brauchen, um Interessenten in qualifizierte Gespräche zu verwandeln.'},
+  'Packages & Offers': {en:'Packages & Offers',mk:'Пакети и понуди',sq:'Paketa dhe oferta',de:'Pakete & Angebote'},
+  'What are we selling?': {en:'What are we selling?',mk:'Што продаваме?',sq:'Çfarë po shesim?',de:'Was verkaufen wir?'},
+  'Who is the right customer?': {en:'Who is the right customer?',mk:'Кој е вистинскиот клиент?',sq:'Kush është klienti i duhur?',de:'Wer ist der richtige Kunde?'},
+  'Find companies and contacts': {en:'Find companies and contacts',mk:'Најди компании и контакти',sq:'Gjej kompani dhe kontakte',de:'Unternehmen und Kontakte finden'},
+  'Choose who qualifies': {en:'Choose who qualifies',mk:'Избери кој се квалификува',sq:'Zgjidhni kush kualifikohet',de:'Festlegen, wer qualifiziert wird'},
+  'Choose what we send': {en:'Choose what we send',mk:'Избери што испраќаме',sq:'Zgjidhni çfarë dërgojmë',de:'Festlegen, was gesendet wird'},
+  'Review before anything leaves': {en:'Review before anything leaves',mk:'Прегледај пред што било да биде испратено',sq:'Rishiko para se të dërgohet diçka',de:'Vor dem Versand prüfen'},
+  'Edit, pause and monitor campaigns': {en:'Edit, pause and monitor campaigns',mk:'Уредувај, паузирај и следи кампањи',sq:'Ndrysho, ndalo dhe monitoro fushatat',de:'Kampagnen bearbeiten, pausieren und überwachen'},
+  'Open autonomous agent →': {en:'Open autonomous agent →',mk:'Отвори автономен агент →',sq:'Hap agjentin autonom →',de:'Autonomen Agenten öffnen →'},
+  'HUMAN-IN-THE-LOOP CONTROL': {en:'HUMAN-IN-THE-LOOP CONTROL',mk:'КОНТРОЛА СО ЧОВЕЧКО ОДОБРУВАЊЕ',sq:'KONTROLL ME MIRATIM NJERËZOR',de:'KONTROLLE MIT MENSCHLICHER FREIGABE'},
+  'Review once. Send only when the delivery gates are satisfied.': {en:'Review once. Send only when the delivery gates are satisfied.',mk:'Прегледај еднаш. Испрати само кога се исполнети условите за испорака.',sq:'Rishiko një herë. Dërgo vetëm kur plotësohen kushtet e dërgimit.',de:'Einmal prüfen. Nur senden, wenn alle Versandbedingungen erfüllt sind.'},
+  'Automation can prepare': {en:'Automation can prepare',mk:'Автоматизацијата може да подготви',sq:'Automatizimi mund të përgatisë',de:'Automatisierung kann vorbereiten'},
+  'Humans approve': {en:'Humans approve',mk:'Луѓето одобруваат',sq:'Njerëzit miratojnë',de:'Menschen geben frei'},
+  'Backend enforces delivery': {en:'Backend enforces delivery',mk:'Backend-от ја спроведува испораката',sq:'Backend-i zbaton dërgimin',de:'Das Backend erzwingt die Zustellung'},
+  'Safety controls active': {en:'Safety controls active',mk:'Безбедносните контроли се активни',sq:'Kontrollet e sigurisë janë aktive',de:'Sicherheitskontrollen aktiv'},
+  'OUTREACH REVIEW': {en:'OUTREACH REVIEW',mk:'ПРЕГЛЕД НА КОНТАКТИРАЊЕТО',sq:'RISHIKIMI I KONTAKTIMIT',de:'OUTREACH-PRÜFUNG'},
+  'Message queue': {en:'Message queue',mk:'Ред на пораки',sq:'Radha e mesazheve',de:'Nachrichtenwarteschlange'},
+  'Inspect recipient, campaign context and the exact message before approval.': {en:'Inspect recipient, campaign context and the exact message before approval.',mk:'Провери го примачот, контекстот на кампањата и точната порака пред одобрување.',sq:'Kontrolloni marrësin, kontekstin e fushatës dhe mesazhin e saktë para miratimit.',de:'Empfänger, Kampagnenkontext und genaue Nachricht vor der Freigabe prüfen.'},
+  'Search prospect, campaign, subject...': {en:'Search prospect, campaign, subject...',mk:'Пребарај потенцијален клиент, кампања, предмет...',sq:'Kërko prospekt, fushatë, subjekt...',de:'Interessent, Kampagne, Betreff suchen...'},
+  'Approval queue filters': {en:'Approval queue filters',mk:'Филтри на редот за одобрување',sq:'Filtrat e radhës së miratimit',de:'Filter der Freigabewarteschlange'},
+  'LOGISTICS AUTOMATION': {en:'LOGISTICS AUTOMATION',mk:'АВТОМАТИЗАЦИЈА НА ЛОГИСТИКА',sq:'AUTOMATIZIMI I LOGJISTIKËS',de:'LOGISTIKAUTOMATISIERUNG'},
+  'We find logistics companies that can benefit from process automation.': {en:'We find logistics companies that can benefit from process automation.',mk:'Наоѓаме логистички компании што можат да имаат корист од автоматизација на процесите.',sq:'Gjejmë kompani logjistike që mund të përfitojnë nga automatizimi i proceseve.',de:'Wir finden Logistikunternehmen, die von Prozessautomatisierung profitieren können.'},
+  'English only': {en:'English only',mk:'Само англиски',sq:'Vetëm anglisht',de:'Nur Englisch'},
+  'Client acquisition controls': {en:'Client acquisition controls',mk:'Контроли за аквизиција на клиенти',sq:'Kontrollet e akvizimit të klientëve',de:'Steuerung der Kundenakquise'},
+  'ACQUISITION CONFIGURATION': {en:'ACQUISITION CONFIGURATION',mk:'КОНФИГУРАЦИЈА НА АКВИЗИЦИЈА',sq:'KONFIGURIMI I AKVIZIMIT',de:'AKQUISE-KONFIGURATION'},
+  'Configuration name': {en:'Configuration name',mk:'Име на конфигурација',sq:'Emri i konfigurimit',de:'Konfigurationsname'},
+  'Offer template': {en:'Offer template',mk:'Шаблон на понуда',sq:'Modeli i ofertës',de:'Angebotsvorlage'},
+  'Minimum qualification score': {en:'Minimum qualification score',mk:'Минимален резултат за квалификација',sq:'Rezultati minimal i kualifikimit',de:'Mindestwert für Qualifikation'},
+  'Daily discovery limit': {en:'Daily discovery limit',mk:'Дневен лимит за откривање',sq:'Kufiri ditor i zbulimit',de:'Tägliches Entdeckungslimit'},
+  'Daily email limit': {en:'Daily email limit',mk:'Дневен лимит на е-пошта',sq:'Kufiri ditor i email-eve',de:'Tägliches E-Mail-Limit'},
+  'Run time UTC': {en:'Run time UTC',mk:'Време на извршување UTC',sq:'Koha e ekzekutimit UTC',de:'Ausführungszeit UTC'},
+  'Qualification instructions': {en:'Qualification instructions',mk:'Инструкции за квалификација',sq:'Udhëzimet e kualifikimit',de:'Qualifikationsanweisungen'},
+  'Discovery and outreach activity': {en:'Discovery and outreach activity',mk:'Активности за откривање и контактирање',sq:'Aktiviteti i zbulimit dhe kontaktimit',de:'Entdeckungs- und Outreach-Aktivitäten'},
+  'System verification': {en:'System verification',mk:'Проверка на системот',sq:'Verifikimi i sistemit',de:'Systemprüfung'},
+  'Run verification when you need to inspect the automation stack.': {en:'Run verification when you need to inspect the automation stack.',mk:'Изврши проверка кога треба да го прегледаш стекот за автоматизација.',sq:'Ekzekuto verifikimin kur duhet të kontrollosh paketën e automatizimit.',de:'Prüfung ausführen, wenn Sie den Automatisierungsstack kontrollieren möchten.'},
+  'LOGISTICS OUTREACH': {en:'LOGISTICS OUTREACH',mk:'ЛОГИСТИЧКО КОНТАКТИРАЊЕ',sq:'KONTAKTIM LOGJISTIK',de:'LOGISTIK-OUTREACH'},
+  'Controlled progression from audience to qualified handoff.': {en:'Controlled progression from audience to qualified handoff.',mk:'Контролиран премин од публика до квалификувано предавање.',sq:'Kalimi i kontrolluar nga audienca te dorëzimi i kualifikuar.',de:'Kontrollierter Übergang von der Zielgruppe zur qualifizierten Übergabe.'},
+  'Launch guardrails': {en:'Launch guardrails',mk:'Заштитни правила за стартување',sq:'Kufizimet e sigurisë për nisjen',de:'Start-Sicherheitsregeln'},
+  'Safe by design': {en:'Safe by design',mk:'Безбедно по дизајн',sq:'I sigurt që nga dizajni',de:'Sicher by Design'},
+  'Final review — ready for approval': {en:'Final review — ready for approval',mk:'Конечен преглед — подготвено за одобрување',sq:'Rishikimi përfundimtar — gati për miratim',de:'Abschließende Prüfung — bereit zur Freigabe'},
+  'FINISH saves this campaign as a controlled draft. It does not send email. Start only when the audience, sender and messages are correct; every real message still requires human approval.': {en:'FINISH saves this campaign as a controlled draft. It does not send email. Start only when the audience, sender and messages are correct; every real message still requires human approval.',mk:'FINISH ја зачувува кампањата како контролиран нацрт. Не испраќа е-пошта. Стартувај само кога публиката, испраќачот и пораките се точни; секоја реална порака сè уште бара човечко одобрување.',sq:'FINISH e ruan fushatën si draft të kontrolluar. Nuk dërgon email. Niseni vetëm kur audienca, dërguesi dhe mesazhet janë të sakta; çdo mesazh real kërkon ende miratim njerëzor.',de:'FINISH speichert diese Kampagne als kontrollierten Entwurf. Es wird keine E-Mail gesendet. Starten Sie erst, wenn Zielgruppe, Absender und Nachrichten korrekt sind; jede echte Nachricht erfordert weiterhin eine menschliche Freigabe.'},
+  'Product directory': {en:'Product directory',mk:'Директориум на производи',sq:'Direktoria e produkteve',de:'Produktverzeichnis'},
+  'Catalog summary': {en:'Catalog summary',mk:'Преглед на каталогот',sq:'Përmbledhja e katalogut',de:'Katalogübersicht'},
+  'Catalog filters': {en:'Catalog filters',mk:'Филтри на каталогот',sq:'Filtrat e katalogut',de:'Katalogfilter'},
+  'Search products': {en:'Search products',mk:'Пребарај производи',sq:'Kërko produkte',de:'Produkte suchen'},
+  'Filter by category': {en:'Filter by category',mk:'Филтрирај по категорија',sq:'Filtro sipas kategorisë',de:'Nach Kategorie filtern'},
+  'Filter by publication status': {en:'Filter by publication status',mk:'Филтрирај по статус на објавување',sq:'Filtro sipas statusit të publikimit',de:'Nach Veröffentlichungsstatus filtern'},
+  'Data warning': {en:'Data warning',mk:'Предупредување за податоци',sq:'Paralajmërim për të dhënat',de:'Datenwarnung'},
+  'OPERATING METRICS': {en:'OPERATING METRICS',mk:'ОПЕРАТИВНИ МЕТРИКИ',sq:'METRIKAT OPERATIVE',de:'BETRIEBSKENNZAHLEN'},
+  'Revenue operations at a glance': {en:'Revenue operations at a glance',mk:'Операциите за приходи на едно место',sq:'Operacionet e të ardhurave me një shikim',de:'Umsatzprozesse auf einen Blick'},
+  'PIPELINES': {en:'PIPELINES',mk:'ПРОДАЖНИ ПРОЦЕСИ',sq:'PIPELINE',de:'PIPELINES'},
+  'OPEN DEALS': {en:'OPEN DEALS',mk:'ОТВОРЕНИ ЗДЕЛКИ',sq:'MARRËVESHJE TË HAPURA',de:'OFFENE DEALS'},
+  'OPEN VALUE': {en:'OPEN VALUE',mk:'ОТВОРЕНА ВРЕДНОСТ',sq:'VLERË E HAPUR',de:'OFFENER WERT'},
+  'SALES OPERATIONS': {en:'SALES OPERATIONS',mk:'ПРОДАЖНИ ОПЕРАЦИИ',sq:'OPERACIONET E SHITJEVE',de:'VERTRIEBSBETRIEB'},
+  'Choose stage': {en:'Choose stage',mk:'Избери фаза',sq:'Zgjidh fazën',de:'Phase auswählen'},
+  'This pipeline has no stages': {en:'This pipeline has no stages',mk:'Овој продажен процес нема фази',sq:'Ky pipeline nuk ka faza',de:'Diese Pipeline hat keine Phasen'},
+  'Add stages before assigning and moving opportunities.': {en:'Add stages before assigning and moving opportunities.',mk:'Додај фази пред да доделуваш и преместуваш можности.',sq:'Shtoni faza para se të caktoni dhe zhvendosni mundësitë.',de:'Fügen Sie Phasen hinzu, bevor Sie Chancen zuweisen und verschieben.'},
+  'PIPELINE SETUP': {en:'PIPELINE SETUP',mk:'ПОСТАВУВАЊЕ НА ПРОДАЖНИОТ ПРОЦЕС',sq:'KONFIGURIMI I PIPELINE',de:'PIPELINE-EINRICHTUNG'},
+  'Workflow directory': {en:'Workflow directory',mk:'Директориум на работни текови',sq:'Direktoria e rrjedhave të punës',de:'Workflow-Verzeichnis'},
+  'Create, review and launch every automated business process.': {en:'Create, review and launch every automated business process.',mk:'Креирај, прегледај и стартувај секој автоматизиран деловен процес.',sq:'Krijoni, rishikoni dhe nisni çdo proces biznesi të automatizuar.',de:'Automatisierte Geschäftsprozesse erstellen, prüfen und starten.'},
+  'Launch readiness': {en:'Launch readiness',mk:'Подготвеност за стартување',sq:'Gatishmëria për nisje',de:'Startbereitschaft'},
+  'STEP LIBRARY': {en:'STEP LIBRARY',mk:'БИБЛИОТЕКА НА ЧЕКОРИ',sq:'BIBLIOTEKA E HAPAVE',de:'SCHRITTBIBLIOTHEK'},
+  'PROCESS MAP': {en:'PROCESS MAP',mk:'МАПА НА ПРОЦЕСОТ',sq:'HARTA E PROCESIT',de:'PROZESSKARTE'},
+  'STEP SETTINGS': {en:'STEP SETTINGS',mk:'ПОСТАВКИ НА ЧЕКОРОТ',sq:'CILËSIMET E HAPIT',de:'SCHRITTEINSTELLUNGEN'}
+};
 };
 
 @Injectable({ providedIn: 'root' })
@@ -44,5 +114,5 @@ export class AdminI18nService {
   readonly language = signal<AdminLanguage>((localStorage.getItem('qai.admin.language') as AdminLanguage) || 'en');
   readonly languages: Array<{code: AdminLanguage; label: string}> = [{code:'en',label:'EN'},{code:'mk',label:'MK'},{code:'sq',label:'SQ'},{code:'de',label:'DE'}];
   setLanguage(language: AdminLanguage): void { this.language.set(language); localStorage.setItem('qai.admin.language', language); document.documentElement.lang = language; }
-  t(value: string): string { return COMMON[value]?.[this.language()] || value; }
+  t(value: string): string { return COMMON[value]?.[this.language()] || COMMON_MISSING[value]?.[this.language()] || value; }
 }
