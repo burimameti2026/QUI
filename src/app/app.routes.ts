@@ -14,6 +14,7 @@ export const routes: Routes = [
   {path:'packages/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/packages/package-builder.page').then(m=>m.PackageBuilderPage)},
   {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'acquisition',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/acquisition.page').then(m=>m.AcquisitionPage)},
+  {path:'acquisition/fusionfleet-sales',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/fusionfleet-sales.page').then(m=>m.FusionFleetSalesPage)},
   {path:'acquisition/icp',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'acquisition/qualification',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
