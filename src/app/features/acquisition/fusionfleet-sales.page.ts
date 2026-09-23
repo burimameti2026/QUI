@@ -188,9 +188,24 @@ export class FusionFleetSalesPage {
 
   runDiscovery(market: Market): void {
     if (!market.agentId) return;
-    this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${market.agentId}/runs`).subscribe({
+    market.loading = true;
+    market.error = "";
+    this.api.post<any>('autonomous-acquisition/tenants/' + this.tenantId + '/agents/' + market.agentId + '/run', {}).subscribe({
+      next: run => {
+        market.run = run;
+        market.loading = false;
+        setTimeout(() => this.loadRuns(market), 1200);
+      },
+      error: e => { market.error = e?.error?.detail || 'Discovery run could not be queued.'; market.loading = false; }
+    });
+  }
+
+  private loadRuns(market: Market): void {
+    if (!market.agentId) return;
+    this.api.get<any[]>('autonomous-acquisition/tenants/' + this.tenantId + '/agents/' + market.agentId + '/runs').subscribe({
       next: runs => { market.run = runs?.[0] || null; },
       error: () => {}
     });
   }
+}
 }
