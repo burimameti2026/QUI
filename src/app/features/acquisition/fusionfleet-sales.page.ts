@@ -70,8 +70,8 @@ type Market = {
             </div>
 
             <div class="actions">
-              <button class="primary" (click)="activate(market)" [disabled]="market.loading">
-                {{ market.agentId ? 'Configure / Activate' : 'Activate market' }}
+              <button class="primary" (click)="activateAll()" [disabled]="loading || market.loading">
+                {{ market.agentId ? 'Activated' : 'Activate market' }}
               </button>
               <button class="secondary" *ngIf="market.agentId" (click)="runDiscovery(market)" [disabled]="market.loading">
                 Run discovery
@@ -158,81 +158,35 @@ export class FusionFleetSalesPage {
   ngOnInit(): void { this.refresh(); }
 
   refresh(): void {
-    if (!this.tenantId) { this.error = "No active tenant session."; return; }
+    if (!this.tenantId) { this.error = 'No active tenant session.'; return; }
     this.loading = true;
-    this.error = "";
-    this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`).subscribe({
-      next: agents => {
+    this.error = '';
+    this.api.get<any[]>('fusionfleet/sales').subscribe({
+      next: rows => {
         for (const market of this.markets) {
-          const agent = agents.find(a => {
-            try {
-              const countries = JSON.parse(a.countriesJson || "[]");
-              return Array.isArray(countries) && countries.map((x:any)=>String(x).toLowerCase()).includes(market.country.toLowerCase());
-            } catch { return false; }
-          });
-          market.agentId = agent?.id;
-          market.status = agent ? String(agent.status) : "Not configured";
-          if (agent) this.loadRuns(market);
+          const row = rows.find(x => String(x.country).toLowerCase() === market.country.toLowerCase());
+          market.agentId = row?.agentId;
+          market.status = row?.status || 'Not configured';
+          market.run = row ? { discoveredCount: row.discovered, qualifiedCount: row.qualified, highScoreCount: row.highScore, emailsSentCount: row.emailsSent } : null;
         }
         this.loading = false;
       },
-      error: e => { this.error = e?.error?.detail || "Could not load FusionFleet acquisition agents."; this.loading = false; }
+      error: e => { this.error = e?.error?.detail || 'Could not load FusionFleet acquisition markets.'; this.loading = false; }
     });
   }
 
-  activate(market: Market): void {
-    market.loading = true;
-    market.error = "";
-    const body = {
-      name: `FusionFleet — ${market.name} Logistics`,
-      templateCode: "logistics",
-      industry: "Logistics & Transport",
-      region: "Europe",
-      countriesJson: JSON.stringify([market.country]),
-      icpJson: JSON.stringify({
-        industries: ["Logistics", "Transportation", "Freight Forwarding", "3PL", "Warehousing", "Distribution"],
-        employeeRange: "20-1000",
-        decisionMakerTitles: ["CEO","Owner","Managing Director","Sales Director","Commercial Director","Operations Director","Fleet Manager","Logistics Director"],
-        minimumScore: 70
-      }),
-      minimumScore: 70,
-      dailyDiscoveryLimit: 50,
-      dailyEmailLimit: 0,
-      runTimeUtc: "08:00:00",
-      status: "Draft"
-    };
-    const request = market.agentId
-      ? this.api.put<any>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${market.agentId}`, body)
-      : this.api.post<any>(`autonomous-acquisition/tenants/${this.tenantId}/agents`, body);
-
-    request.pipe(
-      switchMap(agent => this.api.post<any>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/activate`))
-    ).subscribe({
-      next: agent => {
-        market.agentId = agent.id;
-        market.status = String(agent.status);
-        market.loading = false;
-        this.loadRuns(market);
-      },
-      error: e => { market.error = e?.error?.detail || "Market activation failed."; market.loading = false; }
+  activateAll(): void {
+    this.loading = true;
+    this.error = '';
+    this.api.post<any>('fusionfleet/sales/activate', {}).subscribe({
+      next: () => this.refresh(),
+      error: e => { this.error = e?.error?.detail || 'FusionFleet sales activation failed.'; this.loading = false; }
     });
   }
+
+  activate(_market: Market): void { this.activateAll(); }
 
   runDiscovery(market: Market): void {
-    if (!market.agentId) return;
-    market.loading = true;
-    market.error = "";
-    this.api.post<any>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${market.agentId}/run`, {}).subscribe({
-      next: run => {
-        market.run = run;
-        market.loading = false;
-        setTimeout(() => this.loadRuns(market), 1200);
-      },
-      error: e => { market.error = e?.error?.detail || "Discovery run could not be queued."; market.loading = false; }
-    });
-  }
-
-  private loadRuns(market: Market): void {
     if (!market.agentId) return;
     this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${market.agentId}/runs`).subscribe({
       next: runs => { market.run = runs?.[0] || null; },
