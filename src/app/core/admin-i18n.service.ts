@@ -109,10 +109,20 @@ const COMMON_MISSING: Record<string, Record<AdminLanguage, string>> = {
 };
 };
 
+
+const SHELL_I18N: Record<string, Record<AdminLanguage, string>> = {
+  'Search leads, contacts, invoices...': {en:'Search leads, contacts, invoices...',mk:'Пребарај лидови, контакти, фактури...',sq:'Kërko lead-e, kontakte, fatura...',de:'Leads, Kontakte, Rechnungen suchen...'},
+  'Notifications': {en:'Notifications',mk:'Известувања',sq:'Njoftimet',de:'Benachrichtigungen'},
+  'Help': {en:'Help',mk:'Помош',sq:'Ndihmë',de:'Hilfe'},
+  'Administrator account': {en:'Administrator account',mk:'Администраторска сметка',sq:'Llogaria e administratorit',de:'Administratorkonto'},
+  'Logout': {en:'Logout',mk:'Одјави се',sq:'Dilni',de:'Abmelden'},
+  'Primary navigation': {en:'Primary navigation',mk:'Главна навигација',sq:'Navigimi kryesor',de:'Hauptnavigation'},
+  'LeadsAI home': {en:'LeadsAI home',mk:'Почетна на LeadsAI',sq:'Faqja kryesore e LeadsAI',de:'LeadsAI-Startseite'}
+};
 @Injectable({ providedIn: 'root' })
 export class AdminI18nService {
   readonly language = signal<AdminLanguage>((localStorage.getItem('qai.admin.language') as AdminLanguage) || 'en');
   readonly languages: Array<{code: AdminLanguage; label: string}> = [{code:'en',label:'EN'},{code:'mk',label:'MK'},{code:'sq',label:'SQ'},{code:'de',label:'DE'}];
   setLanguage(language: AdminLanguage): void { this.language.set(language); localStorage.setItem('qai.admin.language', language); document.documentElement.lang = language; }
-  t(value: string): string { return COMMON[value]?.[this.language()] || COMMON_MISSING[value]?.[this.language()] || value; }
+  t(value: string): string { return COMMON[value]?.[this.language()] || COMMON_MISSING[value]?.[this.language()] || SHELL_I18N[value]?.[this.language()] || value; }
 }
