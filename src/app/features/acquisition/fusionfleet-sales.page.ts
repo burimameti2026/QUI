@@ -69,7 +69,7 @@ type Market = {
             </div>
 
             <div class="actions">
-              <button class="primary" (click)="activateAll()" [disabled]="loading || market.loading">
+              <button class="primary" (click)="activateAll()" [disabled]="loading || market.loading || !!market.agentId">
                 {{ market.agentId ? 'Activated' : 'Activate market' }}
               </button>
               <button class="secondary" *ngIf="market.agentId" (click)="runDiscovery(market)" [disabled]="market.loading">
@@ -165,7 +165,7 @@ export class FusionFleetSalesPage {
         for (const market of this.markets) {
           const agent = (agents || []).find(x => String(x.name || '').toLowerCase() === ('fusionfleet — ' + market.country + ' logistics').toLowerCase());
           market.agentId = agent?.id;
-          market.status = agent?.status || 'Not configured';
+          market.status = this.statusLabel(agent?.status);
           market.run = null;
           if (market.agentId) this.loadRuns(market);
         }
@@ -230,6 +230,13 @@ export class FusionFleetSalesPage {
       },
       error: e => { this.error = e?.error?.detail || 'FusionFleet sales activation failed.'; this.loading = false; }
     });
+  }
+
+  private statusLabel(value: any): string {
+    if (value === 1 || String(value).toLowerCase() === 'active') return 'Active';
+    if (value === 2 || String(value).toLowerCase() === 'paused') return 'Paused';
+    if (value === 3 || String(value).toLowerCase() === 'stopped') return 'Stopped';
+    return value == null ? 'Not configured' : String(value);
   }
 
   runDiscovery(market: Market): void {
