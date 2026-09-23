@@ -37,7 +37,7 @@ export class KpisPage implements OnInit {
   get metrics(): QaiKpiMetric[] {
     return [
       { label: 'Product catalog', value: this.products.length, detail: `${this.publishedProducts} published`, icon: '▦', path: '/catalog' },
-      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/renova/promotion' },
+      { label: 'Promotion plans', value: this.activePlans, detail: 'active market programs', icon: '✦', path: '/promotion' },
       { label: 'Autonomous agents', value: this.activeAgents, detail: 'active acquisition engines', icon: '↯', path: '/acquisition/autonomous' },
       { label: 'Prospects discovered', value: Number(this.acquisition.discovered || 0), detail: `${this.qualified} high-fit prospects`, icon: '⌕', path: '/discover' },
       { label: 'Awaiting delivery', value: this.queuedMessages, detail: 'messages in approval queue', icon: '✓', path: '/acquisition/approval-queue' }
@@ -51,8 +51,8 @@ export class KpisPage implements OnInit {
     this.error = '';
     try {
       [this.products, this.plans, this.campaigns, this.acquisition, this.agents, this.runs] = await Promise.all([
-        firstValueFrom(this.api.get<any[]>('renova/catalog/products')),
-        firstValueFrom(this.api.get<any[]>('renova/catalog/promotion-plans')),
+        firstValueFrom(this.api.get<any[]>('catalog/products')),
+        firstValueFrom(this.api.get<any[]>('catalog/promotion-plans')),
         firstValueFrom(this.api.get<any[]>('acquisition/campaigns')),
         firstValueFrom(this.api.get<any>('acquisition/overview')),
         this.tenantId ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`)) : Promise.resolve([]),
