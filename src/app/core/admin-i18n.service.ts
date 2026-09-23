@@ -106,7 +106,7 @@ const COMMON_MISSING: Record<string, Record<AdminLanguage, string>> = {
   'Launch readiness': {en:'Launch readiness',mk:'Подготвеност за стартување',sq:'Gatishmëria për nisje',de:'Startbereitschaft'},
   'STEP LIBRARY': {en:'STEP LIBRARY',mk:'БИБЛИОТЕКА НА ЧЕКОРИ',sq:'BIBLIOTEKA E HAPAVE',de:'SCHRITTBIBLIOTHEK'},
   'PROCESS MAP': {en:'PROCESS MAP',mk:'МАПА НА ПРОЦЕСОТ',sq:'HARTA E PROCESIT',de:'PROZESSKARTE'},
-  'STEP SETTINGS': {en:'STEP SETTINGS',mk:'ПОСТАВКИ НА ЧЕКОРОТ',sq:'CILËSIMET E HAPIT',de:'SCHRITTEINSTELLUNGEN'}
+  'STEP SETTINGS': {en:'STEP SETTINGS',mk:'ПОСТАВКИ НА ЧЕКОРОТ',sq:'CILËSIMET E HAPIT',de:'SCHRITTEINSTELLUNGEN'},
   "Refresh": {en:"Refresh",mk:"Освежи",sq:"Rifresko",de:"Aktualisieren"},
   "Use the steps in order. Each step has one job and takes you to the next part of the process.": {en:"Use the steps in order. Each step has one job and takes you to the next part of the process.",mk:"Користи ги чекорите по ред. Секој чекор има една задача и те носи до следниот дел од процесот.",sq:"Përdorni hapat me radhë. Çdo hap ka një detyrë dhe ju çon te pjesa tjetër e procesit.",de:"Nutzen Sie die Schritte der Reihe nach. Jeder Schritt hat eine Aufgabe und führt zum nächsten Teil des Prozesses."},
   "READY": {en:"READY",mk:"ПОДГОТВЕНО",sq:"GATI",de:"BEREIT"},
