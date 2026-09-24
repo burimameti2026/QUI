@@ -3,7 +3,8 @@
 .hero-card h2{margin:6px 0 8px}.hero-card p{margin:0;max-width:760px;color:var(--wl-text-muted,#667085);line-height:1.55}
 .status-chip{padding:7px 11px;border-radius:999px;background:#f3f4f6;color:#667085;white-space:nowrap;font-weight:600}.status-chip.ok{background:#ecfdf3;color:#027a48}
 .test-grid{display:grid;grid-template-columns:minmax(320px,.9fr) minmax(420px,1.1fr);gap:20px}.form{display:grid;gap:16px;padding:20px}
-label{display:grid;gap:7px;font-weight:600;color:var(--wl-text,#1f2937)}input,select{width:100%;box-sizing:border-box;min-height:42px;padding:9px 11px;border:1px solid var(--wl-border,#d0d5dd);border-radius:9px;background:#fff;color:var(--wl-text,#1f2937)}input[readonly]{background:#f8fafc}
+label{display:grid;gap:7px;font-weight:600;color:var(--wl-text,#1f2937)}input,select,textarea{width:100%;box-sizing:border-box;min-height:42px;padding:9px 11px;border:1px solid var(--wl-border,#d0d5dd);border-radius:9px;background:#fff;color:var(--wl-text,#1f2937);font:inherit}
+textarea{resize:vertical;line-height:1.5}input[readonly]{background:#f8fafc}
 .actions{display:flex;justify-content:flex-end;gap:10px;padding-top:4px}.result{display:grid;gap:4px;padding:12px 14px;border-radius:10px;background:#ecfdf3;color:#027a48}
 .email-preview{margin:20px;border:1px solid var(--wl-border,#e5e7eb);border-radius:12px;overflow:hidden;background:#fff}.email-meta{display:grid;gap:10px;padding:16px;background:#f8fafc;border-bottom:1px solid var(--wl-border,#e5e7eb)}.email-meta div{display:grid;grid-template-columns:70px 1fr;gap:10px}.email-meta span{color:#667085}.email-body{padding:24px;min-height:260px;white-space:pre-wrap;line-height:1.7;color:#1f2937}
 .preview-empty{min-height:360px;display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;padding:20px}.preview-icon{font-size:32px}
