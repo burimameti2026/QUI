@@ -75,7 +75,7 @@ export class AdminEmailTestPage implements OnInit {
 
   get renderedSubject() { return this.render(this.draftSubject); }
   get renderedBody() { return this.render(this.draftBody); }
-  get canSend() { return !!this.sender?.verified && !!this.selectedProspectId && !!this.selectedTemplateId && !!this.draftSubject.trim() && !!this.draftBody.trim(); }
+  get canSend() { return !!this.selectedProspectId && !!this.selectedTemplateId && !!this.draftSubject.trim() && !!this.draftBody.trim() && !this.sending; }
 
   saveTemplate() {
     if (!this.canSave) return;
