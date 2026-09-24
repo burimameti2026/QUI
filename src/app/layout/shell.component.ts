@@ -84,7 +84,7 @@ const i = (
                   *ngIf="hasChildren(item) && isExpanded(item)"
                 >
                   <a
-                    *ngFor="let child of item.children"
+                    *ngFor="let child of visibleChildren(item)"
                     class="child-item"
                     [routerLink]="child.url"
                     routerLinkActive="active"
@@ -236,8 +236,11 @@ export class ShellComponent {
       (!x.module || this.auth.hasModule(x.module))
     );
   }
+  visibleChildren(x: Item): Item[] {
+    return (x.children ?? []).filter(child => this.allowed(child));
+  }
   hasChildren(x: Item) {
-    return !!x.children?.length;
+    return this.visibleChildren(x).length > 0;
   }
   isExpanded(x: Item) {
     return this.expandedItems.has(x.url);
