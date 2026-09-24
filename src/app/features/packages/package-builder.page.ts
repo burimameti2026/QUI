@@ -211,7 +211,33 @@ export class PackageBuilderPage implements OnInit {
   }
 
   continueToIcp(): void {
-    this.save();
-    void this.router.navigateByUrl('/acquisition/icp');
+    if (!this.packageName.trim()) {
+      this.aiMessage = "Add a package name before continuing.";
+      return;
+    }
+    this.aiWorking = true;
+    this.acquisition.saveWorkspacePackage({
+      id: this.packageId || null,
+      name: this.packageName,
+      headline: this.headline,
+      subheadline: this.subheadline,
+      audience: this.audience,
+      price: this.price,
+      billing: this.billing,
+      features: this.features,
+      sections: this.blocks.map(x => x.title),
+      hiddenSections: this.blocks.filter(x => !x.visible).map(x => x.title)
+    }).subscribe({
+      next: (result) => {
+        this.packageId = result.id;
+        this.saved = true;
+        this.aiWorking = false;
+        void this.router.navigateByUrl("/acquisition/icp");
+      },
+      error: (err) => {
+        this.aiWorking = false;
+        this.aiMessage = err?.error?.detail || "The offer could not be saved."; 
+      }
+    });
   }
 }
