@@ -51,7 +51,7 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
     this.error = '';
     try {
       const base = `autonomous-acquisition/tenants/${this.tenantId}`;
-      const [agents, runs, settings, templates] = await Promise.all([
+      const [agents, runs, settings, templates, prospects] = await Promise.all([
         firstValueFrom(this.api.get<any[]>(`${base}/agents`)),
         firstValueFrom(this.api.get<any[]>(`${base}/runs`)),
         firstValueFrom(this.api.get<any>('autonomous-acquisition/settings')),
