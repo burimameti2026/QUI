@@ -44,14 +44,24 @@ export class PageHeader {
   selector: "qai-modal",
   standalone: true,
   imports: [CommonModule],
-  template: `<div class="modal-backdrop" *ngIf="open" (click)="close.emit()">
+  template: `<div class="modal-backdrop" *ngIf="open" (click)="onBackdropClick($event)">
     <section class="modal-card" [class.modal-card--wide]="wide" role="dialog" aria-modal="true" [attr.aria-label]="translate(title)" (click)="$event.stopPropagation()">
       <header><div><span class="section-kicker">{{translate('Workspace action')}}</span><h3>{{ translate(title) }}</h3></div><button type="button" class="icon-button" [attr.aria-label]="translate('Close')" (click)="close.emit()">×</button></header>
       <div class="modal-body"><ng-content /></div>
     </section>
   </div>`,
 })
-export class Modal { readonly i18n = inject(AdminI18nService); @Input() open=false; @Input() title=""; @Input() wide=false; @Output() close=new EventEmitter<void>(); translate(value:string):string{return translateValue(this.i18n,value);} }
+export class Modal {
+  readonly i18n = inject(AdminI18nService);
+  @Input() open=false;
+  @Input() title="";
+  @Input() wide=false;
+  @Output() close=new EventEmitter<void>();
+  onBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) this.close.emit();
+  }
+  translate(value:string):string{return translateValue(this.i18n,value);}
+}
 
 @Component({selector:"qai-empty",standalone:true,template:`<div class="empty"><b>{{ translate(title) }}</b><span>{{ translate(text) }}</span></div>`})
 export class Empty { readonly i18n = inject(AdminI18nService); @Input() title="No data"; @Input() text=""; translate(value:string):string{return translateValue(this.i18n,value);} }
