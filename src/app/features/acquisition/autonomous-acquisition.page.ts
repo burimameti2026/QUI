@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
-import { PageHeader } from '../../shared/ui';
+import { PageHeader } from '../../shared/ui';\nimport { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, PageHeader],
+  imports: [CommonModule, FormsModule, PageHeader, RouterLink],
   templateUrl: './autonomous-acquisition.page.html',
   styleUrl: './autonomous-acquisition.page.css'
 })
