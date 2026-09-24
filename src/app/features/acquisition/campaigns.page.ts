@@ -75,8 +75,12 @@ export class CampaignsPage implements OnInit {
     return this.resultMessages.filter((x) => x.status === 5).length;
   }
 
+  get pendingApprovalMessages(): any[] {
+    return this.messages.filter((x) => x.status === 0);
+  }
+
   get pendingMessages(): number {
-    return this.messages.filter((x) => x.status === 0).length;
+    return this.pendingApprovalMessages.length;
   }
 
   get canContinue(): boolean {
@@ -240,7 +244,7 @@ export class CampaignsPage implements OnInit {
       next: () => {
         message.status = 5;
         message.approvalRequested = false;
-        this.message = "Message rejected. It will not be sent."; 
+        this.message = "Message rejected. It will not be sent.";
         this.load();
       },
       error: (e) => (this.error = this.apiError(e, "Message could not be rejected.")),
@@ -259,9 +263,9 @@ export class CampaignsPage implements OnInit {
 
   retryMessage(message: any): void {
     this.data.retryMessage(message.id).subscribe({
-      next: (result) => {
+      next: () => {
         this.load();
-        this.message = `Retry accepted by provider: ${result.providerMessageId}`;
+        this.message = "Failed message re-queued. It now requires approval again before sending.";
       },
       error: (e) => (this.error = this.apiError(e, "Email retry failed.")),
     });
