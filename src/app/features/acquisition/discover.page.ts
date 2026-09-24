@@ -75,12 +75,12 @@ import { AcquisitionService } from "./acquisition.service";
     </div></section>
 
   <section class="metric-grid discovery-kpis">
-    <article class="metric"><div class="metric-top"><span class="metric-icon">◆</span><span class="metric-label">Discovered</span></div><strong>{{ overview.discovered || 0 }}</strong><small>Verified accounts</small></article>
-    <article class="metric"><div class="metric-top"><span class="metric-icon">↗</span><span class="metric-label">Hot prospects</span></div><strong>{{ overview.hot || 0 }}</strong><small>Fit + buying intent</small></article>
-    <article class="metric"><div class="metric-top"><span class="metric-icon">◈</span><span class="metric-label">Active campaigns</span></div><strong>{{ overview.activeCampaigns || 0 }}</strong><small>Controlled outreach</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◆</span><span class="metric-label">Needs enrichment</span></div><strong>{{ needsEnrichmentCount }}</strong><small>Discovered accounts waiting for research</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◈</span><span class="metric-label">Enriched</span></div><strong>{{ enrichedCount }}</strong><small>Research completed</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">↗</span><span class="metric-label">Qualified</span></div><strong>{{ qualifiedCount }}</strong><small>Backend qualification completed</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Selected</span></div><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">↩</span><span class="metric-label">Replies</span></div><strong>{{ overview.replies || 0 }}</strong><small>Open conversations</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Demo ready</span></div><strong>{{ overview.demoReady || 0 }}</strong><small>Sales handoff</small></article>
-    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Selected</span></div><strong>{{ selectedIds.size }}</strong><small>Audience ready</small></article>
   </section>
 
   <div class="notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
@@ -134,7 +134,13 @@ import { AcquisitionService } from "./acquisition.service";
       <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="minimumScore" (change)="loadProspects()" /></label>
     </header>
     <div class="toolbar">
-      <span><b>{{ prospects.length }}</b> prospects shown</span>
+      <div class="filter-group" role="tablist" aria-label="Prospect lifecycle">
+        <button type="button" [class.active]="prospectStatusFilter === 'all'" (click)="setProspectStatusFilter('all')">All <b>{{ prospects.length }}</b></button>
+        <button type="button" [class.active]="prospectStatusFilter === 'Discovered'" (click)="setProspectStatusFilter('Discovered')">Needs enrichment <b>{{ needsEnrichmentCount }}</b></button>
+        <button type="button" [class.active]="prospectStatusFilter === 'Enriched'" (click)="setProspectStatusFilter('Enriched')">Enriched <b>{{ enrichedCount }}</b></button>
+        <button type="button" [class.active]="prospectStatusFilter === 'Qualified'" (click)="setProspectStatusFilter('Qualified')">Qualified <b>{{ qualifiedCount }}</b></button>
+      </div>
+      <span><b>{{ visibleProspects.length }}</b> prospects shown</span>
       <span *ngIf="selectedIds.size"><b>{{ selectedIds.size }}</b> selected for audience</span>
       <button *ngIf="selectedIds.size" class="button-quiet" (click)="selectedIds.clear()">Clear selection</button>
     </div>
@@ -142,7 +148,7 @@ import { AcquisitionService } from "./acquisition.service";
       <table>
         <thead><tr><th><input type="checkbox" [checked]="allSelected" [disabled]="!prospects.length" (change)="toggleAll()" /></th><th>Company account</th><th>Decision maker</th><th>Market</th><th>Fit</th><th>Intent</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead>
         <tbody>
-          <tr *ngFor="let x of prospects" [class.selected]="selectedIds.has(x.id)">
+          <tr *ngFor="let x of visibleProspects" [class.selected]="selectedIds.has(x.id)">
             <td><input type="checkbox" [checked]="selectedIds.has(x.id)" (change)="toggle(x.id)" /></td>
             <td><div class="identity"><span class="avatar">{{ x.companyName.charAt(0) }}</span><div><strong>{{ x.companyName }}</strong><small>{{ x.domain }} · {{ x.datasetOrigin || x.source || 'Source not recorded' }}</small></div></div></td>
             <td><div class="stack"><strong>{{ x.contactName || x.suggestedBuyer || 'Research needed' }}</strong><small>{{ x.jobTitle || x.suggestedBuyer || 'Role unknown' }} · {{ x.email || 'Email needed' }}</small></div></td>
@@ -218,6 +224,7 @@ export class DiscoverPage implements OnInit {
   qualificationMode = false;
   qualifiedTargetListId = "";
   qualificationScore = 70;
+  prospectStatusFilter: 'all' | 'Discovered' | 'Enriched' | 'Qualified' = 'all';
   qualificationMessage = "";
   selectedIds = new Set<string>();
   listName = "";
@@ -276,7 +283,21 @@ export class DiscoverPage implements OnInit {
   }
   loadProspects() { this.data.prospects(this.minimumScore).subscribe((r) => { this.prospects = r; this.selectedIds = new Set([...this.selectedIds].filter((id) => r.some((x) => x.id === id))); }); }
   get activeIcp() { return this.icps.find((x) => x.id === this.selectedIcpId && x.active); }
-  get qualifiedProspects() { return this.prospects.filter((x) => this.priority(x) >= Number(this.qualificationScore)); }
+  get needsEnrichmentCount() { return this.prospects.filter(x => this.statusKey(x.status) === 'Discovered').length; }
+  get enrichedCount() { return this.prospects.filter(x => this.statusKey(x.status) === 'Enriched').length; }
+  get qualifiedCount() { return this.prospects.filter(x => this.statusKey(x.status) === 'Qualified').length; }
+  get visibleProspects() {
+    return this.prospectStatusFilter === 'all'
+      ? this.prospects
+      : this.prospects.filter(x => this.statusKey(x.status) === this.prospectStatusFilter);
+  }
+  get qualifiedProspects() {
+    return this.prospects.filter(x => this.statusKey(x.status) === 'Qualified');
+  }
+  setProspectStatusFilter(filter: 'all' | 'Discovered' | 'Enriched' | 'Qualified') {
+    this.prospectStatusFilter = filter;
+    this.selectedIds = new Set([...this.selectedIds].filter(id => this.visibleProspects.some(x => x.id === id)));
+  }
   applyQualificationScore() { this.minimumScore = Number(this.qualificationScore) || 0; this.loadProspects(); }
   createQualifiedAudience() {
     const rows = this.qualifiedProspects;
@@ -324,11 +345,19 @@ export class DiscoverPage implements OnInit {
   openOnlineDiscovery() { if (!this.activeIcp) return; this.error = ""; this.message = ""; this.onlineDiscovery.targetListName = `Review — ${this.activeIcp.name} — ${new Date().toISOString().slice(0, 10)}`; this.onlineDiscoveryOpen = true; }
   runOnlineDiscovery() { if (!this.activeIcp || !this.selectedDiscoveryProvider?.configured) return; this.discoveryRunning = true; this.error = ""; this.data.discoverOnline(this.activeIcp.id, this.onlineDiscovery).subscribe({ next: (result) => { this.discoveryRunning = false; this.onlineDiscoveryOpen = false; this.message = `Online discovery found ${result.received} companies. ${result.qualified} qualified; ${result.created} new and ${result.updated} refreshed. Review list is ready before any outreach.`; this.load(); }, error: (error) => { this.discoveryRunning = false; this.error = error?.error?.detail || "Online discovery could not run. Check the provider connection and try again."; } }); }
   nextBulk() { if (this.bulkStep === 1) this.rebuildMappedRows(); if (this.canContinueBulk && this.bulkStep < 3) this.bulkStep++; }
-  get allSelected() { return !!this.prospects.length && this.prospects.every((x) => this.selectedIds.has(x.id)); }
+  get allSelected() { return !!this.visibleProspects.length && this.visibleProspects.every((x) => this.selectedIds.has(x.id)); }
   priority(x: any) { return Math.round(Number(x.fitScore || 0) * 0.55 + Number(x.intentScore || 0) * 0.45); }
-  status(v: number) { return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || v; }
+  statusKey(v: any) {
+    if (typeof v === 'number') return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || String(v);
+    const value = String(v ?? '').trim();
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
+  status(v: any) {
+    const key = this.statusKey(v);
+    return key === 'Discovered' ? 'Needs enrichment' : key === 'Demo ready' ? 'Demo ready' : key;
+  }
   toggle(id: string) { this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id); }
-  toggleAll() { this.allSelected ? this.selectedIds.clear() : this.prospects.forEach((x) => this.selectedIds.add(x.id)); }
+  toggleAll() { this.allSelected ? this.visibleProspects.forEach(x => this.selectedIds.delete(x.id)) : this.visibleProspects.forEach(x => this.selectedIds.add(x.id)); }
   saveIcp() { if (this.workspaceOffer) this.icp.criteriaJson = JSON.stringify({ ...JSON.parse(this.icp.criteriaJson || '{}'), offerId: this.workspaceOffer.id || null, offerName: this.workspaceOffer.name || '' }); this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Your next step is to find companies that match this ICP."; }); }
   saveProspect() { this.data.addProspect(this.prospect).subscribe((r) => { this.prospects.unshift(r); this.prospectOpen = false; this.data.overview().subscribe((x) => (this.overview = x)); }); }
   selectDataset(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; this.bulkFile = file; this.bulkPreview = undefined; this.bulkRows = []; this.bulkError = ""; if (!file) return; if (file.size > 15_000_000) { this.bulkError = "The import file must be smaller than 15 MB."; return; } this.loadPreview(); }
