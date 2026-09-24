@@ -13,15 +13,14 @@
     <h2>{{ rows.length }} campaigns · {{ running }} running</h2>
     <p>We target logistics operations, prepare English messages about automation software and require human approval before sending.</p>
   </div>
-
 </section>
 
-<section class="card campaign-workflow"><header class="card-header"><div><span class="eyebrow">WORKFLOW</span><h3>Outreach pipeline</h3><p>Controlled progression from audience to qualified handoff.</p></div><span class="status">Approval controlled</span></header><div class="card-body"><div class="campaign-timeline" aria-label="Outreach pipeline">
+<section class="card campaign-workflow"><header class="card-header"><div><span class="eyebrow">WORKFLOW</span><h3>Outreach pipeline</h3><p>Controlled progression from qualified audience to sales handoff.</p></div><span class="status">Qualified only</span></header><div class="card-body"><div class="campaign-timeline" aria-label="Outreach pipeline">
   <div class="campaign-timeline-track" aria-hidden="true"></div>
-  <div class="campaign-timeline-step is-current"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Audience</strong><small>Target accounts</small></span></div>
+  <div class="campaign-timeline-step is-current"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Qualified</strong><small>Target accounts</small></span></div>
   <div class="campaign-timeline-step"><span class="campaign-timeline-node">02</span><span class="campaign-timeline-copy"><strong>Message</strong><small>Prepare sequence</small></span></div>
   <div class="campaign-timeline-step"><span class="campaign-timeline-node">03</span><span class="campaign-timeline-copy"><strong>Approval</strong><small>Human review</small></span></div>
-  <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Demo</strong><small>Qualified handoff</small></span></div>
+  <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Demo</strong><small>Sales handoff</small></span></div>
 </div></div></section>
 
 <p class="notice success" *ngIf="message">{{ message }}</p>
@@ -34,7 +33,7 @@
       <div>
         <span class="eyebrow">Campaigns</span>
         <h3>Acquisition processes</h3>
-        <p>Manage the target accounts, sender, English sequence and approval state of every outreach process.</p>
+        <p>Manage qualified target accounts, sender, English sequence and approval state of every outreach process.</p>
       </div>
       <span class="status">{{ rows.length }} total</span>
     </header>
@@ -74,18 +73,9 @@
         <div class="actions">
           <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
           <button class="button-secondary" *ngIf="campaign.status !== 4" (click)="openEdit(campaign)">Edit</button>
-          <button
-            class="button-primary"
-            *ngIf="campaign.status === 0"
-            (click)="start(campaign)">Start campaign</button>
-          <button
-            class="button-secondary"
-            *ngIf="campaign.status === 2"
-            (click)="pause(campaign)">Pause</button>
-          <button
-            class="button-primary"
-            *ngIf="campaign.status === 3"
-            (click)="resume(campaign)">Resume</button>
+          <button class="button-primary" *ngIf="campaign.status === 0" (click)="start(campaign)">Start campaign</button>
+          <button class="button-secondary" *ngIf="campaign.status === 2" (click)="pause(campaign)">Pause</button>
+          <button class="button-primary" *ngIf="campaign.status === 3" (click)="resume(campaign)">Resume</button>
           <span class="status success" *ngIf="campaign.status === 2">● Live</span>
         </div>
       </article>
@@ -93,7 +83,7 @@
 
     <div class="empty" *ngIf="!rows.length">
       <h3>No campaign yet</h3>
-      <p>Import companies into a target list, then build the controlled outreach sequence.</p>
+      <p>Use your already Qualified prospects in a target list, then build the controlled outreach sequence.</p>
       <button class="button-primary" (click)="openBuilder()">Build campaign</button>
     </div>
   </section>
@@ -185,12 +175,12 @@
     <div>
       <span class="eyebrow">Human review</span>
       <b>Approval queue</b>
-      <span>Messages prepared by running campaigns</span>
+      <span>Only queued messages from Qualified prospects should appear here.</span>
     </div>
     <span class="status">{{ pendingMessages }} pending</span>
   </header>
 
-  <div class="table" *ngIf="messages.length">
+  <div class="table" *ngIf="pendingMessages">
     <table>
       <thead>
         <tr>
@@ -203,24 +193,25 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of messages" [class.awaiting]="item.status === 0">
-          <td><b>{{ item.prospect }}</b><small>{{ item.contactName }}</small></td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.subject }}</td>
-          <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
-          <td>
-            <div class="actions">
-              <button class="button-secondary" *ngIf="item.status === 0 && !item.approvalRequested" (click)="requestApproval(item)">Request approval</button>
-              <button class="button-primary" *ngIf="item.status === 0 && item.approvalRequested" (click)="approveAndSend(item)">Approve &amp; send</button>
-              <button class="button-secondary" *ngIf="item.status === 0 && item.approvalRequested" (click)="rejectApproval(item)">Reject</button>
-              <button class="button-danger" *ngIf="item.status === 4" (click)="retryMessage(item)">Retry failed send</button>
-            </div>
-          </td>
+          <ng-container *ngIf="item.status === 0">
+            <td><b>{{ item.prospect }}</b><small>{{ item.contactName }}</small></td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.subject }}</td>
+            <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
+            <td>
+              <div class="actions">
+                <button class="button-secondary" *ngIf="!item.approvalRequested" (click)="requestApproval(item)">Request approval</button>
+                <button class="button-primary" *ngIf="item.approvalRequested" (click)="approveAndSend(item)">Approve &amp; send</button>
+                <button class="button-secondary" *ngIf="item.approvalRequested" (click)="rejectApproval(item)">Reject</button>
+              </div>
+            </td>
+          </ng-container>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="empty" *ngIf="!messages.length"><b>✓</b><span>No messages await review.</span></div>
+  <div class="empty" *ngIf="!pendingMessages"><b>✓</b><span>No queued messages await review.</span></div>
 </section>
 
 <qai-modal
@@ -251,12 +242,7 @@
   (close)="show = false"
 >
   <nav class="steps">
-    <button
-      class="button-quiet"
-      *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index"
-      [class.active]="builderStep === i + 1"
-      [class.done]="builderStep > i + 1"
-    >
+    <button class="button-quiet" *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index" [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1">
       <b>{{ i + 1 }}</b>
       <span>{{ label }}</span>
     </button>
@@ -267,20 +253,15 @@
       <h3>Who should enter?</h3>
       <p>Choose the offer and target list. Only prospects already marked <strong>Qualified</strong> by the backend can enter outreach.</p>
 
-      <label>
-        Campaign name
-        <input [(ngModel)]="form.name" name="name" required />
-      </label>
-      <label>
-        Offer / package
+      <label>Campaign name<input [(ngModel)]="form.name" name="name" required /></label>
+      <label>Offer / package
         <select [(ngModel)]="form.offerId" name="offer" required>
           <option value="">Select offer</option>
           <option *ngFor="let offer of packages" [value]="offer.id">{{ offer.name }}</option>
         </select>
       </label>
 
-      <label>
-        Target list
+      <label>Target list
         <select [(ngModel)]="form.targetListId" name="list" required>
           <option value="">Select target list</option>
           <option *ngFor="let list of lists" [value]="list.id">{{ list.name }}</option>
@@ -291,16 +272,9 @@
     <section *ngIf="builderStep === 2">
       <h3>Who is sending?</h3>
       <p>The sender address must be verified before any real message can be sent.</p>
-
       <div class="content-grid">
-        <label>
-          Sender name
-          <input [(ngModel)]="form.senderName" name="sender" required />
-        </label>
-        <label>
-          Sender email
-          <input type="email" [(ngModel)]="form.senderEmail" name="email" required />
-        </label>
+        <label>Sender name<input [(ngModel)]="form.senderName" name="sender" required /></label>
+        <label>Sender email<input type="email" [(ngModel)]="form.senderEmail" name="email" required /></label>
       </div>
     </section>
 
@@ -318,33 +292,24 @@
             <label>Wait hours<input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" /></label>
             <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="step.minimumScore" [name]="'score' + i" /></label>
             <label>Qualification
-              <select [(ngModel)]="step.qualification" [name]="'qualification' + i">
-                <option value="qualified">Qualified only</option>
-              </select>
+              <select [(ngModel)]="step.qualification" [name]="'qualification' + i"><option value="qualified">Qualified only</option></select>
             </label>
             <label>Industry<input [(ngModel)]="step.industry" [name]="'industry' + i" placeholder="Logistics" /></label>
             <label>Countries<input [(ngModel)]="step.countries" [name]="'countries' + i" placeholder="North Macedonia, Albania" /></label>
             <label>Contact roles<input [(ngModel)]="step.contactRoles" [name]="'roles' + i" placeholder="Owner, Operations Manager" /></label>
           </div>
           <label>Subject<input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" placeholder="Subject for {{company}}" /></label>
-          <label>Message<textarea rows="6" [(ngModel)]="step.bodyTemplate" [name]="'body' + i" placeholder="Hi {{contactName}}, ..."></textarea></label>
+          <label>Message<textarea rows="6" [(ngModel)]="step.bodyTemplate" [name]="'body' + i" placeholder="Hi {{contact}}, ..."></textarea></label>
           <div class="notice"><strong>Automation</strong><span>Reply → STOP · No reply → next message after {{ step.delayHours }}h</span></div>
           <label><input type="checkbox" [(ngModel)]="step.stopOnReply" [name]="'stop' + i" /> Stop sequence when the recipient replies</label>
         </div>
       </article>
       <button type="button" class="button-secondary" (click)="addStep()">+ Add message</button>
-      <section class="card">
-        <div class="card-body">
-          <span class="eyebrow">LIVE PREVIEW</span>
-          <h3>{{ form.steps[0]?.subjectTemplate || 'Message subject' }}</h3>
-          <p>{{ form.steps[0]?.bodyTemplate || 'Write Message 1 to see the exact message preview here.' }}</p>
-        </div>
-      </section>
+      <section class="card"><div class="card-body"><span class="eyebrow">LIVE PREVIEW</span><h3>{{ form.steps[0]?.subjectTemplate || 'Message subject' }}</h3><p>{{ form.steps[0]?.bodyTemplate || 'Write Message 1 to see the exact message preview here.' }}</p></div></section>
     </section>
 
     <section class="card-body" *ngIf="builderStep === 4">
       <h3>Final review — ready for approval</h3>
-
       <dl>
         <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
         <div><dt>Audience</dt><dd>{{ selectedList?.name }}</dd></div>
@@ -352,12 +317,10 @@
         <div><dt>Sender</dt><dd>{{ form.senderName }} · {{ form.senderEmail }}</dd></div>
         <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
       </dl>
-
       <p>FINISH saves this campaign as a controlled draft. It does not send email. Start only when the audience, sender and messages are correct; every real message still requires human approval.</p>
     </section>
 
     <p class="alert" *ngIf="error">{{ error }}</p>
-
     <footer class="actions">
       <button type="button" (click)="show = false; editingCampaign = null">Cancel</button>
       <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
@@ -366,5 +329,4 @@
     </footer>
   </form>
 </qai-modal>
-
 </div>
