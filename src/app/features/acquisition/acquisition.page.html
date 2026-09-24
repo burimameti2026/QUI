@@ -16,7 +16,7 @@
     <div class="stack">
       <span><i class="status-dot success"></i> <b>READY</b></span>
       <span><b>{{ readyCount }}</b> active building blocks</span>
-      <span><small>{{ prospectCount }} prospects · {{ icpCount }} ICPs · {{ campaignCount }} campaigns</small></span>
+      <span><small>{{ prospectCount }} prospects · {{ needsEnrichmentCount }} need enrichment · {{ enrichedCount }} enriched · {{ qualifiedCount }} qualified</small></span>
     </div>
   </section>
 
@@ -43,13 +43,13 @@
 
       <button class="list-item" type="button" (click)="go('/discover')">
         <span class="badge badge-accent">03</span>
-        <span class="stack"><strong>Prospecting</strong><small>Find companies and contacts</small></span>
-        <span class="status">{{ prospectCount }} prospects</span><span aria-hidden="true">→</span>
+        <span class="stack"><strong>Prospecting</strong><small>Find companies; enrichment and qualification continue automatically</small></span>
+        <span class="status">{{ needsEnrichmentCount }} need enrichment · {{ prospectCount }} total</span><span aria-hidden="true">→</span>
       </button>
 
       <button class="list-item" type="button" (click)="go('/acquisition/qualification')">
         <span class="badge badge-accent">04</span>
-        <span class="stack"><strong>Qualification &amp; Score</strong><small>Choose who qualifies</small></span>
+        <span class="stack"><strong>Qualification &amp; Score</strong><small>Review prospects already marked Qualified by the backend</small></span>
         <span class="status">{{ qualifiedCount }} qualified</span><span aria-hidden="true">→</span>
       </button>
 
