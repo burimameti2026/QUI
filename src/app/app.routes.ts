@@ -41,6 +41,7 @@ export const routes: Routes = [
   {path:'billing',canActivate:[requireModule('billing')],loadComponent:()=>import('./features/billing/billing.page').then(m=>m.BillingPage)},
   {path:'platform',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/platform-management/platform-management.page').then(m=>m.PlatformManagementPage)},
   {path:'admin/modules',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/module-admin.page').then(m=>m.ModuleAdminPage)},
+  {path:'admin/email-test',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/admin-email-test.page').then(m=>m.AdminEmailTestPage)},
   {path:'admin/tenants/:tenantId/provisioning',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/provisioning.page').then(m=>m.ProvisioningPage)},
   {path:'admin/tenants/:tenantId/lifecycle',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/tenant-lifecycle.page').then(m=>m.TenantLifecyclePage)},
   {path:'admin/tenants/:tenantId/alerts',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/tenant-alerts.page').then(m=>m.TenantAlertsPage)},
