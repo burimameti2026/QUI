@@ -242,7 +242,7 @@
   (close)="show = false"
 >
   <nav class="steps">
-    <button class="button-quiet" *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index" [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1">
+    <button type="button" class="button-quiet" *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index" [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1" (click)="builderStep = i + 1">
       <b>{{ i + 1 }}</b>
       <span>{{ label }}</span>
     </button>
@@ -279,33 +279,90 @@
     </section>
 
     <section *ngIf="builderStep === 3">
-      <h3>Messages & automation</h3>
-      <p>Messages are written in English, stop after a reply and use verified company and contact data.</p>
+      <div class="content-grid">
+        <div>
+          <span class="eyebrow">MESSAGE BUILDER</span>
+          <h3>Choose, preview, then make it yours</h3>
+          <p>Pick one of the tenant-safe templates, preview it against a real prospect, edit anything you want and save it to the sequence.</p>
+        </div>
+        <label>
+          Preview prospect
+          <select [(ngModel)]="previewProspectId" name="previewProspect">
+            <option *ngFor="let prospect of prospects" [value]="prospect.id">
+              {{ prospect.companyName || prospect.company || prospect.name }}{{ prospect.contactName ? ' · ' + prospect.contactName : '' }}
+            </option>
+          </select>
+        </label>
+      </div>
+
+      <div class="notice success" *ngIf="tenantSlug.toLowerCase().includes('fusionfleet')">
+        <strong>FusionFleet sender locked in</strong>
+        <span>{{ form.senderName }} · {{ form.senderEmail }}</span>
+      </div>
 
       <article class="card" *ngFor="let step of form.steps; let i = index">
         <div class="card-body">
           <header class="card-header">
-            <div><span class="eyebrow">MESSAGE {{ i + 1 }}</span><h3>{{ i === 0 ? 'Initial outreach' : 'Follow-up ' + i }}</h3></div>
-            <button type="button" class="button-quiet" *ngIf="form.steps.length > 1" (click)="removeStep(i)">Remove</button>
+            <div>
+              <span class="eyebrow">MESSAGE {{ i + 1 }}</span>
+              <h3>{{ step.templateName || (i === 0 ? 'Initial outreach' : 'Follow-up ' + i) }}</h3>
+              <p>{{ i === 0 ? 'First touch' : 'Follow-up after ' + step.delayHours + ' hours' }}</p>
+            </div>
+            <div class="actions">
+              <button type="button" class="button-quiet" *ngIf="form.steps.length > 1" (click)="removeStep(i)">Remove</button>
+            </div>
           </header>
+
           <div class="content-grid">
+            <label>
+              Template
+              <select [ngModel]="step.templateId" [name]="'template' + i" (ngModelChange)="selectTemplate(allTemplates.find(x => x.id === $event), i)">
+                <option value="">Custom message</option>
+                <option *ngFor="let template of allTemplates" [value]="template.id">{{ template.name }}</option>
+              </select>
+            </label>
             <label>Wait hours<input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" /></label>
             <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="step.minimumScore" [name]="'score' + i" /></label>
             <label>Qualification
               <select [(ngModel)]="step.qualification" [name]="'qualification' + i"><option value="qualified">Qualified only</option></select>
             </label>
-            <label>Industry<input [(ngModel)]="step.industry" [name]="'industry' + i" placeholder="Logistics" /></label>
-            <label>Countries<input [(ngModel)]="step.countries" [name]="'countries' + i" placeholder="North Macedonia, Albania" /></label>
-            <label>Contact roles<input [(ngModel)]="step.contactRoles" [name]="'roles' + i" placeholder="Owner, Operations Manager" /></label>
           </div>
+
           <label>Subject<input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" placeholder="Subject for {{company}}" /></label>
           <label>Message<textarea rows="6" [(ngModel)]="step.bodyTemplate" [name]="'body' + i" placeholder="Hi {{contact}}, ..."></textarea></label>
-          <div class="notice"><strong>Automation</strong><span>Reply → STOP · No reply → next message after {{ step.delayHours }}h</span></div>
+
+          <div class="notice">
+            <strong>Automation</strong>
+            <span>Reply → STOP · No reply → next message after {{ step.delayHours }}h</span>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="button-secondary" (click)="saveTemplate(i)">Save template</button>
+            <span class="status" *ngIf="step.templateName">Using: {{ step.templateName }}</span>
+          </div>
+
+          <section class="card">
+            <div class="card-body">
+              <div class="content-grid">
+                <div>
+                  <span class="eyebrow">PREVIEW</span>
+                  <h3>{{ renderTemplate(step.subjectTemplate) || 'Message subject' }}</h3>
+                  <p style="white-space: pre-line">{{ renderTemplate(step.bodyTemplate) || 'Write a message to see the live preview.' }}</p>
+                </div>
+                <div class="notice">
+                  <strong>Recipient</strong>
+                  <span>{{ previewProspect?.contactName || previewProspect?.contact || 'Contact' }}</span>
+                  <span>{{ previewProspect?.companyName || previewProspect?.company || previewProspect?.name || 'Company' }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <label><input type="checkbox" [(ngModel)]="step.stopOnReply" [name]="'stop' + i" /> Stop sequence when the recipient replies</label>
         </div>
       </article>
+
       <button type="button" class="button-secondary" (click)="addStep()">+ Add message</button>
-      <section class="card"><div class="card-body"><span class="eyebrow">LIVE PREVIEW</span><h3>{{ form.steps[0]?.subjectTemplate || 'Message subject' }}</h3><p>{{ form.steps[0]?.bodyTemplate || 'Write Message 1 to see the exact message preview here.' }}</p></div></section>
     </section>
 
     <section class="card-body" *ngIf="builderStep === 4">
