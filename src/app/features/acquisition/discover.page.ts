@@ -168,7 +168,8 @@ import { AcquisitionService } from "./acquisition.service";
   <qai-modal [open]="onlineDiscoveryOpen" title="Find companies online" (close)="onlineDiscoveryOpen = false">
     <form class="form" (ngSubmit)="runOnlineDiscovery()">
       <qai-callout icon="⌕" title="Company-level public discovery" text="The search connector finds public company websites, scores them against this ICP and creates a review list. It never invents contacts or email addresses." />
-      <label>Search provider<select name="discoverySource" [(ngModel)]="onlineDiscovery.source"><option *ngFor="let provider of discoveryProviders" [value]="provider.name" [disabled]="!provider.configured">{{ provider.name }}{{ provider.configured ? '' : ' — needs API key' }}</option></select><small *ngIf="selectedDiscoveryProvider && !selectedDiscoveryProvider.configured">{{ selectedDiscoveryProvider.description }}</small></label>
+      <label>Search provider<select name="discoverySource" [(ngModel)]="onlineDiscovery.source"><option *ngFor="let provider of discoveryProviders" [value]="provider.name" [disabled]="!provider.configured">{{ provider.name }}{{ provider.verified ? ' — Verified' : provider.configured ? ' — Not verified' : ' — needs API key' }}</option></select><small *ngIf="selectedDiscoveryProvider">{{ selectedDiscoveryProvider.description }}</small></label>
+      <div class="notice" *ngIf="selectedDiscoveryProvider"><strong>{{ selectedDiscoveryProvider.verified ? '✓ Verified' : 'Not verified' }}</strong><span *ngIf="selectedDiscoveryProvider.error">{{ selectedDiscoveryProvider.error }}</span><span *ngIf="!selectedDiscoveryProvider.error && !selectedDiscoveryProvider.verified">The provider key exists but has not passed a live connection test.</span><button type="button" class="button-secondary" [disabled]="providerVerifying" (click)="verifySelectedProvider()">{{ providerVerifying ? 'Testing…' : 'Test connection' }}</button></div>
       <label>State or region<input name="discoveryRegion" [(ngModel)]="onlineDiscovery.region" placeholder="North Rhine-Westphalia, Bavaria, DACH" /><small>Optional. The region becomes an additional market-match signal.</small></label>
       <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
       <label>Minimum qualification score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
@@ -249,6 +250,7 @@ export class DiscoverPage implements OnInit {
   discoveryProviders: any[] = [];
   onlineDiscoveryOpen = false;
   discoveryRunning = false;
+  providerVerifying = false;
   onlineDiscovery: any = { source: "serpapi", region: "", maximumResults: 50, minimumScore: 70, targetListName: "", createTargetList: true };
   icpStep = 0;
   bulkStep = 0;
@@ -334,6 +336,31 @@ export class DiscoverPage implements OnInit {
     });
   }
   get selectedDiscoveryProvider() { return this.discoveryProviders.find((x) => x.name === this.onlineDiscovery.source); }
+  verifySelectedProvider() {
+    const provider = this.selectedDiscoveryProvider;
+    if (!provider) return;
+    this.providerVerifying = true;
+    this.error = "";
+    this.data.verifyDiscoveryProvider(provider.name).subscribe({
+      next: (result) => {
+        this.providerVerifying = false;
+        this.discoveryProviders = this.discoveryProviders.map((x) =>
+          x.name === provider.name ? { ...x, verified: !!result.verified, error: result.error || null } : x,
+        );
+        this.message = result.verified
+          ? "SerpAPI connection verified successfully."
+          : result.error || "SerpAPI verification failed.";
+      },
+      error: (error) => {
+        this.providerVerifying = false;
+        const detail = error?.error?.error || error?.error?.detail || "SerpAPI verification failed.";
+        this.discoveryProviders = this.discoveryProviders.map((x) =>
+          x.name === provider.name ? { ...x, verified: false, error: detail } : x,
+        );
+        this.error = detail;
+      },
+    });
+  }
   get journeyStep() { if (!this.activeIcp) return 0; if (!this.prospects.length) return 1; if (!this.selectedIds.size) return 2; return 3; }
   goToProspecting() { if (!this.activeIcp) return; this.router.navigate(['/discover'], { queryParams: { icpId: this.activeIcp.id } }); }
   get canContinueIcp() { if (this.icpStep === 0) return !!this.icp.name?.trim() && !!this.icp.countriesCsv?.trim(); if (this.icpStep === 1) return Number(this.icp.minimumEmployees) > 0 && Number(this.icp.maximumEmployees) >= Number(this.icp.minimumEmployees); return !!this.icp.intentKeywordsCsv?.trim(); }
