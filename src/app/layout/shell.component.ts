@@ -59,6 +59,7 @@ const i = (
         <section
           class="menu-group reference-group"
           *ngFor="let group of navigationGroups"
+          [class.hidden-group]="!groupAllowed(group)"
         >
           <div class="group-heading" *ngIf="group.label">
             {{ navLabel(group.label) }}
@@ -225,6 +226,9 @@ export class ShellComponent {
   }
   navLabel(k: string) {
     return this.navigationTranslations[k]?.[this.i18n.language()] ?? k;
+  }
+  groupAllowed(group: Group) {
+    return group.items.some((item) => this.allowed(item) || (item.children ?? []).some((child) => this.allowed(child)));
   }
   allowed(x: Item) {
     return (
