@@ -29,7 +29,8 @@ const i = (
   url: string,
   icon: string,
   children?: Item[],
-): Item => ({ label, url, icon, children });
+  permission?: string,
+): Item => ({ label, url, icon, children, permission });
 @Component({
   selector: "qai-shell",
   standalone: true,
@@ -216,7 +217,7 @@ export class ShellComponent {
       i("Industry Packs", "/industry-packs", "▤"),
       i("Audit & Governance", "/audit", "▤"),
       i("Clients & Licenses", "/admin/modules", "▦"),
-      i("Email Test Center", "/admin/email-test", "✉"),
+      i("Email Test Center", "/admin/email-test", "✉", undefined, "system.admin"),
     ]},
   ];
   get session() {
