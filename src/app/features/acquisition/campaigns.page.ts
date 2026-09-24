@@ -74,7 +74,7 @@ export class CampaignsPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadSavedTemplates();
+    this.loadTemplates();
     this.load();
   }
 
@@ -87,7 +87,7 @@ export class CampaignsPage implements OnInit {
   }
 
   get allTemplates(): any[] {
-    return [...this.messageTemplates, ...this.savedTemplates];
+    return this.savedTemplates.length ? this.savedTemplates : this.messageTemplates;
   }
 
   get running(): number {
@@ -367,34 +367,92 @@ export class CampaignsPage implements OnInit {
   saveTemplate(index: number): void {
     const step = this.form.steps[index];
     if (!step?.subjectTemplate?.trim() || !step?.bodyTemplate?.trim()) return;
-    const name = (step.templateName || `FusionFleet template ${this.savedTemplates.length + 1}`).trim();
-    const item = {
-      id: `custom-${Date.now()}`,
-      name,
-      description: "Saved from the FusionFleet campaign builder.",
-      subject: step.subjectTemplate,
-      body: step.bodyTemplate
+
+    const input = {
+      name: (step.templateName || `FusionFleet template ${index + 1}`).trim(),
+      description: "Saved from the campaign builder.",
+      subjectTemplate: step.subjectTemplate,
+      bodyTemplate: step.bodyTemplate
     };
-    this.savedTemplates = [...this.savedTemplates.filter(x => x.name !== name), item];
-    this.persistSavedTemplates();
-    step.templateId = item.id;
-    step.templateName = item.name;
-    this.message = `Template “${name}” saved for this workspace.`;
+    const isPersisted = this.isGuid(step.templateId);
+    const request$ = isPersisted
+      ? this.data.updateTemplate(step.templateId, input)
+      : this.data.createTemplate(input);
+
+    request$.subscribe({
+      next: (template) => {
+        this.savedTemplates = [
+          ...this.savedTemplates.filter(x => x.id !== template.id && x.name !== template.name),
+          template
+        ];
+        step.templateId = template.id;
+        step.templateName = template.name;
+        this.message = `Template “${template.name}” saved to the tenant library.`;
+      },
+      error: (error) => {
+        this.error = error?.error?.detail || "Template could not be saved.";
+      }
+    });
   }
 
-  private loadSavedTemplates(): void {
-    try {
-      const raw = localStorage.getItem(`qai-outreach-templates:${this.tenantSlug || "default"}`);
-      this.savedTemplates = raw ? JSON.parse(raw) : [];
-    } catch {
-      this.savedTemplates = [];
+  private loadTemplates(): void {
+    this.data.templates().subscribe({
+      next: (templates) => {
+        this.savedTemplates = templates || [];
+        this.ensureDefaultTemplates();
+      },
+      error: (error) => {
+        this.savedTemplates = [];
+        this.error = this.apiError(error, "Outreach templates could not be loaded.");
+      }
+    });
+  }
+
+  private ensureDefaultTemplates(): void {
+    const missing = this.messageTemplates.filter(
+      builtIn => !this.savedTemplates.some(template => template.name === builtIn.name)
+    );
+    if (!missing.length) {
+      this.syncDefaultStepTemplateIds();
+      return;
     }
+
+    let remaining = missing.length;
+    missing.forEach(builtIn => {
+      this.data.createTemplate({
+        name: builtIn.name,
+        description: builtIn.description,
+        subjectTemplate: builtIn.subject,
+        bodyTemplate: builtIn.body
+      }).subscribe({
+        next: (template) => {
+          this.savedTemplates = [...this.savedTemplates, template];
+          remaining--;
+          if (remaining === 0) this.syncDefaultStepTemplateIds();
+        },
+        error: () => {
+          remaining--;
+          if (remaining === 0) this.syncDefaultStepTemplateIds();
+        }
+      });
+    });
   }
 
-  private persistSavedTemplates(): void {
-    try {
-      localStorage.setItem(`qai-outreach-templates:${this.tenantSlug || "default"}`, JSON.stringify(this.savedTemplates));
-    } catch {}
+  private syncDefaultStepTemplateIds(): void {
+    this.form.steps?.forEach((step: any, index: number) => {
+      const builtIn = this.messageTemplates[index];
+      const persisted = builtIn
+        ? this.savedTemplates.find(template => template.name === builtIn.name)
+        : null;
+      if (persisted && (!step.templateId || !this.isGuid(step.templateId))) {
+        step.templateId = persisted.id;
+        step.templateName = persisted.name;
+      }
+    });
+  }
+
+  private isGuid(value: any): boolean {
+    return typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
   }
 
   renderTemplate(value: string, prospect: any = this.previewProspect): string {
@@ -429,7 +487,7 @@ export class CampaignsPage implements OnInit {
       startsAtUtc: campaign.startsAtUtc || null,
       steps: (campaign.steps || []).map((x: any, i: number) => ({
         stepNumber: x.stepNumber || i + 1, delayHours: x.delayHours || 0, channel: x.channel || "email",
-        subjectTemplate: x.subjectTemplate || "", bodyTemplate: x.bodyTemplate || "", qualification: x.qualification || "qualified",
+        subjectTemplate: x.subjectTemplate || "", bodyTemplate: x.bodyTemplate || "", templateId: x.templateId || "", templateName: x.templateName || "", qualification: x.qualification || "qualified",
         minimumScore: x.minimumScore ?? 70, industry: x.industry || "", countries: x.countries || "",
         companySizeMin: x.companySizeMin ?? null, companySizeMax: x.companySizeMax ?? null, contactRoles: x.contactRoles || "", stopOnReply: x.stopOnReply !== false,
       }))
@@ -450,9 +508,9 @@ export class CampaignsPage implements OnInit {
       senderEmail: this.tenantSlug.toLowerCase().includes("fusionfleet") ? "fusionfleetmk@gmail.com" : "",
       startsAtUtc: null,
       steps: [
-        { ...this.emptyStep(1, 0), templateId: "logistics-intro", templateName: "Logistics operational benchmark", subjectTemplate: this.messageTemplates[0].subject, bodyTemplate: this.messageTemplates[0].body },
-        { ...this.emptyStep(2, 72), templateId: "logistics-benchmark", templateName: "Operational benchmark follow-up", subjectTemplate: this.messageTemplates[1].subject, bodyTemplate: this.messageTemplates[1].body },
-        { ...this.emptyStep(3, 96), templateId: "logistics-close-loop", templateName: "Close the loop", subjectTemplate: this.messageTemplates[2].subject, bodyTemplate: this.messageTemplates[2].body },
+        { ...this.emptyStep(1, 0), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[0].name)?.id || "", templateName: this.messageTemplates[0].name, subjectTemplate: this.messageTemplates[0].subject, bodyTemplate: this.messageTemplates[0].body },
+        { ...this.emptyStep(2, 72), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[1].name)?.id || "", templateName: this.messageTemplates[1].name, subjectTemplate: this.messageTemplates[1].subject, bodyTemplate: this.messageTemplates[1].body },
+        { ...this.emptyStep(3, 96), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[2].name)?.id || "", templateName: this.messageTemplates[2].name, subjectTemplate: this.messageTemplates[2].subject, bodyTemplate: this.messageTemplates[2].body },
       ],
     };
   }
