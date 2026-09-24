@@ -265,7 +265,7 @@
   <form class="form" (ngSubmit)="save()">
     <section *ngIf="builderStep === 1">
       <h3>Who should enter?</h3>
-      <p>Choose the offer and the qualified audience. The campaign will only use recipients that match this audience.</p>
+      <p>Choose the offer and target list. Only prospects already marked <strong>Qualified</strong> by the backend can enter outreach.</p>
 
       <label>
         Campaign name
@@ -319,7 +319,7 @@
             <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="step.minimumScore" [name]="'score' + i" /></label>
             <label>Qualification
               <select [(ngModel)]="step.qualification" [name]="'qualification' + i">
-                <option value="qualified">Qualified</option><option value="any">Any</option>
+                <option value="qualified">Qualified only</option>
               </select>
             </label>
             <label>Industry<input [(ngModel)]="step.industry" [name]="'industry' + i" placeholder="Logistics" /></label>
