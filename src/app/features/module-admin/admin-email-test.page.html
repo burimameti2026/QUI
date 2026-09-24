@@ -27,12 +27,19 @@
           </select>
         </label>
         <label>Template
-          <select [(ngModel)]="selectedTemplateId">
+          <select [(ngModel)]="selectedTemplateId" (ngModelChange)="syncDraft()">
             <option value="">Select a saved template</option>
             <option *ngFor="let t of templates" [value]="t.id">{{ t.name }}</option>
           </select>
         </label>
-        <div class="actions"><button class="button-primary" type="button" (click)="send()" [disabled]="!canSend || sending">{{ sending ? "Sending…" : "Send Test Email" }}</button></div>
+        <label>Template name<input [(ngModel)]="draftName" /></label>
+        <label>Description<input [(ngModel)]="draftDescription" /></label>
+        <label>Subject<textarea [(ngModel)]="draftSubject" rows="2"></textarea><small class="meta">Tokens: {{company}}, {{contact}}, {{industry}}, {{country}}</small></label>
+        <label>Message body<textarea [(ngModel)]="draftBody" rows="8"></textarea></label>
+        <div class="actions">
+          <button class="button-secondary" type="button" (click)="saveTemplate()" [disabled]="!canSave">{{ saving ? "Saving…" : "Save Template" }}</button>
+          <button class="button-primary" type="button" (click)="send()" [disabled]="!canSend || sending">{{ sending ? "Sending…" : "Send Test Email" }}</button>
+        </div>
         <div class="result" *ngIf="result"><strong>Test email accepted by Brevo.</strong><span class="meta">Provider message ID: {{ result.providerMessageId }}</span></div>
       </div>
     </section>
