@@ -1,0 +1,53 @@
+<main class="page">
+  <qai-page-header title="Email Test Center" subtitle="Send one controlled test through the existing tenant email delivery infrastructure.">
+    <div class="page-actions"><button class="button-secondary" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button></div>
+  </qai-page-header>
+
+  <qai-callout *ngIf="error" icon="!" title="Email test unavailable" [text]="error" />
+
+  <section class="hero-card">
+    <div>
+      <span class="eyebrow">Admin utility</span>
+      <h2>Test the real FusionFleet email path</h2>
+      <p>This does not create a campaign or outreach sequence. It sends exactly one email through the Brevo provider already configured in the API.</p>
+    </div>
+    <span class="status-chip" [class.ok]="sender?.verified">{{ sender?.verified ? "Brevo sender verified" : "Sender not verified" }}</span>
+  </section>
+
+  <div class="test-grid">
+    <section class="card">
+      <header class="card-header"><div><h3>Test message</h3><span class="meta">Use a qualified prospect and a saved outreach template.</span></div></header>
+      <div class="form">
+        <label>Sender<input [value]="senderLabel" readonly /></label>
+        <label>Recipient<input [value]="recipientEmail" readonly /><small class="meta">Locked to the verified sender mailbox for this test.</small></label>
+        <label>Prospect
+          <select [(ngModel)]="selectedProspectId">
+            <option value="">Select a qualified prospect</option>
+            <option *ngFor="let p of prospects" [value]="p.id">{{ p.companyName }} — {{ p.contactName || "No contact name" }} — {{ p.email }}</option>
+          </select>
+        </label>
+        <label>Template
+          <select [(ngModel)]="selectedTemplateId">
+            <option value="">Select a saved template</option>
+            <option *ngFor="let t of templates" [value]="t.id">{{ t.name }}</option>
+          </select>
+        </label>
+        <div class="actions"><button class="button-primary" type="button" (click)="send()" [disabled]="!canSend || sending">{{ sending ? "Sending…" : "Send Test Email" }}</button></div>
+        <div class="result" *ngIf="result"><strong>Test email accepted by Brevo.</strong><span class="meta">Provider message ID: {{ result.providerMessageId }}</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <header class="card-header"><div><h3>Rendered preview</h3><span class="meta">Same prospect token rendering used by campaign execution.</span></div></header>
+      <div class="email-preview" *ngIf="selectedTemplate && selectedProspect; else emptyPreview">
+        <div class="email-meta">
+          <div><span>From</span><strong>{{ senderLabel }}</strong></div>
+          <div><span>To</span><strong>{{ recipientEmail }}</strong></div>
+          <div><span>Subject</span><strong>{{ renderedSubject }}</strong></div>
+        </div>
+        <div class="email-body">{{ renderedBody }}</div>
+      </div>
+      <ng-template #emptyPreview><div class="preview-empty"><span class="preview-icon">✉</span><strong>Select a prospect and template</strong><span class="meta">The real values will be rendered here before sending.</span></div></ng-template>
+    </section>
+  </div>
+</main>
