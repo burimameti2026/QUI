@@ -16,6 +16,9 @@ export class AcquisitionService {
   discoveryProviders() {
     return this.api.get<any[]>("acquisition/discovery/providers");
   }
+  verifyDiscoveryProvider(name: string) {
+    return this.api.post<any>(`acquisition/discovery/providers/${encodeURIComponent(name)}/verify`, {});
+  }
   discoverOnline(icpId: string, input: any) {
     return this.api.post<any>(`acquisition/icp/${icpId}/discover`, input);
   }

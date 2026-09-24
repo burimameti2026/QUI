@@ -44,60 +44,22 @@ export class PageHeader {
   selector: "qai-modal",
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div
-      class="modal-backdrop"
-      *ngIf="open"
-      (mousedown)="onBackdropMouseDown($event)"
-      (click)="onBackdropClick($event)"
-    >
-      <section
-        class="modal-card"
-        [class.modal-card--wide]="wide"
-        role="dialog"
-        aria-modal="true"
-        [attr.aria-label]="translate(title)"
-        (mousedown)="$event.stopPropagation()"
-        (click)="$event.stopPropagation()"
-      >
-        <header>
-          <div>
-            <span class="section-kicker">{{ translate('Workspace action') }}</span>
-            <h3>{{ translate(title) }}</h3>
-          </div>
-
-          <button
-            type="button"
-            class="icon-button"
-            [attr.aria-label]="translate('Close')"
-            (click)="close.emit()"
-          >
-            ×
-          </button>
-        </header>
-
-        <div class="modal-body">
-          <ng-content />
-        </div>
-      </section>
-    </div>
-  `,
+  template: `<div class="modal-backdrop" *ngIf="open" (mousedown)="onBackdropMouseDown($event)" (click)="onBackdropClick($event)">
+    <section class="modal-card" [class.modal-card--wide]="wide" role="dialog" aria-modal="true" [attr.aria-label]="translate(title)" (mousedown)="$event.stopPropagation()" (click)="$event.stopPropagation()">
+      <header><div><span class="section-kicker">{{translate('Workspace action')}}</span><h3>{{ translate(title) }}</h3></div><button type="button" class="icon-button" [attr.aria-label]="translate('Close')" (click)="close.emit()">×</button></header>
+      <div class="modal-body"><ng-content /></div>
+    </section>
+  </div>`,
 })
 export class Modal {
   readonly i18n = inject(AdminI18nService);
-
-  @Input() open = false;
-  @Input() title = "";
-  @Input() wide = false;
-
-  @Output() close = new EventEmitter<void>();
-
+  @Input() open=false;
+  @Input() title="";
+  @Input() wide=false;
+  @Output() close=new EventEmitter<void>();
   onBackdropMouseDown(event: MouseEvent): void {
-    if (event.target !== event.currentTarget) {
-      event.stopPropagation();
-    }
+    if (event.target !== event.currentTarget) event.stopPropagation();
   }
-
   onBackdropClick(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.close.emit();
