@@ -349,6 +349,11 @@ export class CampaignsPage implements OnInit {
     return error?.error?.detail || error?.error?.error || (error?.status ? `${fallback} API returned ${error.status}.` : fallback);
   }
 
+  onTemplateChange(templateId: string, index: number): void {
+    const template = this.allTemplates.find((x) => x.id === templateId) || null;
+    this.selectTemplate(template, index);
+  }
+
   selectTemplate(template: any, index: number): void {
     const step = this.form.steps[index];
     if (!step) return;
