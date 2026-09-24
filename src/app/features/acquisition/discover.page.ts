@@ -16,15 +16,15 @@ import { AcquisitionService } from "./acquisition.service";
     <button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="createQualifiedAudience()">Create qualified audience</button>
   </qai-page-header>
   <section class="hero">
-    <div class="stack"><span class="eyebrow">03 · QUALIFICATION</span><h2>Choose who is ready for outreach</h2><p>Score the prospects already discovered for this ICP. Nothing is sent from this step.</p></div>
-    <div class="card"><span class="eyebrow">Current audience</span><h3>{{ prospects.length }} discovered</h3><p>{{ qualifiedProspects.length }} meet the current threshold.</p></div>
+    <div class="stack"><span class="eyebrow">03 · QUALIFICATION</span><h2>Review who is ready for outreach</h2><p>Review prospects that have already completed backend enrichment and qualification. Nothing is sent from this step.</p></div>
+    <div class="card"><span class="eyebrow">Current lifecycle</span><h3>{{ qualifiedCount }} qualified</h3><p>{{ needsEnrichmentCount }} need enrichment · {{ enrichedCount }} enriched · {{ qualifiedCount }} qualified.</p></div>
   </section>
   <div class="notice" *ngIf="error"><b>!</b><span>{{ error }}</span></div>
   <div class="notice success" *ngIf="qualificationMessage"><b>✓</b><span>{{ qualificationMessage }}</span></div>
   <section class="content-grid">
     <article class="card">
-      <header class="card-header"><div><span class="eyebrow">Qualification rule</span><h3>Minimum combined score</h3><p>Fit contributes 55% and intent contributes 45% to the priority score.</p></div></header>
-      <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="qualificationScore" (change)="applyQualificationScore()"></label>
+      <header class="card-header"><div><span class="eyebrow">Qualification rule</span><h3>Qualification result</h3><p>The backend qualification worker is the source of truth for the Qualified status. Score remains visible as supporting evidence.</p></div></header>
+      <label>Score filter<input type="number" min="0" max="100" [(ngModel)]="qualificationScore" (change)="applyQualificationScore()"></label>
       <div class="notice"><strong>{{ qualifiedProspects.length }}</strong><span><b>Qualified prospects</b><small>Ready to become a campaign audience</small></span></div>
       <div class="actions"><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="createQualifiedAudience()">Create audience →</button></div>
     </article>
@@ -35,9 +35,9 @@ import { AcquisitionService } from "./acquisition.service";
     </article>
   </section>
   <section class="card">
-    <header class="card-header"><div><span class="eyebrow">Qualified audience</span><h3>Review before campaigns</h3><p>Only prospects above the threshold are included. You can change the rule and rebuild the audience.</p></div><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="continueToCampaigns()">Continue to Campaigns →</button></header>
+    <header class="card-header"><div><span class="eyebrow">Qualified audience</span><h3>Review before campaigns</h3><p>Only prospects already marked Qualified are included. Existing Qualified prospects stay Qualified and are not sent back through discovery.</p></div><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="continueToCampaigns()">Continue to Campaigns →</button></header>
     <div class="table" *ngIf="qualifiedProspects.length"><table><thead><tr><th>Company</th><th>Contact</th><th>Fit</th><th>Intent</th><th>Score</th><th>Status</th></tr></thead><tbody><tr *ngFor="let x of qualifiedProspects"><td><b>{{ x.companyName }}</b><small>{{ x.domain }}</small></td><td><b>{{ x.contactName || 'Research needed' }}</b><small>{{ x.jobTitle || 'Role unknown' }}</small></td><td>{{ x.fitScore }}</td><td>{{ x.intentScore }}</td><td><span class="status">{{ priority(x) }}</span></td><td>{{ status(x.status) }}</td></tr></tbody></table></div>
-    <div class="empty" *ngIf="!qualifiedProspects.length"><strong>No prospects qualify yet</strong><span>Lower the threshold or return to Prospecting to discover/import more companies.</span></div>
+    <div class="empty" *ngIf="!qualifiedProspects.length"><strong>No qualified prospects yet</strong><span>Wait for enrichment/qualification to complete, or return to Prospecting to discover/import more companies.</span></div>
   </section>
 </div>
 <div class="page" *ngIf="!qualificationMode">
@@ -173,7 +173,7 @@ import { AcquisitionService } from "./acquisition.service";
       <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
       <label>Minimum qualification score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
       <label>Review target list name<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Qualified accounts are placed here for human review; no outreach is sent.</small></label>
-      <footer class="actions"><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="button-primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured">{{ discoveryRunning ? 'Searching…' : 'Find and qualify companies' }}</button></footer>
+      <footer class="actions"><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="button-primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured">{{ discoveryRunning ? 'Searching…' : 'Find companies' }}</button></footer>
     </form>
   </qai-modal>
 
