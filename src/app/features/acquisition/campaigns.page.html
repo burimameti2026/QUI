@@ -316,7 +316,7 @@
           <div class="content-grid">
             <label>
               Template
-              <select [ngModel]="step.templateId" [name]="'template' + i" (ngModelChange)="selectTemplate(allTemplates.find(x => x.id === $event), i)">
+              <select [ngModel]="step.templateId" [name]="'template' + i" (ngModelChange)="onTemplateChange($event, i)">
                 <option value="">Custom message</option>
                 <option *ngFor="let template of allTemplates" [value]="template.id">{{ template.name }}</option>
               </select>
