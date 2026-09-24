@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Modal, PageHeader } from "../../shared/ui";
 import { AcquisitionService } from "./acquisition.service";
+import { AuthService } from "../../core/auth.service";
 
 @Component({
   standalone: true,
@@ -11,7 +12,35 @@ import { AcquisitionService } from "./acquisition.service";
   templateUrl: "./campaigns.page.html",
   styleUrls: ["./campaigns.page.css"],
 })
+
 export class CampaignsPage implements OnInit {
+  readonly messageTemplates = [
+    {
+      id: "logistics-intro",
+      name: "Logistics operational benchmark",
+      description: "Existing logistics outreach template from the acquisition scenario.",
+      subject: "{{company}}: reduce dispatch and delivery exceptions",
+      body: "Hi {{contact}}, I noticed current growth signals at {{company}}. We help {{industry}} teams automate dispatch, warehouse and customer operations. Would a 25-minute operational demo be useful?"
+    },
+    {
+      id: "logistics-benchmark",
+      name: "Operational benchmark follow-up",
+      description: "Follow-up template for logistics teams after the first touch.",
+      subject: "Operational benchmark for {{company}}",
+      body: "Hi {{contact}}, I prepared a short benchmark for teams operating across {{country}}. I can tailor the demo to your fleet, warehouse and delivery workflow."
+    },
+    {
+      id: "logistics-close-loop",
+      name: "Close the loop",
+      description: "Short final follow-up that keeps the conversation respectful.",
+      subject: "Should I close the loop on {{company}}?",
+      body: "Hi {{contact}}, I don't want to keep filling your inbox if this isn't a priority. If improving dispatch, warehouse or delivery operations is on your roadmap, I'm happy to send a short example. Otherwise, I'll close the loop here."
+    }
+  ];
+  prospects: any[] = [];
+  previewProspectId = "";
+  savedTemplates: any[] = [];
+
   @ViewChild("approvalQueue") approvalQueue?: ElementRef<HTMLElement>;
   rows: any[] = [];
   lists: any[] = [];
@@ -39,12 +68,26 @@ export class CampaignsPage implements OnInit {
 
   constructor(
     private readonly data: AcquisitionService,
+    private readonly auth: AuthService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.loadSavedTemplates();
     this.load();
+  }
+
+  get tenantSlug(): string {
+    return this.auth.session()?.tenantSlug || "";
+  }
+
+  get previewProspect(): any {
+    return this.prospects.find(x => x.id === this.previewProspectId) || this.prospects[0] || null;
+  }
+
+  get allTemplates(): any[] {
+    return [...this.messageTemplates, ...this.savedTemplates];
   }
 
   get running(): number {
@@ -116,6 +159,16 @@ export class CampaignsPage implements OnInit {
         }
       },
       error: (e) => (this.error = this.apiError(e, "Target lists could not be loaded.")),
+    });
+    this.data.prospects(0).subscribe({
+      next: (r) => {
+        this.prospects = (r || []).filter((x: any) => {
+          const status = String(x.status ?? "").toLowerCase();
+          return status === "qualified" || status === "enriched" || Number(x.status) === 1 || Number(x.status) === 2;
+        });
+        if (!this.previewProspectId && this.prospects.length) this.previewProspectId = this.prospects[0].id;
+      },
+      error: () => {}
     });
     this.data.messages().subscribe({
       next: (r) => (this.messages = r || []),
@@ -296,6 +349,64 @@ export class CampaignsPage implements OnInit {
     return error?.error?.detail || error?.error?.error || (error?.status ? `${fallback} API returned ${error.status}.` : fallback);
   }
 
+  selectTemplate(template: any, index: number): void {
+    const step = this.form.steps[index];
+    if (!step) return;
+    step.subjectTemplate = template.subject || "";
+    step.bodyTemplate = template.body || "";
+    step.templateId = template.id;
+    step.templateName = template.name;
+    this.message = `Template “${template.name}” loaded into Message ${index + 1}. You can edit it before saving.`;
+  }
+
+  saveTemplate(index: number): void {
+    const step = this.form.steps[index];
+    if (!step?.subjectTemplate?.trim() || !step?.bodyTemplate?.trim()) return;
+    const name = (step.templateName || `FusionFleet template ${this.savedTemplates.length + 1}`).trim();
+    const item = {
+      id: `custom-${Date.now()}`,
+      name,
+      description: "Saved from the FusionFleet campaign builder.",
+      subject: step.subjectTemplate,
+      body: step.bodyTemplate
+    };
+    this.savedTemplates = [...this.savedTemplates.filter(x => x.name !== name), item];
+    this.persistSavedTemplates();
+    step.templateId = item.id;
+    step.templateName = item.name;
+    this.message = `Template “${name}” saved for this workspace.`;
+  }
+
+  private loadSavedTemplates(): void {
+    try {
+      const raw = localStorage.getItem(`qai-outreach-templates:${this.tenantSlug || "default"}`);
+      this.savedTemplates = raw ? JSON.parse(raw) : [];
+    } catch {
+      this.savedTemplates = [];
+    }
+  }
+
+  private persistSavedTemplates(): void {
+    try {
+      localStorage.setItem(`qai-outreach-templates:${this.tenantSlug || "default"}`, JSON.stringify(this.savedTemplates));
+    } catch {}
+  }
+
+  renderTemplate(value: string, prospect: any = this.previewProspect): string {
+    if (!value) return "";
+    if (!prospect) return value;
+    const company = prospect.companyName || prospect.company || prospect.name || "your company";
+    const contact = prospect.contactName || prospect.contact || prospect.firstName || "there";
+    const industry = prospect.industry || "logistics";
+    const country = prospect.country || prospect.location || "your market";
+    return value
+      .replaceAll("{{company}}", company)
+      .replaceAll("{{contact}}", contact)
+      .replaceAll("{{contactName}}", contact)
+      .replaceAll("{{industry}}", industry)
+      .replaceAll("{{country}}", country);
+  }
+
   addStep(): void {
     this.form.steps.push(this.emptyStep(this.form.steps.length + 1, 72));
   }
@@ -330,13 +441,13 @@ export class CampaignsPage implements OnInit {
       targetListId: "",
       offerId: "",
       goal: "book-demo",
-      senderName: "",
-      senderEmail: "",
+      senderName: this.tenantSlug.toLowerCase().includes("fusionfleet") ? "TeamFusionFleet Mk" : "",
+      senderEmail: this.tenantSlug.toLowerCase().includes("fusionfleet") ? "fusionfleetmk@gmail.com" : "",
       startsAtUtc: null,
       steps: [
-        this.emptyStep(1, 0),
-        this.emptyStep(2, 72),
-        this.emptyStep(3, 96),
+        { ...this.emptyStep(1, 0), templateId: "logistics-intro", templateName: "Logistics operational benchmark", subjectTemplate: this.messageTemplates[0].subject, bodyTemplate: this.messageTemplates[0].body },
+        { ...this.emptyStep(2, 72), templateId: "logistics-benchmark", templateName: "Operational benchmark follow-up", subjectTemplate: this.messageTemplates[1].subject, bodyTemplate: this.messageTemplates[1].body },
+        { ...this.emptyStep(3, 96), templateId: "logistics-close-loop", templateName: "Close the loop", subjectTemplate: this.messageTemplates[2].subject, bodyTemplate: this.messageTemplates[2].body },
       ],
     };
   }
