@@ -55,6 +55,18 @@ export class AcquisitionService {
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
+  templates() {
+    return this.api.get<any[]>("acquisition/templates");
+  }
+  createTemplate(input: any) {
+    return this.api.post<any>("acquisition/templates", input);
+  }
+  updateTemplate(id: string, input: any) {
+    return this.api.put<any>(`acquisition/templates/${id}`, input);
+  }
+  deleteTemplate(id: string) {
+    return this.api.delete<any>(`acquisition/templates/${id}`);
+  }
   workspacePackages() {
     return this.api.get<any[]>("workspace-packages");
   }
