@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { forkJoin, of } from "rxjs";\nimport { catchError } from "rxjs/operators";
 import { PageHeader } from "../../shared/ui";
 import { AcquisitionService } from "./acquisition.service";
 
@@ -78,16 +78,16 @@ export class AcquisitionPage implements OnInit {
   refresh(): void {
     this.error = "";
     forkJoin({
-      overview: this.data.overview(),
-      icps: this.data.icps(),
-      prospects: this.data.prospects(),
-      campaigns: this.data.campaigns(),
-      messages: this.data.messages(),
-      targetLists: this.data.targetLists(),
-      packages: this.data.workspacePackages(),
+      overview: this.data.overview().pipe(catchError(() => of({}))),
+      icps: this.data.icps().pipe(catchError(() => of([]))),
+      prospects: this.data.prospects().pipe(catchError(() => of([]))),
+      campaigns: this.data.campaigns().pipe(catchError(() => of([]))),
+      messages: this.data.messages().pipe(catchError(() => of([]))),
+      targetLists: this.data.targetLists().pipe(catchError(() => of([]))),
+      packages: this.data.workspacePackages().pipe(catchError(() => of([]))),
     }).subscribe({
       next: r => Object.assign(this, r),
-      error: e => this.error = e?.error?.detail || "Acquisition workspace could not be loaded.",
+      error: () => this.error = "Acquisition workspace could not be loaded.",
     });
   }
 
