@@ -357,8 +357,8 @@ export class CampaignsPage implements OnInit {
       step.templateName = "";
       return;
     }
-    step.subjectTemplate = template.subject || "";
-    step.bodyTemplate = template.body || "";
+    step.subjectTemplate = template.subjectTemplate || template.subject || "";
+    step.bodyTemplate = template.bodyTemplate || template.body || "";
     step.templateId = template.id;
     step.templateName = template.name;
     this.message = `Template “${template.name}” loaded into Message ${index + 1}. You can edit it before saving.`;
