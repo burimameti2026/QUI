@@ -209,7 +209,7 @@ export class ShellComponent {
       i("Finance", "/enterprise/finance", "◫"),
     ]},
     { label: "ADMINISTRATION", items: [
-      i("Admin Workspace", "/platform", "⚙", undefined),
+      i("Admin Workspace", "/platform", "⚙"),
       i("Users & Roles", "/users", "◎"),
       i("Security", "/security", "◇"),
       i("White Label", "/white-label", "□"),
