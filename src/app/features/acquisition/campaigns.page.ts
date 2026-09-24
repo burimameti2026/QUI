@@ -352,6 +352,11 @@ export class CampaignsPage implements OnInit {
   selectTemplate(template: any, index: number): void {
     const step = this.form.steps[index];
     if (!step) return;
+    if (!template) {
+      step.templateId = "";
+      step.templateName = "";
+      return;
+    }
     step.subjectTemplate = template.subject || "";
     step.bodyTemplate = template.body || "";
     step.templateId = template.id;
