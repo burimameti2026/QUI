@@ -34,7 +34,7 @@
         </label>
         <label>Template name<input [(ngModel)]="draftName" /></label>
         <label>Description<input [(ngModel)]="draftDescription" /></label>
-        <label>Subject<textarea [(ngModel)]="draftSubject" rows="2"></textarea><small class="meta">Tokens: {{company}}, {{contact}}, {{industry}}, {{country}}</small></label>
+        <label>Subject<textarea [(ngModel)]="draftSubject" rows="2"></textarea><small class="meta">Tokens: <code>{{company}}</code>, <code>{{contact}}</code>, <code>{{industry}}</code>, <code>{{country}}</code></small></label>
         <label>Message body<textarea [(ngModel)]="draftBody" rows="8"></textarea></label>
         <div class="actions">
           <button class="button-secondary" type="button" (click)="saveTemplate()" [disabled]="!canSave">{{ saving ? "Saving…" : "Save Template" }}</button>
