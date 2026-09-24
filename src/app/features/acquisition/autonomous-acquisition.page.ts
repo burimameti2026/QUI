@@ -19,6 +19,7 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   tenantId = '';
   agents: any[] = [];
   runs: any[] = [];
+  prospects: any[] = [];
   templates: any[] = [];
   verification: any = null;
   e2eResult: any = null;
@@ -34,8 +35,15 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
   get logisticsTemplate() { return this.templates.find(x => x.code === 'logistics'); }
   get active() { return this.agents.filter(x => String(x.status).toLowerCase().includes('active') || x.status === 1).length; }
   get completed() { return this.runs.filter(x => String(x.status).toLowerCase().includes('completed') || x.status === 2).length; }
-  get discovered() { return this.runs.reduce((n, x) => n + Number(x.discoveredCount || 0), 0); }
-  get qualified() { return this.runs.reduce((n, x) => n + Number(x.qualifiedCount || 0), 0); }
+  get discovered() { return this.prospects.length; }
+  get needsEnrichment() { return this.prospects.filter(x => this.statusKey(x.status) === 'Discovered').length; }
+  get enriched() { return this.prospects.filter(x => this.statusKey(x.status) === 'Enriched').length; }
+  get qualified() { return this.prospects.filter(x => this.statusKey(x.status) === 'Qualified').length; }
+  statusKey(v: any) {
+    if (typeof v === 'number') return ['Discovered', 'Enriched', 'Qualified', 'Nurturing', 'Replied', 'Demo ready', 'Converted', 'Suppressed'][v] || String(v);
+    const value = String(v ?? '').trim();
+    return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : '';
+  }
   get emails() { return this.runs.reduce((n, x) => n + Number(x.emailsSentCount || 0), 0); }
 
   ngOnInit(): void {
@@ -55,11 +63,13 @@ export class AutonomousAcquisitionPage implements OnInit, OnDestroy {
         firstValueFrom(this.api.get<any[]>(`${base}/agents`)),
         firstValueFrom(this.api.get<any[]>(`${base}/runs`)),
         firstValueFrom(this.api.get<any>('autonomous-acquisition/settings')),
-        firstValueFrom(this.api.get<any[]>('autonomous-acquisition/templates'))
+        firstValueFrom(this.api.get<any[]>('autonomous-acquisition/templates')),
+        firstValueFrom(this.api.get<any[]>('acquisition/prospects'))
       ]);
       this.agents = agents || [];
       this.runs = runs || [];
       this.templates = templates || [];
+      this.prospects = prospects || [];
       this.hasSerpApiKey = !!settings?.hasSerpApiKey;
       this.settings.monthlySafetyLimit = Number(settings?.monthlySafetyLimit || 200);
       this.settings.timeZoneId = settings?.timeZoneId || 'UTC';
