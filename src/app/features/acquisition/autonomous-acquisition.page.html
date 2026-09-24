@@ -14,7 +14,7 @@
       <p>The platform researches target accounts, checks fit and intent, identifies the right buyer and prepares English outreach about logistics software. Sending stays approval-controlled.</p>
       <div class="meta">
         <span><i></i>Client: {{ tenantId || 'Unavailable' }}</span>
-        <span><b>{{ qualified }}</b> qualified accounts</span>
+        <span><b>{{ qualified }}</b> qualified accounts · <b>{{ needsEnrichment }}</b> need enrichment</span>
         <span><b>{{ emails }}</b> emails sent</span>
       </div>
     </div>
@@ -39,8 +39,9 @@
   <section class="metric-grid acquisition-kpis">
     <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Agents</span></div><strong>{{ agents.length }}</strong><small>Acquisition configurations</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Active</span></div><strong>{{ active }}</strong><small>Running automatically</small></article>
-    <article class="metric"><div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Discovered</span></div><strong>{{ discovered }}</strong><small>Target accounts found</small></article>
-    <article class="metric"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ qualified }}</strong><small>Fit and intent threshold met</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">⌕</span><span class="metric-label">Needs enrichment</span></div><strong>{{ needsEnrichment }}</strong><small>Discovered accounts waiting for backend enrichment</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">◎</span><span class="metric-label">Enriched</span></div><strong>{{ enriched }}</strong><small>Accounts with enrichment completed</small></article>
+    <article class="metric"><div class="metric-top"><span class="metric-icon">Q</span><span class="metric-label">Qualified</span></div><strong>{{ qualified }}</strong><small>Backend qualification completed</small></article>
     <article class="metric"><div class="metric-top"><span class="metric-icon">✉</span><span class="metric-label">Emails sent</span></div><strong>{{ emails }}</strong><small>Approved outbound messages</small></article>
   </section>
 
