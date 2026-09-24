@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { forkJoin, of } from "rxjs";\nimport { catchError } from "rxjs/operators";
+import { catchError, forkJoin, of } from "rxjs";
 import { PageHeader } from "../../shared/ui";
 import { AcquisitionService } from "./acquisition.service";
 
