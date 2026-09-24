@@ -24,7 +24,6 @@ export class AdminEmailTestService {
     });
   }
 
-  saveTemplate(input: { id?: string; name: string; description: string; subjectTemplate: string; bodyTemplate: string }) {
     if (input.id) {
       return this.api.put<any>(`admin/email-test/templates/${input.id}`, {
         name: input.name, description: input.description,
