@@ -216,6 +216,7 @@ export class ShellComponent {
       i("Industry Packs", "/industry-packs", "▤"),
       i("Audit & Governance", "/audit", "▤"),
       i("Clients & Licenses", "/admin/modules", "▦"),
+      i("Email Test Center", "/admin/email-test", "✉"),
     ]},
   ];
   get session() {
