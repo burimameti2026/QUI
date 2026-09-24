@@ -5,10 +5,9 @@ import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { PageHeader } from '../../shared/ui';
-import { RouterLink } from '@angular/router';
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, PageHeader, RouterLink],
+  imports: [CommonModule, FormsModule, PageHeader],
   templateUrl: './autonomous-acquisition.page.html',
   styleUrl: './autonomous-acquisition.page.css'
 })
