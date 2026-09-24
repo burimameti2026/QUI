@@ -92,7 +92,7 @@ export class AcquisitionPage implements OnInit {
   }
 
   startCampaign(): void {
-    this.router.navigateByUrl("/campaigns");
+    void this.router.navigateByUrl(this.nextRoute);
   }
 
   go(path: string): void {
