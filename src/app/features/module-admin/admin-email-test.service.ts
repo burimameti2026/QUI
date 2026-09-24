@@ -24,15 +24,6 @@ export class AdminEmailTestService {
     });
   }
 
-    if (input.id) {
-      return this.api.put<any>(`admin/email-test/templates/${input.id}`, {
-        name: input.name, description: input.description,
-        subjectTemplate: input.subjectTemplate, bodyTemplate: input.bodyTemplate
-      });
-    }
-    return this.api.post<any>("admin/email-test/templates", input);
-  }
-
   send(input: { prospectId: string; templateId: string; recipientEmail: string }) {
     return this.api.post<any>("admin/email-test/send", input);
   }
