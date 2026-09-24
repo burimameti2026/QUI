@@ -59,7 +59,7 @@ const i = (
         <section
           class="menu-group reference-group"
           *ngFor="let group of navigationGroups"
-          [class.hidden-group]="!groupAllowed(group)"
+          [hidden]="!groupAllowed(group)"
         >
           <div class="group-heading" *ngIf="group.label">
             {{ navLabel(group.label) }}
