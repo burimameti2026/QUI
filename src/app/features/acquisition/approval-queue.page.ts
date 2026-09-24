@@ -99,6 +99,6 @@ export class ApprovalQueuePage implements OnInit {
 
   statusLabel(message: any): string {
     if (message.approvalRequested) return 'Awaiting approval';
-    return String(message.status || 'unknown').replaceAll('_', ' ');
+    return this.messageStatus(message);
   }
 }
