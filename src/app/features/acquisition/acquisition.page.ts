@@ -27,8 +27,17 @@ export class AcquisitionPage implements OnInit {
   ngOnInit(): void { this.refresh(); }
 
   get icpCount() { return this.icps.length; }
-  get prospectCount() { return Number(this.overview.discovered ?? this.prospects.length ?? 0); }
-  get qualifiedCount() { return Number(this.overview.hot ?? this.prospects.filter(x => Number(x.fitScore ?? 0) >= 70).length ?? 0); }
+  get prospectCount() { return this.prospects.length; }
+  get needsEnrichmentCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Discovered").length; }
+  get enrichedCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Enriched").length; }
+  get qualifiedCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Qualified").length; }
+  get statusKey() {
+    return (v: any) => {
+      if (typeof v === "number") return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || String(v);
+      const value = String(v ?? "").trim();
+      return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : "";
+    };
+  }
   get campaignCount() { return this.campaigns.length; }
   get pendingCount() { return this.messages.filter(x => Number(x.status) === 0).length; }
   get packageCount() { return this.packages.length; }
@@ -60,8 +69,8 @@ export class AcquisitionPage implements OnInit {
   get nextDescription(): string {
     if (!this.packageCount) return "Create or select the offer that the acquisition process will promote.";
     if (!this.icpCount) return "Define the company profile and decision-maker criteria you want Prospecting to use.";
-    if (!this.prospectCount) return "Run Prospecting against the selected ICP and bring qualified company and contact data into the workspace.";
-    if (!this.qualifiedCount) return "Use fit and score rules to decide which prospects enter the outreach audience.";
+    if (!this.prospectCount) return "Run Prospecting against the selected ICP to create new accounts. Enrichment and qualification then continue automatically.";
+    if (this.needsEnrichmentCount || this.enrichedCount) return "Let the backend enrichment and qualification lifecycle finish before selecting the qualified outreach audience.";
     if (!this.campaignCount) return "Build the messages, choose the audience rules and decide whether the process is manual or automated.";
     return "Review the exact recipients and messages, then move the campaign to approval.";
   }
