@@ -170,7 +170,17 @@ import { AcquisitionService } from "./acquisition.service";
       <qai-callout icon="⌕" title="Company-level public discovery" text="The search connector finds public company websites, scores them against this ICP and creates a review list. It never invents contacts or email addresses." />
       <label>Search provider<select name="discoverySource" [(ngModel)]="onlineDiscovery.source"><option *ngFor="let provider of discoveryProviders" [value]="provider.name" [disabled]="!provider.configured">{{ provider.name }}{{ provider.verified ? ' — Verified' : provider.configured ? ' — Not verified' : ' — needs API key' }}</option></select><small *ngIf="selectedDiscoveryProvider">{{ selectedDiscoveryProvider.description }}</small></label>
       <div class="notice" *ngIf="selectedDiscoveryProvider"><strong>{{ selectedDiscoveryProvider.verified ? '✓ Verified' : 'Not verified' }}</strong><span *ngIf="selectedDiscoveryProvider.error">{{ selectedDiscoveryProvider.error }}</span><span *ngIf="!selectedDiscoveryProvider.error && !selectedDiscoveryProvider.verified">The provider key exists but has not passed a live connection test.</span><button type="button" class="button-secondary" [disabled]="providerVerifying" (click)="verifySelectedProvider()">{{ providerVerifying ? 'Testing…' : 'Test connection' }}</button></div>
-      <label>State or region<input name="discoveryRegion" [(ngModel)]="onlineDiscovery.region" placeholder="North Rhine-Westphalia, Bavaria, DACH" /><small>Optional. The region becomes an additional market-match signal.</small></label>
+      <div class="country-picker">
+        <label>Target countries</label>
+        <div class="country-grid">
+          <label class="list-item country-option" *ngFor="let country of discoveryCountries">
+            <input type="checkbox" [checked]="selectedDiscoveryCountries.includes(country)" (change)="toggleDiscoveryCountry(country)" />
+            <span>{{ country }}</span>
+          </label>
+        </div>
+        <small>Select one or more countries. Discovery searches each selected market separately and combines the results.</small>
+      </div>
+      <label>State or region<input name="discoveryRegion" [(ngModel)]="onlineDiscovery.region" placeholder="North Rhine-Westphalia, Bavaria, DACH" /><small>Optional. Use this only to narrow the selected countries.</small></label>
       <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
       <label>Minimum qualification score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
       <label>Review target list name<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Qualified accounts are placed here for human review; no outreach is sent.</small></label>
@@ -251,7 +261,9 @@ export class DiscoverPage implements OnInit {
   onlineDiscoveryOpen = false;
   discoveryRunning = false;
   providerVerifying = false;
-  onlineDiscovery: any = { source: "serpapi", region: "", maximumResults: 50, minimumScore: 70, targetListName: "", createTargetList: true };
+  onlineDiscovery: any = { source: "serpapi", region: "", maximumResults: 30, minimumScore: 70, targetListName: "", createTargetList: true, countriesCsv: "" };
+  readonly discoveryCountries = ["Germany", "Austria", "Switzerland", "Netherlands", "Belgium", "France", "Italy", "Slovenia", "Croatia", "Kosovo", "North Macedonia"];
+  selectedDiscoveryCountries: string[] = [];
   icpStep = 0;
   bulkStep = 0;
   signalFor: any;
@@ -369,8 +381,24 @@ export class DiscoverPage implements OnInit {
   openIcp() { this.icpStep = 0; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); this.icpOpen = true; }
   nextIcp() { if (this.canContinueIcp && this.icpStep < 2) this.icpStep++; }
   openBulk() { this.bulkStep = 0; this.bulkError = ""; this.bulkConfirmed = false; this.bulkPreview = undefined; this.bulkFile = undefined; this.bulkRows = []; this.bulkMapping = {}; this.bulkRejected = 0; this.bulkOpen = true; }
-  openOnlineDiscovery() { if (!this.activeIcp) return; this.error = ""; this.message = ""; this.onlineDiscovery.targetListName = `Review — ${this.activeIcp.name} — ${new Date().toISOString().slice(0, 10)}`; this.onlineDiscoveryOpen = true; }
-  runOnlineDiscovery() { if (!this.activeIcp || !this.selectedDiscoveryProvider?.configured) return; this.discoveryRunning = true; this.error = ""; this.data.discoverOnline(this.activeIcp.id, this.onlineDiscovery).subscribe({ next: (result) => { this.discoveryRunning = false; this.onlineDiscoveryOpen = false; this.message = `Online discovery found ${result.received} companies. ${result.qualified} qualified; ${result.created} new and ${result.updated} refreshed. Review list is ready before any outreach.`; this.load(); }, error: (error) => { this.discoveryRunning = false; this.error = error?.error?.detail || "Online discovery could not run. Check the provider connection and try again."; } }); }
+  openOnlineDiscovery() {
+    if (!this.activeIcp) return;
+    this.error = "";
+    this.message = "";
+    this.selectedDiscoveryCountries = String(this.activeIcp.countriesCsv || "")
+      .split(",").map((x: string) => x.trim()).filter((x: string) => this.discoveryCountries.includes(x));
+    if (!this.selectedDiscoveryCountries.length) this.selectedDiscoveryCountries = [...this.discoveryCountries];
+    this.onlineDiscovery.countriesCsv = this.selectedDiscoveryCountries.join(", ");
+    this.onlineDiscovery.targetListName = `Review — ${this.activeIcp.name} — ${new Date().toISOString().slice(0, 10)}`;
+    this.onlineDiscoveryOpen = true;
+  }
+  toggleDiscoveryCountry(country: string) {
+    this.selectedDiscoveryCountries = this.selectedDiscoveryCountries.includes(country)
+      ? this.selectedDiscoveryCountries.filter(x => x !== country)
+      : [...this.selectedDiscoveryCountries, country];
+    this.onlineDiscovery.countriesCsv = this.selectedDiscoveryCountries.join(", ");
+  }
+  runOnlineDiscovery() { if (!this.activeIcp || !this.selectedDiscoveryProvider?.configured || !this.selectedDiscoveryCountries.length) return; this.discoveryRunning = true; this.error = ""; this.data.discoverOnline(this.activeIcp.id, this.onlineDiscovery).subscribe({ next: (result) => { this.discoveryRunning = false; this.onlineDiscoveryOpen = false; this.message = `Online discovery found ${result.received} companies. ${result.qualified} qualified; ${result.created} new and ${result.updated} refreshed. Review list is ready before any outreach.`; this.load(); }, error: (error) => { this.discoveryRunning = false; this.error = error?.error?.detail || "Online discovery could not run. Check the provider connection and try again."; } }); }
   nextBulk() { if (this.bulkStep === 1) this.rebuildMappedRows(); if (this.canContinueBulk && this.bulkStep < 3) this.bulkStep++; }
   get allSelected() { return !!this.visibleProspects.length && this.visibleProspects.every((x) => this.selectedIds.has(x.id)); }
   priority(x: any) { return Math.round(Number(x.fitScore || 0) * 0.55 + Number(x.intentScore || 0) * 0.45); }
