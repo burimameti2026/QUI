@@ -58,25 +58,41 @@ export class DashboardPage implements OnInit {
   async refresh() {
     this.loaded = false;
     this.error = '';
-    try {
-      const requests = await Promise.all([
-        firstValueFrom(this.api.get<any[]>('renova/catalog/products')),
-        firstValueFrom(this.api.get<any[]>('renova/catalog/promotion-plans')),
-        firstValueFrom(this.api.get<any[]>('acquisition/campaigns')),
-        firstValueFrom(this.api.get<any>('acquisition/overview')),
-        this.tenantId
-          ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`))
-          : Promise.resolve([]),
-        this.tenantId
-          ? firstValueFrom(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/runs`))
-          : Promise.resolve([])
-      ]);
 
-      [this.products, this.plans, this.campaigns, this.acquisition, this.agents, this.runs] = requests;
-    } catch (error: any) {
-      this.error = error?.error?.detail || 'Dashboard could not load live workspace data.';
-    } finally {
-      this.loaded = true;
+    const requests = await Promise.all([
+      this.loadSafe<any[]>(this.api.get<any[]>('renova/catalog/products'), []),
+      this.loadSafe<any[]>(this.api.get<any[]>('renova/catalog/promotion-plans'), []),
+      this.loadSafe<any[]>(this.api.get<any[]>('acquisition/campaigns'), []),
+      this.loadSafe<any>(this.api.get<any>('acquisition/overview'), {}),
+      this.tenantId
+        ? this.loadSafe<any[]>(this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents`), [])
+        : Promise.resolve([])
+    ]);
+
+    [this.products, this.plans, this.campaigns, this.acquisition, this.agents] = requests;
+
+    // There is no tenant-wide /runs route in the current API.
+    // Runs are scoped to an agent, so load the latest runs from the agents we already fetched.
+    const runLists = await Promise.all(
+      this.agents.map(agent =>
+        this.loadSafe<any[]>(
+          this.api.get<any[]>(`autonomous-acquisition/tenants/${this.tenantId}/agents/${agent.id}/runs`),
+          []
+        )
+      )
+    );
+    this.runs = runLists.flat().sort(
+      (a, b) => new Date(b.scheduledAtUtc || 0).getTime() - new Date(a.scheduledAtUtc || 0).getTime()
+    );
+
+    this.loaded = true;
+  }
+
+  private async loadSafe<T>(request: import('rxjs').Observable<T>, fallback: T): Promise<T> {
+    try {
+      return await firstValueFrom(request);
+    } catch {
+      return fallback;
     }
   }
 
