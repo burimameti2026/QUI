@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AcquisitionService } from '../acquisition/acquisition.service';
 
 interface PackageBlock {
@@ -42,7 +41,7 @@ export class PackageBuilderPage implements OnInit {
     { id: 'cta', type: 'cta', title: 'Call to action', visible: true }
   ];
 
-  constructor(private router: Router, private acquisition: AcquisitionService) {}
+  constructor(private acquisition: AcquisitionService) {}
 
   ngOnInit(): void { this.loadExistingPackage(); }
 
