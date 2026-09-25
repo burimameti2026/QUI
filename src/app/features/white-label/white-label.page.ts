@@ -102,7 +102,7 @@ interface LayoutSection {
           </button>
         </aside>
 
-        <main class="section-editor">
+        <main class="page page-white-label section-editor">
           <article class="editor-section" *ngFor="let section of layoutSections">
             <button type="button" class="editor-head" (click)="toggleSection(section)">
               <span class="drag-handle">⋮⋮</span>

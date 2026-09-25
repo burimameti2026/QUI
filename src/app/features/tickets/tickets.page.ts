@@ -8,7 +8,7 @@ import { TicketsService } from './tickets.service';
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   template: `
-    <main class="page">
+    <main class="page page-tickets">
       <qai-page-header title="Issues & Tickets" subtitle="Run support operations with assignment, priority, SLA and resolution tracking.">
         <div class="page-actions">
           <button class="button-quiet" type="button" (click)="load()">↻ Refresh</button>

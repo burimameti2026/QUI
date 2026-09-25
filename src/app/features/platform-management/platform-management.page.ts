@@ -6,7 +6,7 @@ import { PageHeader } from '../../shared/ui';
 @Component({
  standalone:true,imports:[CommonModule,RouterLink,PageHeader],
  template:`
- <main class="page">
+ <main class="page page-platform-management">
   <qai-page-header title="Admin Workspace" subtitle="Manage clients, licenses, access and platform governance from one administration surface.">
    <a class="button-primary" routerLink="/admin/modules">＋ Add Client</a>
   </qai-page-header>

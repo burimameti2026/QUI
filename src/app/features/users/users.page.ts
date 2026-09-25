@@ -8,7 +8,7 @@ import { UsersService } from "./users.service";
   standalone: true,
   imports: [CommonModule, FormsModule, PageHeader],
   template: `<qai-page-header title="Users & Access" subtitle="Manage tenant users, roles, permissions and account status through QualifyAI Identity."><button class="button-quiet" (click)="load()">↻ Refresh</button><button class="button-primary" (click)="creating = !creating">+ User</button></qai-page-header>
-    <main class="page">
+    <main class="page page-users">
       <div class="notice" *ngIf="error"><span class="icon">!</span><div class="stack"><b>Identity service could not load users</b><p>{{ error }}</p><button class="button-quiet" (click)="load()">Try again</button></div></div>
       <section class="card form" *ngIf="creating">
         <header class="card-header"><div><h2>Create user</h2><p>The user receives access inside the current tenant.</p></div></header>
