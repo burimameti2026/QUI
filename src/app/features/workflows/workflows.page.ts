@@ -73,23 +73,7 @@ export class WorkflowsPage implements OnInit {
     { type: 'stop', label: 'Stop or suppress', detail: 'End safely on opt-out, loss or failed eligibility' }
   ];
 
-  readonly templates: Template[] = [
-    {
-      name: 'Logistics customer acquisition',
-      segment: 'Sales acquisition',
-      summary: 'Turn European companies with freight demand into qualified sales demos.',
-      outcome: 'Qualified meetings',
-      steps: [
-        ['start', 'Import target companies', 'Licensed provider or reviewed CSV'],
-        ['action', 'Verify and enrich', 'Deduplicate domains and collect company evidence'],
-        ['score', 'Score fit and intent', 'Geography, industry, size and current buying signals'],
-        ['condition', 'Keep sales-ready prospects', 'Fit ≥ 65 and intent ≥ 40'],
-        ['handoff', 'Approve audience and message', 'Sales owner reviews every external send'],
-        ['action', 'Start controlled outreach', 'Suppression checks, verified sender and throttling'],
-        ['meeting', 'Book logistics demo', 'Create CRM opportunity and offer meeting slots']
-      ]
-    },
-    {
+  readonly templates: Template[] = [    {
       name: 'Freight RFQ qualification',
       segment: 'Inbound sales',
       summary: 'Qualify freight requests and route valuable lanes to the right owner.',
