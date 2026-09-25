@@ -1,110 +1,105 @@
-<div class="page page-acquisition">
-  <qai-page-header
-    title="Acquisition"
-    subtitle="A guided path from defining your market to approved outreach."
-  >
-    <button class="button-quiet" type="button" (click)="refresh()">↻ Refresh</button>
-    <button class="button-primary" type="button" (click)="startCampaign()">Continue: {{ nextTitle }}</button>
+<main class="page page-acquisition">
+  <qai-page-header title="Acquisition" subtitle="Run business acquisition through campaign containers, package-defined agents and workflow tasks.">
+    <button class="button-quiet" type="button" (click)="refresh()" [disabled]="loading">{{ loading ? "Loading…" : "↻ Refresh" }}</button>
+    <button class="button-primary" type="button" (click)="openCampaigns()">+ Campaign container</button>
   </qai-page-header>
 
   <section class="hero">
-    <div>
-      <span class="eyebrow">WORKSPACE FLOW</span>
-      <h2>What do you want to do next?</h2>
-      <p>{{ nextDescription }}</p>
-    </div>
     <div class="stack">
-      <span><i class="status-dot success"></i> <b>{{ readyCount }}/4 areas ready</b></span>
-      <small>{{ prospectCount }} prospects · {{ qualifiedCount }} qualified · {{ pendingCount }} awaiting approval</small>
+      <span class="eyebrow">CAMPAIGN EXECUTION</span>
+      <h2>One container controls the complete acquisition workflow.</h2>
+      <p>Packages provide capabilities and business agents. The campaign owns the workflow, its steps and task progression. Backend workers execute those tasks in the infrastructure.</p>
+    </div>
+    <div class="card">
+      <header class="card-header"><div><span class="eyebrow">BUSINESS MODEL</span><h3>Package → Agent → Workflow → Campaign</h3></div></header>
+      <div class="card-body">
+        <div class="meta">
+          <span><b>{{ campaigns.length }}</b> campaigns</span>
+          <span><b>{{ runningCount }}</b> running</span>
+          <span><b>{{ pausedCount }}</b> paused</span>
+          <span><b>{{ draftCount }}</b> draft</span>
+        </div>
+      </div>
     </div>
   </section>
+
+  <div class="alert alert-error" *ngIf="error"><strong>Workspace warning</strong><span>{{ error }}</span></div>
 
   <section class="card">
     <header class="card-header">
-      <div>
-        <span class="eyebrow">YOUR PATH</span>
-        <h3>Follow the work in this order</h3>
+      <div><span class="eyebrow">CAMPAIGN CONTAINERS</span><h2>Your acquisition campaigns</h2><p>Select a container to inspect its package, business agent and live workflow state.</p></div>
+      <div class="actions">
+        <button class="button-secondary" type="button" (click)="openAgents()">Manage agents</button>
+        <button class="button-primary" type="button" (click)="openCampaigns()">Campaign builder</button>
       </div>
     </header>
 
-    <div class="list">
-      <button class="list-item" type="button" (click)="go('/packages/new')">
-        <span class="badge badge-accent">01</span>
-        <span class="stack"><strong>Define the offer</strong><small>Choose what this workspace is selling</small></span>
-        <span class="status">{{ packageCount ? 'Ready' : 'Start here' }}</span>
-        <span aria-hidden="true">→</span>
-      </button>
-
-      <button class="list-item" type="button" (click)="go('/acquisition/icp')">
-        <span class="badge badge-accent">02</span>
-        <span class="stack"><strong>Define the ICP</strong><small>Tell the system which companies and buyers matter</small></span>
-        <span class="status">{{ icpCount ? icpCount + ' configured' : 'Required' }}</span>
-        <span aria-hidden="true">→</span>
-      </button>
-
-      <button class="list-item" type="button" (click)="go('/discover')">
-        <span class="badge badge-accent">03</span>
-        <span class="stack"><strong>Discover prospects</strong><small>Find companies; enrichment and qualification run after discovery</small></span>
-        <span class="status">{{ prospectCount }} found</span>
-        <span aria-hidden="true">→</span>
-      </button>
-
-      <button class="list-item" type="button" (click)="go('/acquisition/qualification')">
-        <span class="badge badge-accent">04</span>
-        <span class="stack"><strong>Review qualified prospects</strong><small>Only qualified prospects are eligible for controlled outreach</small></span>
-        <span class="status">{{ qualifiedCount }} qualified</span>
-        <span aria-hidden="true">→</span>
-      </button>
-
-      <button class="list-item" type="button" (click)="go('/campaigns')">
-        <span class="badge badge-accent">05</span>
-        <span class="stack"><strong>Create the campaign</strong><small>Select the audience, offer, sender and messages</small></span>
-        <span class="status">{{ campaignCount }} campaigns</span>
-        <span aria-hidden="true">→</span>
-      </button>
-
-      <button class="list-item" type="button" (click)="go('/acquisition/approval-queue')">
-        <span class="badge badge-accent">06</span>
-        <span class="stack"><strong>Approve outreach</strong><small>Review messages before anything is sent</small></span>
-        <span class="status">{{ pendingCount }} waiting</span>
+    <div class="list" *ngIf="campaigns.length; else emptyCampaigns">
+      <button class="list-item" type="button" *ngFor="let campaign of campaigns" [class.selected]="selectedCampaign?.id === campaign.id" (click)="selectCampaign(campaign)">
+        <span class="badge badge-accent">◎</span>
+        <span class="stack">
+          <strong>{{ campaign.name }}</strong>
+          <small>{{ campaign.packageCode || "Package" }} · {{ campaign.agentName || "Business agent" }}</small>
+        </span>
+        <span class="status" [ngClass]="'status-' + statusClass(campaign.status)">{{ statusKey(campaign.status) }}</span>
         <span aria-hidden="true">→</span>
       </button>
     </div>
+    <ng-template #emptyCampaigns>
+      <div class="empty"><strong>No campaign containers yet</strong><span>Create a campaign from an installed package. Its agent and workflow are then attached to the container.</span><button class="button-primary" type="button" (click)="openCampaigns()">Create campaign</button></div>
+    </ng-template>
   </section>
 
-  <section class="content-grid">
+  <section class="content-grid" *ngIf="selectedCampaign">
     <article class="card">
       <header class="card-header">
-        <div>
-          <span class="eyebrow">PROSPECT LIFECYCLE</span>
-          <h3>Discovery → Enrichment → Qualification</h3>
-        </div>
+        <div><span class="eyebrow">SELECTED CONTAINER</span><h2>{{ selectedCampaign.name }}</h2><p>{{ selectedCampaign.objective || "Acquisition workflow" }}</p></div>
+        <span class="status" [ngClass]="'status-' + statusClass(selectedCampaign.status)">{{ statusKey(selectedCampaign.status) }}</span>
       </header>
       <div class="card-body">
         <div class="meta">
-          <span class="badge">Needs enrichment: {{ needsEnrichmentCount }}</span>
-          <span class="badge">Enriched: {{ enrichedCount }}</span>
-          <span class="badge">Qualified: {{ qualifiedCount }}</span>
+          <span><b>Package</b> {{ packageName() }}</span>
+          <span><b>Version</b> {{ selectedCampaign.packageVersion || plan?.package?.version || "—" }}</span>
+          <span><b>Agent</b> {{ agentName() }}</span>
+          <span><b>ICP</b> {{ selectedCampaign.icp?.name || plan?.icp?.name || "Campaign ICP" }}</span>
+        </div>
+        <div class="actions">
+          <button class="button-primary" *ngIf="statusKey(selectedCampaign.status) === 'Draft' || statusKey(selectedCampaign.status) === 'Scheduled'" (click)="start(selectedCampaign)">Start</button>
+          <button class="button-secondary" *ngIf="statusKey(selectedCampaign.status) === 'Running'" (click)="pause(selectedCampaign)">Pause</button>
+          <button class="button-secondary" *ngIf="statusKey(selectedCampaign.status) === 'Paused'" (click)="resume(selectedCampaign)">Resume</button>
+          <button class="button-quiet" *ngIf="statusKey(selectedCampaign.status) !== 'Stopped' && statusKey(selectedCampaign.status) !== 'Completed'" (click)="stop(selectedCampaign)">Stop</button>
+          <button class="button-secondary" (click)="openAgents()">View agent</button>
         </div>
       </div>
     </article>
 
     <article class="card">
-      <header class="card-header">
-        <div>
-          <span class="eyebrow">NEXT ACTION</span>
-          <h3>{{ nextTitle }}</h3>
-        </div>
-        <span class="status success">NEXT</span>
-      </header>
+      <header class="card-header"><div><span class="eyebrow">CURRENT TASK</span><h3>{{ currentTask()?.name || currentTask()?.key || "Waiting for execution" }}</h3><p>{{ currentTask()?.purpose || "The campaign will continue from its persisted workflow state." }}</p></div></header>
       <div class="card-body">
-        <p>{{ nextDescription }}</p>
-        <button class="button-primary" type="button" (click)="go(nextRoute)">Open {{ nextTitle }}</button>
+        <div class="notice" *ngIf="currentTask()"><strong>{{ stepStatus(currentTask()) }}</strong><span>{{ currentTask()?.requiresApproval ? "Human approval is required before this task can continue." : "Task is controlled by the campaign workflow." }}</span></div>
+        <div class="empty" *ngIf="!currentTask()">No active task. Start or resume the campaign to execute its workflow.</div>
       </div>
     </article>
   </section>
 
-  <div class="alert alert-error" *ngIf="error">
-    <strong>Workspace warning</strong><span>{{ error }}</span>
-  </div>
-</div>
+  <section class="card" *ngIf="selectedCampaign">
+    <header class="card-header">
+      <div><span class="eyebrow">WORKFLOW</span><h2>{{ plan?.workflowName || plan?.workflow?.name || "Campaign workflow" }}</h2><p>These are the defined business steps. Runtime tasks are created and persisted for this campaign.</p></div>
+      <button class="button-secondary" type="button" (click)="openApproval()">Approval queue</button>
+    </header>
+    <div class="list" *ngIf="workflowSteps().length; else noSteps">
+      <div class="list-item" *ngFor="let step of workflowSteps()">
+        <span class="badge">{{ step.sequence || step.order || "—" }}</span>
+        <span class="stack"><strong>{{ step.name || step.key }}</strong><small>{{ step.purpose || step.description || "Workflow task" }}</small></span>
+        <span class="status" [ngClass]="'status-' + statusClass(step.status || step.taskStatus)">{{ stepStatus(step) }}</span>
+        <span class="badge" *ngIf="step.requiresApproval">Approval</span>
+      </div>
+    </div>
+    <ng-template #noSteps><div class="empty">No workflow steps were returned for this campaign.</div></ng-template>
+  </section>
+
+  <section class="content-grid">
+    <article class="card"><header class="card-header"><div><span class="eyebrow">DISCOVERY</span><h3>Find companies</h3></div></header><div class="card-body"><p>Discovery belongs to the campaign workflow. Use the campaign ICP and its discovery task rather than a separate global acquisition process.</p><button class="button-secondary" (click)="openDiscover()">Open discovery workspace</button></div></article>
+    <article class="card"><header class="card-header"><div><span class="eyebrow">APPROVAL</span><h3>Human control</h3></div></header><div class="card-body"><p>Outreach pauses at the approval task. Nothing is delivered until the required approval is completed.</p><button class="button-secondary" (click)="openApproval()">Review approvals</button></div></article>
+  </section>
+</main>
