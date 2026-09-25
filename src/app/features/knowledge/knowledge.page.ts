@@ -8,7 +8,7 @@ import { KnowledgeService } from "./knowledge.service";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  template: `<main class="page">
+  template: `<main class="page page-knowledge">
     <qai-page-header
       title="Knowledge"
       subtitle="Ground automated answers in company documents, websites, FAQs and operational data."

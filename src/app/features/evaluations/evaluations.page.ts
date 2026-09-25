@@ -8,7 +8,7 @@ import { EvaluationsService } from './evaluations.service';
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrl: './evaluations.page.css',
-  template: `<main class="page">
+  template: `<main class="page page-evaluations">
   <qai-page-header title="Workflow Evaluations" subtitle="Prove that an assistant gives the expected answer before it is connected to a live customer workflow.">
     <button class="button-secondary" (click)="createDataset()">+ Dataset</button>
     <button class="button-secondary" [disabled]="!selected" (click)="caseOpen=true">+ Test case</button>

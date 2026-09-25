@@ -11,7 +11,7 @@ interface PipelineStage { id: string; pipelineId: string; name: string; sortOrde
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./opportunities.page.css'],
-  template: `<main class="page">
+  template: `<main class="page page-crm-opportunities">
     <qai-page-header title="Opportunities" subtitle="See exactly how qualified demand becomes a deal, then place it in the right sales process."><button class="button-quiet" (click)="load()">↻ Refresh</button><button class="button-primary" (click)="open()">+ Opportunity</button></qai-page-header>
     <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Opportunities could not be loaded</b><p>{{ error }}</p></div></div>
     <section class="hero conversion-guide"><div><span class="eyebrow">CONVERSION PATH</span><h2>From prospect to revenue</h2><p>Prospects enter campaigns. A qualified lead or interested reply creates an opportunity. Every opportunity must be assigned to a pipeline stage to appear on its board.</p></div><ol class="steps"><li><b>1</b> Prospect &amp; campaign</li><li><b>2</b> Qualified lead / reply</li><li><b>3</b> Opportunity</li><li><b>4</b> Pipeline stage</li><li><b>5</b> Won or lost</li></ol></section>

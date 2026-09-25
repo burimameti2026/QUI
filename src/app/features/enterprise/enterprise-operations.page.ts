@@ -12,6 +12,8 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, PageHeader],
   template: `
+<main class="page page-enterprise-operations">
+
     <qai-page-header [title]="title" [subtitle]="subtitle">
       <a routerLink="/enterprise" class="button-quiet enterprise-back">← Back</a>
       <button type="button" class="quiet-action" (click)="load()" [disabled]="loading">↻ Refresh</button>
@@ -50,7 +52,8 @@ interface MetricCard { label: string; value: number; tone: string; icon: string;
       <div class="empty" *ngIf="!loading && !error && !filteredRows.length"><span class="state-icon">⌕</span><strong>{{ rows.length ? 'No matching records' : 'No Renova records yet' }}</strong><span>{{ rows.length ? 'Try another search or clear the filters.' : 'This tenant API returned no records for this module.' }}</span></div>
       <footer class="table-footer" *ngIf="!loading && !error && filteredRows.length"><span>Showing {{ pageStart + 1 }} – {{ pageEnd }} of {{ filteredRows.length | number }} {{ title.toLowerCase() }}</span><div class="pagination"><button type="button" (click)="previousPage()" [disabled]="page===1">‹</button><button type="button" *ngFor="let p of pageNumbers" [class.page-active]="p===page" (click)="goPage(p)">{{p}}</button><button type="button" (click)="nextPage()" [disabled]="page===pageCount">›</button></div></footer>
     </section>
-  `,
+  
+</main>`,
   styleUrl: './enterprise-operations.page.css',
 })
 export class EnterpriseOperationsPage implements OnInit {

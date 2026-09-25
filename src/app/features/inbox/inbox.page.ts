@@ -11,7 +11,7 @@ import { InboxService } from "./inbox.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   template: `
-    <main class="page">
+    <main class="page page-inbox">
       <qai-page-header title="Inbox" subtitle="Customer conversations with complete CRM and automation context.">
         <div class="page-actions">
           <button class="button-quiet" (click)="load()">↻ Refresh</button>

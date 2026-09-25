@@ -12,7 +12,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
   styleUrls: ['./leads.page.css'],
   template: `
-    <section class="page">
+    <section class="page page-crm-leads">
     <qai-page-header title="Leads" subtitle="Manage your sales leads and move qualified demand into the CRM.">
       <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
       <button class="button-primary" type="button" (click)="openCreate()">+ Create Lead</button>

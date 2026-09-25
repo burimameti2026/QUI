@@ -10,7 +10,7 @@ import { IntegrationsService } from "./integrations.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
-    <main class="page">
+    <main class="page page-integrations">
       <qai-page-header
         title="Integrations"
         subtitle="Connect CRM, calendar, messaging and operational systems."
