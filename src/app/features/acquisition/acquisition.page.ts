@@ -1,8 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, inject } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, forkJoin, of } from "rxjs";
+import { forkJoin, of } from "rxjs";
+import { catchError } from "rxjs/operators";
 import { PageHeader } from "../../shared/ui";
+import { AuthService } from "../../core/auth.service";
 import { AcquisitionService } from "./acquisition.service";
 
 @Component({
@@ -13,89 +15,128 @@ import { AcquisitionService } from "./acquisition.service";
 })
 export class AcquisitionPage implements OnInit {
   private readonly data = inject(AcquisitionService);
+  private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  icps: any[] = [];
-  prospects: any[] = [];
+  tenantId = "";
   campaigns: any[] = [];
-  messages: any[] = [];
-  targetLists: any[] = [];
-  packages: any[] = [];
-  overview: any = {};
+  selectedCampaign: any = null;
+  plan: any = null;
   error = "";
+  loading = false;
 
-  ngOnInit(): void { this.refresh(); }
+  ngOnInit(): void {
+    this.tenantId = this.auth.session()?.tenantId || "";
+    void this.refresh();
+  }
 
-  get icpCount() { return this.icps.length; }
-  get prospectCount() { return this.prospects.length; }
-  get needsEnrichmentCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Discovered").length; }
-  get enrichedCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Enriched").length; }
-  get qualifiedCount() { return this.prospects.filter(x => this.statusKey(x.status) === "Qualified").length; }
+  get runningCount() { return this.campaigns.filter(x => this.statusKey(x.status) === "Running").length; }
+  get pausedCount() { return this.campaigns.filter(x => this.statusKey(x.status) === "Paused").length; }
+  get draftCount() { return this.campaigns.filter(x => this.statusKey(x.status) === "Draft" || this.statusKey(x.status) === "Scheduled").length; }
+
   get statusKey() {
     return (v: any) => {
-      if (typeof v === "number") return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || String(v);
+      if (typeof v === "number") return ["Draft", "Scheduled", "Running", "Paused", "Completed", "Stopped"][v] || String(v);
       const value = String(v ?? "").trim();
-      return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : "";
+      return value ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() : "Unknown";
     };
   }
-  get campaignCount() { return this.campaigns.length; }
-  get pendingCount() { return this.messages.filter(x => Number(x.status) === 0).length; }
-  get packageCount() { return this.packages.length; }
-  get readyCount() { return [this.icpCount, this.prospectCount, this.campaignCount, this.packageCount].filter(x => x > 0).length; }
 
-  get nextTitle(): string {
-    if (!this.packageCount) return "Packages & Offers";
-    if (!this.icpCount) return "ICP";
-    if (!this.prospectCount) return "Prospecting";
-    if (!this.qualifiedCount) return "Qualification & Score";
-    if (!this.campaignCount) return "Campaigns & Messages";
-    return "Approval & Delivery";
-  }
-
-  get nextRoute(): string {
-    const routes: Record<string, string> = {
-      "Packages & Offers": "/packages/new",
-      ICP: "/acquisition/icp",
-      Prospecting: "/discover",
-      "Qualification & Score": "/acquisition/qualification",
-      "Campaigns & Messages": "/campaigns",
-      "Approval & Delivery": "/acquisition/approval-queue",
-    };
-    return routes[this.nextTitle];
-  }
-
-  get nextStatus() { return "NEXT"; }
-
-  get nextDescription(): string {
-    if (!this.packageCount) return "Create or select the offer that the acquisition process will promote.";
-    if (!this.icpCount) return "Define the company profile and decision-maker criteria you want Prospecting to use.";
-    if (!this.prospectCount) return "Run Prospecting against the selected ICP to create new accounts. Enrichment and qualification then continue automatically.";
-    if (this.needsEnrichmentCount || this.enrichedCount) return "Let the backend enrichment and qualification lifecycle finish before selecting the qualified outreach audience.";
-    if (!this.campaignCount) return "Build the messages, choose the audience rules and decide whether the process is manual or automated.";
-    return "Review the exact recipients and messages, then move the campaign to approval.";
-  }
-
-  refresh(): void {
+  async refresh() {
+    if (!this.tenantId) {
+      this.error = "No authenticated tenant is available.";
+      return;
+    }
+    this.loading = true;
     this.error = "";
-    forkJoin({
-      overview: this.data.overview().pipe(catchError(() => of({}))),
-      icps: this.data.icps().pipe(catchError(() => of([]))),
-      prospects: this.data.prospects().pipe(catchError(() => of([]))),
-      campaigns: this.data.campaigns().pipe(catchError(() => of([]))),
-      messages: this.data.messages().pipe(catchError(() => of([]))),
-      targetLists: this.data.targetLists().pipe(catchError(() => of([]))),
-      packages: this.data.workspacePackages().pipe(catchError(() => of([]))),
-    }).subscribe({
-      next: r => Object.assign(this, r),
-      error: () => this.error = "Acquisition workspace could not be loaded.",
+    try {
+      const campaigns = await this.data.autonomousCampaigns(this.tenantId).pipe(catchError(() => of([]))).toPromise();
+      this.campaigns = campaigns || [];
+      if (this.selectedCampaign) {
+        const current = this.campaigns.find(x => x.id === this.selectedCampaign.id);
+        this.selectedCampaign = current || null;
+      }
+      if (!this.selectedCampaign && this.campaigns.length) this.selectedCampaign = this.campaigns[0];
+      await this.loadPlan();
+    } catch (e: any) {
+      this.error = e?.error?.detail || e?.error?.title || "Campaign workspace could not be loaded.";
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async selectCampaign(campaign: any) {
+    this.selectedCampaign = campaign;
+    await this.loadPlan();
+  }
+
+  async loadPlan() {
+    this.plan = null;
+    if (!this.tenantId || !this.selectedCampaign?.id) return;
+    try {
+      this.plan = await this.data.autonomousCampaignPlan(this.tenantId, this.selectedCampaign.id).toPromise();
+    } catch (e: any) {
+      this.error = e?.error?.detail || e?.error?.title || "Campaign workflow could not be loaded.";
+    }
+  }
+
+  statusClass(value: any) { return this.statusKey(value).toLowerCase().replace(/\s+/g, "-"); }
+
+  stepStatus(step: any) {
+    return this.statusKey(step?.status || step?.taskStatus || "Pending");
+  }
+
+  workflowSteps(): any[] {
+    return this.plan?.steps || this.plan?.workflow?.steps || [];
+  }
+
+  currentTask(): any {
+    return this.plan?.currentTask || this.plan?.currentTaskInstance || null;
+  }
+
+  packageName(): string {
+    return this.plan?.package?.name || this.selectedCampaign?.packageCode || "Package";
+  }
+
+  agentName(): string {
+    return this.plan?.agent?.name || this.selectedCampaign?.agentName || "Campaign agent";
+  }
+
+  start(campaign: any) {
+    if (!campaign?.agentId) {
+      this.error = "This campaign has no business agent assigned.";
+      return;
+    }
+    this.error = "";
+    this.data.runAgent(this.tenantId, campaign.agentId).subscribe({
+      next: () => this.refresh(),
+      error: (e) => this.error = e?.error?.detail || e?.error?.title || "Campaign could not be started.",
     });
   }
 
-  startCampaign(): void {
-    void this.router.navigateByUrl(this.nextRoute);
+  pause(campaign: any) {
+    this.data.pauseAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => this.refresh(),
+      error: (e) => this.error = e?.error?.detail || e?.error?.title || "Campaign could not be paused.",
+    });
   }
 
-  go(path: string): void {
-    void this.router.navigateByUrl(path);
+  resume(campaign: any) {
+    this.data.resumeAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => this.refresh(),
+      error: (e) => this.error = e?.error?.detail || e?.error?.title || "Campaign could not be resumed.",
+    });
   }
+
+  stop(campaign: any) {
+    this.data.stopAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => this.refresh(),
+      error: (e) => this.error = e?.error?.detail || e?.error?.title || "Campaign could not be stopped.",
+    });
+  }
+
+  openAgents() { void this.router.navigateByUrl("/agents"); }
+  openCampaigns() { void this.router.navigateByUrl("/campaigns"); }
+  openDiscover() { void this.router.navigateByUrl("/discover"); }
+  openApproval() { void this.router.navigateByUrl("/acquisition/approval-queue"); }
 }
