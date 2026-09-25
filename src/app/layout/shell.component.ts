@@ -168,7 +168,6 @@ export class ShellComponent {
       i("KPIs", "/kpis", "▥"),
     ]},
     { label: "SALES & CRM", items: [
-      i("Prospects", "/discover", "⌕"),
       i("Leads", "/crm/leads", "▣"),
       i("Contacts", "/crm/contacts", "◎"),
       i("Customers", "/crm/companies", "▦"),
@@ -179,9 +178,7 @@ export class ShellComponent {
     { label: "ACQUISITION", items: [
       i("Industry Packs", "/industry-packs", "▤"),
       i("Campaigns", "/campaigns", "◎"),
-      i("ICP & Audience", "/acquisition/icp", "◎"),
       i("Approval Queue", "/acquisition/approval-queue", "◌"),
-      i("Agents", "/agents", "✦"),
     ]},
     { label: "OPERATIONS", items: [
       i("Orders", "/enterprise/ordering", "＋"),
