@@ -30,6 +30,7 @@ export class AcquisitionService {
   campaignActivity(id: string) { return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`); }
   messages() { return this.api.get<any[]>("acquisition/messages"); }
 
+  autonomousTemplates() { return this.api.get<any[]>("autonomous-acquisition/templates"); }
   autonomousCampaigns(tenantId: string) { return this.api.get<any[]>(`autonomous-acquisition/tenants/${tenantId}/campaigns`); }
   autonomousCampaignPlan(tenantId: string, campaignId: string) { return this.api.get<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${campaignId}/plan`); }
   createAutonomousCampaign(tenantId: string, input: any) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns`, input); }
