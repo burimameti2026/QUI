@@ -17,6 +17,7 @@ export class AutonomousAcquisitionPage implements OnInit {
 
   tenantId = '';
   agents: any[] = [];
+  campaigns: any[] = [];
   runs: any[] = [];
   error = '';
   loading = false;
@@ -57,6 +58,7 @@ export class AutonomousAcquisitionPage implements OnInit {
     try {
       const base = `autonomous-acquisition/tenants/${this.tenantId}`;
       this.agents = await firstValueFrom(this.api.get<any[]>(`${base}/agents`)) || [];
+      this.campaigns = await firstValueFrom(this.api.get<any[]>(`${base}/campaigns`)) || [];
       const runLists = await Promise.all(this.agents.map(agent =>
         firstValueFrom(this.api.get<any[]>(`${base}/agents/${agent.id}/runs`)).catch(() => [])
       ));
@@ -69,6 +71,8 @@ export class AutonomousAcquisitionPage implements OnInit {
       this.loading = false;
     }
   }
+
+  campaignFor(agent: any): any { return this.campaigns.find(x => x.agentId === agent.id); }
 
   async action(agent: any, action: 'activate' | 'pause' | 'stop' | 'run') {
     if (!this.tenantId || !agent?.id) return;
