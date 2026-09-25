@@ -10,7 +10,7 @@ import { MeetingsService } from "./meetings.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   template: `
-    <main class="page">
+    <main class="page page-meetings">
       <qai-page-header title="Demos & Meetings" subtitle="Schedule discovery calls and retain the booking against the real CRM contact.">
         <button class="button-quiet" (click)="load()">Refresh</button>
         <button class="button-primary" (click)="open()">+ Schedule meeting</button>

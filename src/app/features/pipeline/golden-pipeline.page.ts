@@ -9,7 +9,7 @@ import { PageHeader } from '../../shared/ui';
   standalone: true,
   imports: [CommonModule, PageHeader],
   template: `
-  <section class="page">
+  <section class="page page-golden-pipeline">
     <qai-page-header title="Golden Pipeline" subtitle="Manage opportunities across your sales stages.">
       <button [disabled]="loading()" (click)="reload()">{{ loading() ? 'Loading…' : '↻ Refresh' }}</button>
     </qai-page-header>
