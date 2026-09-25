@@ -185,7 +185,7 @@ export class ShellComponent {
       i("Enterprise Operations", "/enterprise", "◉"),
     ]},
     { label: "AI & AUTOMATION", items: [
-      i("AI Agents", "/ai/agents", "✦"),
+      i("Agents", "/agents", "✦"),
       i("Workflows", "/workflows", "⌁"),
       i("Automations", "/automations", "✣"),
       i("Acquisition", "/acquisition", "↗", [
