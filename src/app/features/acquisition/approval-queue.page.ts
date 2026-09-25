@@ -89,7 +89,7 @@ export class ApprovalQueuePage implements OnInit {
     } catch (error: any) { this.error = error?.error?.detail || 'Could not retry the message.'; }
   }
 
-  async approveAndSend(message: any) {
+  async approve(message: any) {
     try {
       await firstValueFrom(this.data.approve(message.id));
       this.notice = 'Approval recorded. The message remains queued; the campaign delivery worker can send it only after the approval gate is complete.';
