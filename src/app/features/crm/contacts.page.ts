@@ -10,7 +10,7 @@ import { CrmService } from './crm.service';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./contacts.page.css'],
   template: `
-    <main class="page">
+    <main class="page page-contacts">
       <qai-page-header title="Contacts" subtitle="Unified customer profiles across conversations, sales and support.">
         <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
         <button class="button-secondary" (click)="exportCsv()">⇩ Export CSV</button>

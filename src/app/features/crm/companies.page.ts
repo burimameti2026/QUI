@@ -10,7 +10,7 @@ import { CrmService } from './crm.service';
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ['./companies.page.css'],
   template: `
-    <main class="page">
+    <main class="page page-companies">
       <qai-page-header title="Companies" subtitle="Account intelligence, firmographics and commercial activity.">
         <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
         <button class="button-primary" (click)="open()">+ Add company</button>

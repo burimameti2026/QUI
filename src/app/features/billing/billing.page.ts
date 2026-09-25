@@ -8,7 +8,7 @@ import { BillingLifecycle, BillingService } from './billing.service';
 @Component({
   standalone: true,
   imports: [CommonModule, PageHeader, Empty],
-  template: `<main class="page">
+  template: `<main class="page page-billing">
     <qai-page-header title="Billing & subscription" subtitle="Subscription, lifecycle, usage and provider activity."><div class="page-actions"><button class="button-quiet" type="button" (click)="load()">↻ Refresh</button></div></qai-page-header>
     <div *ngIf="accessMessage" class="notice">{{accessMessage}}</div>
     <section class="hero"><div><span class="eyebrow">CURRENT SUBSCRIPTION</span><h2>{{currentPlanName}}</h2><p>{{statusLabel}} · {{renewalLabel}}</p></div><aside class="status"><strong>{{subscription?.provider||'—'}}</strong><small>Billing provider</small></aside></section>

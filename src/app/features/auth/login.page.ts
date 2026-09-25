@@ -12,7 +12,7 @@ interface LoginTenant { slug: string; label: string; }
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule],
-  template: `<main class="auth">
+  template: `<main class="auth page-login">
     <section class="hero">
       <div class="identity"><span class="brand-mark">Q</span><div><b>Qualify</b><strong>AI</strong><small>{{ t('Business automation') }}</small></div></div>
       <div class="stack">

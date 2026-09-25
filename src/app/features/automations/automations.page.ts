@@ -11,7 +11,7 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrl: "./automations.page.css",
-  template: `<main class="page">
+  template: `<main class="page page-automations">
     <qai-page-header title="Automations" subtitle="Turn customer and sales signals into automated revenue actions.">
       <button class="button-secondary" (click)="openWorkspaceMode()">Workspace data mode</button>
       <button class="button-secondary" (click)="runAll()">▶ Run sales engine</button>

@@ -6,7 +6,7 @@ import { AnalyticsService } from './analytics.service';
 @Component({
   standalone: true,
   imports: [CommonModule, PageHeader],
-  template: `<main class="page">
+  template: `<main class="page page-analytics">
     <qai-page-header title="Analytics & ROI" subtitle="Measure support efficiency, pipeline creation and Automation-influenced revenue.">
       <div class="page-actions"><button class="button-quiet" type="button" (click)="load()">↻ Refresh</button></div>
     </qai-page-header>

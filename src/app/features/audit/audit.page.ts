@@ -5,7 +5,7 @@ import { ApiService } from '../../core/api.service';
 import { PageHeader } from '../../shared/ui';
 
 @Component({standalone:true,imports:[CommonModule,FormsModule,PageHeader],template:`
-<main class="page">
+<main class="page page-audit">
 <qai-page-header title="Audit Log" subtitle="Review security-sensitive actions, configuration changes and automated executions."><div class="page-actions"><button class="button-quiet" type="button" (click)="exportCsv()">Export CSV</button></div></qai-page-header>
 <section class="card"><header class="card-header"><div><span class="eyebrow">SECURITY & GOVERNANCE</span><h2>Audit activity</h2><p>Review platform actions and automated executions.</p></div><span class="meta">{{visible.length}} shown</span></header>
 <div class="toolbar"><label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search action, entity, user"></label></div>

@@ -18,7 +18,7 @@ import { AiAgentsService } from "./ai-agents.service";
       <button class="button-primary" (click)="save()">Save configuration</button>
     </qai-page-header>
 
-    <main class="page">
+    <main class="page page-ai-agents">
       <section class="hero">
         <div>
           <span class="eyebrow">AGENT DEPLOYMENT</span>
