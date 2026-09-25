@@ -351,7 +351,7 @@ qai-modal{display:contents}
 .preview-toolbar strong{display:block;margin-top:3px}.live{font-size:11px;color:var(--wl-success)}.live i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--wl-success);margin-right:5px}
 .preview-page{background:#fff;border:1px solid var(--wl-border);min-height:610px}.preview-block{position:relative;border:1px solid transparent;cursor:pointer}
 .preview-block:hover,.preview-block.active{border-color:var(--wl-accent)}.edit-hint{position:absolute;right:8px;top:8px;background:var(--wl-text);color:#fff;font-size:10px;padding:4px 7px;z-index:2}
-.hero-preview{padding:68px 46px;text-align:center;background:#f8fafc}.preview-kicker{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--wl-accent)}
+.hero-preview{padding:68px 46px;text-align:center;background:#f8fafc}.preview-kicker{font-size:8px;font-weight:800;letter-spacing:.12em;color:var(--wl-accent)}
 .hero-preview h2{font-size:34px;line-height:1.12;max-width:680px;margin:12px auto}.hero-preview p{max-width:620px;margin:0 auto 20px;color:var(--wl-muted);line-height:1.6}
 .preview-cta{border:0;background:var(--wl-accent);color:#fff;padding:11px 18px;font-weight:700}
 .section-preview{padding:36px}.section-preview h3{margin:0 0 18px;font-size:22px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -378,11 +378,11 @@ button,.button-primary,.button-secondary,.button-quiet{border-radius:var(--wl-bu
 @media(max-width:720px){.page-header-main{align-items:flex-start;flex-direction:column}.page-actions{width:100%;justify-content:flex-start;margin-left:0}.card-header{gap:10px}.card-header .actions{margin-left:0;width:100%}.table th,.table td{padding:9px 10px}}
 
 /* Acquisition workflow timeline: prioritize readable labels over decorative card height. */
-.campaign-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border:1px solid var(--wl-border);background:#fff;overflow:hidden}
-.campaign-timeline-step{display:flex;align-items:center;gap:8px;min-width:0;min-height:54px;padding:7px 9px;border-right:1px solid var(--wl-border);background:#fff}
+.campaign-workflow{margin-bottom:10px}.campaign-workflow-heading{display:flex;align-items:center;gap:10px;min-height:30px;padding:0 2px 5px}.campaign-workflow-heading strong{font-size:11px;color:var(--wl-text);font-weight:750}.campaign-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border:1px solid var(--wl-border);background:#fff;overflow:hidden}
+.campaign-timeline-step{display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:5px 7px;border-right:1px solid var(--wl-border);background:#fff}
 .campaign-timeline-step:last-child{border-right:0}
-.campaign-timeline-node{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:var(--wl-accent);color:#fff;font-size:10px;font-weight:800}
-.campaign-timeline-copy{display:flex;flex-direction:column;min-width:0;line-height:1.2}.campaign-timeline-copy strong{font-size:11px;color:var(--wl-text)}.campaign-timeline-copy small{margin-top:2px;color:var(--wl-muted);font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.campaign-timeline-node{display:grid;place-items:center;flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:var(--wl-accent);color:#fff;font-size:10px;font-weight:800}
+.campaign-timeline-copy{display:flex;flex-direction:column;min-width:0;line-height:1.2}.campaign-timeline-copy strong{font-size:10px;color:var(--wl-text)}.campaign-timeline-copy small{margin-top:2px;color:var(--wl-muted);font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .steps{margin-bottom:8px}.steps>div,.steps>button,.steps>li{padding:7px 9px;gap:7px;min-height:44px}.steps>li b{flex-basis:30px;width:30px;height:30px;font-size:11px}
 @media(max-width:900px){.campaign-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.campaign-timeline{grid-template-columns:1fr}.campaign-timeline-step{border-right:0;border-bottom:1px solid var(--wl-border)}.campaign-timeline-step:last-child{border-bottom:0}}
