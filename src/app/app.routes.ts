@@ -48,7 +48,7 @@ export const routes: Routes = [
   {path:'users',canActivate:[requirePermission('users.read')],loadComponent:()=>import('./features/users/users.page').then(m=>m.UsersPage)},
   {path:'security',canActivate:[requirePermission('users.read')],loadComponent:()=>import('./features/security/security.page').then(m=>m.SecurityPage)},
   {path:'white-label',canActivate:[requirePermission('settings.manage')],loadComponent:()=>import('./features/white-label/white-label.page').then(m=>m.WhiteLabelPage)},
-  {path:'industry-packs',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/industry-packs/industry-packs.page').then(m=>m.IndustryPacksPage)},
+  {path:'industry-packs',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/industry-packs/industry-packs.page').then(m=>m.IndustryPacksPage)},
   {path:'audit',canActivate:[requirePermission('audit.read')],loadComponent:()=>import('./features/audit/audit.page').then(m=>m.AuditPage)},
   {path:'',pathMatch:'full',redirectTo:'dashboard'}
  ]},
