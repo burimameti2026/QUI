@@ -5,7 +5,6 @@ import { Router } from "@angular/router";
 import { AutomationRule } from "../../core/models/platform.models";
 import { Modal, PageHeader } from "../../shared/ui";
 import { AutomationsService } from "./automations.service";
-import { AcquisitionService } from "../acquisition/acquisition.service";
 
 @Component({
   standalone: true,
@@ -112,7 +111,7 @@ export class AutomationsPage implements OnInit {
   statusFilter = "";
   publishedMessage = "";
   form: any = { name: "Hot lead → pipeline", trigger: "lead.qualified", conditionsJson: '[{"field":"score","operator":">=","value":80}]', actionsJson: '[{"type":"createOpportunity"},{"type":"createTask"},{"type":"notifySales"}]', active: true };
-  constructor(private data: AutomationsService, private acquisition: AcquisitionService, private router: Router) {}
+  constructor(private data: AutomationsService, private router: Router) {}
   ngOnInit() { this.load(); }
   get activeCount() { return this.rows.filter(x => x.active).length; }
   get failedCount() { return this.runs.filter(x => x.status === "failed").length; }
@@ -127,7 +126,6 @@ export class AutomationsPage implements OnInit {
     this.data.list().subscribe(r => this.rows = r);
     this.data.runs().subscribe(r => { this.runs = r; if (r.length) this.lastRun = new Date(r[0].createdAtUtc).toLocaleString(); });
     this.data.deadLetters().subscribe(r => this.deadLetters = r);
-    this.icps = [];
   }
   open(a?: AutomationRule) {
     this.form = a ? { ...a } : { name: "", trigger: "lead.qualified", conditionsJson: "[]", actionsJson: '[{"type":"notifySales"}]', active: true };
