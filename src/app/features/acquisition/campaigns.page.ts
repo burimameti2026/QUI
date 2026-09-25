@@ -176,12 +176,9 @@ export class CampaignsPage implements OnInit {
   }
 
   start(campaign: any): void {
-    if (!campaign?.agentId) {
-      this.error = "This campaign has no workflow agent linked.";
-      return;
-    }
+    if (!campaign?.id) return;
     this.busy = true;
-    this.data.runAgent(this.tenantId, campaign.agentId).subscribe({
+    this.data.startAutonomousCampaign(this.tenantId, campaign.id).subscribe({
       next: () => {
         this.busy = false;
         this.message = "Campaign started. The workflow is queued for execution.";
