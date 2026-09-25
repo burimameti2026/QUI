@@ -94,7 +94,6 @@ import { AcquisitionService } from "../acquisition/acquisition.service";
       <form class="form" (ngSubmit)="save()">
         <label>Name<input [(ngModel)]="form.name" name="name" required /></label>
         <label>Trigger<select [(ngModel)]="form.trigger" name="trigger"><option>lead.score.changed</option><option>lead.qualified</option><option>conversation.sales_intent</option><option>ticket.sla_breach</option><option>meeting.booked</option><option>schedule.weekday</option></select></label>
-        <section class="card" *ngIf="form.trigger === 'schedule.weekday'"><div class="card-body"><b>Online prospect discovery</b><small>Runs live company search against one ICP, scores public evidence and creates a human-review target list. It does not send outreach.</small><div class="form"><label>ICP<select [(ngModel)]="discoveryIcpId" name="discoveryIcp"><option value="">Select an ICP</option><option *ngFor="let icp of icps" [value]="icp.id">{{ icp.name }}</option></select></label><button type="button" (click)="useOnlineDiscoveryTemplate()" [disabled]="!discoveryIcpId">Use discovery template</button></div></div></section>
         <label>Conditions JSON<textarea [(ngModel)]="form.conditionsJson" name="conditions"></textarea></label>
         <label>Actions JSON<textarea [(ngModel)]="form.actionsJson" name="actions"></textarea></label>
         <label class="list-item"><input type="checkbox" [(ngModel)]="form.active" name="active" /> Active</label>
@@ -112,8 +111,6 @@ export class AutomationsPage implements OnInit {
   query = "";
   statusFilter = "";
   publishedMessage = "";
-  icps: any[] = [];
-  discoveryIcpId = "";
   form: any = { name: "Hot lead → pipeline", trigger: "lead.qualified", conditionsJson: '[{"field":"score","operator":">=","value":80}]', actionsJson: '[{"type":"createOpportunity"},{"type":"createTask"},{"type":"notifySales"}]', active: true };
   constructor(private data: AutomationsService, private acquisition: AcquisitionService, private router: Router) {}
   ngOnInit() { this.load(); }
@@ -135,13 +132,6 @@ export class AutomationsPage implements OnInit {
   open(a?: AutomationRule) {
     this.form = a ? { ...a } : { name: "", trigger: "lead.qualified", conditionsJson: "[]", actionsJson: '[{"type":"notifySales"}]', active: true };
     this.show = true;
-  }
-  useOnlineDiscoveryTemplate() {
-    const icp = this.icps.find(x => x.id === this.discoveryIcpId); if (!icp) return;
-    this.form.name = `${icp.name} → qualified target list`;
-    this.form.trigger = "schedule.weekday";
-    this.form.conditionsJson = '[{"field":"icp.active","operator":"equals","value":true}]';
-    this.form.actionsJson = JSON.stringify([{ type: "discoverProspects", icpId: icp.id, source: "serpapi", maximumResults: 50, minimumScore: 70, createTargetList: true }, { type: "notify", title: "Online discovery review list ready", message: `Review newly qualified accounts for ${icp.name} before outreach.` }]);
   }
   actions(a: AutomationRule) { try { return JSON.parse(a.actionsJson || "[]").map((x: any) => x.type || x.action || x).join(" → "); } catch { return a.actionsJson; } }
   conditionSummary(a: AutomationRule) { try { const conditions = JSON.parse(a.conditionsJson || "[]"); return conditions.length ? `${conditions.length} execution condition${conditions.length === 1 ? "" : "s"}` : "Runs whenever the event is received"; } catch { return "Custom execution conditions"; } }
