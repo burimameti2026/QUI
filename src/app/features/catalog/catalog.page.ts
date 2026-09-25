@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
-import { PageHeader } from '../../shared/ui';
 
 interface Category { id: string; name: string; code?: string | null; }
 interface ProductRow {
@@ -18,7 +17,7 @@ interface ProductRow {
   publication?: { status: string; isVisible: boolean; version: number; slug: string } | null;
 }
 
-@Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink,PageHeader],templateUrl:'./catalog.page.html',styleUrl:'./catalog.page.css'})
+@Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink],templateUrl:'./catalog.page.html',styleUrl:'./catalog.page.css'})
 export class CatalogPage implements OnInit {
   products: ProductRow[] = [];
   categoriesList: Category[] = [];

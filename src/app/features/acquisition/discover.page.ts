@@ -118,6 +118,7 @@ import { AcquisitionService } from "./acquisition.service";
       <header class="card-header">
         <div><span class="eyebrow">Audience builder</span><h3>Create target list</h3><p>Turn selected companies into a reusable campaign audience.</p></div>
       </header>
+      <div class="card-body">
       <div class="notice">
         <strong>{{ selectedIds.size }}</strong>
         <span><b>Prospects selected</b><small>{{ selectedIds.size ? 'Ready to create an audience' : 'Select accounts from the grid below' }}</small></span>
