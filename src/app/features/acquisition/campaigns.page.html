@@ -92,6 +92,9 @@
     </header>
 
     <div class="metric-grid compact" *ngIf="plan">
+      <article class="metric"><div class="metric-top"><span class="metric-label">Campaign</span></div><strong>{{ status(plan.campaign?.status ?? selectedCampaign.status) }}</strong><small>Container lifecycle</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-label">Run</span></div><strong>{{ plan.latestRun?.status || 'Not started' }}</strong><small>{{ plan.latestRun?.scheduledAtUtc || 'No execution yet' }}</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-label">Current step</span></div><strong>{{ plan.currentStep?.name || 'Waiting' }}</strong><small>{{ plan.currentStep?.status || 'No pending task' }}</small></article>
       <article class="metric"><div class="metric-top"><span class="metric-label">Package</span></div><strong>{{ plan.packageCode || selectedCampaign.packageCode }}</strong><small>Installed definition</small></article>
       <article class="metric"><div class="metric-top"><span class="metric-label">Steps</span></div><strong>{{ plan.workflow?.steps?.length || 0 }}</strong><small>Workflow tasks</small></article>
       <article class="metric"><div class="metric-top"><span class="metric-label">Agent</span></div><strong>{{ plan.agent?.status || 'Draft' }}</strong><small>Runtime executor</small></article>
