@@ -13,8 +13,9 @@ import { AcquisitionService } from './acquisition.service';
 export class CampaignsPage implements OnInit {
   rows: any[] = [];
   selectedCampaign: any = null;
-  plan: any = null;
+  detail: any = null;
   loading = false;
+  detailLoading = false;
   busy = false;
   error = '';
   message = '';
@@ -47,11 +48,19 @@ export class CampaignsPage implements OnInit {
     this.data.campaigns().subscribe({
       next: rows => {
         this.rows = rows || [];
-        if (this.selectedCampaign) {
-          this.selectedCampaign = this.rows.find(x => x.id === this.selectedCampaign.id) || null;
-        }
-        if (!this.selectedCampaign && this.rows.length) this.inspect(this.rows[0]);
         this.loading = false;
+        if (this.selectedCampaign) {
+          const current = this.rows.find(x => x.id === this.selectedCampaign.id);
+          if (current) {
+            this.selectedCampaign = current;
+            this.loadDetail(current.id);
+          } else {
+            this.selectedCampaign = null;
+            this.detail = null;
+          }
+        } else if (this.rows.length) {
+          this.inspect(this.rows[0]);
+        }
       },
       error: e => {
         this.loading = false;
@@ -62,7 +71,22 @@ export class CampaignsPage implements OnInit {
 
   inspect(campaign: any): void {
     this.selectedCampaign = campaign;
-    this.plan = this.parsePlan(campaign?.planJson);
+    this.loadDetail(campaign.id);
+  }
+
+  loadDetail(id: string): void {
+    this.detailLoading = true;
+    this.detail = null;
+    this.data.campaignDetail(id).subscribe({
+      next: detail => {
+        this.detail = detail;
+        this.detailLoading = false;
+      },
+      error: e => {
+        this.detailLoading = false;
+        this.error = this.apiError(e, 'Campaign container details could not be loaded.');
+      }
+    });
   }
 
   start(campaign: any): void {
@@ -70,7 +94,7 @@ export class CampaignsPage implements OnInit {
     this.data.startCampaign(campaign.id).subscribe({
       next: () => {
         this.busy = false;
-        this.message = 'Campaign started. Execution remains subject to the campaign worker and approval gates.';
+        this.message = 'Campaign started. Discovery and execution are now scoped to this running container.';
         this.load();
       },
       error: e => {
@@ -81,23 +105,26 @@ export class CampaignsPage implements OnInit {
   }
 
   pause(campaign: any): void {
+    this.busy = true;
     this.data.pauseCampaign(campaign.id).subscribe({
-      next: () => { this.message = 'Campaign paused.'; this.load(); },
-      error: e => this.error = this.apiError(e, 'Campaign could not be paused.')
+      next: () => { this.busy = false; this.message = 'Campaign paused.'; this.load(); },
+      error: e => { this.busy = false; this.error = this.apiError(e, 'Campaign could not be paused.'); }
     });
   }
 
   resume(campaign: any): void {
+    this.busy = true;
     this.data.resumeCampaign(campaign.id).subscribe({
-      next: () => { this.message = 'Campaign resumed.'; this.load(); },
-      error: e => this.error = this.apiError(e, 'Campaign could not be resumed.')
+      next: () => { this.busy = false; this.message = 'Campaign resumed.'; this.load(); },
+      error: e => { this.busy = false; this.error = this.apiError(e, 'Campaign could not be resumed.'); }
     });
   }
 
   stop(campaign: any): void {
+    this.busy = true;
     this.data.stopCampaign(campaign.id).subscribe({
-      next: () => { this.message = 'Campaign stopped.'; this.load(); },
-      error: e => this.error = this.apiError(e, 'Campaign could not be stopped.')
+      next: () => { this.busy = false; this.message = 'Campaign stopped.'; this.load(); },
+      error: e => { this.busy = false; this.error = this.apiError(e, 'Campaign could not be stopped.'); }
     });
   }
 
@@ -105,14 +132,48 @@ export class CampaignsPage implements OnInit {
     void this.router.navigateByUrl('/industry-packs');
   }
 
-  workflowSteps(): any[] {
-    return this.plan?.steps || [];
+  openApproval(): void {
+    void this.router.navigateByUrl('/acquisition/approval-queue');
   }
 
-  private parsePlan(value: any): any {
-    if (!value) return null;
-    if (typeof value === 'object') return value;
-    try { return JSON.parse(value); } catch { return null; }
+  taskStatus(value: any): string {
+    return ['Pending', 'Running', 'Completed', 'Failed'][Number(value)] || String(value ?? 'Pending');
+  }
+
+  pipelineStatus(index: number): string {
+    const tasks = this.detail?.tasks || [];
+    const typeByIndex = ['Discover', 'Qualify', 'Enrich', 'BuildTargetList', 'Outreach'];
+    const task = tasks.find((x: any) => x.type === typeByIndex[index]);
+    if (task) return this.taskStatus(task.status);
+    if (index === 0 && this.detail?.latestRun) return this.taskStatus(this.detail.latestRun.status);
+    return 'Pending';
+  }
+
+  currentTask(): any {
+    const tasks = this.detail?.tasks || [];
+    return tasks.find((x: any) => this.taskStatus(x.status) === 'Running')
+      || tasks.find((x: any) => this.taskStatus(x.status) === 'Pending')
+      || null;
+  }
+
+  hasApprovalWaiting(): boolean {
+    return (this.detail?.tasks || []).some((x: any) => x.requiresApproval && this.taskStatus(x.status) !== 'Completed')
+      || (this.detail?.latestRun?.status === 'WaitingApproval');
+  }
+
+  prospectStatus(value: any): string {
+    return ['Discovered', 'Enriched', 'Qualified', 'Nurturing', 'Replied', 'DemoReady', 'Converted', 'Suppressed'][Number(value)] || String(value ?? 'Unknown');
+  }
+
+  approvalState(prospect: any): string {
+    const campaignId = this.selectedCampaign?.id;
+    const messages = this.detail?.activity || [];
+    if (!campaignId || !messages.length) return '—';
+    return 'Review in approval queue';
+  }
+
+  track(_: number, item: any): string {
+    return item.id;
   }
 
   private apiError(error: any, fallback: string): string {
