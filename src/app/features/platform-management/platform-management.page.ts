@@ -1,10 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ApiService } from '../../core/api.service';
 import { PageHeader } from '../../shared/ui';
 
+interface TenantWorker {
+  key: string;
+  name: string;
+  description: string;
+  enabled: boolean;
+  saving?: boolean;
+}
+
 @Component({
- standalone:true,imports:[CommonModule,RouterLink,PageHeader],
+ standalone:true,
+ imports:[CommonModule,RouterLink,PageHeader],
  template:`
  <main class="page page-platform-management">
   <qai-page-header title="Admin Workspace" subtitle="Manage clients, licenses, access and platform governance from one administration surface.">
@@ -19,6 +29,28 @@ import { PageHeader } from '../../shared/ui';
   <section class="section"><header class="section-header"><div><span class="eyebrow">CLIENTS & LICENSING</span><h3>Client administration</h3><p>Create clients, configure administrators and assign the licenses and modules they are entitled to use.</p></div></header>
    <div class="content-grid platform-card-grid">
     <a routerLink="/admin/modules" class="card-link"><span class="icon">◈</span><div><b>Clients & Licenses</b><p>Create a client, create its administrator, assign a plan, set limits, enable modules and control the license lifecycle.</p></div><strong>Open →</strong></a>
+   </div>
+  </section>
+
+  <section class="section"><header class="section-header"><div><span class="eyebrow">TENANT RUNTIME</span><h3>Background workers</h3><p>Each tenant decides which optional background workers are allowed to run. New tenants start with all optional workers disabled.</p></div></header>
+   <div class="content-grid platform-card-grid">
+    <article class="card" *ngFor="let worker of workers">
+      <header class="card-header">
+        <div><span class="eyebrow">WORKER</span><h3>{{ worker.name }}</h3></div>
+        <span class="status-pill" [class.success]="worker.enabled">{{ worker.enabled ? 'Enabled' : 'Disabled' }}</span>
+      </header>
+      <div class="card-body">
+        <p>{{ worker.description }}</p>
+        <div class="actions">
+          <button type="button" class="button-primary" [disabled]="worker.saving" (click)="toggleWorker(worker)">
+            {{ worker.saving ? 'Saving…' : (worker.enabled ? 'Stop worker' : 'Start worker') }}
+          </button>
+        </div>
+      </div>
+    </article>
+    <article class="card" *ngIf="workers.length === 0 && !workersLoading">
+      <div class="card-body"><div class="empty"><strong>No optional workers configured.</strong><span>The API did not return any tenant worker definitions.</span></div></div>
+    </article>
    </div>
   </section>
 
@@ -39,4 +71,32 @@ import { PageHeader } from '../../shared/ui';
   </section>
  </main>`,
 })
-export class PlatformManagementPage {}
+export class PlatformManagementPage implements OnInit {
+  workers: TenantWorker[] = [];
+  workersLoading = true;
+
+  constructor(private api: ApiService) {}
+
+  ngOnInit(): void {
+    this.loadWorkers();
+  }
+
+  private loadWorkers(): void {
+    this.workersLoading = true;
+    this.api.get<TenantWorker[]>('platform/workers').subscribe({
+      next: workers => { this.workers = workers; this.workersLoading = false; },
+      error: () => { this.workers = []; this.workersLoading = false; },
+    });
+  }
+
+  toggleWorker(worker: TenantWorker): void {
+    worker.saving = true;
+    this.api.put<TenantWorker>(`platform/workers/${encodeURIComponent(worker.key)}`, { enabled: !worker.enabled }).subscribe({
+      next: result => {
+        worker.enabled = result.enabled;
+        worker.saving = false;
+      },
+      error: () => { worker.saving = false; },
+    });
+  }
+}
