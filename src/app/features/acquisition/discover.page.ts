@@ -170,20 +170,22 @@ import { AcquisitionService } from "./acquisition.service";
       <qai-callout icon="⌕" title="Company-level public discovery" text="The search connector finds public company websites, scores them against this ICP and creates a review list. It never invents contacts or email addresses." />
       <label>Search provider<select name="discoverySource" [(ngModel)]="onlineDiscovery.source"><option *ngFor="let provider of discoveryProviders" [value]="provider.name" [disabled]="!provider.configured">{{ provider.name }}{{ provider.verified ? ' — Verified' : provider.configured ? ' — Not verified' : ' — needs API key' }}</option></select><small *ngIf="selectedDiscoveryProvider">{{ selectedDiscoveryProvider.description }}</small></label>
       <div class="notice" *ngIf="selectedDiscoveryProvider"><strong>{{ selectedDiscoveryProvider.verified ? '✓ Verified' : 'Not verified' }}</strong><span *ngIf="selectedDiscoveryProvider.error">{{ selectedDiscoveryProvider.error }}</span><span *ngIf="!selectedDiscoveryProvider.error && !selectedDiscoveryProvider.verified">The provider key exists but has not passed a live connection test.</span><button type="button" class="button-secondary" [disabled]="providerVerifying" (click)="verifySelectedProvider()">{{ providerVerifying ? 'Testing…' : 'Test connection' }}</button></div>
-      <div class="country-picker">
-        <label>Target countries</label>
+      <div class="discovery-section">
+        <div class="discovery-section-title"><strong>Target markets</strong><span>{{ selectedDiscoveryCountries.length }} selected</span></div>
         <div class="country-grid">
-          <label class="list-item country-option" *ngFor="let country of discoveryCountries">
+          <label class="country-option" *ngFor="let country of discoveryCountries">
             <input type="checkbox" [checked]="selectedDiscoveryCountries.includes(country)" (change)="toggleDiscoveryCountry(country)" />
             <span>{{ country }}</span>
           </label>
         </div>
-        <small>Select one or more countries. Discovery searches each selected market separately and combines the results.</small>
+        <small>Select the markets to search. Results are combined and deduplicated before the final limit is applied.</small>
       </div>
-      <label>State or region<input name="discoveryRegion" [(ngModel)]="onlineDiscovery.region" placeholder="North Rhine-Westphalia, Bavaria, DACH" /><small>Optional. Use this only to narrow the selected countries.</small></label>
-      <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
-      <label>Minimum qualification score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
-      <label>Review target list name<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Qualified accounts are placed here for human review; no outreach is sent.</small></label>
+      <div class="discovery-row">
+        <label>State / region<input name="discoveryRegion" [(ngModel)]="onlineDiscovery.region" placeholder="Optional: Bavaria, Milan, DACH" /></label>
+        <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
+        <label>Minimum score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
+      </div>
+      <label>Review target list<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Only qualified accounts are added for human review. No outreach is sent.</small>
       <footer class="actions"><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="button-primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured || !selectedDiscoveryProvider?.verified">{{ discoveryRunning ? 'Searching…' : 'Find companies' }}</button></footer>
     </form>
   </qai-modal>
