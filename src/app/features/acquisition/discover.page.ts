@@ -185,7 +185,7 @@ import { AcquisitionService } from "./acquisition.service";
         <label>Maximum companies<input type="number" name="discoveryMax" min="1" max="100" [(ngModel)]="onlineDiscovery.maximumResults" /></label>
         <label>Minimum score<input type="number" name="discoveryScore" min="0" max="100" [(ngModel)]="onlineDiscovery.minimumScore" /></label>
       </div>
-      <label>Review target list<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Only qualified accounts are added for human review. No outreach is sent.</small>
+      <label>Review target list<input name="discoveryList" [(ngModel)]="onlineDiscovery.targetListName" placeholder="Review — German logistics prospects" /><small>Only qualified accounts are added for human review. No outreach is sent.</small></label>
       <footer class="actions"><button type="button" (click)="onlineDiscoveryOpen = false">Cancel</button><button class="button-primary" type="submit" [disabled]="discoveryRunning || !selectedDiscoveryProvider?.configured || !selectedDiscoveryProvider?.verified">{{ discoveryRunning ? 'Searching…' : 'Find companies' }}</button></footer>
     </form>
   </qai-modal>
