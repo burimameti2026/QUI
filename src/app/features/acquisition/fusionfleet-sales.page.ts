@@ -21,7 +21,7 @@ type Market = {
   template: `
     <qai-page-header title="FusionFleet Sales" subtitle="Find logistics companies and turn them into FusionFleet customers."></qai-page-header>
 
-    <main class="page">
+    <main class="page page-fusionfleet-sales">
       <section class="intro">
         <div>
           <div class="eyebrow">LIVE CUSTOMER ACQUISITION</div>

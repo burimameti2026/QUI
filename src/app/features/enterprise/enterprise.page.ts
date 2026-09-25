@@ -28,7 +28,7 @@ interface Overview { facilities:number; customers:number; orders:number; pending
     @media(max-width:650px){.enterprise-kpis,.enterprise-module-grid{grid-template-columns:1fr}}
   `],
   template:`
-<main class="page">
+<main class="page page-enterprise">
 <qai-page-header title="Enterprise Operations" subtitle="Commercial, physical and financial operations in one tenant workspace."><button class="button-quiet" (click)="load()">↻ Refresh</button></qai-page-header>
 <section class="hero enterprise-hero"><div><span class="eyebrow">ENTERPRISE WORKSPACE</span><h2>One operational surface for commercial, physical and financial work.</h2><p>Navigate the enterprise lifecycle without decorative layers or competing visual treatments.</p></div><span class="status">Renova Workspace</span></section>
 

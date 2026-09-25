@@ -9,7 +9,7 @@ import { AcquisitionService } from "./acquisition.service";
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader, WizardSteps, Callout],
   template: `
-<div class="page" *ngIf="qualificationMode">
+<div class="page page-discover" *ngIf="qualificationMode">
   <qai-page-header title="Qualification & Score" subtitle="Turn discovered prospects into a controlled, reusable audience before messaging.">
     <button class="button-quiet" (click)="load()">↻ Refresh data</button>
     <button class="button-secondary" (click)="router.navigate(['/discover'])">← Prospecting</button>
@@ -40,7 +40,7 @@ import { AcquisitionService } from "./acquisition.service";
     <div class="empty" *ngIf="!qualifiedProspects.length"><strong>No qualified prospects yet</strong><span>Wait for enrichment/qualification to complete, or return to Prospecting to discover/import more companies.</span></div>
   </section>
 </div>
-<div class="page" *ngIf="!qualificationMode">
+<div class="page page-discover" *ngIf="!qualificationMode">
   <qai-page-header title="Prospect Discovery" subtitle="Define who you want to sell to, collect market evidence and prioritize companies showing real buying intent.">
     <button class="button-quiet" (click)="load()">↻ Refresh data</button>
     <button (click)="openIcp()">+ New ICP</button>
