@@ -173,9 +173,15 @@ export class ShellComponent {
       i("Contacts", "/crm/contacts", "◎"),
       i("Leads", "/crm/leads", "▣"),
       i("Pipeline", "/golden-pipeline", "◆"),
-      i("Campaigns", "/campaigns", "✦"),
       i("Replies & Inbox", "/inbox", "▱"),
       i("Demos & Meetings", "/meetings", "◷"),
+    ]},
+    { label: "ACQUISITION", items: [
+      i("Campaigns", "/campaigns", "◎"),
+      i("Agents", "/agents", "✦"),
+      i("Approval Queue", "/acquisition/approval-queue", "◌"),
+      i("ICP & Audience", "/acquisition/icp", "◎"),
+      i("Prospecting", "/discover", "⌕"),
     ]},
     { label: "OPERATIONS", items: [
       i("Orders", "/enterprise/ordering", "＋"),
@@ -185,15 +191,8 @@ export class ShellComponent {
       i("Enterprise Operations", "/enterprise", "◉"),
     ]},
     { label: "AI & AUTOMATION", items: [
-      i("Agents", "/agents", "✦"),
       i("Workflows", "/workflows", "⌁"),
       i("Automations", "/automations", "✣"),
-      i("Acquisition", "/acquisition", "↗", [
-        i("ICP & Audience", "/acquisition/icp", "◎"),
-        i("Prospecting", "/discover", "⌕"),
-        i("Qualification & Score", "/acquisition/qualification", "◇"),
-        i("Approval Queue", "/acquisition/approval-queue", "◌"),
-      ]),
       i("Knowledge", "/knowledge", "▥"),
     ]},
     { label: "ANALYTICS", items: [
