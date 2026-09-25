@@ -91,8 +91,8 @@ export class ApprovalQueuePage implements OnInit {
 
   async approveAndSend(message: any) {
     try {
-      await firstValueFrom(this.data.approveAndSend(message.id));
-      this.notice = 'Approval was recorded and the delivery service was invoked. Any provider or safety gate remains enforced by the backend.';
+      await firstValueFrom(this.data.approve(message.id));
+      this.notice = 'Approval recorded. The message remains queued; the campaign delivery worker can send it only after the approval gate is complete.';
       await this.load();
     } catch (error: any) { this.error = error?.error?.detail || 'The message could not be sent. Backend safety controls may have blocked delivery.'; }
   }
