@@ -1,389 +1,196 @@
 <div class="page page-campaigns">
-<qai-page-header
-  title="Logistics Outreach"
-  subtitle="Turn qualified logistics accounts into targeted English conversations about process automation."
->
-  <button class="button-quiet" (click)="load()">↻ Refresh data</button>
-  <button class="button-primary" (click)="openBuilder()">+ Build campaign</button>
-</qai-page-header>
+  <qai-page-header
+    title="Campaign Containers"
+    subtitle="Install a package, define the ICP, then run its workflow as one controlled campaign."
+  >
+    <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button>
+    <button class="button-primary" type="button" (click)="openBuilder()">+ Create campaign</button>
+  </qai-page-header>
 
-<section class="hero">
-  <div class="stack">
-    <span class="eyebrow">LOGISTICS OUTREACH</span>
-    <h2>{{ rows.length }} campaigns · {{ running }} running</h2>
-    <p>We target logistics operations, prepare English messages about automation software and require human approval before sending.</p>
-  </div>
-</section>
+  <section class="hero">
+    <div class="stack">
+      <span class="eyebrow">PACKAGE → WORKFLOW → CAMPAIGN</span>
+      <h2>{{ rows.length }} campaign containers · {{ running }} running</h2>
+      <p>A campaign is the runtime container for a package-defined workflow. The user controls the campaign; infrastructure workers execute its tasks in the background.</p>
+    </div>
+  </section>
 
-<section class="card campaign-workflow"><header class="card-header"><div><span class="eyebrow">WORKFLOW</span><h3>Outreach pipeline</h3><p>Controlled progression from qualified audience to sales handoff.</p></div><span class="status">Qualified only</span></header><div class="card-body"><div class="campaign-timeline" aria-label="Outreach pipeline">
-  <div class="campaign-timeline-track" aria-hidden="true"></div>
-  <div class="campaign-timeline-step is-current"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Qualified</strong><small>Target accounts</small></span></div>
-  <div class="campaign-timeline-step"><span class="campaign-timeline-node">02</span><span class="campaign-timeline-copy"><strong>Message</strong><small>Prepare sequence</small></span></div>
-  <div class="campaign-timeline-step"><span class="campaign-timeline-node">03</span><span class="campaign-timeline-copy"><strong>Approval</strong><small>Human review</small></span></div>
-  <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Demo</strong><small>Sales handoff</small></span></div>
-</div></div></section>
+  <section class="card campaign-workflow">
+    <header class="card-header">
+      <div>
+        <span class="eyebrow">WORKFLOW ENGINE</span>
+        <h3>How a campaign executes</h3>
+        <p>Package definitions become runtime workflow tasks inside the campaign container.</p>
+      </div>
+    </header>
+    <div class="card-body">
+      <div class="campaign-timeline">
+        <div class="campaign-timeline-step"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Package</strong><small>Installed capability</small></span></div>
+        <div class="campaign-timeline-step"><span class="campaign-timeline-node">02</span><span class="campaign-timeline-copy"><strong>Workflow</strong><small>Defined process</small></span></div>
+        <div class="campaign-timeline-step"><span class="campaign-timeline-node">03</span><span class="campaign-timeline-copy"><strong>Tasks</strong><small>Executable work</small></span></div>
+        <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Approval</strong><small>Human gate</small></span></div>
+        <div class="campaign-timeline-step"><span class="campaign-timeline-node">05</span><span class="campaign-timeline-copy"><strong>Results</strong><small>CRM handoff</small></span></div>
+      </div>
+    </div>
+  </section>
 
-<p class="notice success" *ngIf="message">{{ message }}</p>
-<p class="notice alert-error" *ngIf="error">{{ error }}</p>
-<p class="notice" *ngIf="loading">Loading campaign pipeline…</p>
+  <p class="notice success" *ngIf="message">{{ message }}</p>
+  <p class="notice alert-error" *ngIf="error">{{ error }}</p>
+  <p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
-<div class="content-grid">
   <section class="card">
     <header class="card-header">
       <div>
-        <span class="eyebrow">Campaigns</span>
-        <h3>Acquisition processes</h3>
-        <p>Manage qualified target accounts, sender, English sequence and approval state of every outreach process.</p>
+        <span class="eyebrow">CAMPAIGNS</span>
+        <h3>Active containers</h3>
+        <p>Each container owns its package version, workflow and execution state.</p>
       </div>
       <span class="status">{{ rows.length }} total</span>
     </header>
 
-    <div class="list">
-      <article class="list-item" *ngFor="let campaign of rows" [class.is-running]="campaign.status === 2">
-        <div class="icon">↗</div>
-
+    <div class="list" *ngIf="rows.length; else emptyCampaigns">
+      <article class="list-item" *ngFor="let campaign of rows">
+        <div class="icon">◎</div>
         <div class="stack">
           <div class="identity">
             <strong>{{ campaign.name }}</strong>
-            <span class="status" [ngClass]="'status-' + status(campaign.status).toLowerCase()">{{ status(campaign.status) }}</span>
+            <span class="status" [ngClass]="'status-' + statusClass(campaign.status)">{{ status(campaign.status) }}</span>
           </div>
-
           <div class="meta">
-            <span>
-              <small>Goal</small>
-              <b>{{ campaign.goal || 'Book demo' }}</b>
-            </span>
-            <span>
-              <small>Started</small>
-              <b>{{ campaign.startsAtUtc ? (campaign.startsAtUtc | date: 'short') : 'Not started' }}</b>
-            </span>
-            <span>
-              <small>Recipients</small>
-              <b>{{ campaign.recipients || 0 }}</b>
-              <em>{{ campaign.sent || 0 }} sent · {{ campaign.replied || 0 }} replies</em>
-            </span>
-            <span>
-              <small>Sender</small>
-              <b>{{ campaign.senderName || 'Not assigned' }}</b>
-              <em>{{ campaign.senderEmail }}</em>
-            </span>
+            <span><small>Package</small><b>{{ campaign.packageCode || 'Custom' }}</b><em>v{{ campaign.packageVersion || '—' }}</em></span>
+            <span><small>Objective</small><b>{{ campaign.objective || campaign.name }}</b></span>
+            <span><small>Workflow</small><b>{{ campaign.planStatus || 'ready' }}</b></span>
           </div>
         </div>
-
         <div class="actions">
-          <button class="button-secondary" (click)="inspect(campaign)">Activity</button>
-          <button class="button-secondary" *ngIf="campaign.status !== 4" (click)="openEdit(campaign)">Edit</button>
-          <button class="button-primary" *ngIf="campaign.status === 0" (click)="start(campaign)">Start campaign</button>
-          <button class="button-secondary" *ngIf="campaign.status === 2" (click)="pause(campaign)">Pause</button>
-          <button class="button-primary" *ngIf="campaign.status === 3" (click)="resume(campaign)">Resume</button>
-          <span class="status success" *ngIf="campaign.status === 2">● Live</span>
+          <button class="button-secondary" type="button" (click)="inspect(campaign)">Workflow</button>
+          <button class="button-primary" type="button" *ngIf="campaign.status === 0 || campaign.status === 1" (click)="start(campaign)" [disabled]="busy">Start</button>
+          <button class="button-secondary" type="button" *ngIf="campaign.status === 2" (click)="pause(campaign)">Pause</button>
+          <button class="button-primary" type="button" *ngIf="campaign.status === 3" (click)="resume(campaign)">Resume</button>
+          <button class="button-quiet" type="button" *ngIf="campaign.status !== 4 && campaign.status !== 5" (click)="stop(campaign)">Stop</button>
         </div>
       </article>
     </div>
 
-    <div class="empty" *ngIf="!rows.length">
-      <h3>No campaign yet</h3>
-      <p>Use your already Qualified prospects in a target list, then build the controlled outreach sequence.</p>
-      <button class="button-primary" (click)="openBuilder()">Build campaign</button>
-    </div>
+    <ng-template #emptyCampaigns>
+      <div class="empty">
+        <h3>No campaign containers yet</h3>
+        <p>Create one from an installed package. The package will provide its workflow and task definitions.</p>
+        <button class="button-primary" type="button" (click)="openBuilder()">Create campaign</button>
+      </div>
+    </ng-template>
   </section>
 
-  <aside class="card guardrail-card">
+  <section class="card" *ngIf="selectedCampaign">
     <header class="card-header">
       <div>
-        <span class="eyebrow">Launch guardrails</span>
-        <h3>Safe by design</h3>
-        <p>Every launch is checked before a real message can leave the platform.</p>
+        <span class="eyebrow">CAMPAIGN WORKFLOW</span>
+        <h3>{{ selectedCampaign.name }}</h3>
+        <p>{{ selectedCampaign.packageCode }} · {{ status(selectedCampaign.status) }}</p>
       </div>
-      <span class="status">Protected</span>
+      <button class="button-quiet" type="button" (click)="selectedCampaign = null; plan = null">Close</button>
     </header>
 
-    <div class="guardrail-list">
-      <button class="guardrail-item" type="button" *ngFor="let guardrail of guardrails" (click)="openGuardrail(guardrail)">
-        <span class="guardrail-number">{{ guardrail.number }}</span>
-        <span class="guardrail-copy">
-          <strong>{{ guardrail.title }}</strong>
-          <small>{{ guardrail.summary }}</small>
-        </span>
-        <span class="guardrail-state">Enforced</span>
-        <i aria-hidden="true">›</i>
-      </button>
+    <div class="metric-grid compact" *ngIf="plan">
+      <article class="metric"><div class="metric-top"><span class="metric-label">Package</span></div><strong>{{ plan.packageCode || selectedCampaign.packageCode }}</strong><small>Installed definition</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-label">Steps</span></div><strong>{{ plan.workflow?.steps?.length || 0 }}</strong><small>Workflow tasks</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-label">Agent</span></div><strong>{{ plan.agent?.status || 'Draft' }}</strong><small>Runtime executor</small></article>
+      <article class="metric"><div class="metric-top"><span class="metric-label">Plan</span></div><strong>{{ selectedCampaign.planStatus || 'ready' }}</strong><small>Definition state</small></article>
     </div>
 
-    <footer class="guardrail-footer">
-      <span><i></i> Approval gate</span>
-      <strong>Required before delivery</strong>
-    </footer>
-  </aside>
-</div>
-
-<section class="card" *ngIf="selectedCampaign">
-  <header class="card-header">
-    <div>
-      <span class="eyebrow">Execution history</span>
-      <h3>{{ selectedCampaign.name }}</h3>
-    </div>
-    <button (click)="selectedCampaign = null">Close</button>
-  </header>
-
-  <div class="metric-grid compact">
-    <article class="metric"><div class="metric-top"><span class="metric-label">Recipients</span></div><strong>{{ selectedCampaign.recipients || 0 }}</strong></article>
-    <article class="metric"><div class="metric-top"><span class="metric-label">Queued</span></div><strong>{{ selectedCampaign.queued || 0 }}</strong></article>
-    <article class="metric"><div class="metric-top"><span class="metric-label">Sent</span></div><strong>{{ selectedCampaign.sent || 0 }}</strong></article>
-    <article class="metric"><div class="metric-top"><span class="metric-label">Replies</span></div><strong>{{ selectedCampaign.replied || 0 }}</strong></article>
-  </div>
-
-  <div class="result-summary">
-    <div><span>Delivered</span><b>{{ deliveredResults }}</b></div>
-    <div><span>Interested</span><b>{{ interestedResults }}</b></div>
-    <div><span>Failed</span><b>{{ failedResults }}</b></div>
-    <div><span>Suppressed</span><b>{{ suppressedResults }}</b></div>
-  </div>
-
-  <div class="table" *ngIf="resultMessages.length">
-    <table>
-      <thead><tr><th>Recipient</th><th>Message</th><th>Status</th><th>Next</th></tr></thead>
-      <tbody>
-        <tr *ngFor="let item of resultMessages">
-          <td><b>{{ item.prospect }}</b><small>{{ item.email }}</small></td>
-          <td>{{ item.subject }}</td>
-          <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
-          <td>{{ item.nextRunAtUtc ? (item.nextRunAtUtc | date: 'short') : '—' }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="list" *ngIf="activity.length; else noActivity">
-    <article class="list-item" *ngFor="let item of activity">
-      <span class="status">{{ item.status }}</span>
-      <div>
-        <b>{{ item.title }}</b>
-        <small>{{ item.type }} · {{ item.atUtc | date: 'medium' }}</small>
-        <p *ngIf="item.detail">{{ item.detail }}</p>
-      </div>
-    </article>
-  </div>
-
-  <ng-template #noActivity>
-    <p class="empty">No execution events yet. Start the campaign to queue its first approval-controlled message.</p>
-  </ng-template>
-</section>
-
-<section class="card" #approvalQueue>
-  <header class="card-header">
-    <div>
-      <span class="eyebrow">Human review</span>
-      <b>Approval queue</b>
-      <span>Only queued messages from Qualified prospects should appear here.</span>
-    </div>
-    <span class="status">{{ pendingMessages }} pending</span>
-  </header>
-
-  <div class="table" *ngIf="pendingMessages">
-    <table>
-      <thead>
-        <tr>
-          <th>Company</th>
-          <th>Recipient</th>
-          <th>Subject</th>
-          <th>Status</th>
-          <th>Decision</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of messages" [class.awaiting]="item.status === 0">
-          <ng-container *ngIf="item.status === 0">
-            <td><b>{{ item.prospect }}</b><small>{{ item.contactName }}</small></td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.subject }}</td>
-            <td><span class="status" [ngClass]="'status-' + messageStatus(item.status).toLowerCase()">{{ messageStatus(item.status) }}</span></td>
-            <td>
-              <div class="actions">
-                <button class="button-secondary" *ngIf="!item.approvalRequested" (click)="requestApproval(item)">Request approval</button>
-                <button class="button-primary" *ngIf="item.approvalRequested" (click)="approveAndSend(item)">Approve &amp; send</button>
-                <button class="button-secondary" *ngIf="item.approvalRequested" (click)="rejectApproval(item)">Reject</button>
-              </div>
-            </td>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="empty" *ngIf="!pendingMessages"><b>✓</b><span>No queued messages await review.</span></div>
-</section>
-
-<qai-modal
-  [open]="guardrailOpen"
-  [title]="selectedGuardrail?.title || 'Launch guardrail'"
-  (close)="guardrailOpen = false"
->
-  <section class="card-body" *ngIf="selectedGuardrail">
-    <div class="icon">{{ selectedGuardrail.number }}</div>
-    <div>
-      <span class="eyebrow">SAFE LAUNCH CONTROL</span>
-      <h3>{{ selectedGuardrail.title }}</h3>
-      <p>{{ selectedGuardrail.detail }}</p>
-    </div>
-  </section>
-
-  <div class="notice"><b>✓ Enforced before launch</b><span>{{ selectedGuardrail?.result }}</span></div>
-
-  <footer class="actions">
-    <button type="button" (click)="guardrailOpen = false">Close</button>
-    <button type="button" class="button-primary" (click)="openGuardrailAction()">{{ selectedGuardrail?.action }}</button>
-  </footer>
-</qai-modal>
-
-<qai-modal
-  [open]="show"
-  [title]="editingCampaign ? 'Edit campaign' : 'Build outreach'"
-  (close)="show = false"
->
-  <nav class="steps">
-    <button type="button" class="button-quiet" *ngFor="let label of ['Audience', 'Sender', 'Messages', 'Finish']; let i = index" [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1" (click)="builderStep = i + 1">
-      <b>{{ i + 1 }}</b>
-      <span>{{ label }}</span>
-    </button>
-  </nav>
-
-  <form class="form" (ngSubmit)="save()">
-    <section *ngIf="builderStep === 1">
-      <h3>Who should enter?</h3>
-      <p>Choose the offer and target list. Only prospects already marked <strong>Qualified</strong> by the backend can enter outreach.</p>
-
-      <label>Campaign name<input [(ngModel)]="form.name" name="name" required /></label>
-      <label>Offer / package
-        <select [(ngModel)]="form.offerId" name="offer" required>
-          <option value="">Select offer</option>
-          <option *ngFor="let offer of packages" [value]="offer.id">{{ offer.name }}</option>
-        </select>
-      </label>
-
-      <label>Target list
-        <select [(ngModel)]="form.targetListId" name="list" required>
-          <option value="">Select target list</option>
-          <option *ngFor="let list of lists" [value]="list.id">{{ list.name }}</option>
-        </select>
-      </label>
-    </section>
-
-    <section *ngIf="builderStep === 2">
-      <h3>Who is sending?</h3>
-      <p>The sender address must be verified before any real message can be sent.</p>
-      <div class="content-grid">
-        <label>Sender name<input [(ngModel)]="form.senderName" name="sender" required /></label>
-        <label>Sender email<input type="email" [(ngModel)]="form.senderEmail" name="email" required /></label>
-      </div>
-    </section>
-
-    <section *ngIf="builderStep === 3">
-      <div class="content-grid">
-        <div>
-          <span class="eyebrow">MESSAGE BUILDER</span>
-          <h3>Choose, preview, then make it yours</h3>
-          <p>Pick one of the tenant-safe templates, preview it against a real prospect, edit anything you want and save it to the sequence.</p>
+    <div class="list" *ngIf="plan?.workflow?.steps?.length; else noPlan">
+      <article class="list-item" *ngFor="let step of plan.workflow.steps">
+        <div class="icon">{{ step.sequence }}</div>
+        <div class="stack">
+          <div class="identity">
+            <strong>{{ step.name }}</strong>
+            <span class="status">{{ step.status || 'Pending' }}</span>
+            <span class="status" *ngIf="step.requiresApproval">Approval required</span>
+          </div>
+          <p>{{ step.purpose }}</p>
+          <small *ngIf="step.nextStep">Next: {{ step.nextStep }}</small>
         </div>
-        <label>
-          Preview prospect
-          <select [(ngModel)]="previewProspectId" name="previewProspect">
-            <option *ngFor="let prospect of prospects" [value]="prospect.id">
-              {{ prospect.companyName || prospect.company || prospect.name }}{{ prospect.contactName ? ' · ' + prospect.contactName : '' }}
-            </option>
-          </select>
-        </label>
-      </div>
-
-      <div class="notice success" *ngIf="tenantSlug.toLowerCase().includes('fusionfleet')">
-        <strong>FusionFleet sender locked in</strong>
-        <span>{{ form.senderName }} · {{ form.senderEmail }}</span>
-      </div>
-
-      <article class="card" *ngFor="let step of form.steps; let i = index">
-        <div class="card-body">
-          <header class="card-header">
-            <div>
-              <span class="eyebrow">MESSAGE {{ i + 1 }}</span>
-              <h3>{{ step.templateName || (i === 0 ? 'Initial outreach' : 'Follow-up ' + i) }}</h3>
-              <p>{{ i === 0 ? 'First touch' : 'Follow-up after ' + step.delayHours + ' hours' }}</p>
-            </div>
-            <div class="actions">
-              <button type="button" class="button-quiet" *ngIf="form.steps.length > 1" (click)="removeStep(i)">Remove</button>
-            </div>
-          </header>
-
-          <div class="content-grid">
-            <label>
-              Template
-              <select [ngModel]="step.templateId" [name]="'template' + i" (ngModelChange)="onTemplateChange($event, i)">
-                <option value="">Custom message</option>
-                <option *ngFor="let template of allTemplates" [value]="template.id">{{ template.name }}</option>
-              </select>
-            </label>
-            <label>Wait hours<input type="number" min="0" [(ngModel)]="step.delayHours" [name]="'delay' + i" /></label>
-            <label>Minimum score<input type="number" min="0" max="100" [(ngModel)]="step.minimumScore" [name]="'score' + i" /></label>
-            <label>Qualification
-              <select [(ngModel)]="step.qualification" [name]="'qualification' + i"><option value="qualified">Qualified only</option></select>
-            </label>
-          </div>
-
-          <label>Subject<input [(ngModel)]="step.subjectTemplate" [name]="'subject' + i" placeholder="Subject for {{company}}" /></label>
-          <label>Message<textarea rows="6" [(ngModel)]="step.bodyTemplate" [name]="'body' + i" placeholder="Hi {{contact}}, ..."></textarea></label>
-
-          <div class="notice">
-            <strong>Automation</strong>
-            <span>Reply → STOP · No reply → next message after {{ step.delayHours }}h</span>
-          </div>
-
-          <div class="actions">
-            <button type="button" class="button-secondary" (click)="saveTemplate(i)">Save template</button>
-            <span class="status" *ngIf="step.templateName">Using: {{ step.templateName }}</span>
-          </div>
-
-          <section class="card">
-            <div class="card-body">
-              <div class="content-grid">
-                <div>
-                  <span class="eyebrow">PREVIEW</span>
-                  <h3>{{ renderTemplate(step.subjectTemplate) || 'Message subject' }}</h3>
-                  <p style="white-space: pre-line">{{ renderTemplate(step.bodyTemplate) || 'Write a message to see the live preview.' }}</p>
-                </div>
-                <div class="notice">
-                  <strong>Recipient</strong>
-                  <span>{{ previewProspect?.contactName || previewProspect?.contact || 'Contact' }}</span>
-                  <span>{{ previewProspect?.companyName || previewProspect?.company || previewProspect?.name || 'Company' }}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <label><input type="checkbox" [(ngModel)]="step.stopOnReply" [name]="'stop' + i" /> Stop sequence when the recipient replies</label>
+        <div class="actions">
+          <span class="status" *ngIf="step.result">Completed</span>
+          <span class="status alert" *ngIf="step.error">Failed</span>
         </div>
       </article>
+    </div>
+    <ng-template #noPlan><div class="empty">Workflow plan is not available yet.</div></ng-template>
+  </section>
 
-      <button type="button" class="button-secondary" (click)="addStep()">+ Add message</button>
-    </section>
+  <qai-modal [open]="show" [title]="'Create campaign container'" (close)="show = false">
+    <nav class="steps">
+      <button type="button" class="button-quiet" *ngFor="let label of ['Package', 'ICP', 'Limits', 'Review']; let i = index"
+        [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1" (click)="builderStep = i + 1">
+        <b>{{ i + 1 }}</b><span>{{ label }}</span>
+      </button>
+    </nav>
 
-    <section class="card-body" *ngIf="builderStep === 4">
-      <h3>Final review — ready for approval</h3>
-      <dl>
-        <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
-        <div><dt>Audience</dt><dd>{{ selectedList?.name }}</dd></div>
-        <div><dt>Offer</dt><dd>{{ selectedPackage?.name || "Not selected" }}</dd></div>
-        <div><dt>Sender</dt><dd>{{ form.senderName }} · {{ form.senderEmail }}</dd></div>
-        <div><dt>Sequence</dt><dd>{{ form.steps.length }} approval-controlled emails</dd></div>
-      </dl>
-      <p>FINISH saves this campaign as a controlled draft. It does not send email. Start only when the audience, sender and messages are correct; every real message still requires human approval.</p>
-    </section>
+    <form class="form" (ngSubmit)="save()">
+      <section *ngIf="builderStep === 1">
+        <span class="eyebrow">PACKAGE</span>
+        <h3>Choose the capability package</h3>
+        <p>The package supplies modules, agents, workflow definitions, ICP templates and task definitions. The campaign is the runtime container.</p>
+        <label>Campaign name<input [(ngModel)]="form.name" name="name" required /></label>
+        <label>Package
+          <select [(ngModel)]="form.packageCode" name="package" required>
+            <option *ngFor="let item of packages" [value]="item.code || item.id">{{ item.name }} · v{{ item.version || '1.0' }}</option>
+          </select>
+        </label>
+        <div class="notice" *ngIf="selectedPackage()">
+          <strong>{{ selectedPackage()?.name }}</strong>
+          <span>{{ selectedPackage()?.description || 'Package-defined workflow capability.' }}</span>
+        </div>
+      </section>
 
-    <p class="alert" *ngIf="error">{{ error }}</p>
-    <footer class="actions">
-      <button type="button" (click)="show = false; editingCampaign = null">Cancel</button>
-      <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
-      <button class="button-primary" type="button" *ngIf="builderStep < 4" [disabled]="!canContinue" (click)="next()">Continue</button>
-      <button class="button-primary" type="submit" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Finishing…' : 'FINISH & READY FOR APPROVAL' }}</button>
-    </footer>
-  </form>
-</qai-modal>
+      <section *ngIf="builderStep === 2">
+        <span class="eyebrow">ICP</span>
+        <h3>Define who this campaign should find</h3>
+        <div class="content-grid">
+          <label>Industry<input [(ngModel)]="form.industry" name="industry" /></label>
+          <label>Region<input [(ngModel)]="form.region" name="region" /></label>
+          <label>Countries<input [(ngModel)]="form.countries" name="countries" placeholder="DE, FR, IT, NL" /></label>
+          <label>Minimum qualification score<input type="number" min="0" max="100" [(ngModel)]="form.minimumScore" name="score" /></label>
+        </div>
+        <label>Company types<textarea rows="3" [(ngModel)]="form.companyType" name="companyType"></textarea></label>
+        <label>Buyer roles<textarea rows="3" [(ngModel)]="form.buyerRoles" name="buyerRoles"></textarea></label>
+        <label>Pain points / buying signals<textarea rows="3" [(ngModel)]="form.painPoints" name="painPoints"></textarea></label>
+      </section>
+
+      <section *ngIf="builderStep === 3">
+        <span class="eyebrow">EXECUTION LIMITS</span>
+        <h3>Control the campaign runtime</h3>
+        <div class="content-grid">
+          <label>Daily discovery limit<input type="number" min="1" max="100" [(ngModel)]="form.dailyDiscoveryLimit" name="discoveryLimit" /></label>
+          <label>Daily email limit<input type="number" min="1" max="1000" [(ngModel)]="form.dailyEmailLimit" name="emailLimit" /></label>
+          <label>Sender name<input [(ngModel)]="form.senderName" name="senderName" /></label>
+          <label>Sender email<input type="email" [(ngModel)]="form.senderEmail" name="senderEmail" /></label>
+        </div>
+        <label>Campaign objective<textarea rows="4" [(ngModel)]="form.objective" name="objective" required></textarea></label>
+      </section>
+
+      <section *ngIf="builderStep === 4">
+        <span class="eyebrow">REVIEW</span>
+        <h3>Ready to create the container</h3>
+        <dl>
+          <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
+          <div><dt>Package</dt><dd>{{ selectedPackage()?.name || form.packageCode }} · v{{ selectedPackage()?.version || '1.0' }}</dd></div>
+          <div><dt>ICP</dt><dd>{{ form.industry }} · {{ form.region }}</dd></div>
+          <div><dt>Countries</dt><dd>{{ form.countries }}</dd></div>
+          <div><dt>Qualification</dt><dd>{{ form.minimumScore }}+</dd></div>
+          <div><dt>Limits</dt><dd>{{ form.dailyDiscoveryLimit }} discoveries/day · {{ form.dailyEmailLimit }} emails/day</dd></div>
+        </dl>
+        <p>Creating the campaign does not start execution. After creation, the package workflow can be started from the campaign container.</p>
+      </section>
+
+      <p class="alert" *ngIf="error">{{ error }}</p>
+      <footer class="actions">
+        <button type="button" (click)="show = false">Cancel</button>
+        <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
+        <button type="button" class="button-primary" *ngIf="builderStep < 4" [disabled]="!canContinue()" (click)="next()">Continue</button>
+        <button type="submit" class="button-primary" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Creating…' : 'Create campaign container' }}</button>
+      </footer>
+    </form>
+  </qai-modal>
 </div>
