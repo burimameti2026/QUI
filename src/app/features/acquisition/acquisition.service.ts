@@ -20,31 +20,18 @@ export class AcquisitionService {
   addMembers(id: string, prospectIds: string[]) { return this.api.post<any>(`acquisition/target-lists/${id}/members`, prospectIds); }
 
   campaigns() { return this.api.get<any[]>("acquisition/campaigns"); }
-  templates() { return this.api.get<any[]>("acquisition/templates"); }
-  createTemplate(input: any) { return this.api.post<any>("acquisition/templates", input); }
-  updateTemplate(id: string, input: any) { return this.api.put<any>(`acquisition/templates/${id}`, input); }
-  deleteTemplate(id: string) { return this.api.delete<any>(`acquisition/templates/${id}`); }
   workspacePackages() { return this.api.get<any[]>("workspace-packages"); }
   buildWorkspacePackage(prompt: string) { return this.api.post<any>("workspace-packages/ai/build", { prompt }); }
   saveWorkspacePackage(input: any) { return this.api.post<any>("workspace-packages/save", input); }
   campaignActivity(id: string) { return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`); }
   messages() { return this.api.get<any[]>("acquisition/messages"); }
 
-  autonomousTemplates() { return this.api.get<any[]>("autonomous-acquisition/templates"); }
-  autonomousCampaigns(tenantId: string) { return this.api.get<any[]>(`autonomous-acquisition/tenants/${tenantId}/campaigns`); }
-  autonomousCampaignPlan(tenantId: string, campaignId: string) { return this.api.get<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${campaignId}/plan`); }
-  createAutonomousCampaign(tenantId: string, input: any) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns`, input); }
-  startAutonomousCampaign(tenantId: string, campaignId: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${campaignId}/start`, {}); }
-  pauseAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/pause`, {}); }
-  resumeAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/resume`, {}); }
-  stopAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/stop`, {}); }
-
   requestApproval(id: string) { return this.api.post<any>(`email-operations/messages/${id}/request-approval`, {}); }
-  approveAndSend(id: string) { return this.api.post<any>(`email-operations/messages/${id}/approve-and-send`, {}); }
+  approve(id: string) { return this.api.post<any>(`email-operations/messages/${id}/approve`, {}); }
   rejectApproval(id: string) { return this.api.post<any>(`email-operations/messages/${id}/reject`, {}); }
   retryMessage(id: string) { return this.api.post<any>(`email-operations/messages/${id}/retry`, {}); }
 
-  createCampaign(input: any) { return this.api.post<any>("acquisition/campaigns", input); }
+  campaignDetail(id: string) { return this.api.get<any>(`acquisition/campaigns/${id}`); }
   startCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/start`, {}); }
   pauseCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/pause`, {}); }
   resumeCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/resume`, {}); }
