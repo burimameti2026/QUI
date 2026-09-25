@@ -34,7 +34,7 @@ export class AcquisitionService {
   autonomousCampaigns(tenantId: string) { return this.api.get<any[]>(`autonomous-acquisition/tenants/${tenantId}/campaigns`); }
   autonomousCampaignPlan(tenantId: string, campaignId: string) { return this.api.get<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${campaignId}/plan`); }
   createAutonomousCampaign(tenantId: string, input: any) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns`, input); }
-  runAgent(tenantId: string, agentId: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/agents/${agentId}/run`, {}); }
+  startAutonomousCampaign(tenantId: string, campaignId: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${campaignId}/start`, {}); }
   pauseAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/pause`, {}); }
   resumeAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/resume`, {}); }
   stopAutonomousCampaign(tenantId: string, id: string) { return this.api.post<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/stop`, {}); }
