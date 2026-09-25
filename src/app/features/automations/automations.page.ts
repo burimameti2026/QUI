@@ -130,7 +130,7 @@ export class AutomationsPage implements OnInit {
     this.data.list().subscribe(r => this.rows = r);
     this.data.runs().subscribe(r => { this.runs = r; if (r.length) this.lastRun = new Date(r[0].createdAtUtc).toLocaleString(); });
     this.data.deadLetters().subscribe(r => this.deadLetters = r);
-    this.acquisition.icps().subscribe(r => this.icps = r.filter(x => x.active));
+    this.icps = [];
   }
   open(a?: AutomationRule) {
     this.form = a ? { ...a } : { name: "", trigger: "lead.qualified", conditionsJson: "[]", actionsJson: '[{"type":"notifySales"}]', active: true };
