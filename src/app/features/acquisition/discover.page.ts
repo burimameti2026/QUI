@@ -23,7 +23,7 @@ import { AcquisitionService } from "./acquisition.service";
   <div class="notice success" *ngIf="qualificationMessage"><b>✓</b><span>{{ qualificationMessage }}</span></div>
   <section class="content-grid">
     <article class="card">
-      <header class="card-header"><div><span class="eyebrow">Qualification rule</span><h3>Qualification result</h3><p>The backend qualification worker is the source of truth for the Qualified status. Score remains visible as supporting evidence.</p></div></header>
+      <header class="card-header"><div><span class="eyebrow">Qualification rule</span><h3>Qualification result</h3><p>Qualification is a workflow task controlled by the campaign. The persisted Qualified status is the source of truth; score remains visible as supporting evidence.</p></div></header>
       <label>Score filter<input type="number" min="0" max="100" [(ngModel)]="qualificationScore" (change)="applyQualificationScore()"></label>
       <div class="notice"><strong>{{ qualifiedProspects.length }}</strong><span><b>Qualified prospects</b><small>Ready to become a campaign audience</small></span></div>
       <div class="actions"><button class="button-primary" [disabled]="!qualifiedProspects.length" (click)="createQualifiedAudience()">Create audience →</button></div>
@@ -51,7 +51,7 @@ import { AcquisitionService } from "./acquisition.service";
 
   <section class="hero">
     <div class="stack">
-      <span class="eyebrow">Acquisition workflow</span>
+      <span class="eyebrow">Campaign workflow</span>
       <h2>Build an evidence-backed target market</h2>
       <p>Define fit, import verified accounts and move only qualified prospects into controlled outreach.</p>
       <div class="meta">
@@ -61,7 +61,7 @@ import { AcquisitionService } from "./acquisition.service";
       </div>
     </div>
     <div class="card">
-      <header class="card-header"><div><span class="eyebrow">CURRENT WORKFLOW</span><h3>Discovery to controlled outreach</h3></div></header>
+      <header class="card-header"><div><span class="eyebrow">CURRENT WORKFLOW</span><h3>Campaign workflow: discovery to controlled outreach</h3></div></header>
       <div class="card-body">
         <nav class="wizard" aria-label="Current workflow progress">
           <ol>
