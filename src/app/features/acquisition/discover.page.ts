@@ -125,6 +125,7 @@ import { AcquisitionService } from "./acquisition.service";
       <label>Target list name<input [(ngModel)]="listName" placeholder="DACH manufacturers with freight demand" /></label>
       <div class="actions"><button class="button-primary" [disabled]="!selectedIds.size || !listName.trim()" (click)="createList()">Create target list <span>→</span></button></div>
       <small>Creating a list does not send outreach.</small>
+      </div>
     </article>
   </section>
 

@@ -68,7 +68,7 @@ qai-modal{display:contents}
 .icon-button{width:32px!important;min-width:32px!important;height:32px;min-height:32px!important;padding:0!important;border:1px solid var(--wl-border-strong);background:#fff;font-size:18px;font-weight:400}
 .icon-button:hover{background:#000;color:#fff;border-color:#000}
 .wizard{display:block;margin:0 0 14px;border:1px solid var(--wl-border);background:#fff;overflow:hidden}
-.wizard ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));margin:0;padding:0;list-style:none}
+.wizard ol{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,1fr);grid-template-columns:none;margin:0;padding:0;list-style:none;overflow-x:auto}
 .wizard li{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:center;min-width:0;min-height:58px;padding:9px 10px;border-right:1px solid var(--wl-border);background:#fff}
 .wizard li:last-child{border-right:0}
 .wizard li>span{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--wl-border-strong);background:#fafafa;color:var(--wl-muted);font-size:10px;font-weight:750}
