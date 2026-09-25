@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 import { Modal, PageHeader } from "../../shared/ui";
 import { AcquisitionService } from "./acquisition.service";
 import { AuthService } from "../../core/auth.service";
@@ -12,511 +11,232 @@ import { AuthService } from "../../core/auth.service";
   templateUrl: "./campaigns.page.html",
   styleUrls: ["./campaigns.page.css"],
 })
-
 export class CampaignsPage implements OnInit {
-  readonly messageTemplates = [
-    {
-      id: "logistics-intro",
-      name: "Logistics operational benchmark",
-      description: "Existing logistics outreach template from the acquisition scenario.",
-      subject: "{{company}}: reduce dispatch and delivery exceptions",
-      body: "Hi {{contact}}, I noticed current growth signals at {{company}}. We help {{industry}} teams automate dispatch, warehouse and customer operations. Would a 25-minute operational demo be useful?"
-    },
-    {
-      id: "logistics-benchmark",
-      name: "Operational benchmark follow-up",
-      description: "Follow-up template for logistics teams after the first touch.",
-      subject: "Operational benchmark for {{company}}",
-      body: "Hi {{contact}}, I prepared a short benchmark for teams operating across {{country}}. I can tailor the demo to your fleet, warehouse and delivery workflow."
-    },
-    {
-      id: "logistics-close-loop",
-      name: "Close the loop",
-      description: "Short final follow-up that keeps the conversation respectful.",
-      subject: "Should I close the loop on {{company}}?",
-      body: "Hi {{contact}}, I don't want to keep filling your inbox if this isn't a priority. If improving dispatch, warehouse or delivery operations is on your roadmap, I'm happy to send a short example. Otherwise, I'll close the loop here."
-    }
-  ];
-  prospects: any[] = [];
-  previewProspectId = "";
-  savedTemplates: any[] = [];
-
-  @ViewChild("approvalQueue") approvalQueue?: ElementRef<HTMLElement>;
   rows: any[] = [];
-  lists: any[] = [];
   packages: any[] = [];
-  messages: any[] = [];
   selectedCampaign: any = null;
-  editingCampaign: any = null;
-  activity: any[] = [];
-  resultMessages: any[] = [];
+  plan: any = null;
   loading = false;
-  show = false;
-  builderStep = 1;
   busy = false;
+  show = false;
   message = "";
   error = "";
-  guardrailOpen = false;
-  selectedGuardrail: any;
-  readonly guardrails = [
-    { number: 1, title: "Verified sender", summary: "Mailbox/domain ownership required", detail: "Only a verified mailbox and domain can be used as the sender for a live campaign.", result: "Prevents spoofed or incorrectly configured sender identities.", action: "Manage senders", route: "/integrations" },
-    { number: 2, title: "Suppression check", summary: "Opt-outs never receive outreach", detail: "Every recipient is checked against the tenant suppression list before a message is queued.", result: "Protects unsubscribed contacts and preserves sender reputation.", action: "View suppression list", route: "/integrations" },
-    { number: 3, title: "Human approval", summary: "Review before each real send", detail: "A campaign can prepare a message, but it cannot leave the platform until a person approves it.", result: "Keeps message quality and launch decisions under human control.", action: "Open approval queue", target: "approval" },
-    { number: 4, title: "Stop on reply", summary: "Sequence pauses automatically", detail: "As soon as a recipient replies, the remaining scheduled follow-ups are stopped automatically.", result: "Prevents awkward follow-ups after a real conversation has started.", action: "Open inbox", route: "/inbox" },
-  ];
+  builderStep = 1;
+
   form: any = this.emptyForm();
 
   constructor(
     private readonly data: AcquisitionService,
     private readonly auth: AuthService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.loadTemplates();
     this.load();
   }
 
-  get tenantSlug(): string {
-    return this.auth.session()?.tenantSlug || "";
-  }
-
-  get previewProspect(): any {
-    return this.prospects.find(x => x.id === this.previewProspectId) || this.prospects[0] || null;
-  }
-
-  get allTemplates(): any[] {
-    return this.savedTemplates.length ? this.savedTemplates : this.messageTemplates;
+  get tenantId(): string {
+    return this.auth.session()?.tenantId || "";
   }
 
   get running(): number {
-    return this.rows.filter((x) => x.status === 2).length;
+    return this.rows.filter(x => Number(x.status) === 2).length;
   }
 
-  get selectedPackage(): any {
-    return this.packages.find((x) => x.id === this.form.offerId);
+  get statusLabels(): string[] {
+    return ["Draft", "Scheduled", "Running", "Paused", "Completed", "Stopped"];
   }
 
-  get selectedList(): any {
-    return this.lists.find((x) => x.id === this.form.targetListId);
+  status(value: any): string {
+    return this.statusLabels[Number(value)] || String(value ?? "Unknown");
   }
 
-  get deliveredResults(): number {
-    return this.resultMessages.filter((x) => x.status === 2).length;
+  statusClass(value: any): string {
+    return this.status(value).toLowerCase().replace(/\s+/g, "-");
   }
 
-  get interestedResults(): number {
-    return this.resultMessages.filter((x) => x.classification === "interested" || x.interested === true).length;
-  }
-
-  get failedResults(): number {
-    return this.resultMessages.filter((x) => x.status === 4).length;
-  }
-
-  get suppressedResults(): number {
-    return this.resultMessages.filter((x) => x.status === 5).length;
-  }
-
-  get pendingApprovalMessages(): any[] {
-    return this.messages.filter((x) => x.status === 0);
-  }
-
-  get pendingMessages(): number {
-    return this.pendingApprovalMessages.length;
-  }
-
-  get canContinue(): boolean {
-    if (this.builderStep === 1) return Boolean(this.form.targetListId && this.form.offerId && this.form.name.trim());
-    if (this.builderStep === 2) return Boolean(this.form.senderName.trim() && this.form.senderEmail.includes("@"));
-    return this.form.steps.every((x: any) => x.subjectTemplate.trim() && x.bodyTemplate.trim());
+  selectedPackage(): any {
+    return this.packages.find(x => (x.code || x.id) === this.form.packageCode);
   }
 
   load(): void {
+    if (!this.tenantId) {
+      this.error = "No authenticated tenant is available.";
+      return;
+    }
+
     this.loading = true;
     this.error = "";
-    this.data.campaigns().subscribe({
-      next: (r) => {
-        this.rows = r || [];
+    this.data.autonomousCampaigns(this.tenantId).subscribe({
+      next: rows => {
+        this.rows = rows || [];
         this.loading = false;
       },
-      error: (e) => {
+      error: e => {
         this.loading = false;
-        this.error = this.apiError(e, "Campaigns could not be loaded.");
-      },
+        this.error = this.apiError(e, "Campaign containers could not be loaded.");
+      }
     });
+
     this.data.workspacePackages().subscribe({
-      next: (r) => (this.packages = r || []),
-      error: (e) => (this.error = this.apiError(e, "Offers could not be loaded.")),
-    });
-    this.data.targetLists().subscribe({
-      next: (r) => {
-        this.lists = r;
-        const targetListId = this.route.snapshot.queryParamMap.get("targetListId");
-        if (targetListId && r.some((x) => x.id === targetListId)) {
-          this.form.targetListId = targetListId;
-          this.show = true;
+      next: packages => {
+        this.packages = packages || [];
+        if (!this.form.packageCode && this.packages.length) {
+          const logistics = this.packages.find(x => String(x.code || x.id).toLowerCase().includes("logistics"));
+          this.form.packageCode = logistics?.code || logistics?.id || this.packages[0].code || this.packages[0].id;
         }
       },
-      error: (e) => (this.error = this.apiError(e, "Target lists could not be loaded.")),
-    });
-    this.data.prospects(0).subscribe({
-      next: (r) => {
-        this.prospects = (r || []).filter((x: any) => {
-          const status = String(x.status ?? "").toLowerCase();
-          return status === "qualified" || status === "enriched" || Number(x.status) === 1 || Number(x.status) === 2;
-        });
-        if (!this.previewProspectId && this.prospects.length) this.previewProspectId = this.prospects[0].id;
-      },
-      error: () => {}
-    });
-    this.data.messages().subscribe({
-      next: (r) => (this.messages = r || []),
-      error: (e) => (this.error = this.apiError(e, "Approval queue could not be loaded.")),
-    });
-  }
-
-  openEdit(campaign: any): void {
-    this.editingCampaign = campaign;
-    this.form = this.formFromCampaign(campaign);
-    this.builderStep = 1;
-    this.error = "";
-    this.show = true;
-  }
-
-  pause(campaign: any): void {
-    this.data.pauseCampaign(campaign.id).subscribe({
-      next: (result) => { campaign.status = result.status; this.message = "Campaign paused. No new messages will be queued."; this.load(); },
-      error: (e) => (this.error = this.apiError(e, "Campaign could not be paused.")),
-    });
-  }
-
-  resume(campaign: any): void {
-    this.data.resumeCampaign(campaign.id).subscribe({
-      next: (result) => { campaign.status = result.status; this.message = "Campaign resumed."; this.load(); },
-      error: (e) => (this.error = this.apiError(e, "Campaign could not be resumed.")),
+      error: e => this.error = this.apiError(e, "Workspace packages could not be loaded.")
     });
   }
 
   openBuilder(): void {
-    this.editingCampaign = null;
     this.form = this.emptyForm();
     this.builderStep = 1;
+    this.selectedCampaign = null;
+    this.plan = null;
+    this.message = "";
     this.error = "";
     this.show = true;
-  }
-
-  openPipelineStep(step: number): void {
-    this.form = this.emptyForm();
-    this.builderStep = step;
-    this.error = "";
-    this.show = true;
-  }
-
-  showApprovalQueue(): void {
-    this.approvalQueue?.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  openDemos(): void {
-    void this.router.navigate(["/meetings"]);
-  }
-
-  openGuardrail(guardrail: any): void {
-    this.selectedGuardrail = guardrail;
-    this.guardrailOpen = true;
-  }
-
-  openGuardrailAction(): void {
-    const guardrail = this.selectedGuardrail;
-    this.guardrailOpen = false;
-    if (guardrail?.target === "approval") {
-      setTimeout(() => this.showApprovalQueue());
-      return;
-    }
-    if (guardrail?.route) void this.router.navigate([guardrail.route]);
   }
 
   next(): void {
-    if (this.canContinue && this.builderStep < 4) this.builderStep++;
+    if (this.canContinue() && this.builderStep < 4) this.builderStep++;
   }
 
   back(): void {
     if (this.builderStep > 1) this.builderStep--;
   }
 
+  canContinue(): boolean {
+    if (this.builderStep === 1) return !!this.form.name?.trim() && !!this.form.packageCode;
+    if (this.builderStep === 2) return !!this.form.industry?.trim() && !!this.form.region?.trim();
+    if (this.builderStep === 3) return !!this.form.objective?.trim();
+    return true;
+  }
+
   save(): void {
-    if (!this.canContinue) return;
+    if (!this.tenantId || !this.canContinue()) return;
+
     this.busy = true;
-    const request$ = this.editingCampaign
-      ? this.data.updateCampaign(this.editingCampaign.id, this.form)
-      : this.data.createCampaign(this.form);
-    request$.subscribe({
-      next: (campaign) => {
+    this.error = "";
+
+    const countries = String(this.form.countries || "")
+      .split(",")
+      .map((x: string) => x.trim())
+      .filter(Boolean);
+
+    const input = {
+      name: this.form.name.trim(),
+      packageCode: this.form.packageCode,
+      objective: this.form.objective.trim(),
+      industry: this.form.industry.trim(),
+      region: this.form.region.trim(),
+      countries,
+      minimumScore: Number(this.form.minimumScore) || 70,
+      dailyDiscoveryLimit: Number(this.form.dailyDiscoveryLimit) || 25,
+      dailyEmailLimit: Number(this.form.dailyEmailLimit) || 10,
+      senderName: this.form.senderName?.trim() || null,
+      senderEmail: this.form.senderEmail?.trim() || null,
+      icp: {
+        companyType: this.form.companyType?.trim() || "Logistics, transport, 3PL and distribution companies",
+        buyerRoles: this.form.buyerRoles?.trim() || "Operations Director, Logistics Director, Head of Operations, COO",
+        painPoints: this.form.painPoints?.trim() || "Manual coordination, repetitive email work and fragmented operational workflows",
+        qualification: this.form.qualification?.trim() || "Prioritize companies showing operational growth or automation signals"
+      }
+    };
+
+    this.data.createAutonomousCampaign(this.tenantId, input).subscribe({
+      next: result => {
         this.busy = false;
-        if (this.editingCampaign) {
-          const index = this.rows.findIndex((x) => x.id === campaign.id);
-          if (index >= 0) this.rows[index] = campaign;
-          this.message = "Campaign updated. Changes apply to future messages; sent messages remain unchanged.";
-        } else {
-          this.rows.unshift(campaign);
-          this.message = "Campaign created as draft. Review it, then start to queue approval-controlled messages.";
-        }
-        this.editingCampaign = null;
         this.show = false;
+        this.message = "Campaign container created. Its package workflow is ready to execute.";
+        const campaign = result?.campaign;
+        if (campaign) {
+          this.rows = [campaign, ...this.rows.filter(x => x.id !== campaign.id)];
+          this.inspect(campaign);
+        } else {
+          this.load();
+        }
       },
-      error: (error) => {
+      error: e => {
         this.busy = false;
-        this.error = error?.error?.detail || "Campaign could not be saved.";
-      },
+        this.error = this.apiError(e, "Campaign container could not be created.");
+      }
+    });
+  }
+
+  inspect(campaign: any): void {
+    if (!this.tenantId || !campaign?.id) return;
+    this.selectedCampaign = campaign;
+    this.plan = null;
+    this.data.autonomousCampaignPlan(this.tenantId, campaign.id).subscribe({
+      next: plan => this.plan = plan,
+      error: e => this.error = this.apiError(e, "Campaign workflow could not be loaded.")
     });
   }
 
   start(campaign: any): void {
-    this.data.startCampaign(campaign.id).subscribe({
-      next: (result) => {
-        campaign.status = result.status;
-        this.load();
-        this.message = `${result.recipients} recipients enrolled; ${result.queued} first messages await approval.`;
-      },
-      error: (error) => (this.error = error?.error?.detail || "Campaign could not start."),
-    });
-  }
-
-  requestApproval(message: any): void {
-    this.data.requestApproval(message.id).subscribe({
-      next: () => {
-        message.approvalRequested = true;
-        this.message = "Approval task created.";
-      },
-      error: (e) => (this.error = this.apiError(e, "Approval could not be requested.")),
-    });
-  }
-
-  rejectApproval(message: any): void {
-    this.data.rejectApproval(message.id).subscribe({
-      next: () => {
-        message.status = 5;
-        message.approvalRequested = false;
-        this.message = "Message rejected. It will not be sent.";
-        this.load();
-      },
-      error: (e) => (this.error = this.apiError(e, "Message could not be rejected.")),
-    });
-  }
-
-  approveAndSend(message: any): void {
-    this.data.approveAndSend(message.id).subscribe({
-      next: (result) => {
-        this.load();
-        this.message = `Email accepted by provider: ${result.providerMessageId}`;
-      },
-      error: (error) => (this.error = error?.error?.detail || "Email could not be sent."),
-    });
-  }
-
-  retryMessage(message: any): void {
-    this.data.retryMessage(message.id).subscribe({
-      next: () => {
-        this.load();
-        this.message = "Failed message re-queued. It now requires approval again before sending.";
-      },
-      error: (e) => (this.error = this.apiError(e, "Email retry failed.")),
-    });
-  }
-
-  status(value: number): string {
-    return (["Draft", "Scheduled", "Running", "Paused", "Completed"][value] || String(value));
-  }
-
-  messageStatus(value: number): string {
-    return (["Queued", "Sent", "Delivered", "Replied", "Failed", "Suppressed"][value] || String(value));
-  }
-
-  inspect(campaign: any): void {
-    this.selectedCampaign = campaign;
-    this.activity = [];
-    this.resultMessages = this.messages.filter((x: any) => x.campaignId === campaign.id);
-    this.data.campaignActivity(campaign.id).subscribe({
-      next: (rows) => {
-        this.activity = rows || [];
-        this.resultMessages = this.messages.filter((x: any) => x.campaignId === campaign.id);
-      },
-      error: (e) => (this.error = this.apiError(e, "Campaign activity could not be loaded.")),
-    });
-  }
-
-  private apiError(error: any, fallback: string): string {
-    return error?.error?.detail || error?.error?.error || (error?.status ? `${fallback} API returned ${error.status}.` : fallback);
-  }
-
-  onTemplateChange(templateId: string, index: number): void {
-    const template = this.allTemplates.find((x) => x.id === templateId) || null;
-    this.selectTemplate(template, index);
-  }
-
-  selectTemplate(template: any, index: number): void {
-    const step = this.form.steps[index];
-    if (!step) return;
-    if (!template) {
-      step.templateId = "";
-      step.templateName = "";
+    if (!campaign?.agentId) {
+      this.error = "This campaign has no workflow agent linked.";
       return;
     }
-    step.subjectTemplate = template.subjectTemplate || template.subject || "";
-    step.bodyTemplate = template.bodyTemplate || template.body || "";
-    step.templateId = template.id;
-    step.templateName = template.name;
-    this.message = `Template “${template.name}” loaded into Message ${index + 1}. You can edit it before saving.`;
-  }
-
-  saveTemplate(index: number): void {
-    const step = this.form.steps[index];
-    if (!step?.subjectTemplate?.trim() || !step?.bodyTemplate?.trim()) return;
-
-    const input = {
-      name: (step.templateName || `FusionFleet template ${index + 1}`).trim(),
-      description: "Saved from the campaign builder.",
-      subjectTemplate: step.subjectTemplate,
-      bodyTemplate: step.bodyTemplate
-    };
-    const isPersisted = this.isGuid(step.templateId);
-    const request$ = isPersisted
-      ? this.data.updateTemplate(step.templateId, input)
-      : this.data.createTemplate(input);
-
-    request$.subscribe({
-      next: (template) => {
-        this.savedTemplates = [
-          ...this.savedTemplates.filter(x => x.id !== template.id && x.name !== template.name),
-          template
-        ];
-        step.templateId = template.id;
-        step.templateName = template.name;
-        this.message = `Template “${template.name}” saved to the tenant library.`;
+    this.busy = true;
+    this.data.runAgent(this.tenantId, campaign.agentId).subscribe({
+      next: () => {
+        this.busy = false;
+        this.message = "Campaign started. The workflow is queued for execution.";
+        this.load();
+        this.inspect(campaign);
       },
-      error: (error) => {
-        this.error = error?.error?.detail || "Template could not be saved.";
+      error: e => {
+        this.busy = false;
+        this.error = this.apiError(e, "Campaign could not be started.");
       }
     });
   }
 
-  private loadTemplates(): void {
-    this.data.templates().subscribe({
-      next: (templates) => {
-        this.savedTemplates = templates || [];
-        this.ensureDefaultTemplates();
-      },
-      error: (error) => {
-        this.savedTemplates = [];
-        this.error = this.apiError(error, "Outreach templates could not be loaded.");
-      }
+  pause(campaign: any): void {
+    this.data.pauseAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => { this.message = "Campaign paused. Its workflow will not advance."; this.load(); this.inspect(campaign); },
+      error: e => this.error = this.apiError(e, "Campaign could not be paused.")
     });
   }
 
-  private ensureDefaultTemplates(): void {
-    const missing = this.messageTemplates.filter(
-      builtIn => !this.savedTemplates.some(template => template.name === builtIn.name)
-    );
-    if (!missing.length) {
-      this.syncDefaultStepTemplateIds();
-      return;
-    }
-
-    let remaining = missing.length;
-    missing.forEach(builtIn => {
-      this.data.createTemplate({
-        name: builtIn.name,
-        description: builtIn.description,
-        subjectTemplate: builtIn.subject,
-        bodyTemplate: builtIn.body
-      }).subscribe({
-        next: (template) => {
-          this.savedTemplates = [...this.savedTemplates, template];
-          remaining--;
-          if (remaining === 0) this.syncDefaultStepTemplateIds();
-        },
-        error: () => {
-          remaining--;
-          if (remaining === 0) this.syncDefaultStepTemplateIds();
-        }
-      });
+  resume(campaign: any): void {
+    this.data.resumeAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => { this.message = "Campaign resumed."; this.load(); this.inspect(campaign); },
+      error: e => this.error = this.apiError(e, "Campaign could not be resumed.")
     });
   }
 
-  private syncDefaultStepTemplateIds(): void {
-    this.form.steps?.forEach((step: any, index: number) => {
-      const builtIn = this.messageTemplates[index];
-      const persisted = builtIn
-        ? this.savedTemplates.find(template => template.name === builtIn.name)
-        : null;
-      if (persisted && (!step.templateId || !this.isGuid(step.templateId))) {
-        step.templateId = persisted.id;
-        step.templateName = persisted.name;
-      }
+  stop(campaign: any): void {
+    this.data.stopAutonomousCampaign(this.tenantId, campaign.id).subscribe({
+      next: () => { this.message = "Campaign stopped."; this.load(); this.inspect(campaign); },
+      error: e => this.error = this.apiError(e, "Campaign could not be stopped.")
     });
-  }
-
-  private isGuid(value: any): boolean {
-    return typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
-  }
-
-  renderTemplate(value: string, prospect: any = this.previewProspect): string {
-    if (!value) return "";
-    if (!prospect) return value;
-    const company = prospect.companyName || prospect.company || prospect.name || "your company";
-    const contact = prospect.contactName || prospect.contact || prospect.firstName || "there";
-    const industry = prospect.industry || "logistics";
-    const country = prospect.country || prospect.location || "your market";
-    return value
-      .replaceAll("{{company}}", company)
-      .replaceAll("{{contact}}", contact)
-      .replaceAll("{{contactName}}", contact)
-      .replaceAll("{{industry}}", industry)
-      .replaceAll("{{country}}", country);
-  }
-
-  addStep(): void {
-    this.form.steps.push(this.emptyStep(this.form.steps.length + 1, 72));
-  }
-
-  removeStep(index: number): void {
-    if (this.form.steps.length <= 1) return;
-    this.form.steps.splice(index, 1);
-    this.form.steps.forEach((x: any, i: number) => x.stepNumber = i + 1);
-  }
-
-  private formFromCampaign(campaign: any): any {
-    return {
-      name: campaign.name || "", targetListId: campaign.targetListId || "", offerId: campaign.offerId || "",
-      goal: campaign.goal || "book-demo", senderName: campaign.senderName || "", senderEmail: campaign.senderEmail || "",
-      startsAtUtc: campaign.startsAtUtc || null,
-      steps: (campaign.steps || []).map((x: any, i: number) => ({
-        stepNumber: x.stepNumber || i + 1, delayHours: x.delayHours || 0, channel: x.channel || "email",
-        subjectTemplate: x.subjectTemplate || "", bodyTemplate: x.bodyTemplate || "", templateId: x.templateId || "", templateName: x.templateName || "", qualification: x.qualification || "qualified",
-        minimumScore: x.minimumScore ?? 70, industry: x.industry || "", countries: x.countries || "",
-        companySizeMin: x.companySizeMin ?? null, companySizeMax: x.companySizeMax ?? null, contactRoles: x.contactRoles || "", stopOnReply: x.stopOnReply !== false,
-      }))
-    };
-  }
-
-  private emptyStep(stepNumber: number, delayHours: number): any {
-    return { stepNumber, delayHours, channel: "email", subjectTemplate: "", bodyTemplate: "", qualification: "qualified", minimumScore: 70, industry: "", countries: "", companySizeMin: null, companySizeMax: null, contactRoles: "", stopOnReply: true };
   }
 
   private emptyForm(): any {
     return {
-      name: "New outreach campaign",
-      targetListId: "",
-      offerId: "",
-      goal: "book-demo",
-      senderName: this.tenantSlug.toLowerCase().includes("fusionfleet") ? "TeamFusionFleet Mk" : "",
-      senderEmail: this.tenantSlug.toLowerCase().includes("fusionfleet") ? "fusionfleetmk@gmail.com" : "",
-      startsAtUtc: null,
-      steps: [
-        { ...this.emptyStep(1, 0), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[0].name)?.id || "", templateName: this.messageTemplates[0].name, subjectTemplate: this.messageTemplates[0].subject, bodyTemplate: this.messageTemplates[0].body },
-        { ...this.emptyStep(2, 72), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[1].name)?.id || "", templateName: this.messageTemplates[1].name, subjectTemplate: this.messageTemplates[1].subject, bodyTemplate: this.messageTemplates[1].body },
-        { ...this.emptyStep(3, 96), templateId: this.savedTemplates.find(x => x.name === this.messageTemplates[2].name)?.id || "", templateName: this.messageTemplates[2].name, subjectTemplate: this.messageTemplates[2].subject, bodyTemplate: this.messageTemplates[2].body },
-      ],
+      name: "FusionFleetMk",
+      packageCode: "logistics",
+      objective: "Find and qualify logistics companies that can benefit from process automation and prepare targeted outreach.",
+      industry: "Logistics & Transport",
+      region: "Europe",
+      countries: "DE, FR, IT, NL, BE, AT",
+      companyType: "3PL providers, freight forwarders, transport operators, warehouse and distribution companies",
+      buyerRoles: "Operations Director, Logistics Director, Head of Operations, COO",
+      painPoints: "Manual coordination, repetitive email work and fragmented operational workflows",
+      qualification: "Prioritize companies with evidence of operational growth, manual work or automation opportunities",
+      minimumScore: 75,
+      dailyDiscoveryLimit: 25,
+      dailyEmailLimit: 10,
+      senderName: "",
+      senderEmail: ""
     };
+  }
+
+  private apiError(error: any, fallback: string): string {
+    return error?.error?.detail || error?.error?.error || (error?.status ? `${fallback} API returned ${error.status}.` : fallback);
   }
 }
