@@ -1,28 +1,16 @@
 <div class="page page-campaigns">
   <qai-page-header
     title="Campaign Containers"
-    subtitle="Install a package, define the ICP, then run its workflow as one controlled campaign."
-  >
+    subtitle="Industry Packs provision the campaign-ready definition. This page controls execution.">
     <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button>
-    <button class="button-primary" type="button" (click)="openBuilder()">+ Create campaign</button>
+    <button class="button-primary" type="button" (click)="openIndustryPacks()">+ Provision from Industry Pack</button>
   </qai-page-header>
 
   <section class="hero">
     <div class="stack">
-      <span class="eyebrow">PACKAGE → WORKFLOW → CAMPAIGN</span>
+      <span class="eyebrow">INDUSTRY PACK → CAMPAIGN → EXECUTION</span>
       <h2>{{ rows.length }} campaign containers · {{ running }} running</h2>
-      <p>A campaign is the runtime container for a package-defined workflow. The user controls the campaign; infrastructure workers execute its tasks in the background.</p>
-    </div>
-  </section>
-
-  <section class="campaign-workflow" aria-label="Campaign workflow">
-    <div class="campaign-workflow-heading"><span class="eyebrow">WORKFLOW</span><strong>Package → Workflow → Tasks → Approval → Results</strong></div>
-    <div class="campaign-timeline">
-      <div class="campaign-timeline-step"><span class="campaign-timeline-node">01</span><span class="campaign-timeline-copy"><strong>Package</strong><small>Capability</small></span></div>
-      <div class="campaign-timeline-step"><span class="campaign-timeline-node">02</span><span class="campaign-timeline-copy"><strong>Workflow</strong><small>Process</small></span></div>
-      <div class="campaign-timeline-step"><span class="campaign-timeline-node">03</span><span class="campaign-timeline-copy"><strong>Tasks</strong><small>Execution</small></span></div>
-      <div class="campaign-timeline-step"><span class="campaign-timeline-node">04</span><span class="campaign-timeline-copy"><strong>Approval</strong><small>Human gate</small></span></div>
-      <div class="campaign-timeline-step"><span class="campaign-timeline-node">05</span><span class="campaign-timeline-copy"><strong>Results</strong><small>CRM handoff</small></span></div>
+      <p>Campaign containers are created by IndustryPackProvisioner. Workspace Packages are not used to create acquisition campaigns.</p>
     </div>
   </section>
 
@@ -34,8 +22,8 @@
     <header class="card-header">
       <div>
         <span class="eyebrow">CAMPAIGNS</span>
-        <h3>Active containers</h3>
-        <p>Each container owns its package version, workflow and execution state.</p>
+        <h3>Campaign-ready containers</h3>
+        <p>Each container owns its Industry Pack marker, ICP, Target List and execution steps.</p>
       </div>
       <span class="status">{{ rows.length }} total</span>
     </header>
@@ -49,9 +37,10 @@
             <span class="status" [ngClass]="'status-' + statusClass(campaign.status)">{{ status(campaign.status) }}</span>
           </div>
           <div class="meta">
-            <span><small>Package</small><b>{{ campaign.packageCode || 'Custom' }}</b><em>v{{ campaign.packageVersion || '—' }}</em></span>
+            <span><small>Industry Pack</small><b>{{ campaign.packageCode || 'Custom' }}</b><em>v{{ campaign.packageVersion || '—' }}</em></span>
             <span><small>Objective</small><b>{{ campaign.objective || campaign.name }}</b></span>
-            <span><small>Workflow</small><b>{{ campaign.planStatus || 'ready' }}</b></span>
+            <span><small>Plan</small><b>{{ campaign.planStatus || 'ready' }}</b></span>
+            <span><small>Target List</small><b>{{ campaign.targetListId || '—' }}</b></span>
           </div>
         </div>
         <div class="actions">
@@ -67,8 +56,8 @@
     <ng-template #emptyCampaigns>
       <div class="empty">
         <h3>No campaign containers yet</h3>
-        <p>Create one from an installed package. The package will provide its workflow and task definitions.</p>
-        <button class="button-primary" type="button" (click)="openBuilder()">Create campaign</button>
+        <p>Choose an Industry Pack to provision the ICP, Target List, campaign and execution steps together.</p>
+        <button class="button-primary" type="button" (click)="openIndustryPacks()">Open Industry Packs</button>
       </div>
     </ng-template>
   </section>
@@ -83,109 +72,45 @@
       <button class="button-quiet" type="button" (click)="selectedCampaign = null; plan = null">Close</button>
     </header>
 
-    <div class="metric-grid compact" *ngIf="plan">
-      <article class="metric"><div class="metric-top"><span class="metric-label">Campaign</span></div><strong>{{ status(plan.campaign?.status ?? selectedCampaign.status) }}</strong><small>Container lifecycle</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Run</span></div><strong>{{ plan.latestRun?.status || 'Not started' }}</strong><small>{{ plan.latestRun?.scheduledAtUtc || 'No execution yet' }}</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Current step</span></div><strong>{{ plan.currentStep?.name || 'Waiting' }}</strong><small>{{ plan.currentStep?.status || 'No pending task' }}</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Package</span></div><strong>{{ plan.packageCode || selectedCampaign.packageCode }}</strong><small>Installed definition</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Steps</span></div><strong>{{ plan.workflow?.steps?.length || 0 }}</strong><small>Workflow tasks</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Agent</span></div><strong>{{ plan.agent?.status || 'Draft' }}</strong><small>Runtime executor</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-label">Plan</span></div><strong>{{ selectedCampaign.planStatus || 'ready' }}</strong><small>Definition state</small></article>
+    <div class="metric-grid compact">
+      <article class="metric">
+        <div class="metric-top"><span class="metric-label">Campaign</span></div>
+        <strong>{{ status(selectedCampaign.status) }}</strong>
+        <small>Container lifecycle</small>
+      </article>
+      <article class="metric">
+        <div class="metric-top"><span class="metric-label">Industry Pack</span></div>
+        <strong>{{ selectedCampaign.packageCode || 'Custom' }}</strong>
+        <small>{{ selectedCampaign.packageVersion || '—' }}</small>
+      </article>
+      <article class="metric">
+        <div class="metric-top"><span class="metric-label">Plan</span></div>
+        <strong>{{ selectedCampaign.planStatus || 'ready' }}</strong>
+        <small>Campaign definition</small>
+      </article>
+      <article class="metric">
+        <div class="metric-top"><span class="metric-label">Steps</span></div>
+        <strong>{{ workflowSteps().length }}</strong>
+        <small>Provisioned campaign steps</small>
+      </article>
     </div>
 
-    <div class="list" *ngIf="plan?.workflow?.steps?.length; else noPlan">
-      <article class="list-item" *ngFor="let step of plan.workflow.steps">
-        <div class="icon">{{ step.sequence }}</div>
+    <div class="list" *ngIf="workflowSteps().length; else noPlan">
+      <article class="list-item" *ngFor="let step of workflowSteps()">
+        <div class="icon">{{ step.stepNumber }}</div>
         <div class="stack">
           <div class="identity">
-            <strong>{{ step.name }}</strong>
-            <span class="status">{{ step.status || 'Pending' }}</span>
-            <span class="status" *ngIf="step.requiresApproval">Approval required</span>
+            <strong>{{ step.channel || 'email' }} · Step {{ step.stepNumber }}</strong>
+            <span class="status">{{ step.delayHours }}h delay</span>
           </div>
-          <p>{{ step.purpose }}</p>
-          <small *ngIf="step.nextStep">Next: {{ step.nextStep }}</small>
-        </div>
-        <div class="actions">
-          <span class="status" *ngIf="step.result">Completed</span>
-          <span class="status alert" *ngIf="step.error">Failed</span>
+          <p>{{ step.subjectTemplate }}</p>
+          <small>Approval required before outbound execution.</small>
         </div>
       </article>
     </div>
-    <ng-template #noPlan><div class="empty">Workflow plan is not available yet.</div></ng-template>
+
+    <ng-template #noPlan>
+      <div class="empty">Campaign definition is not available.</div>
+    </ng-template>
   </section>
-
-  <qai-modal [open]="show" [title]="'Create campaign container'" (close)="show = false">
-    <nav class="steps">
-      <button type="button" class="button-quiet" *ngFor="let label of ['Package', 'ICP', 'Limits', 'Review']; let i = index"
-        [class.active]="builderStep === i + 1" [class.done]="builderStep > i + 1" (click)="builderStep = i + 1">
-        <b>{{ i + 1 }}</b><span>{{ label }}</span>
-      </button>
-    </nav>
-
-    <form class="form" (ngSubmit)="save()">
-      <section *ngIf="builderStep === 1">
-        <span class="eyebrow">PACKAGE</span>
-        <h3>Choose the capability package</h3>
-        <p>The package supplies modules, agents, workflow definitions, ICP templates and task definitions. The campaign is the runtime container.</p>
-        <label>Campaign name<input [(ngModel)]="form.name" name="name" required /></label>
-        <label>Package
-          <select [(ngModel)]="form.packageCode" name="package" required>
-            <option *ngFor="let item of packages" [value]="item.code || item.id">{{ item.name }} · v{{ item.version || '1.0' }}</option>
-          </select>
-        </label>
-        <div class="notice" *ngIf="selectedPackage()">
-          <strong>{{ selectedPackage()?.name }}</strong>
-          <span>{{ selectedPackage()?.description || 'Package-defined workflow capability.' }}</span>
-        </div>
-      </section>
-
-      <section *ngIf="builderStep === 2">
-        <span class="eyebrow">ICP</span>
-        <h3>Define who this campaign should find</h3>
-        <div class="content-grid">
-          <label>Industry<input [(ngModel)]="form.industry" name="industry" /></label>
-          <label>Region<input [(ngModel)]="form.region" name="region" /></label>
-          <label>Countries<input [(ngModel)]="form.countries" name="countries" placeholder="DE, FR, IT, NL" /></label>
-          <label>Minimum qualification score<input type="number" min="0" max="100" [(ngModel)]="form.minimumScore" name="score" /></label>
-        </div>
-        <label>Company types<textarea rows="3" [(ngModel)]="form.companyType" name="companyType"></textarea></label>
-        <label>Buyer roles<textarea rows="3" [(ngModel)]="form.buyerRoles" name="buyerRoles"></textarea></label>
-        <label>Pain points / buying signals<textarea rows="3" [(ngModel)]="form.painPoints" name="painPoints"></textarea></label>
-      </section>
-
-      <section *ngIf="builderStep === 3">
-        <span class="eyebrow">EXECUTION LIMITS</span>
-        <h3>Control the campaign runtime</h3>
-        <div class="content-grid">
-          <label>Daily discovery limit<input type="number" min="1" max="100" [(ngModel)]="form.dailyDiscoveryLimit" name="discoveryLimit" /></label>
-          <label>Daily email limit<input type="number" min="1" max="1000" [(ngModel)]="form.dailyEmailLimit" name="emailLimit" /></label>
-          <label>Sender name<input [(ngModel)]="form.senderName" name="senderName" /></label>
-          <label>Sender email<input type="email" [(ngModel)]="form.senderEmail" name="senderEmail" /></label>
-        </div>
-        <label>Campaign objective<textarea rows="4" [(ngModel)]="form.objective" name="objective" required></textarea></label>
-      </section>
-
-      <section *ngIf="builderStep === 4">
-        <span class="eyebrow">REVIEW</span>
-        <h3>Ready to create the container</h3>
-        <dl>
-          <div><dt>Campaign</dt><dd>{{ form.name }}</dd></div>
-          <div><dt>Package</dt><dd>{{ selectedPackage()?.name || form.packageCode }} · v{{ selectedPackage()?.version || '1.0' }}</dd></div>
-          <div><dt>ICP</dt><dd>{{ form.industry }} · {{ form.region }}</dd></div>
-          <div><dt>Countries</dt><dd>{{ form.countries }}</dd></div>
-          <div><dt>Qualification</dt><dd>{{ form.minimumScore }}+</dd></div>
-          <div><dt>Limits</dt><dd>{{ form.dailyDiscoveryLimit }} discoveries/day · {{ form.dailyEmailLimit }} emails/day</dd></div>
-        </dl>
-        <p>Creating the campaign does not start execution. After creation, the package workflow can be started from the campaign container.</p>
-      </section>
-
-      <p class="alert" *ngIf="error">{{ error }}</p>
-      <footer class="actions">
-        <button type="button" (click)="show = false">Cancel</button>
-        <button type="button" *ngIf="builderStep > 1" (click)="back()">Back</button>
-        <button type="button" class="button-primary" *ngIf="builderStep < 4" [disabled]="!canContinue()" (click)="next()">Continue</button>
-        <button type="submit" class="button-primary" *ngIf="builderStep === 4" [disabled]="busy">{{ busy ? 'Creating…' : 'Create campaign container' }}</button>
-      </footer>
-    </form>
-  </qai-modal>
 </div>
