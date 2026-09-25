@@ -19,7 +19,7 @@ export const routes: Routes = [
   {path:'acquisition/qualification',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
-  {path:'acquisition/autonomous',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
+
   {path:'acquisition/approval-queue',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/approval-queue.page').then(m=>m.ApprovalQueuePage)},
   {path:'inbox',canActivate:[requireModule('inbox')],loadComponent:()=>import('./features/inbox/inbox.page').then(m=>m.InboxPage)},
   {path:'tickets',canActivate:[requireModule('ticketing')],loadComponent:()=>import('./features/tickets/tickets.page').then(m=>m.TicketsPage)},
@@ -30,7 +30,7 @@ export const routes: Routes = [
   {path:'pipeline',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/pipeline/pipeline.page').then(m=>m.PipelinePage)},
   {path:'golden-pipeline',loadComponent:()=>import('./features/pipeline/golden-pipeline.page').then(m=>m.GoldenPipelinePage)},
   {path:'meetings',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/meetings/meetings.page').then(m=>m.MeetingsPage)},
-  {path:'ai/agents',canActivate:[requireModule('ai')],loadComponent:()=>import('./features/ai-agents/ai-agents.page').then(m=>m.AiAgentsPage)},
+  {path:'agents',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/autonomous-acquisition.page').then(m=>m.AutonomousAcquisitionPage)},
   {path:'knowledge',canActivate:[requireModule('knowledge')],loadComponent:()=>import('./features/knowledge/knowledge.page').then(m=>m.KnowledgePage)},
   {path:'knowledge/gaps',canActivate:[requireModule('knowledge')],loadComponent:()=>import('./features/knowledge-gaps/knowledge-gaps.page').then(m=>m.KnowledgeGapsPage)},
   {path:'workflows',canActivate:[requireModule('automation')],loadComponent:()=>import('./features/workflows/workflows.page').then(m=>m.WorkflowsPage)},
