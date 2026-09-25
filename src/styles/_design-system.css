@@ -310,7 +310,7 @@ qai-modal{display:contents}
 .card-body,.card-footer{color:var(--wl-card-text,var(--wl-text));min-width:0}
 .card-body h1,.card-body h2,.card-body h3,.card-body h4,.card-body strong{color:var(--wl-card-text,var(--wl-text))}
 .card-body p,.card-body small{color:var(--wl-muted);overflow-wrap:anywhere}
-.card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong{color:var(--wl-card-title,var(--wl-accent))}
+.card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong{color:var(--wl-card-title,#fff)}
 .card-header .status{margin-left:0}
 .status{border:1px solid var(--wl-border);box-shadow:none;background:#fff;color:var(--wl-text);justify-content:flex-start;align-self:flex-start;margin-left:0}
 .status.success,.status.processed,.status.done,.status.active{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
