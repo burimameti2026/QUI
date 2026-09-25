@@ -286,7 +286,7 @@ export class DiscoverPage implements OnInit {
     this.loadOfferContext();
     this.load();
   }
-  loadOfferContext() { this.data.workspacePackages().subscribe({ next: (packages) => { this.workspaceOffer = packages?.[0] || null; if (this.workspaceOffer) this.applyOfferToIcp(this.workspaceOffer); }, error: () => (this.workspaceOffer = null) }); }
+  loadOfferContext() { this.workspaceOffer = null; }
   applyOfferToIcp(offer: any) { const context = [offer.name, offer.audience, ...(offer.features || [])].filter(Boolean).join(' · '); if (!this.icp.name || this.icp.name === 'Logistics growth accounts') this.icp.name = (offer.name || 'Offer') + ' target market'; if (!this.icp.industry || this.icp.industry === 'Manufacturing, e-commerce, distribution') this.icp.industry = offer.audience || this.icp.industry; if (context && (!this.icp.criteriaJson || this.icp.criteriaJson === '{}')) this.icp.criteriaJson = JSON.stringify({ offerId: offer.id || null, offerName: offer.name, context }); }
   load() {
     this.data.overview().subscribe((r) => (this.overview = r));
