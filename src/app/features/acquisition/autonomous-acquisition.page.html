@@ -1,7 +1,7 @@
 <main class="page page-autonomous-acquisition">
   <qai-page-header
     title="Agents"
-    subtitle="Business agents supplied by installed packages and used by campaign workflows."
+    subtitle="Runtime view of agents provisioned by campaign containers. Campaigns control lifecycle; agents execute the workflow."
   >
     <div class="page-actions">
       <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">
@@ -15,8 +15,7 @@
       <span class="eyebrow">BUSINESS AGENTS</span>
       <h2>{{ activeCount }} active agents · {{ agents.length }} configured</h2>
       <p>
-        An agent is the business executor attached to a campaign workflow. Packages provide the
-        agent definition; the campaign decides when its workflow runs.
+        Agents are provisioned from Industry Packs and attached to campaign containers. Use Campaigns to start, pause, resume or stop execution.
       </p>
       <div class="meta">
         <span><b>{{ pausedCount }}</b> paused</span>
@@ -66,7 +65,7 @@
     <div class="table" *ngIf="agents.length; else emptyAgents">
       <table>
         <thead>
-          <tr><th>Agent</th><th>Package</th><th>Status</th><th>Qualification</th><th>Schedule</th><th>Actions</th></tr>
+          <tr><th>Agent</th><th>Campaign container</th><th>Status</th><th>Qualification</th><th>Schedule</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let agent of agents">
@@ -76,19 +75,11 @@
                 <span class="stack"><b>{{ agent.name }}</b><small>{{ agent.industry || 'Business agent' }}</small></span>
               </div>
             </td>
-            <td>{{ agent.templateCode || 'Package supplied' }}</td>
+            <td><b>{{ campaignFor(agent)?.name || 'Not linked' }}</b><small>{{ campaignFor(agent)?.packageCode || '—' }}</small></td>
             <td><span class="status" [ngClass]="'status-' + statusClass(agent.status)">{{ statusKey(agent.status) }}</span></td>
             <td>{{ agent.minimumScore ?? '—' }}</td>
             <td>{{ agent.runTimeUtc || 'Campaign controlled' }}</td>
-            <td>
-              <div class="actions">
-                <button class="button-secondary" type="button" *ngIf="statusKey(agent.status) !== 'Active' && statusKey(agent.status) !== 'Stopped'" (click)="action(agent, 'activate')">Activate</button>
-                <button class="button-secondary" type="button" *ngIf="statusKey(agent.status) === 'Active'" (click)="action(agent, 'pause')">Pause</button>
-                <button class="button-secondary" type="button" *ngIf="statusKey(agent.status) === 'Paused'" (click)="action(agent, 'activate')">Resume</button>
-                <button class="button-quiet" type="button" *ngIf="statusKey(agent.status) !== 'Stopped'" (click)="action(agent, 'stop')">Stop</button>
-                <button class="button-primary" type="button" *ngIf="statusKey(agent.status) === 'Active'" (click)="action(agent, 'run')">Run now</button>
-              </div>
-            </td>
+
           </tr>
         </tbody>
       </table>
@@ -126,6 +117,6 @@
         </tbody>
       </table>
     </div>
-    <ng-template #emptyRuns><div class="empty">No agent runs yet. Start an active agent from a campaign or use Run now for a controlled execution.</div></ng-template>
+    <ng-template #emptyRuns><div class="empty">No agent runs yet. Start and control execution from the campaign container. Agents are runtime views, not independent business objects.</div></ng-template>
   </section>
 </main>
