@@ -77,7 +77,7 @@ export class CampaignsPage implements OnInit {
       }
     });
 
-    this.data.workspacePackages().subscribe({
+    this.data.autonomousTemplates().subscribe({
       next: packages => {
         this.packages = packages || [];
         if (!this.form.packageCode && this.packages.length) {
@@ -85,7 +85,7 @@ export class CampaignsPage implements OnInit {
           this.form.packageCode = logistics?.code || logistics?.id || this.packages[0].code || this.packages[0].id;
         }
       },
-      error: e => this.error = this.apiError(e, "Workspace packages could not be loaded.")
+      error: e => this.error = this.apiError(e, "Acquisition packages could not be loaded.")
     });
   }
 
