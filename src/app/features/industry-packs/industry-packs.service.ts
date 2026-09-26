@@ -22,4 +22,5 @@ export class IndustryPacksService {
 
   create<T = any>(input: any): Observable<T> { return this.api.post<T>('industry-packs', input); }
   update<T = any>(id: string, input: any): Observable<T> { return this.api.put<T>(`industry-packs/${id}`, input); }
+  buildWithAi<T = any>(prompt: string): Observable<T> { return this.api.post<T>('industry-packs/ai/build', { prompt }); }
 }
