@@ -13,7 +13,7 @@
       <div><span class="eyebrow">CAMPAIGN</span><strong>{{ campaign.name }}</strong><small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small></div>
       <div class="toolbar-actions">
         <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
-        <span class="error-badge" *ngIf="hasErrors">! {{ nodes.filter(nodeStatus.bind(this)).length }} issue(s)</span>
+        <span class="error-badge" *ngIf="hasErrors">! {{ nodes.filter(node => nodeStatus(node)==='failed').length }} issue(s)</span>
       </div>
     </section>
 
