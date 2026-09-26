@@ -103,6 +103,8 @@ export class CampaignsPage implements OnInit {
       },
       error: e => { this.creating=false; this.error=this.apiError(e,'Campaign Container could not be created.'); }
     });
+  }
+
   closeCreate(): void { this.createOpen = false; }
 
   openIndustryPacks(): void {
