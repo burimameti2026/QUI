@@ -21,6 +21,12 @@ export class CampaignsPage implements OnInit {
   search = '';
   createOpen = false;
   createMode: 'pack' | 'scratch' = 'pack';
+  packs: any[] = [];
+  selectedPack: any = null;
+  selectedScenario = '';
+  icps: any[] = [];
+  selectedIcpId = '';
+  creating = false;
 
   constructor(
     private readonly data: AcquisitionService,
@@ -29,6 +35,8 @@ export class CampaignsPage implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.data.icps().subscribe({ next: x => this.icps = x || [] });
+    this.loadPacks();
   }
 
   get filteredRows(): any[] {
@@ -74,7 +82,22 @@ export class CampaignsPage implements OnInit {
     void this.router.navigate(['/campaigns', campaign.id, 'designer']);
   }
 
-  openCreate(): void { this.createOpen = true; this.createMode = 'pack'; }
+  openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
+
+  loadPacks(): void { this.data['api'].get<any[]>('industry-packs').subscribe({ next: x => this.packs = x || [] }); }
+
+  selectPack(pack: any): void { this.selectedPack = pack; const t=this.packTemplate(pack); this.selectedScenario=t.scenarios?.[0]?.code || ''; }
+  packTemplate(pack:any):any { try{return JSON.parse(pack?.templateJson||'{}')}catch{return {}} }
+  scenarios(pack:any):any[] { return this.packTemplate(pack).scenarios || []; }
+
+  createContainer(): void {
+    if (!this.selectedPack || !this.selectedIcpId) return;
+    this.creating = true; this.error = '';
+    const t=this.packTemplate(this.selectedPack);
+    const input={targetListId: this.selectedPack.targetListId, name: this.selectedScenario ? this.selectedPack.name+' — '+this.selectedScenario : this.selectedPack.name+' Acquisition', goal:t.purpose||'generate qualified prospects', senderName:'',senderEmail:'',startsAtUtc:null,steps:[]};
+    if (!input.targetListId) { this.error='This Industry Pack must be provisioned before it can create a campaign container.'; this.creating=false; return; }
+    this.data.createCampaign(input).subscribe({next:(campaign:any)=>{this.creating=false;this.createOpen=false;this.message='Campaign Container created.';this.load();this.router.navigate(['/campaigns',campaign.id,'designer']);},error:e=>{this.creating=false;this.error=this.apiError(e,'Campaign Container could not be created.')}});
+  }
   closeCreate(): void { this.createOpen = false; }
 
   openIndustryPacks(): void {
