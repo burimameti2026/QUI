@@ -12,6 +12,7 @@ export class AcquisitionService {
   resumeCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/resume`, {}); }
   stopCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/stop`, {}); }
   deleteCampaign(id: string) { return this.api.delete<any>(`acquisition/campaigns/${id}`); }
+  saveCampaignPlan(id: string, planJson: string) { return this.api.put<any>(`acquisition/campaigns/${id}/plan`, { planJson }); }
 
   messages() { return this.api.get<any[]>("acquisition/messages"); }
   approve(id: string) { return this.api.post<any>(`email-operations/messages/${id}/approve`, {}); }
