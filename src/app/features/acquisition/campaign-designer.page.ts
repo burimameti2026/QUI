@@ -83,6 +83,25 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     return q ? this.palette.filter(x => (x.name + ' ' + x.type).toLowerCase().includes(q)) : this.palette;
   }
 
+  get canStart(): boolean {
+    const status = this.statusText(this.campaign?.status);
+    return ['Draft', 'Paused', 'Stopped', 'Completed'].includes(status);
+  }
+
+  start(): void { this.runAction('startCampaign', 'Campaign started.'); }
+  pause(): void { this.runAction('pauseCampaign', 'Campaign paused.'); }
+  resume(): void { this.runAction('resumeCampaign', 'Campaign resumed.'); }
+  stop(): void { this.runAction('stopCampaign', 'Campaign stopped.'); }
+
+  private runAction(method: 'startCampaign' | 'pauseCampaign' | 'resumeCampaign' | 'stopCampaign', success: string): void {
+    this.saving = true;
+    this.error = '';
+    this.data[method](this.id).subscribe({
+      next: () => { this.saving = false; this.message = success; this.refreshExecution(); },
+      error: e => { this.saving = false; this.error = e?.error?.detail || e?.error?.error || 'Campaign action failed.'; }
+    });
+  }
+
   get isRunning(): boolean {
     return this.statusText(this.campaign?.status) === 'Running';
   }
