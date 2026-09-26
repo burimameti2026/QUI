@@ -9,7 +9,7 @@
     </select>
     <button class="button-secondary" *ngIf="view === 'list'" (click)="templateOpen = true">Use template</button>
     <button class="button-primary" *ngIf="view === 'list'" (click)="newOpen = true">+ New workflow</button>
-    <button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
+    <button class="button-secondary" *ngIf="view === 'designer'" [disabled]="saving || !activeId || readiness < 100" (click)="runOrchestration()">▶ Run orchestration</button><button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
   </qai-page-header>
 
   <ng-template #workflowList>
@@ -68,7 +68,21 @@
               <span class="stack"><strong>{{container.name}}</strong><small>{{container.status}} · {{container.packageCode || 'No package'}}</small></span>
             </label>
           </div>
-          <footer class="card-footer"><button class="button-primary" [disabled]="saving" (click)="saveOrchestration()">{{saving ? 'Saving…' : 'Save orchestration'}}</button></footer>
+          <footer class="card-footer"><span class="meta" *ngIf="orchestration">Campaign, containers, automations and pipeline are bound to this workflow.</span><div class="actions"><button class="button-secondary" [disabled]="saving" (click)="saveOrchestration()">{{saving ? 'Saving…' : 'Save orchestration'}}</button><button class="button-primary" [disabled]="saving || readiness < 100 || !selectedCampaignId" (click)="runOrchestration()">▶ Run now</button></div></footer>
+          <div class="card-body" *ngIf="orchestration">
+            <span class="eyebrow">LIVE EXECUTION MAP</span>
+            <div class="facts">
+              <div><small>Campaign</small><b>{{orchestration.campaign?.name || 'Not bound'}}</b></div>
+              <div><small>Pipeline</small><b>{{orchestration.pipeline?.name || 'Not bound'}}</b></div>
+              <div><small>Containers</small><b>{{orchestration.containers?.length || 0}} selected</b></div>
+              <div><small>Automations</small><b>{{orchestration.automations?.length || 0}} selected</b></div>
+            </div>
+            <div class="list" *ngIf="orchestration.containers?.length">
+              <div class="list-item" *ngFor="let container of orchestration.containers">
+                <span class="avatar">▣</span><span class="stack"><strong>{{container.name}}</strong><small>{{container.status}} · {{container.packageCode || 'No package'}}</small></span><span class="status">{{container.status}}</span>
+              </div>
+            </div>
+          </div>
         </section>
         <section class="card" *ngIf="selected; else placeholder"><header class="card-header"><div><span class="eyebrow">STEP SETTINGS</span><h3>{{ title(selected) }}</h3></div></header><div class="form"><label>Step name<input [ngModel]="title(selected)" (ngModelChange)="updateTitle($event)" /></label><label>Business instruction<textarea rows="7" [ngModel]="detail(selected)" (ngModelChange)="updateDetail($event)"></textarea></label></div><div class="notice"><strong>Execution guardrail</strong><p>External messages require sender verification, suppression check and approval.</p></div><div class="card-body"><span class="eyebrow">EXECUTION MAP</span><div class="facts"><div><small>Input</small><b>{{instructionGuide(selected).input}}</b></div><div><small>Produces</small><b>{{instructionGuide(selected).outcome}}</b></div><div><small>Controls</small><b>{{instructionGuide(selected).controls}}</b></div><div><small>Then</small><b>{{instructionGuide(selected).next}}</b></div></div></div><footer class="card-footer"><button class="button-danger" [disabled]="selected.type === 'start'" (click)="remove(selected)">Remove step</button></footer></section><ng-template #placeholder><section class="empty">Select a step to configure it.</section></ng-template>
       </aside>
