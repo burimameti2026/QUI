@@ -39,6 +39,37 @@
       </section>
 
       <aside class="stack">
+        <section class="card" *ngIf="orchestration">
+          <header class="card-header"><div><span class="eyebrow">CENTRAL ORCHESTRATION</span><h3>Connect the business flow</h3><p>Keep container steps inside containers; this workflow connects Campaign, Automations and Pipeline.</p></div><span class="status">{{orchestration.active ? 'Active' : 'Draft'}}</span></header>
+          <div class="form">
+            <label>Campaign
+              <select [(ngModel)]="selectedCampaignId" (ngModelChange)="campaignChanged()">
+                <option [ngValue]="null">No campaign</option>
+                <option *ngFor="let campaign of campaigns" [ngValue]="campaign.id">{{campaign.name}}</option>
+              </select>
+            </label>
+            <label>Pipeline
+              <select [(ngModel)]="selectedPipelineId">
+                <option [ngValue]="null">No pipeline</option>
+                <option *ngFor="let pipeline of pipelines" [ngValue]="pipeline.id">{{pipeline.name}}</option>
+              </select>
+            </label>
+          </div>
+          <div class="card-body">
+            <span class="eyebrow">AUTOMATIONS</span>
+            <label class="list-item" *ngFor="let automation of automations">
+              <input type="checkbox" [checked]="selectedAutomationIds.includes(automation.id)" (change)="toggleSelection(selectedAutomationIds, automation.id)" />
+              <span class="stack"><strong>{{automation.name}}</strong><small>{{automation.trigger}} · {{automation.active ? 'Active' : 'Inactive'}}</small></span>
+            </label>
+            <span class="eyebrow">CAMPAIGN CONTAINERS</span>
+            <div class="notice" *ngIf="!selectedCampaignId">Select a campaign to choose its independent containers.</div>
+            <label class="list-item" *ngFor="let container of containers">
+              <input type="checkbox" [checked]="selectedContainerIds.includes(container.id)" (change)="toggleSelection(selectedContainerIds, container.id)" />
+              <span class="stack"><strong>{{container.name}}</strong><small>{{container.status}} · {{container.packageCode || 'No package'}}</small></span>
+            </label>
+          </div>
+          <footer class="card-footer"><button class="button-primary" [disabled]="saving" (click)="saveOrchestration()">{{saving ? 'Saving…' : 'Save orchestration'}}</button></footer>
+        </section>
         <section class="card" *ngIf="selected; else placeholder"><header class="card-header"><div><span class="eyebrow">STEP SETTINGS</span><h3>{{ title(selected) }}</h3></div></header><div class="form"><label>Step name<input [ngModel]="title(selected)" (ngModelChange)="updateTitle($event)" /></label><label>Business instruction<textarea rows="7" [ngModel]="detail(selected)" (ngModelChange)="updateDetail($event)"></textarea></label></div><div class="notice"><strong>Execution guardrail</strong><p>External messages require sender verification, suppression check and approval.</p></div><div class="card-body"><span class="eyebrow">EXECUTION MAP</span><div class="facts"><div><small>Input</small><b>{{instructionGuide(selected).input}}</b></div><div><small>Produces</small><b>{{instructionGuide(selected).outcome}}</b></div><div><small>Controls</small><b>{{instructionGuide(selected).controls}}</b></div><div><small>Then</small><b>{{instructionGuide(selected).next}}</b></div></div></div><footer class="card-footer"><button class="button-danger" [disabled]="selected.type === 'start'" (click)="remove(selected)">Remove step</button></footer></section><ng-template #placeholder><section class="empty">Select a step to configure it.</section></ng-template>
       </aside>
     </div>
