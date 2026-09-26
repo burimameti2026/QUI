@@ -168,7 +168,6 @@ export class ShellComponent {
   readonly navigationGroups: Group[] = [
     { label: "COMMAND CENTER", items: [
       i("Dashboard", "/dashboard", "⌂"),
-      i("KPIs", "/kpis", "▥"),
     ]},
     { label: "SALES & ACQUISITION", items: [
       i("Prospects", "/campaigns", "◎"),
@@ -187,6 +186,7 @@ export class ShellComponent {
       i("Industry Packs", "/industry-packs", "▤"),
     ]},
     { label: "AI & AUTOMATION", items: [
+      i("Workflow Orchestrator", "/workflows", "⇄"),
       i("Automations", "/automations", "✣"),
       i("Knowledge", "/knowledge", "▥"),
       i("Evaluations", "/evaluations", "✓"),
