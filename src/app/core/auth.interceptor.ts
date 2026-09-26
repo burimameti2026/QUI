@@ -2,11 +2,13 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
+import { ApiErrorService } from './api-error.service';
 import { AuthService } from './auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
+  const apiErrors = inject(ApiErrorService);
   const isTokenRequest = request.url.includes('/connect/token');
 
   // The access token is authoritative for tenant context after login.
@@ -21,10 +23,15 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   return next(withContext(auth.accessToken())).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status !== 401 || isTokenRequest || !auth.hasRefreshToken()) return throwError(() => error);
+      if (error.status !== 401 || isTokenRequest || !auth.hasRefreshToken()) {
+        apiErrors.show(error);
+        return throwError(() => error);
+      }
+
       return auth.refreshAccessToken().pipe(
         switchMap(token => next(withContext(token))),
         catchError(refreshError => {
+          apiErrors.show(refreshError);
           auth.logout();
           void router.navigate(['/login'], { queryParams: { reason: 'session-expired' } });
           return throwError(() => refreshError);
