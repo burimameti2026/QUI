@@ -64,6 +64,14 @@ import { PageHeader } from '../../shared/ui';
 
           <div class="card-body">
             <p>{{ pack.description || 'Business definitions for this acquisition domain.' }}</p>
+            <div class="scenario-picker" *ngIf="scenarios(pack).length">
+              <span class="eyebrow">CAMPAIGN SCENARIO</span>
+              <button *ngFor="let scenario of scenarios(pack)" type="button"
+                [class.active]="selectedScenario[pack.id]===scenario.code"
+                (click)="selectedScenario[pack.id]=scenario.code">
+                <strong>{{ scenario.name }}</strong><small>{{ scenario.description }}</small>
+              </button>
+            </div>
             <div class="list">
               <div class="list-item"><span>ICP definition</span><span class="status">Included</span></div>
               <div class="list-item"><span>Target List</span><span class="status">Included</span></div>
@@ -102,6 +110,7 @@ import { PageHeader } from '../../shared/ui';
 export class IndustryPacksPage implements OnInit {
   packs: any[] = [];
   busyId: string | null = null;
+  selectedScenario: Record<string, string> = {};
   message = '';
   error = '';
 
@@ -137,7 +146,7 @@ export class IndustryPacksPage implements OnInit {
     this.message = '';
     this.error = '';
 
-    this.data.provision<any>(pack.id).subscribe({
+    this.data.provision<any>(pack.id, this.selectedScenario[pack.id]).subscribe({
       next: result => {
         this.busyId = null;
         pack.installed = true;
@@ -153,6 +162,19 @@ export class IndustryPacksPage implements OnInit {
         this.error = error?.error?.detail || error?.error?.error || 'The Industry Pack could not be provisioned.';
       }
     });
+  }
+
+
+  scenarios(pack: any): any[] {
+    const code = String(pack?.code || '').toLowerCase();
+    if (!code.includes('fusionfleet') && !code.includes('logistics')) return [];
+    return [
+      { code: 'logistics-companies', name: 'Logistics companies', description: 'Find logistics providers and operators.' },
+      { code: 'transport-companies', name: 'Transport companies', description: 'Find road and transport businesses.' },
+      { code: 'freight-forwarders', name: 'Freight forwarders', description: 'Find freight forwarding companies.' },
+      { code: '3pl-providers', name: '3PL providers', description: 'Find third-party logistics providers.' },
+      { code: 'warehouse-operators', name: 'Warehouse operators', description: 'Find warehouse and fulfillment operators.' }
+    ];
   }
 
   openCampaigns(): void {
