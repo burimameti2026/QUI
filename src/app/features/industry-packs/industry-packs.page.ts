@@ -126,7 +126,8 @@ interface PackDraft {
             </div>
           </div>
           <footer class="card-footer">
-            <button class="button-secondary" type="button" (click)="edit(pack)">Edit</button>
+            <button class="button-secondary" type="button" (click)="edit(pack)">Edit definition</button>
+            <button class="button-quiet" type="button" *ngIf="pack.campaignId" (click)="openCampaign(pack)">Open campaign</button>
             <button class="button-primary" type="button" (click)="provision(pack)" [disabled]="busyId===pack.id">{{ busyId===pack.id ? 'Provisioning…' : (pack.provisioned ? 'Reconcile campaign' : 'Use for Campaign') }}</button>
           </footer>
         </article>
@@ -212,6 +213,8 @@ export class IndustryPacksPage implements OnInit {
   }
 
   packTemplate(pack:any): any { try { return JSON.parse(pack?.templateJson||'{}'); } catch { return {}; } }
+
+  openCampaign(pack:any) { if (pack?.campaignId) void this.router.navigate(['/campaigns', pack.campaignId, 'designer']); }
 
   provision(pack:any) {
     this.busyId=pack.id; this.error='';
