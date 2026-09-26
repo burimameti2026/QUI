@@ -170,7 +170,7 @@ export class ShellComponent {
       i("Dashboard", "/dashboard", "⌂"),
     ]},
     { label: "SALES & ACQUISITION", items: [
-      i("Prospects", "/campaigns", "◎"),
+      i("Prospects", "/discover", "◎"),
       i("Companies", "/crm/companies", "▦"),
       i("Contacts", "/crm/contacts", "◉"),
       i("Leads", "/crm/leads", "▣"),
