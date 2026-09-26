@@ -187,6 +187,7 @@ export class ShellComponent {
     ]},
     { label: "AI & AUTOMATION", items: [
       i("Workflow Orchestrator", "/workflows", "⇄"),
+      i("Workflow Orchestrator", "/workflows", "⇄"),
       i("Automations", "/automations", "✣"),
       i("Knowledge", "/knowledge", "▥"),
       i("Evaluations", "/evaluations", "✓"),
