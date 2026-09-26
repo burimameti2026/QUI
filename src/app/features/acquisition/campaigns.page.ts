@@ -53,7 +53,7 @@ export class CampaignsPage implements OnInit {
         this.rows = rows || [];
         this.loading = false;
       },
-      error: error => {
+      error: (error: any) => {
         this.loading = false;
         this.error = this.apiError(error, 'Campaign containers could not be loaded.');
       }
@@ -108,7 +108,7 @@ export class CampaignsPage implements OnInit {
         this.settingsOpenId = null;
         this.load();
       },
-      error: error => {
+      error: (error: any) => {
         this.busy = false;
         this.error = this.apiError(error, 'Campaign action failed.');
       }
