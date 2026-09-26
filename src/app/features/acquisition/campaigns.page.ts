@@ -158,6 +158,13 @@ export class CampaignsPage implements OnInit {
     this.runAction(() => this.data.startCampaign(campaign.id), 'Campaign started.');
   }
 
+  runAutonomous(campaign: any): void {
+    this.runAction(
+      () => this.data.runAutonomousCampaign(campaign.id),
+      'Autonomous acquisition run queued. Discovery and qualification will continue in the background.'
+    );
+  }
+
   pause(campaign: any): void {
     this.runAction(() => this.data.pauseCampaign(campaign.id), 'Campaign paused.');
   }
