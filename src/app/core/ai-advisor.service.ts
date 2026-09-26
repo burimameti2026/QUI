@@ -10,6 +10,8 @@ export interface AiAdvisorContext {
   entityId?: string;
   title?: string;
   values?: Record<string, unknown>;
+  routePath?: string;
+  url?: string;
 }
 
 export interface AiAdvisorResponse {
