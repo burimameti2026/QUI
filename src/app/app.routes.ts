@@ -45,7 +45,7 @@ export const routes: Routes = [
   {path:'white-label',canActivate:[requirePermission('settings.manage')],loadComponent:()=>import('./features/white-label/white-label.page').then(m=>m.WhiteLabelPage)},
   {path:'industry-packs',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/industry-packs/industry-packs.page').then(m=>m.IndustryPacksPage)},
   {path:'acquisition',redirectTo:'campaigns',pathMatch:'full'},
-  {path:'acquisition/icp',redirectTo:'campaigns',pathMatch:'full'},
+  {path:'acquisition/icp',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/icp.page').then(m=>m.IcpPage)},
   {path:'acquisition/qualification',redirectTo:'campaigns',pathMatch:'full'},
   {path:'discover',redirectTo:'campaigns',pathMatch:'full'},
   {path:'agents',redirectTo:'campaigns',pathMatch:'full'},
