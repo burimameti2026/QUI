@@ -27,31 +27,28 @@ interface PipelineStage { id: string; pipelineId: string; name: string; sortOrde
         <button [class.active]="activeTab==='Lost'" (click)="setTab('Lost')" type="button">Lost</button>
         <button [class.active]="activeTab==='Unassigned'" (click)="setTab('Unassigned')" type="button">Unassigned</button>
       </qai-refined-tabs>
-      <qai-data-grid *ngIf="!loading && !error">
-        <div class="toolbar">
+      <div class="prospect-timeline-shell" *ngIf="!loading && !error">
+        <div class="prospect-timeline-toolbar">
           <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search opportunities, companies, pipeline..." /></label>
           <select [(ngModel)]="pipelineFilter"><option value="">All pipelines</option><option *ngFor="let p of pipelines" [value]="p.id">{{ p.name }}</option></select>
           <button type="button" class="toolbar-button">▽ Filters</button>
           <button type="button" class="toolbar-button">↕ Sort</button>
-          <span class="toolbar-spacer"></span>
-          <button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
+          <span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
         </div>
-        <table>
-          <thead><tr><th>Opportunity</th><th>Value</th><th>Pipeline / Stage</th><th>Status</th><th>Expected close</th><th>Source</th><th>Actions</th></tr></thead>
-          <tbody>
-            <tr *ngFor="let x of visible">
-              <td><div class="lead-person"><b>{{ x.name }}</b></div></td>
-              <td>{{ money(x.amount) }}</td>
-              <td><span class="status" [class.unassigned]="!x.pipelineStageId">{{ stageLabel(x) }}</span></td>
-              <td><span class="status" [class.hot]="status(x.status)==='Won'">{{ status(x.status) }}</span></td>
-              <td>{{ x.expectedCloseUtc ? (x.expectedCloseUtc | date:'mediumDate') : '—' }}</td>
-              <td>{{ x.leadId ? 'Qualified lead / campaign' : 'Manual' }}</td>
-              <td><div class="actions"><button class="small" (click)="open(x)">Edit</button></div></td>
-            </tr>
-            <tr class="empty" *ngIf="!visible.length"><td colspan="7"><strong>No opportunities available</strong><span>Create an opportunity or convert a qualified lead.</span></td></tr>
-          </tbody>
-        </table>
-      </qai-data-grid>
+        <div class="prospect-timeline">
+          <article class="prospect-timeline-item" *ngFor="let x of visible">
+            <div class="prospect-timeline-rail"><span class="prospect-timeline-dot" [class.hot]="status(x.status)==='Won'" [class.muted]="status(x.status)==='Lost'"></span></div>
+            <div class="prospect-timeline-date">{{ x.expectedCloseUtc ? (x.expectedCloseUtc | date:'mediumDate') : 'No close date' }}</div>
+            <div class="prospect-timeline-content">
+              <div class="prospect-timeline-heading"><div><span class="eyebrow">OPPORTUNITY</span><h3>{{ x.name }}</h3></div><span class="status" [class.hot]="status(x.status)==='Won'">{{ status(x.status) }}</span></div>
+              <p class="prospect-timeline-summary">{{ stageLabel(x) }} · {{ x.leadId ? 'Qualified lead / campaign' : 'Manual' }}</p>
+              <div class="prospect-timeline-meta"><span><b>{{ money(x.amount) }}</b> value</span><span>{{ stageLabel(x) }}</span><button class="small" (click)="open(x)">Edit</button></div>
+            </div>
+          </article>
+          <div class="prospect-timeline-empty" *ngIf="!visible.length"><strong>No opportunities available</strong><span>Create an opportunity or convert a qualified lead.</span></div>
+        </div>
+      </div>
+      <div class="notice" *ngIf="loading">Loading opportunities…</div>
       <qai-modal [open]="show" [title]="form.id ? 'Edit opportunity' : 'New opportunity'" (close)="show = false">
         <form class="form" (ngSubmit)="save()"><label>Name<input [(ngModel)]="form.name" name="name" required /></label>
           <div class="content-grid"><label>Amount<input type="number" [(ngModel)]="form.amount" name="amount" /></label><label>Status<select [(ngModel)]="form.status" name="status"><option [ngValue]="0">Open</option><option [ngValue]="1">Won</option><option [ngValue]="2">Lost</option></select></label></div>
