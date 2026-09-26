@@ -1,192 +1,215 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IndustryPacksService } from './industry-packs.service';
 import { PageHeader } from '../../shared/ui';
 
+interface PackDraft {
+  id?: string;
+  code: string;
+  name: string;
+  description: string;
+  industry: string;
+  purpose: string;
+  offer: string;
+  audience: string;
+  discoveryProvider: string;
+  keywords: string;
+  minimumScore: number;
+  outreach: string;
+  approvalRequired: boolean;
+  scenarios: string;
+}
+
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, FormsModule, PageHeader],
   template: `
     <style>
-      .scenario-picker{margin:14px 0 4px;padding:12px;border:1px solid #e1e5eb;border-radius:10px;background:#f7f8fa}
-      .scenario-picker>.eyebrow{display:block;margin-bottom:8px}
-      .scenario-picker button{display:block;width:100%;padding:9px 10px;margin:5px 0;border:1px solid #d9dee6;border-radius:8px;background:#fff;text-align:left;cursor:pointer}
-      .scenario-picker button.active{border-color:#222;box-shadow:0 0 0 1px #222}
-      .scenario-picker strong,.scenario-picker small{display:block}
-      .scenario-picker strong{font-size:11px}
-      .scenario-picker small{font-size:9px;opacity:.6;margin-top:2px}
+      .builder{margin:18px 0;padding:20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}
+      .builder-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+      .mode{display:flex;gap:6px;margin:16px 0}.mode button{padding:8px 12px;border:1px solid #d9dee6;background:#fff;border-radius:8px;cursor:pointer}.mode button.active{background:#555;color:#fff}
+      .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700}.field input,.field textarea,.field select{border:1px solid #d9dee6;border-radius:8px;padding:9px;background:#fff}.field textarea{min-height:72px}
+      .builder-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+      .ai-hint{padding:12px;border-radius:10px;background:#f5f6f8;margin-bottom:12px}
+      .pack-tools{display:flex;justify-content:space-between;align-items:center;margin:16px 0;gap:12px}.pack-tools input{max-width:360px;padding:9px;border:1px solid #d9dee6;border-radius:8px}
+      .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.card-body{padding:16px}.card-footer{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #eee}
+      .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.chip{padding:4px 7px;background:#f0f2f5;border-radius:999px;font-size:10px}.empty{padding:30px;text-align:center}
+      @media(max-width:800px){.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.builder-head{flex-direction:column}}
     </style>
     <main class="page page-industry-packs">
-      <qai-page-header
-        title="Industry Packs"
-        subtitle="An Industry Pack is the single source used to provision a campaign-ready acquisition definition.">
+      <qai-page-header title="Industry Packs" subtitle="Reusable business definitions that turn an industry, offer and ICP into campaign-ready automation.">
+        <button class="button-primary" type="button" (click)="startCreate()">+ Create Industry Pack</button>
       </qai-page-header>
 
       <section class="hero">
         <div>
-          <span class="eyebrow">INDUSTRY → CAMPAIGN</span>
-          <h2>{{ installedCount }} provisioned · {{ packs.length }} available</h2>
-          <p>
-            Provision an Industry Pack once. The backend creates or reconciles its ICP,
-            Target List, Campaign and Campaign Steps. Workspace Packages are not used for acquisition provisioning.
-          </p>
+          <span class="eyebrow">REUSABLE BUSINESS BLUEPRINTS</span>
+          <h2>{{ packs.length }} Industry Packs</h2>
+          <p>Create once, reuse across campaigns. Each pack can define purpose, offer, ICP, discovery, qualification, outreach and approval.</p>
         </div>
       </section>
 
       <p class="notice success" *ngIf="message">{{ message }}</p>
       <p class="notice alert-error" *ngIf="error">{{ error }}</p>
 
-      <section class="card" *ngIf="installedCount">
-        <header class="card-header">
+      <section class="builder" *ngIf="builderOpen">
+        <div class="builder-head">
           <div>
-            <span class="eyebrow">CAMPAIGN-READY</span>
-            <h2>Provisioned campaign containers</h2>
-            <p>These Industry Packs already have a campaign container for this tenant.</p>
+            <span class="eyebrow">PACK BUILDER</span>
+            <h2>{{ draft.id ? 'Edit Industry Pack' : 'Create Industry Pack' }}</h2>
+            <p>Use AI to draft the definition, then review and save it as a reusable template.</p>
           </div>
-          <button class="button-primary" type="button" (click)="openCampaigns()">Open campaigns</button>
-        </header>
+          <button class="button-secondary" type="button" (click)="cancelEdit()">Close</button>
+        </div>
 
-        <div class="list">
-          <article class="list-item" *ngFor="let pack of provisionedPacks">
-            <div class="icon">✓</div>
-            <div class="stack">
-              <strong>{{ pack.name }}</strong>
-              <small>{{ pack.code }} · {{ pack.campaignName || 'Campaign container ready' }}</small>
-            </div>
-            <span class="status status-active">{{ pack.campaignStatus || 'Draft' }}</span>
-          </article>
+        <div class="mode">
+          <button type="button" [class.active]="mode==='ai'" (click)="mode='ai'">Build with AI</button>
+          <button type="button" [class.active]="mode==='manual'" (click)="mode='manual'">Build manually</button>
+        </div>
+
+        <div class="ai-hint" *ngIf="mode==='ai'">
+          <strong>AI-assisted setup</strong>
+          <p>Describe the business and desired customers. The UI prepares the same pack definition used by the manual editor.</p>
+          <div class="field">
+            <label>Describe the business</label>
+            <textarea [(ngModel)]="aiPrompt" placeholder="Example: Find logistics companies in North Macedonia and prepare approved outreach for fleet management software."></textarea>
+          </div>
+          <button class="button-secondary" type="button" (click)="draftFromPrompt()">Generate draft</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="field"><label>Pack name</label><input [(ngModel)]="draft.name" placeholder="Logistics Sales Pack"></div>
+          <div class="field"><label>Code</label><input [(ngModel)]="draft.code" placeholder="logistics-sales"></div>
+          <div class="field"><label>Industry</label><input [(ngModel)]="draft.industry" placeholder="Logistics"></div>
+          <div class="field"><label>Purpose / outcome</label><input [(ngModel)]="draft.purpose" placeholder="Book qualified demos"></div>
+          <div class="field full"><label>Offer</label><textarea [(ngModel)]="draft.offer" placeholder="What are we selling and what business problem does it solve?"></textarea></div>
+          <div class="field full"><label>Target audience / ICP</label><textarea [(ngModel)]="draft.audience" placeholder="Company types, size, geography and buying signals"></textarea></div>
+          <div class="field"><label>Discovery provider</label><select [(ngModel)]="draft.discoveryProvider"><option value="serpapi">SerpAPI</option><option value="manual">Manual</option></select></div>
+          <div class="field"><label>Minimum qualification score</label><input type="number" min="0" max="100" [(ngModel)]="draft.minimumScore"></div>
+          <div class="field full"><label>Discovery keywords</label><textarea [(ngModel)]="draft.keywords" placeholder="logistics companies, transport companies, freight forwarders"></textarea></div>
+          <div class="field full"><label>Outreach</label><textarea [(ngModel)]="draft.outreach" placeholder="Email sequence, messaging and follow-up strategy"></textarea></div>
+          <div class="field full"><label>Scenarios</label><input [(ngModel)]="draft.scenarios" placeholder="Logistics Companies, Transport Companies, 3PL Providers"></div>
+          <div class="field"><label>Approval required</label><select [(ngModel)]="draft.approvalRequired"><option [ngValue]="true">Yes</option><option [ngValue]="false">No</option></select></div>
+        </div>
+
+        <div class="builder-actions">
+          <button class="button-secondary" type="button" (click)="cancelEdit()">Cancel</button>
+          <button class="button-primary" type="button" [disabled]="saving" (click)="save()">{{ saving ? 'Saving…' : 'Save Industry Pack' }}</button>
         </div>
       </section>
 
-      <section class="content-grid">
-        <article class="card" *ngFor="let pack of packs">
-          <header class="card-header">
-            <div>
-              <span class="eyebrow">INDUSTRY PACK</span>
-              <h2>{{ pack.name }}</h2>
-            </div>
-            <span class="status" [class.status-active]="pack.provisioned">
-              {{ pack.provisioned ? 'Campaign ready' : 'Available' }}
-            </span>
-          </header>
+      <div class="pack-tools">
+        <strong>Saved reusable templates</strong>
+        <input [(ngModel)]="query" placeholder="Search packs…">
+      </div>
 
+      <section class="content-grid">
+        <article class="card" *ngFor="let pack of filteredPacks">
+          <header class="card-header">
+            <div><span class="eyebrow">INDUSTRY PACK</span><h2>{{ pack.name }}</h2></div>
+            <span class="status" [class.status-active]="pack.provisioned">{{ pack.provisioned ? 'Campaign ready' : 'Reusable' }}</span>
+          </header>
           <div class="card-body">
-            <p>{{ pack.description || 'Business definitions for this acquisition domain.' }}</p>
-            <div class="scenario-picker" *ngIf="scenarios(pack).length">
-              <span class="eyebrow">CAMPAIGN SCENARIO</span>
-              <button *ngFor="let scenario of scenarios(pack)" type="button"
-                [class.active]="selectedScenario[pack.id]===scenario.code"
-                (click)="selectedScenario[pack.id]=scenario.code">
-                <strong>{{ scenario.name }}</strong><small>{{ scenario.description }}</small>
-              </button>
-            </div>
+            <p>{{ pack.description || 'Reusable acquisition and automation definition.' }}</p>
+            <div class="chips" *ngIf="packTemplate(pack).industry"><span class="chip">{{ packTemplate(pack).industry }}</span><span class="chip">ICP</span><span class="chip">Discovery</span><span class="chip">Qualification</span><span class="chip">Outreach</span></div>
             <div class="list">
-              <div class="list-item"><span>ICP definition</span><span class="status">Included</span></div>
-              <div class="list-item"><span>Target List</span><span class="status">Included</span></div>
-              <div class="list-item"><span>Campaign Steps</span><span class="status">Included</span></div>
-              <div class="list-item"><span>Execution</span><span class="status">Human-controlled</span></div>
+              <div class="list-item"><span>Purpose</span><span>{{ packTemplate(pack).purpose || 'Defined in template' }}</span></div>
+              <div class="list-item"><span>Discovery</span><span>{{ packTemplate(pack).discovery?.provider || 'Configured' }}</span></div>
+              <div class="list-item"><span>Qualification</span><span>{{ packTemplate(pack).minimumScore || 0 }}+</span></div>
             </div>
           </div>
-
           <footer class="card-footer">
-            <button
-              class="button-primary"
-              type="button"
-              (click)="provision(pack)"
-              [disabled]="busyId === pack.id">
-              {{ busyId === pack.id ? 'Provisioning…' : (pack.provisioned ? 'Reconcile campaign' : 'Provision campaign') }}
-            </button>
-
-            <button
-              class="button-secondary"
-              type="button"
-              *ngIf="pack.provisioned"
-              (click)="openCampaigns()">
-              Open campaign
-            </button>
+            <button class="button-secondary" type="button" (click)="edit(pack)">Edit</button>
+            <button class="button-primary" type="button" (click)="provision(pack)" [disabled]="busyId===pack.id">{{ busyId===pack.id ? 'Provisioning…' : (pack.provisioned ? 'Reconcile campaign' : 'Use for Campaign') }}</button>
           </footer>
         </article>
       </section>
 
-      <div class="empty" *ngIf="!packs.length">
-        <strong>No Industry Packs available</strong>
-        <span>Industry Packs will appear when configured by the platform.</span>
-      </div>
+      <div class="empty" *ngIf="!filteredPacks.length"><strong>No matching Industry Packs</strong><span>Create a reusable pack or change your search.</span></div>
     </main>
   `
 })
 export class IndustryPacksPage implements OnInit {
   packs: any[] = [];
+  query = '';
+  builderOpen = false;
+  mode: 'ai'|'manual' = 'ai';
+  aiPrompt = '';
+  saving = false;
   busyId: string | null = null;
-  selectedScenario: Record<string, string> = {};
   message = '';
   error = '';
+  draft: PackDraft = this.emptyDraft();
 
-  constructor(
-    private readonly data: IndustryPacksService,
-    private readonly router: Router
-  ) {}
+  constructor(private readonly data: IndustryPacksService, private readonly router: Router) {}
 
-  get provisionedPacks(): any[] {
-    return this.packs.filter(x => x.provisioned);
+  get filteredPacks() {
+    const q = this.query.trim().toLowerCase();
+    return !q ? this.packs : this.packs.filter(p => [p.name,p.code,p.description].some(v => String(v||'').toLowerCase().includes(q)));
   }
 
-  get installedCount(): number {
-    return this.provisionedPacks.length;
-  }
+  ngOnInit(): void { this.load(); }
 
-  ngOnInit(): void {
-    this.load();
-  }
-
-  load(): void {
-    this.error = '';
+  load() {
     this.data.list<any[]>().subscribe({
       next: packs => this.packs = packs || [],
-      error: error => this.error = error?.error?.detail || 'Industry Packs could not be loaded.'
+      error: e => this.error = e?.error?.detail || e?.error?.error || 'Industry Packs could not be loaded.'
     });
   }
 
-  provision(pack: any): void {
-    if (!pack?.id) return;
+  emptyDraft(): PackDraft {
+    return { code:'',name:'',description:'',industry:'',purpose:'',offer:'',audience:'',discoveryProvider:'serpapi',keywords:'',minimumScore:70,outreach:'',approvalRequired:true,scenarios:'' };
+  }
 
-    this.busyId = pack.id;
-    this.message = '';
-    this.error = '';
+  startCreate() { this.draft=this.emptyDraft(); this.mode='ai'; this.aiPrompt=''; this.builderOpen=true; }
+  cancelEdit() { this.builderOpen=false; }
+  edit(pack:any) {
+    const t=this.packTemplate(pack);
+    this.draft={ id:pack.id, code:pack.code||'', name:pack.name||'', description:pack.description||'', industry:t.industry||'', purpose:t.purpose||'', offer:t.offer||'', audience:t.audience||'', discoveryProvider:t.discovery?.provider||'serpapi', keywords:(t.discovery?.keywords||[]).join(', '), minimumScore:Number(t.minimumScore||70), outreach:t.outreach||'', approvalRequired:t.approvalRequired!==false, scenarios:(t.scenarios||[]).map((x:any)=>typeof x==='string'?x:x.name).join(', ') };
+    this.mode='manual'; this.builderOpen=true;
+  }
 
-    this.data.provision<any>(pack.id, this.selectedScenario[pack.id]).subscribe({
-      next: result => {
-        this.busyId = null;
-        pack.installed = true;
-        pack.provisioned = true;
-        pack.campaignId = result?.campaignId;
-        pack.targetListId = result?.targetListId;
-        pack.campaignStatus = result?.campaignStatus;
-        pack.campaignName = result?.definition?.campaignName || pack.name + ' Acquisition';
-        this.message = `${pack.name} is campaign-ready. Campaign ${result?.campaignId || ''} was provisioned.`;
-      },
-      error: error => {
-        this.busyId = null;
-        this.error = error?.error?.detail || error?.error?.error || 'The Industry Pack could not be provisioned.';
-      }
+  draftFromPrompt() {
+    const p=this.aiPrompt.trim(); if(!p) return;
+    const lower=p.toLowerCase();
+    this.draft.name=this.draft.name || (lower.includes('logistics')?'Logistics Sales Pack':'AI Sales Pack');
+    this.draft.code=this.draft.code || this.draft.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    this.draft.industry=this.draft.industry || (lower.includes('logistics')?'Logistics':'');
+    this.draft.purpose=this.draft.purpose || 'Generate and qualify high-fit prospects';
+    this.draft.audience=this.draft.audience || p;
+    this.draft.keywords=this.draft.keywords || p;
+    this.draft.outreach=this.draft.outreach || 'Prepare personalized outreach after qualification and wait for human approval before delivery.';
+    this.message='Draft generated. Review the fields and save the reusable Industry Pack.';
+  }
+
+  templateJson() {
+    return JSON.stringify({
+      version:1, industry:this.draft.industry, purpose:this.draft.purpose, offer:this.draft.offer, audience:this.draft.audience,
+      minimumScore:Number(this.draft.minimumScore||70),
+      discovery:{provider:this.draft.discoveryProvider,keywords:this.draft.keywords.split(',').map(x=>x.trim()).filter(Boolean)},
+      qualification:{minimumScore:Number(this.draft.minimumScore||70)},
+      enrichment:{enabled:true},
+      targetList:{enabled:true},
+      outreach:{definition:this.draft.outreach},
+      approvalRequired:this.draft.approvalRequired,
+      scenarios:this.draft.scenarios.split(',').map(x=>x.trim()).filter(Boolean).map(name=>({name,code:name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}))
     });
   }
 
-
-  scenarios(pack: any): any[] {
-    const code = String(pack?.code || '').toLowerCase();
-    if (!code.includes('fusionfleet') && !code.includes('logistics')) return [];
-    return [
-      { code: 'logistics-companies', name: 'Logistics companies', description: 'Find logistics providers and operators.' },
-      { code: 'transport-companies', name: 'Transport companies', description: 'Find road and transport businesses.' },
-      { code: 'freight-forwarders', name: 'Freight forwarders', description: 'Find freight forwarding companies.' },
-      { code: '3pl-providers', name: '3PL providers', description: 'Find third-party logistics providers.' },
-      { code: 'warehouse-operators', name: 'Warehouse operators', description: 'Find warehouse and fulfillment operators.' }
-    ];
+  save() {
+    if(!this.draft.name.trim() || !this.draft.code.trim()) { this.error='Pack name and code are required.'; return; }
+    this.saving=true; this.error='';
+    const payload={code:this.draft.code,name:this.draft.name,description:this.draft.description,templateJson:this.templateJson()};
+    const request=this.draft.id ? this.data.update<any>(this.draft.id,payload) : this.data.create<any>(payload);
+    request.subscribe({next:()=>{this.saving=false;this.builderOpen=false;this.message='Industry Pack saved and available for reuse.';this.load();},error:e=>{this.saving=false;this.error=e?.error?.error||e?.error?.detail||'Industry Pack could not be saved.';}});
   }
 
-  openCampaigns(): void {
-    void this.router.navigateByUrl('/campaigns');
+  packTemplate(pack:any): any { try { return JSON.parse(pack?.templateJson||'{}'); } catch { return {}; } }
+
+  provision(pack:any) {
+    this.busyId=pack.id; this.error='';
+    this.data.provision<any>(pack.id).subscribe({next:r=>{this.busyId=null;pack.provisioned=true;pack.campaignId=r?.campaignId;this.message=`${pack.name} is now campaign-ready.`;},error:e=>{this.busyId=null;this.error=e?.error?.error||e?.error?.detail||'The Industry Pack could not be provisioned.';}});
   }
 }
