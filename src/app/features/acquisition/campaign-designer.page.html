@@ -13,6 +13,10 @@
       <div><span class="eyebrow">CAMPAIGN</span><strong>{{ campaign.name }}</strong><small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small></div>
       <div class="toolbar-actions">
         <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
+        <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
+        <button class="button-secondary" type="button" *ngIf="isRunning" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
+        <button class="button-secondary" type="button" *ngIf="statusText(campaign?.status)==='Paused'" (click)="resume()" [disabled]="saving">▶ Resume</button>
+        <button class="button-secondary" type="button" *ngIf="isRunning || statusText(campaign?.status)==='Paused'" (click)="stop()" [disabled]="saving">■ Stop</button>
         <span class="error-badge" *ngIf="hasErrors">! {{ failedCount }} issue(s)</span>
       </div>
     </section>
