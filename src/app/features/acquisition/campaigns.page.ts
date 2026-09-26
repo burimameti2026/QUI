@@ -14,6 +14,8 @@ export class CampaignsPage implements OnInit {
   rows: any[] = [];
   selectedCampaign: any = null;
   detail: any = null;
+  selectedTask: any = null;
+  settingsOpenId: string | null = null;
   loading = false;
   detailLoading = false;
   busy = false;
@@ -126,6 +128,58 @@ export class CampaignsPage implements OnInit {
       next: () => { this.busy = false; this.message = 'Campaign stopped.'; this.load(); },
       error: e => { this.busy = false; this.error = this.apiError(e, 'Campaign could not be stopped.'); }
     });
+  }
+
+  delete(campaign: any): void {
+    if (!confirm(`Delete campaign container "${campaign.name}"? This removes its campaign execution data, tasks, runs, messages and target-list membership.`)) return;
+    this.busy = true;
+    this.data.deleteCampaign(campaign.id).subscribe({
+      next: () => {
+        this.busy = false;
+        this.message = 'Campaign container deleted.';
+        this.settingsOpenId = null;
+        if (this.selectedCampaign?.id === campaign.id) {
+          this.selectedCampaign = null;
+          this.detail = null;
+          this.selectedTask = null;
+        }
+        this.load();
+      },
+      error: e => {
+        this.busy = false;
+        this.error = this.apiError(e, 'Campaign container could not be deleted.');
+      }
+    });
+  }
+
+  selectTask(task: any): void {
+    this.selectedTask = this.selectedTask?.id === task.id ? null : task;
+  }
+
+  taskIcon(type: any): string {
+    switch (String(type ?? '').toLowerCase()) {
+      case 'discover': return '⌕';
+      case 'qualify': return '✓';
+      case 'enrich': return '✦';
+      case 'buildtargetlist': return '◎';
+      case 'outreach': return '✉';
+      case 'approval': return '⚿';
+      case 'deliver': return '➤';
+      default: return '◇';
+    }
+  }
+
+  campaignVisualStatus(campaign: any): string {
+    const s = this.status(campaign.status);
+    if (s === 'Running') return 'running';
+    if (s === 'Paused' || s === 'Draft' || s === 'Scheduled') return 'pending';
+    if (s === 'Stopped') return 'failed';
+    if (s === 'Completed') return 'success';
+    return 'pending';
+  }
+
+  runStat(campaign: any, key: string): number {
+    return Number(campaign[key] ?? 0);
   }
 
   openIndustryPacks(): void {
