@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ApiService } from './api.service';
 
 export interface AiAdvisorContext {
@@ -15,12 +16,14 @@ export interface AiAdvisorResponse {
   message: string;
   suggestions?: string[];
   nextAction?: string;
+  field?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AiAdvisorService {
   private readonly contextState = signal<AiAdvisorContext>({});
   readonly context = this.contextState.asReadonly();
+  readonly suggestionApplied = new Subject<{ field?: string; value: string }>();
 
   constructor(private api: ApiService) {}
 
@@ -35,6 +38,8 @@ export class AiAdvisorService {
   clearContext(): void {
     this.contextState.set({});
   }
+
+  applySuggestion(value: string, field?: string): void { this.suggestionApplied.next({ field, value }); }
 
   advise(message: string) {
     return this.api.post<AiAdvisorResponse>('ai/advisor/ask', {
