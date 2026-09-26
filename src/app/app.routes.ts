@@ -28,7 +28,7 @@ export const routes: Routes = [
   {path:'meetings',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/meetings/meetings.page').then(m=>m.MeetingsPage)},
   {path:'knowledge',canActivate:[requireModule('knowledge')],loadComponent:()=>import('./features/knowledge/knowledge.page').then(m=>m.KnowledgePage)},
   {path:'knowledge/gaps',canActivate:[requireModule('knowledge')],loadComponent:()=>import('./features/knowledge-gaps/knowledge-gaps.page').then(m=>m.KnowledgeGapsPage)},
-  {path:'workflows',redirectTo:'automations',pathMatch:'full'},
+  {path:'workflows',loadComponent:()=>import('./features/workflows/workflows.page').then(m=>m.WorkflowsPage)},
   {path:'automations',canActivate:[requireModule('automation')],loadComponent:()=>import('./features/automations/automations.page').then(m=>m.AutomationsPage)},
   {path:'evaluations',canActivate:[requireModule('ai')],loadComponent:()=>import('./features/evaluations/evaluations.page').then(m=>m.EvaluationsPage)},
   {path:'integrations',canActivate:[requireModule('integrations')],loadComponent:()=>import('./features/integrations/integrations.page').then(m=>m.IntegrationsPage)},
