@@ -11,7 +11,18 @@
   <div class="create-backdrop" *ngIf="createOpen" (click)="closeCreate()">
     <section class="create-dialog" (click)="$event.stopPropagation()">
       <header><div><span class="eyebrow">NEW CAMPAIGN CONTAINER</span><h2>How do you want to start?</h2><p>Choose a reusable industry definition or build a new definition that can become a reusable pack.</p></div><button type="button" class="close" (click)="closeCreate()">×</button></header>
-      <div class="create-options">
+      <div class="create-options" *ngIf="!selectedPack">
+        <button type="button" class="create-option" *ngFor="let pack of packs" (click)="selectPack(pack)"><b>{{pack.name}}</b><span>{{pack.description || 'Reusable campaign definition'}}</span><small>{{scenarios(pack).length || 0}} scenarios · {{pack.installed ? 'Installed' : 'Reusable'}}</small></button>
+      </div>
+      <div class="create-config" *ngIf="selectedPack">
+        <button type="button" class="button-quiet" (click)="selectedPack=null">← Change Industry Pack</button>
+        <h3>{{selectedPack.name}}</h3>
+        <label>Scenario<select [(ngModel)]="selectedScenario"><option *ngFor="let s of scenarios(selectedPack)" [value]="s.code">{{s.name}}</option></select></label>
+        <label>ICP / Audience<select [(ngModel)]="selectedIcpId"><option value="">Select reusable ICP…</option><option *ngFor="let icp of icps" [value]="icp.id">{{icp.name}}</option></select></label>
+        <p class="notice" *ngIf="!selectedIcpId">Select an ICP before creating the container.</p>
+        <button class="button-primary" type="button" [disabled]="!selectedIcpId || creating" (click)="createContainer()">{{creating ? 'Creating…' : 'Create Campaign Container'}}</button>
+      </div>
+      <div class="create-options" *ngIf="false">
         <button type="button" class="create-option active" (click)="openIndustryPacks()"><b>Use an Industry Pack</b><span>Start with Logistics, SaaS, Ecommerce, 3PL and other reusable definitions.</span><small>Recommended starting point</small></button>
         <button type="button" class="create-option" (click)="createFromScratch()"><b>Create from scratch</b><span>Define purpose, industry, discovery source, qualification and outreach yourself.</span><small>Save it later as a reusable Industry Pack template</small></button>
       </div>
