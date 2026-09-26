@@ -17,6 +17,9 @@ export class CampaignsPage implements OnInit {
   busy = false;
   error = '';
   message = '';
+  search = '';
+  createOpen = false;
+  createMode: 'pack' | 'scratch' = 'pack';
 
   constructor(
     private readonly data: AcquisitionService,
@@ -25,6 +28,12 @@ export class CampaignsPage implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  get filteredRows(): any[] {
+    const q = this.search.trim().toLowerCase();
+    if (!q) return this.rows;
+    return this.rows.filter(x => [x.name, x.packageCode, x.objective, x.goal, this.status(x.status)].some(v => String(v ?? '').toLowerCase().includes(q)));
   }
 
   get running(): number {
@@ -64,8 +73,16 @@ export class CampaignsPage implements OnInit {
     void this.router.navigate(['/campaigns', campaign.id, 'designer']);
   }
 
+  openCreate(): void { this.createOpen = true; this.createMode = 'pack'; }
+  closeCreate(): void { this.createOpen = false; }
+
   openIndustryPacks(): void {
     void this.router.navigateByUrl('/industry-packs');
+  }
+
+  createFromScratch(): void {
+    this.createOpen = false;
+    void this.router.navigateByUrl('/industry-packs?create=1');
   }
 
   openApproval(_campaign?: any): void {
