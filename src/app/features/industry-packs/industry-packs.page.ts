@@ -178,7 +178,7 @@ export class IndustryPacksPage implements OnInit {
     this.mode='manual'; this.builderOpen=true; this.syncAdvisor();
   }
 
-  private syncAdvisor(): void { this.aiAdvisor.patchContext({ title: this.draft.name || 'Pack Builder', entityId: this.draft.id, values: { ...this.draft } }); }
+  private syncAdvisor(): void { this.aiAdvisor.patchContext({ title: this.draft.name || 'Pack Builder', entityId: this.draft.id, values: { ...this.draft, availablePacks: (this.packs || []).map((p:any) => ({ id:p.id, code:p.code, name:p.name, description:p.description })) } }); }
 
   advisorHelp(field: keyof PackDraft): void { this.syncAdvisor(); this.aiAdvisor.advise('Review the current Industry Pack and tell me what I should write for the '+String(field)+' field. Give me one concrete value and explain briefly why.').subscribe(); }
 
