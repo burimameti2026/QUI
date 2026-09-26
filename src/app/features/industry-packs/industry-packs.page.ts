@@ -161,7 +161,7 @@ export class IndustryPacksPage implements OnInit {
 
   load() {
     this.data.list<any[]>().subscribe({
-      next: packs => this.packs = packs || [],
+      next: packs => { this.packs = packs || []; this.syncAdvisor(); },
       error: e => this.error = e?.error?.detail || e?.error?.error || 'Industry Packs could not be loaded.'
     });
   }
