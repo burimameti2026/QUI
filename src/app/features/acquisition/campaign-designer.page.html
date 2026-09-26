@@ -1,24 +1,89 @@
 <main class="page designer-page">
-  <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Edit the complete campaign definition. Every stage is saved into the campaign plan used by runtime.">
+  <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Build, configure and monitor the campaign flow. Configuration is stored as Campaign PlanJson; users work with fields, not JSON.">
     <button class="button-quiet" type="button" (click)="back()">← Campaigns</button>
-    <button class="button-secondary" type="button" (click)="load()" [disabled]="loading || saving">↻ Reload</button>
-    <button class="button-primary" type="button" (click)="saveStage()" [disabled]="saving || !selected">Save plan</button>
+    <button class="button-secondary" type="button" (click)="load()" [disabled]="loading || saving">↻ Refresh</button>
+    <button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || !nodes.length">Save flow</button>
   </qai-page-header>
-  <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p>
+
+  <p class="notice success" *ngIf="message">{{ message }}</p>
+  <p class="notice alert-error" *ngIf="error">{{ error }}</p>
+
   <ng-container *ngIf="!loading && campaign">
-    <section class="designer-summary"><div><span>STATUS</span><strong>{{ campaign.status }}</strong></div><div><span>GOAL</span><strong>{{ campaign.goal || '—' }}</strong></div><div><span>INDUSTRY</span><strong>{{ parseCampaignPlan()?.industry || 'Campaign' }}</strong></div><div><span>DEFINITION</span><strong>Campaign Plan</strong></div></section>
-    <section class="designer-workspace">
-      <aside class="stage-list"><div class="stage-list-head"><span class="eyebrow">CAMPAIGN WORKFLOW</span><small>{{ stages.length }} stages · click a stage to edit</small></div>
-        <div class="stage-item-wrap" *ngFor="let stage of stages; let last = last"><button class="stage-item" [class.active]="selected?.id===stage.id" type="button" (click)="select(stage)"><span class="stage-icon">{{ icon(stage.type) }}</span><span><small>STEP {{ stages.indexOf(stage)+1 }} · {{ stage.type }}</small><strong>{{ stage.name }}</strong></span><b>›</b></button><div class="connector" *ngIf="!last">↓</div></div>
+    <section class="designer-toolbar">
+      <div><span class="eyebrow">CAMPAIGN</span><strong>{{ campaign.name }}</strong><small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small></div>
+      <div class="toolbar-actions">
+        <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
+        <span class="error-badge" *ngIf="hasErrors">! {{ nodes.filter(nodeStatus.bind(this)).length }} issue(s)</span>
+      </div>
+    </section>
+
+    <section class="designer-shell">
+      <aside class="palette">
+        <div class="panel-head"><div><span class="eyebrow">COMPONENTS</span><strong>Campaign building blocks</strong></div></div>
+        <input class="palette-search" [(ngModel)]="paletteFilter" placeholder="Search components…">
+        <div class="palette-group">
+          <button class="palette-item" *ngFor="let item of filteredPalette" type="button" draggable="true" (dragstart)="dragPalette($event,item)" (click)="addFromPalette(item)">
+            <span class="palette-icon">{{ item.icon }}</span>
+            <span><b>{{ item.name }}</b><small>{{ item.type }}</small></span>
+            <i>+</i>
+          </button>
+        </div>
+        <div class="palette-help">Drag a component onto the flow or click <b>+</b> to add it after the current flow.</div>
       </aside>
-      <section class="stage-editor" *ngIf="selected; else noStage">
-        <div class="editor-head"><div><span class="eyebrow">STEP {{ stages.indexOf(selected)+1 }} · {{ selected.type }}</span><h2>{{ icon(selected.type) }} {{ selected.name }}</h2><p>{{ selected.description || 'Configure this stage for the campaign runtime.' }}</p></div><span class="stage-badge" *ngIf="selected.requiresApproval">Human approval</span></div>
-        <div class="field"><label>Stage name</label><input [ngModel]="selected.name" (ngModelChange)="updateStageName($event)"></div>
-        <div class="config-heading"><div><h3>Stage information</h3><p>All configuration for this step is persisted inside the campaign plan.</p></div><span>JSON</span></div>
-        <textarea class="json-editor" [(ngModel)]="configText" spellcheck="false"></textarea>
-        <div class="editor-footer"><span>Changes become active after saving the campaign plan.</span><button class="button-primary" type="button" (click)="saveStage()" [disabled]="saving">Save stage</button></div>
+
+      <section class="canvas-panel" (drop)="onDrop($event)" (dragover)="allowDrop($event)">
+        <div class="canvas-head"><div><span class="eyebrow">CAMPAIGN FLOW</span><strong>Visual execution workflow</strong></div><div class="canvas-tools"><button type="button" (click)="moveSelected('up')" [disabled]="!selected">↑</button><button type="button" (click)="moveSelected('down')" [disabled]="!selected">↓</button><button type="button" class="danger-tool" (click)="removeSelected()" [disabled]="!selected">⌫</button></div></div>
+        <div class="flow-canvas">
+          <div class="drop-hint" *ngIf="!nodes.length">Drag components here to build the campaign.</div>
+          <div class="flow-column">
+            <ng-container *ngFor="let node of nodes; let last = last; let i = index">
+              <button class="flow-node" type="button" [class.selected]="selected?.id===node.id" [class]="'flow-node '+nodeStatus(node)" (click)="select(node)">
+                <span class="node-icon">{{ nodeIcon(node) }}</span>
+                <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
+                <span class="node-state">{{ nodeStatus(node) }}</span>
+              </button>
+              <div class="flow-connector" *ngIf="!last"><span>↓</span></div>
+            </ng-container>
+          </div>
+        </div>
       </section>
-      <ng-template #noStage><section class="stage-editor empty">Select a workflow stage.</section></ng-template>
+
+      <aside class="inspector" *ngIf="selected; else noSelection">
+        <div class="inspector-head">
+          <div><span class="eyebrow">PROPERTIES</span><h2>{{ nodeIcon(selected) }} {{ selected.name }}</h2><p>{{ selected.description }}</p></div>
+          <span class="state-pill" [class]="nodeStatus(selected)">{{ nodeStatus(selected) }}</span>
+        </div>
+
+        <div class="inspector-section">
+          <label>Component name</label>
+          <input [(ngModel)]="selected.name">
+        </div>
+
+        <div class="inspector-section">
+          <label>Description</label>
+          <textarea [(ngModel)]="selected.description" rows="3"></textarea>
+        </div>
+
+        <div class="inspector-section" *ngFor="let field of fieldEntries()">
+          <label>{{ field.label }}</label>
+          <input *ngIf="field.kind==='string'" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)">
+          <input *ngIf="field.kind==='number'" type="number" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,+$event)">
+          <label class="check-field" *ngIf="field.kind==='boolean'"><input type="checkbox" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)"> Enabled</label>
+          <textarea *ngIf="field.kind==='array'" [ngModel]="field.value.join(', ')" (ngModelChange)="updateArray(field.key,$event)" rows="3"></textarea>
+          <textarea *ngIf="field.kind==='object'" [ngModel]="field.value | json" disabled rows="4"></textarea>
+        </div>
+
+        <div class="inspector-section execution" *ngIf="selected.status">
+          <label>Execution</label>
+          <div class="execution-row"><span>Status</span><b>{{ selected.status }}</b></div>
+          <div class="execution-row"><span>Started</span><b>{{ formatDate(selected.startedAtUtc) }}</b></div>
+          <div class="execution-row"><span>Completed</span><b>{{ formatDate(selected.completedAtUtc) }}</b></div>
+          <div class="error-box" *ngIf="nodeStatus(selected)==='failed'"><strong>!</strong><span>{{ errorDetails(selected) }}</span></div>
+        </div>
+
+        <div class="inspector-footer"><button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving">Save component changes</button></div>
+      </aside>
+      <ng-template #noSelection><aside class="inspector empty-inspector"><span>◇</span><h3>Select a component</h3><p>Choose a node in the flow to configure its fields and inspect execution.</p></aside></ng-template>
     </section>
   </ng-container>
 </main>
