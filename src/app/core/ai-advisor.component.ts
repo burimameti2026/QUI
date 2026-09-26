@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { AiAdvisorService, AiAdvisorResponse } from './ai-advisor.service';
 
 interface AdvisorMessage { role: 'user' | 'assistant'; text: string; suggestions?: string[]; nextAction?: string; }
@@ -29,10 +31,22 @@ interface AdvisorMessage { role: 'user' | 'assistant'; text: string; suggestions
   `]
 })
 export class AiAdvisorComponent implements OnInit {
-  private readonly advisor = inject(AiAdvisorService); open=false; loading=false; error=''; draft=''; messages: AdvisorMessage[]=[];
+  private readonly advisor = inject(AiAdvisorService);
+  private readonly router = inject(Router); open=false; loading=false; error=''; draft=''; messages: AdvisorMessage[]=[];
   get contextTitle(){ const c=this.advisor.context(); return c.title || c.section || c.page || 'Your workspace'; }
   get contextHint(){ const c=this.advisor.context(); return c.section ? 'You are working in '+c.section+'.' : c.page ? 'You are working in '+c.page+'.' : 'I am here to guide you through the workspace.'; }
-  ngOnInit(){ this.messages.push({role:'assistant',text:'I am your workspace advisor. Ask “what next?”, “what should I write?”, or “why does this matter?” and I will guide you step by step.'}); }
+  ngOnInit(){
+    this.updateRouteContext(this.router.url);
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => this.updateRouteContext(event.urlAfterRedirects));
+    this.messages.push({role:'assistant',text:'I am your workspace advisor. Ask “what next?”, “what should I write?”, or “why does this matter?” and I will guide you step by step.'});
+  }
+  private updateRouteContext(url:string){
+    const route=url.split('?')[0].split('#')[0];
+    const parts=route.split('/').filter(Boolean);
+    const labels:Record<string,string>={dashboard:'Dashboard',kpis:'KPIs',campaigns:'Campaigns',industry-packs:'Industry Packs',acquisition:'Acquisition',icp:'ICP & Audience',crm:'CRM',knowledge:'Knowledge',automations:'Automations',pipeline:'Pipeline',analytics:'Analytics',white-label:'White Label',users:'Users & Roles'};
+    const key=parts[parts.length-1] || 'dashboard';
+    this.advisor.patchContext({page:labels[key] || key.replace(/[-_]/g,' '),section:labels[parts[0]] || labels[key] || parts[0] || 'Workspace'});
+  }
   minimize(){ this.open=false; }
   ask(text:string){ this.draft=text; this.send(); }
   send(){ const text=this.draft.trim(); if(!text||this.loading)return; this.messages.push({role:'user',text}); this.draft=''; this.loading=true; this.error=''; this.advisor.advise(text).subscribe({next:(r:AiAdvisorResponse)=>{this.loading=false;this.messages.push({role:'assistant',text:r?.message||'I could not generate a suggestion.',suggestions:r?.suggestions,nextAction:r?.nextAction});},error:(e)=>{this.loading=false;this.error=e?.error?.detail||e?.error?.error||'AI Advisor is temporarily unavailable.';}}); }
