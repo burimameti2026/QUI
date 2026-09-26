@@ -15,7 +15,7 @@ export class CampaignsPage implements OnInit {
   load(){this.loading=true;this.error='';this.data.campaigns().subscribe({next:r=>{this.rows=r||[];this.loading=false;},error:e=>{this.loading=false;this.error=this.apiError(e,'Campaign containers could not be loaded.');}});}
   openDesigner(c:any){void this.router.navigate(['/campaigns',c.id,'designer']);}
   openIndustryPacks(){void this.router.navigateByUrl('/industry-packs');}
-  openApproval(){void this.router.navigateByUrl('/acquisition/approval-queue');}
+  openApproval(_campaign?:any){void this.router.navigateByUrl('/acquisition/approval-queue');}
   start(c:any){this.runAction(()=>this.data.startCampaign(c.id),'Campaign started.');}
   pause(c:any){this.runAction(()=>this.data.pauseCampaign(c.id),'Campaign paused.');}
   resume(c:any){this.runAction(()=>this.data.resumeCampaign(c.id),'Campaign resumed.');}
