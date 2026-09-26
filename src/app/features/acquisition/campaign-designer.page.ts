@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
+import { AiAdvisorService } from '../../core/ai-advisor.service';
 
 interface FlowNode {
   id: string;
@@ -65,7 +66,8 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly data: AcquisitionService
+    private readonly data: AcquisitionService,
+    private readonly aiAdvisor: AiAdvisorService
   ) {}
 
   ngOnInit(): void {
@@ -78,6 +80,34 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.timer) clearInterval(this.timer);
+  }
+
+  private syncAdvisorContext(): void {
+    const campaign = this.campaign || {};
+    this.aiAdvisor.setContext({
+      page: 'Campaign Designer',
+      section: 'Campaigns',
+      title: campaign.name || 'Campaign',
+      entityType: 'campaign',
+      entityId: this.id,
+      routePath: '/campaigns/' + this.id + '/designer',
+      url: '/campaigns/' + this.id + '/designer',
+      values: {
+        campaign: {
+          id: campaign.id,
+          name: campaign.name,
+          code: campaign.packageCode,
+          objective: campaign.objective,
+          goal: campaign.goal,
+          status: this.statusText(campaign.status),
+          industry: campaign.industry,
+          senderName: campaign.senderName,
+          senderEmail: campaign.senderEmail
+        },
+        workflow: this.nodes.map(x => ({ id: x.id, type: x.type, name: x.name, config: x.config })),
+        outreach: this.campaignSteps.map(x => ({ stepNumber: x.stepNumber, subject: x.subjectTemplate, body: x.bodyTemplate, delayHours: x.delayHours }))
+      }
+    });
   }
 
   get filteredPalette(): PaletteItem[] {
@@ -122,6 +152,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     this.data.campaignDetail(this.id).subscribe({
       next: detail => {
         this.applyDetail(detail);
+        this.syncAdvisorContext();
         this.loading = false;
       },
       error: e => {
@@ -133,7 +164,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   refreshExecution(): void {
     this.data.campaignDetail(this.id).subscribe({
-      next: detail => this.applyDetail(detail, true),
+      next: detail => { this.applyDetail(detail, true); this.syncAdvisorContext(); },
       error: () => undefined
     });
   }
