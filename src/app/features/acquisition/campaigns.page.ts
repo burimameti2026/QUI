@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
 import { IndustryPacksService } from '../industry-packs/industry-packs.service';
+import { AiAdvisorService } from '../../core/ai-advisor.service';
 
 @Component({
   standalone: true,
@@ -32,7 +33,8 @@ export class CampaignsPage implements OnInit {
   constructor(
     private readonly data: AcquisitionService,
     private readonly router: Router,
-    private readonly packsService: IndustryPacksService
+    private readonly packsService: IndustryPacksService,
+    private readonly aiAdvisor: AiAdvisorService
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +77,7 @@ export class CampaignsPage implements OnInit {
       next: rows => {
         this.rows = rows || [];
         this.loading = false;
+        this.syncAdvisorContext();
       },
       error: (error: any) => {
         this.loading = false;
@@ -84,7 +87,42 @@ export class CampaignsPage implements OnInit {
   }
 
   openDesigner(campaign: any): void {
+    this.aiAdvisor.setContext({
+      page: 'Campaigns',
+      section: 'Campaigns',
+      title: campaign?.name || 'Campaign',
+      entityType: 'campaign',
+      entityId: campaign?.id,
+      values: { campaign: this.campaignContext(campaign), availableCampaigns: this.rows.map(x => this.campaignContext(x)) }
+    });
     void this.router.navigate(['/campaigns', campaign.id, 'designer']);
+  }
+
+  private syncAdvisorContext(): void {
+    this.aiAdvisor.setContext({
+      page: 'Campaigns',
+      section: 'Campaigns',
+      title: 'Campaign Containers',
+      values: {
+        campaignCount: this.rows.length,
+        runningCount: this.running,
+        campaigns: this.rows.map(x => this.campaignContext(x))
+      }
+    });
+  }
+
+  private campaignContext(campaign: any): Record<string, unknown> {
+    return {
+      id: campaign?.id,
+      name: campaign?.name,
+      packageCode: campaign?.packageCode,
+      objective: campaign?.objective,
+      goal: campaign?.goal,
+      status: this.status(campaign?.status),
+      industry: campaign?.industry,
+      senderName: campaign?.senderName,
+      startsAtUtc: campaign?.startsAtUtc
+    };
   }
 
   openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
