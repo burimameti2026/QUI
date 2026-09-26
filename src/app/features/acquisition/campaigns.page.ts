@@ -97,7 +97,9 @@ export class CampaignsPage implements OnInit {
     this.creating = true; this.error = '';
     this.packsService.provisionForCampaign<any>(this.selectedPack.id, this.selectedScenario || undefined, this.selectedIcpId).subscribe({
       next: (result:any) => {
-        this.creating=false; this.createOpen=false; this.message='Campaign Container created from Industry Pack and ICP.';
+        this.creating=false; this.createOpen=false; this.message=result?.alreadyProvisioned
+          ? 'Campaign Container reconciled from the Industry Pack and selected ICP.'
+          : 'Campaign Container created from Industry Pack and ICP.';
         this.load();
         if (result?.campaignId) void this.router.navigate(['/campaigns', result.campaignId, 'designer']);
       },
