@@ -17,6 +17,10 @@ export interface AiAdvisorResponse {
   suggestions?: string[];
   nextAction?: string;
   field?: string;
+  tool?: string;
+  toolResult?: string;
+  toolInput?: string;
+  requiresApproval?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
