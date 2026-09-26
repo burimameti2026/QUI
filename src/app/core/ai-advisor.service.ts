@@ -46,7 +46,7 @@ export class AiAdvisorService {
   }
 
   executeTool(name: string, input: unknown) {
-    return this.api.post<any>(`ai/tools/${encodeURIComponent(name)}/execute`, JSON.stringify(input), { headers: { 'Content-Type': 'application/json' } } as any);
+    return this.api.post<any>(`ai/tools/${encodeURIComponent(name)}/execute`, JSON.stringify(input));
   }
 
   advise(message: string) {
