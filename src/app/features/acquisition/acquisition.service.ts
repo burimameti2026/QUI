@@ -11,6 +11,8 @@ export class AcquisitionService {
   pauseCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/pause`, {}); }
   resumeCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/resume`, {}); }
   stopCampaign(id: string) { return this.api.post<any>(`acquisition/campaigns/${id}/stop`, {}); }
+  runAutonomousCampaign(id: string) { return this.api.post<any>(`autonomous-acquisition/campaigns/${id}/run`, {}); }
+  autonomousRuns(tenantId: string) { return this.api.get<any[]>(`autonomous-acquisition/tenants/${tenantId}/runs`); }
   deleteCampaign(id: string) { return this.api.delete<any>(`acquisition/campaigns/${id}`); }
   saveCampaignPlan(id: string, planJson: string) { return this.api.put<any>(`acquisition/campaigns/${id}/plan`, { planJson }); }
   saveCampaignMessages(id: string, steps: any[]) { return this.api.put<any>(`acquisition/campaigns/${id}/messages`, { steps }); }
