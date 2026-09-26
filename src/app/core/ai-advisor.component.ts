@@ -51,4 +51,5 @@ export class AiAdvisorComponent implements OnInit {
   ask(text:string){ this.draft=text; this.send(); }
   send(){ const text=this.draft.trim(); if(!text||this.loading)return; this.messages.push({role:'user',text}); this.draft=''; this.loading=true; this.error=''; this.advisor.advise(text).subscribe({next:(r:AiAdvisorResponse)=>{this.loading=false;this.messages.push({role:'assistant',text:r?.message||'I could not generate a suggestion.',suggestions:r?.suggestions,nextAction:r?.nextAction});},error:(e)=>{this.loading=false;this.error=e?.error?.detail||e?.error?.error||'AI Advisor is temporarily unavailable.';}}); }
   useSuggestion(suggestion:string){ this.draft=suggestion; }
+  getContext(){ return this.advisor.context(); }
 }
