@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PageHeader],
+  imports: [CommonModule, FormsModule, PageHeader],
   templateUrl: './campaigns.page.html',
   styleUrls: ['./campaigns.page.css']
 })
