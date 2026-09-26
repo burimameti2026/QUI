@@ -157,7 +157,7 @@ export class IndustryPacksPage implements OnInit {
     return !q ? this.packs : this.packs.filter(p => [p.name,p.code,p.description].some(v => String(v||'').toLowerCase().includes(q)));
   }
 
-  ngOnInit(): void { this.aiAdvisor.setContext({ page:'Industry Packs', section:'Industry Packs', title:'Pack Builder', entityType:'industry-pack', values:this.draft as unknown as Record<string, unknown> }); this.load(); }
+  ngOnInit(): void { this.aiAdvisor.suggestionApplied.subscribe(({ field, value }) => this.applyAdvisorSuggestion(field, value)); this.aiAdvisor.setContext({ page:'Industry Packs', section:'Industry Packs', title:'Pack Builder', entityType:'industry-pack', values:this.draft as unknown as Record<string, unknown> }); this.load(); }
 
   load() {
     this.data.list<any[]>().subscribe({
@@ -179,6 +179,8 @@ export class IndustryPacksPage implements OnInit {
   }
 
   private syncAdvisor(): void { this.aiAdvisor.patchContext({ title: this.draft.name || 'Pack Builder', entityId: this.draft.id, values: { ...this.draft, availablePacks: (this.packs || []).map((p:any) => ({ id:p.id, code:p.code, name:p.name, description:p.description })) } }); }
+
+  private applyAdvisorSuggestion(field: string | undefined, value: string): void { if (!field) return; const key=field as keyof PackDraft; if (key in this.draft) { (this.draft as any)[key]=value; this.syncAdvisor(); } }
 
   advisorHelp(field: keyof PackDraft): void { this.syncAdvisor(); this.aiAdvisor.advise('Review the current Industry Pack and tell me what I should write for the '+String(field)+' field. Give me one concrete value and explain briefly why.').subscribe(); }
 
