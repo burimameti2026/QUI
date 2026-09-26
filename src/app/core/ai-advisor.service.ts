@@ -37,7 +37,7 @@ export class AiAdvisorService {
   }
 
   advise(message: string) {
-    return this.api.post<AiAdvisorResponse>('ai/advisor', {
+    return this.api.post<AiAdvisorResponse>('ai/advisor/ask', {
       message,
       context: this.contextState()
     });
