@@ -1,8 +1,23 @@
 <main class="page page-campaigns">
   <qai-page-header title="Campaign Containers" subtitle="Provisioned campaigns are managed here. Open a campaign to edit its workflow definition.">
     <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button>
-    <button class="button-primary" type="button" (click)="openIndustryPacks()">+ Provision from Industry Pack</button>
+    <button class="button-primary" type="button" (click)="openCreate()">+ Create Container</button>
   </qai-page-header>
+  <section class="campaign-intro">
+    <div><span class="eyebrow">CAMPAIGN CONTAINER</span><h2>Define the outcome first. The workflow follows.</h2><p>Every container answers six questions: what are we trying to achieve, which industry and audience, where do we get information, how do we qualify, what do we send, and where does human approval happen.</p></div>
+    <div class="creation-path"><span class="active">1 Purpose</span><i>→</i><span>2 Audience</span><i>→</i><span>3 Discovery</span><i>→</i><span>4 Qualification</span><i>→</i><span>5 Outreach</span><i>→</i><span>6 Approval</span></div>
+  </section>
+  <section class="campaign-toolbar"><label class="search-box">⌕ <input [(ngModel)]="search" placeholder="Search campaigns, industry, objective…" /></label><div><span class="eyebrow">CAMPAIGNS</span><strong>{{ filteredRows.length }} containers</strong><small>{{ running }} running</small></div><div class="toolbar-note">Industry Packs provide reusable starting definitions; each Campaign Container can then be tailored in Designer.</div></section>
+  <div class="create-backdrop" *ngIf="createOpen" (click)="closeCreate()">
+    <section class="create-dialog" (click)="$event.stopPropagation()">
+      <header><div><span class="eyebrow">NEW CAMPAIGN CONTAINER</span><h2>How do you want to start?</h2><p>Choose a reusable industry definition or build a new definition that can become a reusable pack.</p></div><button type="button" class="close" (click)="closeCreate()">×</button></header>
+      <div class="create-options">
+        <button type="button" class="create-option active" (click)="openIndustryPacks()"><b>Use an Industry Pack</b><span>Start with Logistics, SaaS, Ecommerce, 3PL and other reusable definitions.</span><small>Recommended starting point</small></button>
+        <button type="button" class="create-option" (click)="createFromScratch()"><b>Create from scratch</b><span>Define purpose, industry, discovery source, qualification and outreach yourself.</span><small>Save it later as a reusable Industry Pack template</small></button>
+      </div>
+      <div class="create-timeline"><b>Minimum campaign definition</b><span>Purpose</span><span>→</span><span>Industry + ICP</span><span>→</span><span>Discovery source</span><span>→</span><span>Qualification</span><span>→</span><span>Outreach</span><span>→</span><span>Approval</span></div>
+    </section>
+  </div>
   <section class="campaign-toolbar">
     <div><span class="eyebrow">CAMPAIGNS</span><strong>{{ rows.length }} containers</strong><small>{{ running }} running</small></div>
     <div class="toolbar-note">Workflow configuration is edited inside the Campaign Designer and stored in the campaign plan.</div>
@@ -10,7 +25,7 @@
   <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p><p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
   <section class="campaign-grid" *ngIf="rows.length; else emptyCampaigns">
-    <article class="campaign-tile" *ngFor="let campaign of rows" [ngClass]="'campaign-'+visualStatus(campaign)">
+    <article class="campaign-tile" *ngFor="let campaign of filteredRows" [ngClass]="'campaign-'+visualStatus(campaign)">
       <div class="tile-top">
         <div class="campaign-mark">◎</div>
         <div class="campaign-title"><span class="eyebrow">CAMPAIGN</span><h3>{{ campaign.name }}</h3><small>{{ campaign.packageCode || 'Custom' }}</small></div>
@@ -35,5 +50,5 @@
       </button>
     </article>
   </section>
-  <ng-template #emptyCampaigns><section class="empty card"><h3>No campaign containers yet</h3><p>Choose an Industry Pack to provision the campaign container.</p><button class="button-primary" type="button" (click)="openIndustryPacks()">Open Industry Packs</button></section></ng-template>
+  <ng-template #emptyCampaigns><section class="empty card"><h3>{{ search ? "No matching campaign containers" : "No campaign containers yet" }}</h3><p>{{ search ? "Try another search." : "Create a container and choose how its definition should be created." }}</p><button class="button-primary" type="button" (click)="openCreate()" *ngIf="!search">Create Container</button></section></ng-template>
 </main>
