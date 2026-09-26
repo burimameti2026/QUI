@@ -41,6 +41,10 @@ export class AiAdvisorService {
 
   applySuggestion(value: string, field?: string): void { this.suggestionApplied.next({ field, value }); }
 
+  runAgent(goal: string) {
+    return this.api.post<any>('ai/agent', { goal, contextJson: JSON.stringify(this.contextState()) });
+  }
+
   advise(message: string) {
     return this.api.post<AiAdvisorResponse>('ai/advisor/ask', {
       message,
