@@ -88,9 +88,33 @@ export class CampaignsPage implements OnInit {
 
   loadPacks(): void { this.packsService.list<any[]>().subscribe({ next: x => this.packs = x || [] }); }
 
-  selectPack(pack: any): void { this.selectedPack = pack; const t=this.packTemplate(pack); this.selectedScenario=t.scenarios?.[0]?.code || ''; }
-  packTemplate(pack:any):any { try{return JSON.parse(pack?.templateJson||'{}')}catch{return {}} }
-  scenarios(pack:any):any[] { return this.packTemplate(pack).scenarios || []; }
+  selectPack(pack: any): void {
+    this.selectedPack = pack;
+    const options = this.scenarios(pack);
+    this.selectedScenario = options[0]?.code || '';
+  }
+
+  packTemplate(pack:any):any {
+    try { return JSON.parse(pack?.templateJson||'{}'); } catch { return {}; }
+  }
+
+  scenarios(pack:any):any[] {
+    const configured = this.packTemplate(pack).scenarios;
+    if (Array.isArray(configured) && configured.length) return configured;
+
+    const code = String(pack?.code || '').toLowerCase();
+    if (code.includes('fusionfleet') || code.includes('logistics')) {
+      return [
+        { code:'logistics-companies', name:'Logistics Companies' },
+        { code:'transport-companies', name:'Transport Companies' },
+        { code:'freight-forwarders', name:'Freight Forwarders' },
+        { code:'3pl-providers', name:'3PL Providers' },
+        { code:'warehouse-operators', name:'Warehouse Operators' }
+      ];
+    }
+
+    return [{ code:'', name:'Default scenario' }];
+  }
 
   createContainer(): void {
     if (!this.selectedPack || !this.selectedIcpId) return;
