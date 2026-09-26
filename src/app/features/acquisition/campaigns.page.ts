@@ -103,14 +103,6 @@ export class CampaignsPage implements OnInit {
       },
       error: e => { this.creating=false; this.error=this.apiError(e,'Campaign Container could not be created.'); }
     });
-  }
-    if (!this.selectedPack || !this.selectedIcpId) return;
-    this.creating = true; this.error = '';
-    const t=this.packTemplate(this.selectedPack);
-    const input={targetListId: this.selectedPack.targetListId, name: this.selectedScenario ? this.selectedPack.name+' — '+this.selectedScenario : this.selectedPack.name+' Acquisition', goal:t.purpose||'generate qualified prospects', senderName:'',senderEmail:'',startsAtUtc:null,steps:[]};
-    if (!input.targetListId) { this.error='This Industry Pack must be provisioned before it can create a campaign container.'; this.creating=false; return; }
-    this.data.createCampaign(input).subscribe({next:(campaign:any)=>{this.creating=false;this.createOpen=false;this.message='Campaign Container created.';this.load();this.router.navigate(['/campaigns',campaign.id,'designer']);},error:e=>{this.creating=false;this.error=this.apiError(e,'Campaign Container could not be created.')}});
-  }
   closeCreate(): void { this.createOpen = false; }
 
   openIndustryPacks(): void {
