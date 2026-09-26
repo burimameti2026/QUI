@@ -18,49 +18,57 @@
   <p class="notice alert-error" *ngIf="error">{{ error }}</p>
   <p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
-  <section class="card">
-    <header class="card-header">
-      <div>
-        <span class="eyebrow">CAMPAIGNS</span>
-        <h3>Campaign-ready containers</h3>
-        <p>Each container is tenant-scoped and owns its ICP, target audience and execution state.</p>
-      </div>
-      <span class="status">{{ rows.length }} total</span>
-    </header>
-
-    <div class="list" *ngIf="rows.length; else emptyCampaigns">
-      <article class="list-item" *ngFor="let campaign of rows">
-        <div class="icon">◎</div>
-        <div class="stack">
-          <div class="identity">
-            <strong>{{ campaign.name }}</strong>
-            <span class="status" [ngClass]="'status-' + statusClass(campaign.status)">{{ status(campaign.status) }}</span>
-          </div>
-          <div class="meta">
-            <span><small>Industry Pack</small><b>{{ campaign.packageCode || 'Custom' }}</b><em>{{ campaign.packageVersion || '—' }}</em></span>
-            <span><small>Objective</small><b>{{ campaign.objective || campaign.goal || '—' }}</b></span>
-            <span><small>Target List</small><b>{{ campaign.targetListId || '—' }}</b></span>
-            <span><small>Prospects</small><b>{{ campaign.recipients || 0 }}</b></span>
+  <section class="campaign-grid" *ngIf="rows.length; else emptyCampaigns">
+    <article class="campaign-tile" *ngFor="let campaign of rows"
+      [ngClass]="'campaign-' + campaignVisualStatus(campaign)"
+      (click)="inspect(campaign)">
+      <div class="campaign-tile-top">
+        <div class="campaign-mark">◎</div>
+        <div class="campaign-title">
+          <span class="eyebrow">CAMPAIGN CONTAINER</span>
+          <h3>{{ campaign.name }}</h3>
+          <small>{{ campaign.packageCode || 'Custom' }}</small>
+        </div>
+        <div class="campaign-settings" (click)="$event.stopPropagation()">
+          <button class="settings-button" type="button" aria-label="Campaign settings"
+            (click)="settingsOpenId = settingsOpenId === campaign.id ? null : campaign.id">⚙</button>
+          <div class="settings-menu" *ngIf="settingsOpenId === campaign.id">
+            <button type="button" (click)="start(campaign)" *ngIf="status(campaign.status) === 'Draft' || status(campaign.status) === 'Scheduled'" [disabled]="busy">▶ Start</button>
+            <button type="button" (click)="pause(campaign)" *ngIf="status(campaign.status) === 'Running'" [disabled]="busy">Ⅱ Pause</button>
+            <button type="button" (click)="resume(campaign)" *ngIf="status(campaign.status) === 'Paused'" [disabled]="busy">▶ Resume</button>
+            <button type="button" (click)="stop(campaign)" *ngIf="status(campaign.status) !== 'Completed' && status(campaign.status) !== 'Stopped'" [disabled]="busy">■ Stop</button>
+            <button class="danger" type="button" (click)="delete(campaign)" [disabled]="busy">⌫ Delete</button>
           </div>
         </div>
-        <div class="actions">
-          <button class="button-secondary" type="button" (click)="inspect(campaign)">Open container</button>
-          <button class="button-primary" type="button" *ngIf="status(campaign.status) === 'Draft' || status(campaign.status) === 'Scheduled'" (click)="start(campaign)" [disabled]="busy">Start</button>
-          <button class="button-secondary" type="button" *ngIf="status(campaign.status) === 'Running'" (click)="pause(campaign)" [disabled]="busy">Pause</button>
-          <button class="button-primary" type="button" *ngIf="status(campaign.status) === 'Paused'" (click)="resume(campaign)" [disabled]="busy">Resume</button>
-          <button class="button-quiet" type="button" *ngIf="status(campaign.status) !== 'Completed' && status(campaign.status) !== 'Stopped'" (click)="stop(campaign)" [disabled]="busy">Stop</button>
-        </div>
-      </article>
-    </div>
-
-    <ng-template #emptyCampaigns>
-      <div class="empty">
-        <h3>No campaign containers yet</h3>
-        <p>Choose an Industry Pack. The platform provisions ICP, Target List, campaign steps, Agent, Workflow and Tasks together.</p>
-        <button class="button-primary" type="button" (click)="openIndustryPacks()">Open Industry Packs</button>
       </div>
-    </ng-template>
+
+      <div class="campaign-status-line">
+        <span class="status-dot"></span>
+        <strong>{{ status(campaign.status) }}</strong>
+        <span>{{ campaign.objective || campaign.goal || 'Acquisition workflow' }}</span>
+      </div>
+
+      <div class="campaign-stats">
+        <div><b>{{ runStat(campaign, 'runs') }}</b><span>Runs</span></div>
+        <div><b>{{ runStat(campaign, 'runSuccess') }}</b><span>Success</span></div>
+        <div><b>{{ runStat(campaign, 'runFailed') }}</b><span>Failed</span></div>
+        <div><b>{{ runStat(campaign, 'runPending') }}</b><span>Pending</span></div>
+      </div>
+
+      <div class="campaign-flow-mini">
+        <span>⌕ Discover</span><i>→</i><span>✓ Qualify</span><i>→</i><span>✉ Outreach</span>
+      </div>
+      <div class="campaign-open">Open workflow <span>→</span></div>
+    </article>
   </section>
+
+  <ng-template #emptyCampaigns>
+    <section class="card empty">
+      <h3>No campaign containers yet</h3>
+      <p>Choose an Industry Pack. The platform provisions ICP, Target List, campaign steps, Agent, Workflow and Tasks together.</p>
+      <button class="button-primary" type="button" (click)="openIndustryPacks()">Open Industry Packs</button>
+    </section>
+  </ng-template>
 
   <section class="card" *ngIf="selectedCampaign">
     <header class="card-header">
@@ -77,78 +85,82 @@
     <div class="empty" *ngIf="detailLoading">Loading container details…</div>
 
     <ng-container *ngIf="detail && !detailLoading">
-      <section class="pipeline">
-        <div class="pipeline-step" *ngFor="let label of ['ICP','Search','Qualification','Enrichment','Target List','Outreach','Approval','Follow-up']; let i = index">
-          <span class="pipeline-dot" [class.current]="i === 5 && hasApprovalWaiting()" [class.done]="i < 5 && pipelineStatus(i) === 'Completed'">{{ i + 1 }}</span>
-          <strong>{{ label }}</strong>
-          <small>{{ i < 5 ? pipelineStatus(i) : (i === 6 && hasApprovalWaiting() ? 'WaitingApproval' : i === 6 ? 'Ready' : 'Reply / next step') }}</small>
+      <section class="workflow-shell">
+        <header class="workflow-header">
+          <div>
+            <span class="eyebrow">WORKFLOW DESIGNER</span>
+            <h3>Start → Discover → Qualify → Enrich → Target List → Outreach → Approval → Deliver → Finish</h3>
+            <p>Every node is campaign-owned. Select a task to inspect its purpose, state and run history.</p>
+          </div>
+          <button class="button-secondary" type="button" (click)="openApproval()">Approval Queue</button>
+        </header>
+
+        <div class="workflow-layout">
+          <div class="workflow-canvas">
+            <div class="workflow-node start-node"><div class="node-icon">▶</div><div><b>Start</b><small>Campaign trigger</small></div></div>
+            <div class="workflow-arrow">↓</div>
+
+            <ng-container *ngFor="let task of detail.tasks; let last = last; trackBy: track">
+              <button class="workflow-task"
+                [ngClass]="'task-' + taskStatus(task.status).toLowerCase()"
+                [class.selected]="selectedTask?.id === task.id"
+                type="button" (click)="selectTask(task)">
+                <span class="task-icon">{{ taskIcon(task.type) }}</span>
+                <span class="task-copy">
+                  <small>STEP {{ task.sequence }} · {{ task.type }}</small>
+                  <strong>{{ task.name }}</strong>
+                  <em>{{ taskStatus(task.status) }}<span *ngIf="task.requiresApproval"> · Approval</span></em>
+                </span>
+                <span class="task-chevron">›</span>
+              </button>
+              <div class="workflow-arrow" *ngIf="!last">↓</div>
+            </ng-container>
+
+            <div class="workflow-arrow">↓</div>
+            <div class="workflow-node finish-node"><div class="node-icon">✓</div><div><b>Finish</b><small>Run completed</small></div></div>
+          </div>
+
+          <aside class="task-inspector" *ngIf="selectedTask; else selectTaskHint">
+            <span class="eyebrow">TASK INSPECTOR</span>
+            <div class="inspector-title">
+              <span class="inspector-icon">{{ taskIcon(selectedTask.type) }}</span>
+              <div><h3>{{ selectedTask.name }}</h3><small>{{ selectedTask.type }} · Step {{ selectedTask.sequence }}</small></div>
+            </div>
+            <div class="inspector-status" [ngClass]="'inspector-' + taskStatus(selectedTask.status).toLowerCase()">
+              <b>{{ taskStatus(selectedTask.status) }}</b>
+              <span *ngIf="selectedTask.requiresApproval">Approval gate</span>
+            </div>
+            <dl>
+              <div><dt>Started</dt><dd>{{ selectedTask.startedAtUtc || 'Not started' }}</dd></div>
+              <div><dt>Completed</dt><dd>{{ selectedTask.completedAtUtc || '—' }}</dd></div>
+              <div><dt>Result</dt><dd>{{ selectedTask.resultJson || 'Waiting for execution.' }}</dd></div>
+              <div *ngIf="selectedTask.error"><dt>Error</dt><dd class="error-text">{{ selectedTask.error }}</dd></div>
+            </dl>
+            <div class="inspector-help" *ngIf="taskStatus(selectedTask.status) === 'Pending'">
+              <b>Why is it pending?</b>
+              <p>This node is waiting for the preceding workflow stage or for the campaign runtime to reach it.</p>
+            </div>
+          </aside>
+          <ng-template #selectTaskHint>
+            <aside class="task-inspector inspector-empty">
+              <span class="eyebrow">TASK INSPECTOR</span>
+              <h3>Select a workflow node</h3>
+              <p>Click any task card to see what it does, why it is pending, its timestamps and the latest result.</p>
+            </aside>
+          </ng-template>
         </div>
       </section>
 
       <div class="metric-grid compact">
-        <article class="metric">
-          <div class="metric-top"><span class="metric-label">ICP</span></div>
-          <strong>{{ detail.icp?.name || 'Campaign ICP' }}</strong>
-          <small>{{ detail.icp?.industry || 'Industry configured by pack' }}</small>
-        </article>
-        <article class="metric">
-          <div class="metric-top"><span class="metric-label">Target List</span></div>
-          <strong>{{ detail.targetList?.name || 'Campaign audience' }}</strong>
-          <small>{{ detail.prospects?.length || 0 }} visible members</small>
-        </article>
-        <article class="metric">
-          <div class="metric-top"><span class="metric-label">Agent</span></div>
-          <strong>{{ detail.campaign?.agentId ? 'Provisioned' : 'Missing' }}</strong>
-          <small>Campaign-owned executor</small>
-        </article>
-        <article class="metric">
-          <div class="metric-top"><span class="metric-label">Run</span></div>
-          <strong>{{ detail.latestRun ? detail.latestRun.status : 'Not started' }}</strong>
-          <small>{{ detail.latestRun?.discoveredCount || 0 }} discovered · {{ detail.latestRun?.qualifiedCount || 0 }} qualified</small>
-        </article>
+        <article class="metric"><div class="metric-top"><span class="metric-label">ICP</span></div><strong>{{ detail.icp?.name || 'Campaign ICP' }}</strong><small>{{ detail.icp?.industry || 'Industry configured by pack' }}</small></article>
+        <article class="metric"><div class="metric-top"><span class="metric-label">Target List</span></div><strong>{{ detail.targetList?.name || 'Campaign audience' }}</strong><small>{{ detail.prospects?.length || 0 }} visible members</small></article>
+        <article class="metric"><div class="metric-top"><span class="metric-label">Agent</span></div><strong>{{ detail.campaign?.agentId ? 'Provisioned' : 'Missing' }}</strong><small>Campaign-owned executor</small></article>
+        <article class="metric"><div class="metric-top"><span class="metric-label">Run</span></div><strong>{{ detail.latestRun ? detail.latestRun.status : 'Not started' }}</strong><small>{{ detail.latestRun?.discoveredCount || 0 }} discovered · {{ detail.latestRun?.qualifiedCount || 0 }} qualified</small></article>
       </div>
 
-      <section class="content-grid">
-        <article class="card">
-          <header class="card-header">
-            <div><span class="eyebrow">CURRENT STEP</span><h3>{{ currentTask()?.name || (hasApprovalWaiting() ? 'Waiting for approval' : 'Waiting for execution') }}</h3></div>
-            <span class="status" *ngIf="hasApprovalWaiting()">WaitingApproval</span>
-          </header>
-          <div class="card-body">
-            <p *ngIf="currentTask()">{{ currentTask()?.type }} · {{ taskStatus(currentTask()?.status) }}</p>
-            <p *ngIf="hasApprovalWaiting()">Prepare Outreach is complete. Delivery remains blocked until the approval queue is approved.</p>
-            <p *ngIf="!currentTask() && !hasApprovalWaiting()">Start or resume the campaign to execute its persisted workflow.</p>
-          </div>
-        </article>
-
-        <article class="card">
-          <header class="card-header">
-            <div><span class="eyebrow">EXECUTION GATE</span><h3>Approval</h3></div>
-            <span class="status">{{ hasApprovalWaiting() ? 'WaitingApproval' : 'Ready' }}</span>
-          </header>
-          <div class="card-body">
-            <p>Prepare Outreach → WaitingApproval → Approval Queue → Approve → Queued → Deliver Outreach.</p>
-            <button class="button-primary" type="button" (click)="openApproval()">Open Approval Queue</button>
-          </div>
-        </article>
-      </section>
-
       <section class="card">
-        <header class="card-header">
-          <div><span class="eyebrow">TASKS</span><h3>Campaign workflow tasks</h3><p>Tasks are provisioned automatically. Users do not create acquisition agents or workers manually.</p></div>
-        </header>
-        <div class="list" *ngIf="detail.tasks?.length; else noTasks">
-          <article class="list-item" *ngFor="let task of detail.tasks; trackBy: track">
-            <div class="icon">{{ task.sequence }}</div>
-            <div class="stack">
-              <strong>{{ task.name }}</strong>
-              <small>{{ task.type }}</small>
-            </div>
-            <span class="status" [ngClass]="'status-' + statusClass(task.status)">{{ taskStatus(task.status) }}</span>
-            <span class="badge" *ngIf="task.requiresApproval">Approval gate</span>
-          </article>
-        </div>
-        <ng-template #noTasks><div class="empty">No runtime tasks yet. Start the campaign to create its run task instances.</div></ng-template>
+        <header class="card-header"><div><span class="eyebrow">EXECUTION GATE</span><h3>Approval</h3><p>Prepare Outreach → WaitingApproval → Approval Queue → Approve → Queued → Deliver.</p></div><span class="status">{{ hasApprovalWaiting() ? 'WaitingApproval' : 'Ready' }}</span></header>
+        <div class="card-body"><button class="button-primary" type="button" (click)="openApproval()">Open Approval Queue</button></div>
       </section>
 
       <section class="card">
