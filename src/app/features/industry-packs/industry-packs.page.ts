@@ -173,7 +173,7 @@ export class IndustryPacksPage implements OnInit {
   cancelEdit() { this.builderOpen=false; }
   edit(pack:any) {
     const t=this.packTemplate(pack);
-    this.draft={ id:pack.id, code:pack.code||'', name:pack.name||'', description:pack.description||'', industry:t.industry||'', purpose:t.purpose||'', offer:t.offer||'', audience:t.audience||'', discoveryProvider:t.discovery?.provider||'serpapi', keywords:(t.discovery?.keywords||[]).join(', '), minimumScore:Number(t.minimumScore||70), outreach:t.outreach||'', approvalRequired:t.approvalRequired!==false, scenarios:(t.scenarios||[]).map((x:any)=>typeof x==='string'?x:x.name).join(', ') };
+    this.draft={ id:pack.id, code:pack.code||'', name:pack.name||'', description:pack.description||'', industry:t.industry||'', purpose:t.purpose||'', offer:t.offer||'', audience:t.audience||'', discoveryProvider:t.discovery?.provider||'serpapi', keywords:(t.discovery?.keywords||[]).join(', '), minimumScore:Number(t.minimumScore||70), enrichmentEnabled:t.enrichment?.enabled!==false, targetListEnabled:t.targetList?.enabled!==false, outreach:t.outreach?.definition||t.outreach||'', approvalRequired:t.approvalRequired!==false, scenarios:(t.scenarios||[]).map((x:any)=>typeof x==='string'?x:x.name).join(', ') };
     this.mode='manual'; this.builderOpen=true;
   }
 
