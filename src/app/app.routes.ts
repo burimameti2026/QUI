@@ -14,6 +14,7 @@ export const routes: Routes = [
   {path:'packages/new',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/packages/package-builder.page').then(m=>m.PackageBuilderPage)},
   {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
+  {path:'campaigns/:id/designer',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaign-designer.page').then(m=>m.CampaignDesignerPage)},
 
   {path:'acquisition/approval-queue',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/approval-queue.page').then(m=>m.ApprovalQueuePage)},
   {path:'inbox',canActivate:[requireModule('inbox')],loadComponent:()=>import('./features/inbox/inbox.page').then(m=>m.InboxPage)},
