@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IndustryPacksService } from './industry-packs.service';
 import { PageHeader } from '../../shared/ui';
+import { AiAdvisorService } from '../../core/ai-advisor.service';
 
 interface PackDraft {
   id?: string;
@@ -149,14 +150,14 @@ export class IndustryPacksPage implements OnInit {
   error = '';
   draft: PackDraft = this.emptyDraft();
 
-  constructor(private readonly data: IndustryPacksService, private readonly router: Router) {}
+  constructor(private readonly data: IndustryPacksService, private readonly router: Router, private readonly aiAdvisor: AiAdvisorService) {}
 
   get filteredPacks() {
     const q = this.query.trim().toLowerCase();
     return !q ? this.packs : this.packs.filter(p => [p.name,p.code,p.description].some(v => String(v||'').toLowerCase().includes(q)));
   }
 
-  ngOnInit(): void { this.load(); }
+  ngOnInit(): void { this.aiAdvisor.setContext({ page:'Industry Packs', section:'Industry Packs', title:'Pack Builder', entityType:'industry-pack', values:this.draft as unknown as Record<string, unknown> }); this.load(); }
 
   load() {
     this.data.list<any[]>().subscribe({
@@ -169,13 +170,17 @@ export class IndustryPacksPage implements OnInit {
     return { code:'',name:'',description:'',industry:'',purpose:'',offer:'',audience:'',discoveryProvider:'serpapi',keywords:'',minimumScore:70,enrichmentEnabled:true,targetListEnabled:true,outreach:'',approvalRequired:true,scenarios:'' };
   }
 
-  startCreate() { this.draft=this.emptyDraft(); this.mode='ai'; this.aiPrompt=''; this.builderOpen=true; }
-  cancelEdit() { this.builderOpen=false; }
+  startCreate() { this.draft=this.emptyDraft(); this.mode='ai'; this.aiPrompt=''; this.builderOpen=true; this.syncAdvisor(); }
+  cancelEdit() { this.builderOpen=false; this.syncAdvisor(); }
   edit(pack:any) {
     const t=this.packTemplate(pack);
     this.draft={ id:pack.id, code:pack.code||'', name:pack.name||'', description:pack.description||'', industry:t.industry||'', purpose:t.purpose||'', offer:t.offer||'', audience:t.audience||'', discoveryProvider:t.discovery?.provider||'serpapi', keywords:(t.discovery?.keywords||[]).join(', '), minimumScore:Number(t.minimumScore||70), enrichmentEnabled:t.enrichment?.enabled!==false, targetListEnabled:t.targetList?.enabled!==false, outreach:t.outreach?.definition||t.outreach||'', approvalRequired:t.approvalRequired!==false, scenarios:(t.scenarios||[]).map((x:any)=>typeof x==='string'?x:x.name).join(', ') };
-    this.mode='manual'; this.builderOpen=true;
+    this.mode='manual'; this.builderOpen=true; this.syncAdvisor();
   }
+
+  private syncAdvisor(): void { this.aiAdvisor.patchContext({ title: this.draft.name || 'Pack Builder', entityId: this.draft.id, values: { ...this.draft } }); }
+
+  advisorHelp(field: keyof PackDraft): void { this.syncAdvisor(); this.aiAdvisor.advise('Review the current Industry Pack and tell me what I should write for the '+String(field)+' field. Give me one concrete value and explain briefly why.').subscribe(); }
 
   draftFromPrompt() {
     const p=this.aiPrompt.trim(); if(!p) return;
