@@ -91,6 +91,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     return this.nodes.some(x => this.nodeStatus(x) === 'failed');
   }
 
+  get failedCount(): number {
+    return this.nodes.filter(x => this.nodeStatus(x) === 'failed').length;
+  }
+
   load(): void {
     this.loading = true;
     this.error = '';
@@ -308,6 +312,37 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   formatDate(value?: string | null): string {
     return value ? new Date(value).toLocaleString() : '—';
+  }
+
+
+  private readNodes(plan: any): FlowNode[] {
+    const source = Array.isArray(plan?.nodes) && plan.nodes.length
+      ? plan.nodes
+      : Array.isArray(plan?.stages) ? plan.stages : [];
+
+    if (!source.length) {
+      return this.palette.slice(0, 7).map((item, index) => ({
+        id: item.type.toLowerCase() + '-' + (index + 1),
+        type: item.type,
+        name: item.name,
+        description: item.description,
+        config: JSON.parse(JSON.stringify(item.config)),
+        requiresApproval: item.requiresApproval,
+        x: 80,
+        y: 60 + index * 150
+      }));
+    }
+
+    return source.map((node: any, index: number) => ({
+      id: node.id || node.type?.toLowerCase() + '-' + (index + 1),
+      type: node.type || 'Custom',
+      name: node.name || node.type || 'Campaign step',
+      description: node.description || '',
+      config: node.config && typeof node.config === 'object' ? node.config : {},
+      requiresApproval: !!node.requiresApproval,
+      x: Number(node.position?.x || 80),
+      y: Number(node.position?.y || 60 + index * 150)
+    }));
   }
 
   parsePlan(): any {
