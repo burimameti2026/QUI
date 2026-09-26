@@ -11,6 +11,7 @@ export interface ScenarioInstallResult {
   meetings?: number;
   tickets?: number;
   automations?: number;
+  alreadyInstalled?: boolean;
   message?: string;
 }
 
