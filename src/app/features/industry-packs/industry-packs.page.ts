@@ -210,6 +210,8 @@ export class IndustryPacksPage implements OnInit {
 
   provision(pack:any) {
     this.busyId=pack.id; this.error='';
-    this.data.provision<any>(pack.id).subscribe({next:r=>{this.busyId=null;pack.provisioned=true;pack.campaignId=r?.campaignId;this.message=`${pack.name} is now campaign-ready.`;},error:e=>{this.busyId=null;this.error=e?.error?.error||e?.error?.detail||'The Industry Pack could not be provisioned.';}});
+    this.data.provision<any>(pack.id).subscribe({next:r=>{this.busyId=null;pack.provisioned=true;pack.campaignId=r?.campaignId;this.message=r?.alreadyProvisioned
+        ? `${pack.name} was already provisioned; the campaign configuration is reconciled.`
+        : `${pack.name} is now campaign-ready.`;},error:e=>{this.busyId=null;this.error=e?.error?.error||e?.error?.detail||'The Industry Pack could not be provisioned.';}});
   }
 }
