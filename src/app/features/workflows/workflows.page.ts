@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Modal, PageHeader } from '../../shared/ui';
 import { WorkflowsService } from './workflows.service';
+import { AiAdvisorService } from '../../core/ai-advisor.service';
 
 type StepType = 'start' | 'trigger' | 'question' | 'enrich' | 'condition' | 'score' | 'action' | 'approval' | 'send' | 'wait' | 'meeting' | 'handoff' | 'notify' | 'stop';
 interface Step {
@@ -111,7 +112,7 @@ export class WorkflowsPage implements OnInit {
     }
   ];
 
-  constructor(private readonly data: WorkflowsService) {}
+  constructor(private readonly data: WorkflowsService, private readonly aiAdvisor: AiAdvisorService) {}
   ngOnInit(): void {
     this.load();
   }
@@ -194,6 +195,7 @@ export class WorkflowsPage implements OnInit {
         this.nodes = r.nodes || [];
         this.edges = r.edges || [];
         this.selected = this.nodes[0] || null;
+        this.syncAdvisorContext();
       }, error: (e) => (this.error = this.apiError(e, 'Workflow details could not be loaded.')) });
   }
   loadOrchestration(): void {
@@ -210,6 +212,7 @@ export class WorkflowsPage implements OnInit {
             this.selectedPipelineId = o.pipeline?.id || null;
             this.selectedAutomationIds = (o.automations || []).map((x: any) => x.id);
             this.selectedContainerIds = (o.containers || []).map((x: any) => x.id);
+            this.syncAdvisorContext();
             this.loadContainers();
           },
           error: (e) => this.error = this.apiError(e, 'Workflow orchestration could not be loaded.')
@@ -265,6 +268,7 @@ export class WorkflowsPage implements OnInit {
         this.orchestration = o;
         this.saving = false;
         this.message = 'Workflow orchestration bindings saved.';
+        this.syncAdvisorContext();
       },
       error: (e) => {
         this.saving = false;
@@ -272,6 +276,39 @@ export class WorkflowsPage implements OnInit {
       }
     });
   }
+  private syncAdvisorContext(): void {
+    const flow = this.flows.find(x => x.id === this.activeId);
+    this.aiAdvisor.setContext({
+      page: 'Workflow Orchestrator',
+      section: 'Workflows',
+      title: flow?.name || 'Workflow Orchestrator',
+      entityType: 'workflow',
+      entityId: this.activeId || undefined,
+      values: {
+        workflow: {
+          id: this.activeId,
+          name: flow?.name,
+          active: flow?.active !== false,
+          trigger: this.orchestration?.trigger || 'manual'
+        },
+        steps: this.nodes.map(x => ({
+          id: x.id,
+          type: x.type,
+          title: this.title(x),
+          detail: this.detail(x),
+          config: this.config(x)
+        })),
+        orchestration: {
+          campaign: this.orchestration?.campaign ? { id: this.orchestration.campaign.id, name: this.orchestration.campaign.name, status: this.orchestration.campaign.status } : null,
+          pipeline: this.orchestration?.pipeline ? { id: this.orchestration.pipeline.id, name: this.orchestration.pipeline.name } : null,
+          automations: (this.orchestration?.automations || []).map((x: any) => ({ id: x.id, name: x.name, active: x.active })),
+          containers: (this.orchestration?.containers || []).map((x: any) => ({ id: x.id, name: x.name, status: x.status, activeRunCount: x.activeRunCount, runCount: x.runCount })),
+          selectedContainerIds: this.selectedContainerIds
+        }
+      }
+    });
+  }
+
   add(type: StepType): void {
     if (!this.activeId) {
       this.error = 'Create or select a workflow first.';
