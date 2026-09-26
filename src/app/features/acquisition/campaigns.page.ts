@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
+import { IndustryPacksService } from '../industry-packs/industry-packs.service';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ export class CampaignsPage implements OnInit {
 
   constructor(
     private readonly data: AcquisitionService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly packsService: IndustryPacksService
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +86,7 @@ export class CampaignsPage implements OnInit {
 
   openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
 
-  loadPacks(): void { this.data['api'].get<any[]>('industry-packs').subscribe({ next: x => this.packs = x || [] }); }
+  loadPacks(): void { this.packsService.list<any[]>().subscribe({ next: x => this.packs = x || [] }); }
 
   selectPack(pack: any): void { this.selectedPack = pack; const t=this.packTemplate(pack); this.selectedScenario=t.scenarios?.[0]?.code || ''; }
   packTemplate(pack:any):any { try{return JSON.parse(pack?.templateJson||'{}')}catch{return {}} }
