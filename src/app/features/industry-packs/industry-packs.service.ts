@@ -17,4 +17,7 @@ export class IndustryPacksService {
   install<T = any>(id: string): Observable<T> {
     return this.provision<T>(id);
   }
+
+  create<T = any>(input: any): Observable<T> { return this.api.post<T>('industry-packs', input); }
+  update<T = any>(id: string, input: any): Observable<T> { return this.api.put<T>(`industry-packs/${id}`, input); }
 }
