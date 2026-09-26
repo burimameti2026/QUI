@@ -12,6 +12,7 @@ import { TenantRuntimeService } from "../core/tenant-runtime.service";
 import { AdminI18nService } from "../core/admin-i18n.service";
 import { NAVIGATION_TRANSLATIONS } from "../core/navigation-translations";
 import { AdminStaticI18nDirective } from "../core/admin-static-i18n.directive";
+import { AiAdvisorComponent } from "../core/ai-advisor.component";
 interface Item {
   label: string;
   url: string;
@@ -41,6 +42,7 @@ const i = (
     RouterLink,
     RouterLinkActive,
     AdminStaticI18nDirective,
+    AiAdvisorComponent,
   ],
   styleUrls: ["./shell.component.css"],
   template: ` <div
@@ -150,6 +152,7 @@ const i = (
         </div>
       </header>
       <div class="app-content" qaiAdminStaticI18n><router-outlet /></div>
+      <qai-ai-advisor />
     </main>
   </div>`,
 })
