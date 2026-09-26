@@ -40,10 +40,12 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   id = '';
   campaign: any;
   latestRun: any;
+  campaignSteps: any[] = [];
   nodes: FlowNode[] = [];
   selected: FlowNode | null = null;
   loading = true;
   saving = false;
+  messageSaving = false;
   error = '';
   message = '';
   paletteFilter = '';
@@ -139,6 +141,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   private applyDetail(detail: any, preserveSelection = false): void {
     this.campaign = detail.campaign;
     this.latestRun = detail.latestRun;
+    this.campaignSteps = (detail.steps || []).map((x:any) => ({ ...x }));
     const plan = this.parsePlan();
     const oldId = preserveSelection ? this.selected?.id : null;
     const execution = new Map<string, any>((detail.tasks || []).map((task: any) => [this.taskKey(task), task]));
@@ -260,6 +263,33 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
         this.error = e?.error?.detail || e?.error?.error || 'Campaign flow could not be saved.';
       }
     });
+  }
+
+  saveMessages(): void {
+    if (!this.campaignSteps.length) return;
+    this.messageSaving = true;
+    this.error = '';
+    const steps = this.campaignSteps.map((x:any, index:number) => ({
+      stepNumber: Number(x.stepNumber || index + 1),
+      delayHours: Math.max(0, Number(x.delayHours || 0)),
+      channel: x.channel || 'email',
+      subjectTemplate: String(x.subjectTemplate || ''),
+      bodyTemplate: String(x.bodyTemplate || '')
+    }));
+    this.data.saveCampaignMessages(this.id, steps).subscribe({
+      next: saved => { this.messageSaving = false; this.campaignSteps = (saved || []).map((x:any) => ({ ...x })); this.message = 'Exact outreach templates saved. Future messages will use the updated subject and body.'; },
+      error: e => { this.messageSaving = false; this.error = e?.error?.detail || e?.error?.error || 'Outreach templates could not be saved.'; }
+    });
+  }
+
+  messagePreview(value: string): string {
+    return String(value || '')
+      .replace(/{{company}}/g, 'Acme Logistics')
+      .replace(/{{contact}}/g, 'Alex')
+      .replace(/{{industry}}/g, this.campaign?.industry || 'Logistics')
+      .replace(/{{country}}/g, 'North Macedonia')
+      .replace(/{{pain}}/g, 'dispatch and delivery exceptions')
+      .replace(/{{sender}}/g, this.campaign?.senderName || 'FusionFleet');
   }
 
   fieldEntries(): Array<{ key: string; label: string; kind: string; value: any }> {
