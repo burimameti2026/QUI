@@ -41,11 +41,16 @@ export class AiAdvisorComponent implements OnInit {
     this.messages.push({role:'assistant',text:'I am your workspace advisor. Ask “what next?”, “what should I write?”, or “why does this matter?” and I will guide you step by step.'});
   }
   private updateRouteContext(url:string){
-    const route=url.split('?')[0].split('#')[0];
+    const clean=url.split('#')[0];
+    const route=clean.split('?')[0];
     const parts=route.split('/').filter(Boolean);
-    const labels:Record<string,string>={dashboard:'Dashboard',kpis:'KPIs',campaigns:'Campaigns','industry-packs':'Industry Packs',acquisition:'Acquisition',icp:'ICP & Audience',crm:'CRM',knowledge:'Knowledge',automations:'Automations',pipeline:'Pipeline',analytics:'Analytics','white-label':'White Label',users:'Users & Roles'};
-    const key=parts[parts.length-1] || 'dashboard';
-    const campaignId = parts[0] === 'campaigns' && parts.length > 1 ? parts[1] : undefined; this.advisor.patchContext({page:labels[key] || key.replace(/[-_]/g,' '),section:labels[parts[0]] || labels[key] || parts[0] || 'Workspace',entityType:campaignId ? 'campaign' : undefined,entityId:campaignId});
+    const labels:Record<string,string>={dashboard:'Dashboard',kpis:'KPIs',campaigns:'Campaigns','industry-packs':'Industry Packs',acquisition:'Acquisition',icp:'ICP & Audience',crm:'CRM',knowledge:'Knowledge',automations:'Automations',pipeline:'Pipeline',analytics:'Analytics','white-label':'White Label',users:'Users & Roles',inbox:'Inbox',tickets:'Tickets',meetings:'Meetings',integrations:'Integrations',evaluations:'Evaluations',billing:'Billing',catalog:'Catalog',enterprise:'Enterprise'};
+    const root=parts[0] || 'dashboard';
+    const key=parts[parts.length-1] || root;
+    const entityMap:Record<string,string>={campaigns:'campaign','industry-packs':'industry-pack',icp:'icp',contacts:'contact',companies:'company',leads:'lead',automations:'automation',catalog:'product'};
+    let entityType:string|undefined; let entityId:string|undefined;
+    if (parts.length > 1 && /^[0-9a-fA-F-]{36}$/.test(parts[1])) { entityType=entityMap[root]; entityId=parts[1]; }
+    this.advisor.patchContext({page:labels[key] || key.replace(/[-_]/g,' '),section:labels[root] || root.replace(/[-_]/g,' '),routePath:route,url:clean,entityType,entityId} as any);
   }
   minimize(){ this.open=false; }
   ask(text:string){ this.draft=text; this.send(); }
