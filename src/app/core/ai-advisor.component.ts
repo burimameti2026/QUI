@@ -43,7 +43,7 @@ export class AiAdvisorComponent implements OnInit {
   private updateRouteContext(url:string){
     const route=url.split('?')[0].split('#')[0];
     const parts=route.split('/').filter(Boolean);
-    const labels:Record<string,string>={dashboard:'Dashboard',kpis:'KPIs',campaigns:'Campaigns',industry-packs:'Industry Packs',acquisition:'Acquisition',icp:'ICP & Audience',crm:'CRM',knowledge:'Knowledge',automations:'Automations',pipeline:'Pipeline',analytics:'Analytics',white-label:'White Label',users:'Users & Roles'};
+    const labels:Record<string,string>={dashboard:'Dashboard',kpis:'KPIs',campaigns:'Campaigns','industry-packs':'Industry Packs',acquisition:'Acquisition',icp:'ICP & Audience',crm:'CRM',knowledge:'Knowledge',automations:'Automations',pipeline:'Pipeline',analytics:'Analytics','white-label':'White Label',users:'Users & Roles'};
     const key=parts[parts.length-1] || 'dashboard';
     const campaignId = parts[0] === 'campaigns' && parts.length > 1 ? parts[1] : undefined; this.advisor.patchContext({page:labels[key] || key.replace(/[-_]/g,' '),section:labels[parts[0]] || labels[key] || parts[0] || 'Workspace',entityType:campaignId ? 'campaign' : undefined,entityId:campaignId});
   }
