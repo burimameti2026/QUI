@@ -167,43 +167,41 @@ export class ShellComponent {
       i("Dashboard", "/dashboard", "⌂"),
       i("KPIs", "/kpis", "▥"),
     ]},
-    { label: "SALES & CRM", items: [
+    { label: "SALES & ACQUISITION", items: [
+      i("Prospects", "/campaigns", "◎"),
+      i("Companies", "/crm/companies", "▦"),
+      i("Contacts", "/crm/contacts", "◉"),
       i("Leads", "/crm/leads", "▣"),
-      i("Contacts", "/crm/contacts", "◎"),
-      i("Customers", "/crm/companies", "▦"),
-      i("Pipeline", "/golden-pipeline", "◆"),
-      i("Replies & Inbox", "/inbox", "▱"),
-      i("Demos & Meetings", "/meetings", "◷"),
-    ]},
-    { label: "ACQUISITION", items: [
-      i("Industry Packs", "/industry-packs", "▤"),
-      i("Campaigns", "/campaigns", "◎"),
+      i("Opportunities", "/crm/opportunities", "◆"),
+      i("Pipeline", "/pipeline", "↗"),
+      i("Campaigns", "/campaigns", "⚡"),
+      i("ICP & Audience", "/campaigns", "⌁"),
       i("Approval Queue", "/acquisition/approval-queue", "◌"),
+      i("Demos & Meetings", "/meetings", "◷"),
+      i("Replies & Inbox", "/inbox", "▱"),
     ]},
-    { label: "OPERATIONS", items: [
-      i("Orders", "/enterprise/ordering", "＋"),
-      i("Inventory", "/enterprise/inventory", "▥"),
-      i("Warehouse", "/enterprise/warehousing", "□"),
-      i("Shipments & Logistics", "/enterprise/logistics", "↗"),
-      i("Enterprise Operations", "/enterprise", "◉"),
+    { label: "INDUSTRY PACKS", items: [
+      i("Industry Packs", "/industry-packs", "▤"),
     ]},
     { label: "AI & AUTOMATION", items: [
-      i("Workflows", "/workflows", "⌁"),
       i("Automations", "/automations", "✣"),
       i("Knowledge", "/knowledge", "▥"),
-    ]},
-    { label: "ANALYTICS", items: [
-      i("Analytics", "/analytics", "▧"),
       i("Evaluations", "/evaluations", "✓"),
       i("Integrations", "/integrations", "⊕"),
     ]},
-    { label: "CATALOG", items: [
-      i("Packages & Offers", "/packages/new", "✦"),
-      i("Product Catalog", "/catalog", "▦"),
-    ]},
-    { label: "FINANCE", items: [
-      i("Billing & Invoices", "/billing", "€"),
+    { label: "OPERATIONS", items: [
+      i("Orders", "/enterprise/ordering", "＋"),
+      i("Shipments & Logistics", "/enterprise/logistics", "↗"),
+      i("Inventory", "/enterprise/inventory", "▥"),
+      i("Warehouse", "/enterprise/warehousing", "□"),
+      i("Products", "/catalog", "▦"),
+      i("Fleet & Drivers", "/enterprise/fleet", "◇"),
       i("Finance", "/enterprise/finance", "◫"),
+      i("Billing & Invoices", "/billing", "€"),
+    ]},
+    { label: "ANALYTICS", items: [
+      i("Analytics", "/analytics", "▧"),
+      i("Reports", "/analytics", "▤"),
     ]},
     { label: "ADMINISTRATION", items: [
       i("Admin Workspace", "/platform", "⚙"),
@@ -214,8 +212,7 @@ export class ShellComponent {
       i("Clients & Licenses", "/admin/modules", "▦"),
       i("Email Test Center", "/admin/email-test", "✉", undefined, "system.admin"),
     ]},
-  ];
-  get session() {
+  ];  get session() {
     return this.auth.session();
   }
   get isHub() {
