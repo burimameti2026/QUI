@@ -1,0 +1,24 @@
+<main class="page designer-page">
+  <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Edit the complete campaign definition. Every stage is saved into the campaign plan used by runtime.">
+    <button class="button-quiet" type="button" (click)="back()">← Campaigns</button>
+    <button class="button-secondary" type="button" (click)="load()" [disabled]="loading || saving">↻ Reload</button>
+    <button class="button-primary" type="button" (click)="saveStage()" [disabled]="saving || !selected">Save plan</button>
+  </qai-page-header>
+  <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p>
+  <ng-container *ngIf="!loading && campaign">
+    <section class="designer-summary"><div><span>STATUS</span><strong>{{ campaign.status }}</strong></div><div><span>GOAL</span><strong>{{ campaign.goal || '—' }}</strong></div><div><span>INDUSTRY</span><strong>{{ parseCampaignPlan()?.industry || 'Campaign' }}</strong></div><div><span>DEFINITION</span><strong>Campaign Plan</strong></div></section>
+    <section class="designer-workspace">
+      <aside class="stage-list"><div class="stage-list-head"><span class="eyebrow">CAMPAIGN WORKFLOW</span><small>{{ stages.length }} stages · click a stage to edit</small></div>
+        <div class="stage-item-wrap" *ngFor="let stage of stages; let last = last"><button class="stage-item" [class.active]="selected?.id===stage.id" type="button" (click)="select(stage)"><span class="stage-icon">{{ icon(stage.type) }}</span><span><small>STEP {{ stages.indexOf(stage)+1 }} · {{ stage.type }}</small><strong>{{ stage.name }}</strong></span><b>›</b></button><div class="connector" *ngIf="!last">↓</div></div>
+      </aside>
+      <section class="stage-editor" *ngIf="selected; else noStage">
+        <div class="editor-head"><div><span class="eyebrow">STEP {{ stages.indexOf(selected)+1 }} · {{ selected.type }}</span><h2>{{ icon(selected.type) }} {{ selected.name }}</h2><p>{{ selected.description || 'Configure this stage for the campaign runtime.' }}</p></div><span class="stage-badge" *ngIf="selected.requiresApproval">Human approval</span></div>
+        <div class="field"><label>Stage name</label><input [ngModel]="selected.name" (ngModelChange)="updateStageName($event)"></div>
+        <div class="config-heading"><div><h3>Stage information</h3><p>All configuration for this step is persisted inside the campaign plan.</p></div><span>JSON</span></div>
+        <textarea class="json-editor" [(ngModel)]="configText" spellcheck="false"></textarea>
+        <div class="editor-footer"><span>Changes become active after saving the campaign plan.</span><button class="button-primary" type="button" (click)="saveStage()" [disabled]="saving">Save stage</button></div>
+      </section>
+      <ng-template #noStage><section class="stage-editor empty">Select a workflow stage.</section></ng-template>
+    </section>
+  </ng-container>
+</main>
