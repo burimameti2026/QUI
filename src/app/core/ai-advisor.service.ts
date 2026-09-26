@@ -45,6 +45,10 @@ export class AiAdvisorService {
     return this.api.post<any>('ai/agent', { goal, contextJson: JSON.stringify(this.contextState()) });
   }
 
+  executeTool(name: string, input: unknown) {
+    return this.api.post<any>(`ai/tools/${encodeURIComponent(name)}/execute`, JSON.stringify(input), { headers: { 'Content-Type': 'application/json' } } as any);
+  }
+
   advise(message: string) {
     return this.api.post<AiAdvisorResponse>('ai/advisor/ask', {
       message,
