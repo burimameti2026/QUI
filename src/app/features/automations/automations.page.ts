@@ -9,8 +9,8 @@ import { AutomationsService } from "./automations.service";
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, Modal, PageHeader],
-  styleUrl: "./automations.page.css",
-  template: `<main class="page page-automations">
+  styleUrls: ["./automations.page.css"],
+  template: `<style>.automation-timeline{position:relative;padding:4px 0 4px 28px}.automation-timeline::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--wl-border,#d8dde6)}.automation-event{position:relative;display:grid;grid-template-columns:160px minmax(0,1fr) auto;gap:18px;align-items:center;padding:16px 0}.automation-event::before{content:"";position:absolute;left:-23px;top:23px;width:9px;height:9px;border-radius:50%;background:#6b7280;border:3px solid #fff;box-shadow:0 0 0 1px var(--wl-border,#d8dde6)}.automation-event time{font-size:11px;color:#6b7280}.automation-event strong{display:block;font-size:13px}.automation-event small{display:block;margin-top:4px;color:#6b7280}.event-actions{display:flex;align-items:center;gap:10px;white-space:nowrap}@media(max-width:800px){.automation-event{grid-template-columns:1fr auto;gap:8px}.automation-event time{grid-column:1/-1}} </style><main class="page page-automations">
     <qai-page-header title="Automations" subtitle="Turn customer and sales signals into automated revenue actions.">
       <button class="button-secondary" (click)="openWorkspaceMode()">Workspace data mode</button>
       <button class="button-secondary" (click)="runAll()">▶ Run sales engine</button>
@@ -33,14 +33,7 @@ import { AutomationsService } from "./automations.service";
 
     <p class="notice success" *ngIf="publishedMessage">{{ publishedMessage }}</p>
 
-    <section class="metric-grid automation-kpis">
-      <article class="metric"><div class="metric-top"><span class="metric-icon">⚡</span><span class="metric-label">Total automations</span></div><strong>{{ rows.length }}</strong><small>Configured business rules</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-icon">✓</span><span class="metric-label">Active</span></div><strong>{{ activeCount }}</strong><small>Rules currently enabled</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-icon">!</span><span class="metric-label">Failed runs</span></div><strong>{{ failedCount }}</strong><small>Needs attention</small></article>
-      <article class="metric"><div class="metric-top"><span class="metric-icon">◷</span><span class="metric-label">Last run</span></div><strong>{{ lastRun === 'Never' ? '—' : 'Live' }}</strong><small>{{ lastRun }}</small></article>
-    </section>
-
-    <section class="card">
+        <section class="card">
       <header class="card-header">
         <div>
           <span class="eyebrow">Revenue automation</span>
@@ -77,10 +70,14 @@ import { AutomationsService } from "./automations.service";
     </section>
 
     <section class="card">
-      <header class="card-header"><div><h2>Execution history</h2><p>Real action results and failures.</p></div><button class="button-secondary" (click)="load()">↻ Refresh</button></header>
-      <div class="table" *ngIf="runs.length; else noRuns"><table><thead><tr><th>Started</th><th>Automation</th><th>Status</th><th>Execution log</th><th></th></tr></thead>
-        <tbody><tr *ngFor="let run of runs"><td>{{ run.createdAtUtc | date:'short' }}</td><td>{{ ruleName(run.ruleId) }}</td><td><span class="status" [class.success]="run.status === 'completed'" [class.status-error]="run.status === 'failed'">{{ run.status }}</span></td><td><small>{{ runSummary(run) }}</small></td><td><button *ngIf="run.status === 'failed'" (click)="retry(run)">Retry</button></td></tr></tbody>
-      </table></div>
+      <header class="card-header"><div><span class="eyebrow">AUTOMATION TIMELINE</span><h2>Execution history</h2><p>Chronological run activity, failures and retries.</p></div><button class="button-secondary" (click)="load()">↻ Refresh</button></header>
+      <div class="automation-timeline" *ngIf="runs.length; else noRuns">
+        <article class="automation-event" *ngFor="let run of runs">
+          <time>{{ run.createdAtUtc | date:'medium' }}</time>
+          <div><strong>{{ ruleName(run.ruleId) }}</strong><small>{{ runSummary(run) }}</small></div>
+          <div class="event-actions"><span class="status" [class.success]="run.status === 'completed'" [class.status-error]="run.status === 'failed'">{{ run.status }}</span><button *ngIf="run.status === 'failed'" (click)="retry(run)">Retry</button></div>
+        </article>
+      </div>
       <ng-template #noRuns><div class="empty"><strong>No automation has executed yet.</strong><span>Execution history will appear here after the first run.</span></div></ng-template>
     </section>
 
