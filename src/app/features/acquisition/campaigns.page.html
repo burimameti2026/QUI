@@ -29,10 +29,6 @@
       <div class="create-timeline"><b>Minimum campaign definition</b><span>Purpose</span><span>→</span><span>Industry + ICP</span><span>→</span><span>Discovery source</span><span>→</span><span>Qualification</span><span>→</span><span>Outreach</span><span>→</span><span>Approval</span></div>
     </section>
   </div>
-  <section class="campaign-toolbar">
-    <div><span class="eyebrow">CAMPAIGNS</span><strong>{{ rows.length }} containers</strong><small>{{ running }} running</small></div>
-    <div class="toolbar-note">Workflow configuration is edited inside the Campaign Designer and stored in the campaign plan.</div>
-  </section>
   <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p><p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
   <section class="campaign-grid" *ngIf="rows.length; else emptyCampaigns">
