@@ -10,8 +10,8 @@ export class IndustryPacksService {
     return this.api.get<T>('industry-packs');
   }
 
-  provision<T = any>(id: string): Observable<T> {
-    return this.api.post<T>(`industry-packs/${id}/provision`, {});
+  provision<T = any>(id: string, scenarioCode?: string): Observable<T> {
+    return this.api.post<T>(`industry-packs/${id}/provision`, scenarioCode ? { scenarioCode } : {});
   }
 
   install<T = any>(id: string): Observable<T> {
