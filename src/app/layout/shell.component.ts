@@ -175,7 +175,7 @@ export class ShellComponent {
       i("Opportunities", "/crm/opportunities", "◆"),
       i("Pipeline", "/pipeline", "↗"),
       i("Campaigns", "/campaigns", "⚡"),
-      i("ICP & Audience", "/campaigns", "⌁"),
+      i("ICP & Audience", "/acquisition/icp", "⌁"),
       i("Approval Queue", "/acquisition/approval-queue", "◌"),
       i("Demos & Meetings", "/meetings", "◷"),
       i("Replies & Inbox", "/inbox", "▱"),
