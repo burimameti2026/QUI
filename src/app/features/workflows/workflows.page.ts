@@ -234,6 +234,22 @@ export class WorkflowsPage implements OnInit {
     const i = list.indexOf(id);
     if (i >= 0) list.splice(i, 1); else list.push(id);
   }
+  runOrchestration(): void {
+    if (!this.activeId) return;
+    this.saving = true;
+    this.error = '';
+    this.data.run(this.activeId).subscribe({
+      next: (r) => {
+        this.saving = false;
+        this.message = `Workflow executed: ${(r.startedContainers || []).length} container(s) started, ${(r.automations || []).length} automation(s) processed.`;
+        this.loadOrchestration();
+      },
+      error: (e) => {
+        this.saving = false;
+        this.error = this.apiError(e, 'Workflow could not be executed.');
+      }
+    });
+  }
   saveOrchestration(): void {
     if (!this.activeId) return;
     this.saving = true;
