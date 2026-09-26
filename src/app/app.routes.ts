@@ -47,7 +47,7 @@ export const routes: Routes = [
   {path:'acquisition',redirectTo:'campaigns',pathMatch:'full'},
   {path:'acquisition/icp',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/icp.page').then(m=>m.IcpPage)},
   {path:'acquisition/qualification',redirectTo:'campaigns',pathMatch:'full'},
-  {path:'discover',redirectTo:'campaigns',pathMatch:'full'},
+  {path:'discover',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/discover.page').then(m=>m.DiscoverPage)},
   {path:'agents',redirectTo:'campaigns',pathMatch:'full'},
   {path:'acquisition/fusionfleet-sales',redirectTo:'campaigns',pathMatch:'full'},
   {path:'audit',canActivate:[requirePermission('audit.read')],loadComponent:()=>import('./features/audit/audit.page').then(m=>m.AuditPage)},
