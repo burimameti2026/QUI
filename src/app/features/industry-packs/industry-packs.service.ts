@@ -14,6 +14,8 @@ export class IndustryPacksService {
     return this.api.post<T>(`industry-packs/${id}/provision`, scenarioCode ? { scenarioCode } : {});
   }
 
+  provisionForCampaign<T = any>(id: string, scenarioCode: string | undefined, icpProfileId: string): Observable<T> { return this.api.post<T>(`industry-packs/${id}/provision`, { scenarioCode, icpProfileId }); }
+
   install<T = any>(id: string): Observable<T> {
     return this.provision<T>(id);
   }
