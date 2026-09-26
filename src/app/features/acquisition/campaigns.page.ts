@@ -37,7 +37,10 @@ export class CampaignsPage implements OnInit {
 
   ngOnInit(): void {
     this.load();
-    this.data.icps().subscribe({ next: x => this.icps = x || [] });
+    this.data.icps().subscribe({
+      next: x => this.icps = x || [],
+      error: e => this.error = this.apiError(e, 'ICP library could not be loaded.')
+    });
     this.loadPacks();
   }
 
@@ -86,7 +89,12 @@ export class CampaignsPage implements OnInit {
 
   openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
 
-  loadPacks(): void { this.packsService.list<any[]>().subscribe({ next: x => this.packs = x || [] }); }
+  loadPacks(): void {
+    this.packsService.list<any[]>().subscribe({
+      next: x => this.packs = x || [],
+      error: e => this.error = this.apiError(e, 'Industry Packs could not be loaded.')
+    });
+  }
 
   selectPack(pack: any): void {
     this.selectedPack = pack;
