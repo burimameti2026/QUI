@@ -56,6 +56,15 @@ export class WorkflowsPage implements OnInit {
   newName = '';
   message = '';
   error = '';
+  orchestration: any = null;
+  campaigns: any[] = [];
+  pipelines: any[] = [];
+  automations: any[] = [];
+  containers: any[] = [];
+  selectedCampaignId: string | null = null;
+  selectedPipelineId: string | null = null;
+  selectedAutomationIds: string[] = [];
+  selectedContainerIds: string[] = [];
 
   readonly library: Array<{ type: StepType; label: string; detail: string }> = [
     { type: 'trigger', label: 'Event trigger', detail: 'Start from a reply, score change, form or schedule' },
@@ -138,6 +147,7 @@ export class WorkflowsPage implements OnInit {
     this.activeId = flow.id;
     this.view = 'designer';
     this.loadDesigner();
+    this.loadOrchestration();
   }
   flowSummary(flow: WorkflowSummary): string {
     const name = flow.name.toLowerCase();
@@ -185,6 +195,66 @@ export class WorkflowsPage implements OnInit {
         this.edges = r.edges || [];
         this.selected = this.nodes[0] || null;
       }, error: (e) => (this.error = this.apiError(e, 'Workflow details could not be loaded.')) });
+  }
+  loadOrchestration(): void {
+    if (!this.activeId) return;
+    this.data.resources().subscribe({
+      next: (r) => {
+        this.campaigns = r.campaigns || [];
+        this.pipelines = r.pipelines?.pipelines || [];
+        this.automations = r.automations || [];
+        this.data.orchestration(this.activeId).subscribe({
+          next: (o) => {
+            this.orchestration = o;
+            this.selectedCampaignId = o.campaign?.id || null;
+            this.selectedPipelineId = o.pipeline?.id || null;
+            this.selectedAutomationIds = (o.automations || []).map((x: any) => x.id);
+            this.selectedContainerIds = (o.containers || []).map((x: any) => x.id);
+            this.loadContainers();
+          },
+          error: (e) => this.error = this.apiError(e, 'Workflow orchestration could not be loaded.')
+        });
+      },
+      error: (e) => this.error = this.apiError(e, 'Workflow resources could not be loaded.')
+    });
+  }
+  campaignChanged(): void {
+    this.selectedContainerIds = [];
+    this.containers = [];
+    if (this.selectedCampaignId) this.loadContainers();
+  }
+  loadContainers(): void {
+    if (!this.selectedCampaignId) return;
+    this.data.containers(this.selectedCampaignId).subscribe({
+      next: (rows) => this.containers = rows || [],
+      error: (e) => this.error = this.apiError(e, 'Campaign containers could not be loaded.')
+    });
+  }
+  toggleSelection(list: string[], id: string): void {
+    const i = list.indexOf(id);
+    if (i >= 0) list.splice(i, 1); else list.push(id);
+  }
+  saveOrchestration(): void {
+    if (!this.activeId) return;
+    this.saving = true;
+    this.data.bindOrchestration(this.activeId, {
+      campaignId: this.selectedCampaignId,
+      pipelineId: this.selectedPipelineId,
+      automationRuleIds: this.selectedAutomationIds,
+      containerIds: this.selectedContainerIds,
+      trigger: 'manual',
+      active: true
+    }).subscribe({
+      next: (o) => {
+        this.orchestration = o;
+        this.saving = false;
+        this.message = 'Workflow orchestration bindings saved.';
+      },
+      error: (e) => {
+        this.saving = false;
+        this.error = this.apiError(e, 'Workflow orchestration could not be saved.');
+      }
+    });
   }
   add(type: StepType): void {
     if (!this.activeId) {
