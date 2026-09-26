@@ -17,6 +17,8 @@ interface PackDraft {
   discoveryProvider: string;
   keywords: string;
   minimumScore: number;
+  enrichmentEnabled: boolean;
+  targetListEnabled: boolean;
   outreach: string;
   approvalRequired: boolean;
   scenarios: string;
@@ -81,6 +83,7 @@ interface PackDraft {
 
         <div class="form-grid">
           <div class="field"><label>Pack name</label><input [(ngModel)]="draft.name" placeholder="Logistics Sales Pack"></div>
+          <div class="field"><label>Description</label><input [(ngModel)]="draft.description" placeholder="What this pack is for"></div>
           <div class="field"><label>Code</label><input [(ngModel)]="draft.code" placeholder="logistics-sales"></div>
           <div class="field"><label>Industry</label><input [(ngModel)]="draft.industry" placeholder="Logistics"></div>
           <div class="field"><label>Purpose / outcome</label><input [(ngModel)]="draft.purpose" placeholder="Book qualified demos"></div>
@@ -88,6 +91,8 @@ interface PackDraft {
           <div class="field full"><label>Target audience / ICP</label><textarea [(ngModel)]="draft.audience" placeholder="Company types, size, geography and buying signals"></textarea></div>
           <div class="field"><label>Discovery provider</label><select [(ngModel)]="draft.discoveryProvider"><option value="serpapi">SerpAPI</option><option value="manual">Manual</option></select></div>
           <div class="field"><label>Minimum qualification score</label><input type="number" min="0" max="100" [(ngModel)]="draft.minimumScore"></div>
+          <div class="field"><label>Enrichment enabled</label><select [(ngModel)]="draft.enrichmentEnabled"><option [ngValue]="true">Yes</option><option [ngValue]="false">No</option></select></div>
+          <div class="field"><label>Target list enabled</label><select [(ngModel)]="draft.targetListEnabled"><option [ngValue]="true">Yes</option><option [ngValue]="false">No</option></select></div>
           <div class="field full"><label>Discovery keywords</label><textarea [(ngModel)]="draft.keywords" placeholder="logistics companies, transport companies, freight forwarders"></textarea></div>
           <div class="field full"><label>Outreach</label><textarea [(ngModel)]="draft.outreach" placeholder="Email sequence, messaging and follow-up strategy"></textarea></div>
           <div class="field full"><label>Scenarios</label><input [(ngModel)]="draft.scenarios" placeholder="Logistics Companies, Transport Companies, 3PL Providers"></div>
@@ -160,7 +165,7 @@ export class IndustryPacksPage implements OnInit {
   }
 
   emptyDraft(): PackDraft {
-    return { code:'',name:'',description:'',industry:'',purpose:'',offer:'',audience:'',discoveryProvider:'serpapi',keywords:'',minimumScore:70,outreach:'',approvalRequired:true,scenarios:'' };
+    return { code:'',name:'',description:'',industry:'',purpose:'',offer:'',audience:'',discoveryProvider:'serpapi',keywords:'',minimumScore:70,enrichmentEnabled:true,targetListEnabled:true,outreach:'',approvalRequired:true,scenarios:'' };
   }
 
   startCreate() { this.draft=this.emptyDraft(); this.mode='ai'; this.aiPrompt=''; this.builderOpen=true; }
@@ -190,8 +195,8 @@ export class IndustryPacksPage implements OnInit {
       minimumScore:Number(this.draft.minimumScore||70),
       discovery:{provider:this.draft.discoveryProvider,keywords:this.draft.keywords.split(',').map(x=>x.trim()).filter(Boolean)},
       qualification:{minimumScore:Number(this.draft.minimumScore||70)},
-      enrichment:{enabled:true},
-      targetList:{enabled:true},
+      enrichment:{enabled:this.draft.enrichmentEnabled},
+      targetList:{enabled:this.draft.targetListEnabled},
       outreach:{definition:this.draft.outreach},
       approvalRequired:this.draft.approvalRequired,
       scenarios:this.draft.scenarios.split(',').map(x=>x.trim()).filter(Boolean).map(name=>({name,code:name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}))
