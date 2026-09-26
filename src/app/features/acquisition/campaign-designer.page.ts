@@ -39,6 +39,7 @@ interface PaletteItem {
 export class CampaignDesignerPage implements OnInit, OnDestroy {
   id = '';
   campaign: any;
+  latestRun: any;
   nodes: FlowNode[] = [];
   selected: FlowNode | null = null;
   loading = true;
@@ -114,6 +115,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   private applyDetail(detail: any, preserveSelection = false): void {
     this.campaign = detail.campaign;
+    this.latestRun = detail.latestRun;
     const plan = this.parsePlan();
     const oldId = preserveSelection ? this.selected?.id : null;
     const execution = new Map<string, any>((detail.tasks || []).map((task: any) => [this.taskKey(task), task]));
@@ -268,12 +270,27 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   nodeStatus(node: FlowNode): string {
     const s = String(node.status ?? '').toLowerCase();
-    if (s.includes('failed')) return 'failed';
-    if (s.includes('running')) return 'running';
-    if (s.includes('completed')) return 'completed';
-    if (s.includes('waiting')) return 'waiting';
-    if (s.includes('cancel')) return 'cancelled';
+    const numeric = Number(node.status);
+    if (numeric === 4 || s.includes('failed')) return 'failed';
+    if (numeric === 1 || s.includes('running')) return 'running';
+    if (numeric === 2 || s.includes('completed')) {
+      if (node.type.toLowerCase() === 'outreach' && this.latestRunStatus() === 'waiting') return 'waiting';
+      return 'completed';
+    }
+    if (numeric === 3 || s.includes('paused') || s.includes('waiting')) return 'waiting';
+    if (numeric === 5 || s.includes('skip')) return 'cancelled';
     return this.isRunning ? 'pending' : 'idle';
+  }
+
+  latestRunStatus(): string {
+    const value = this.latestRun?.status;
+    const numeric = Number(value);
+    const text = String(value ?? '').toLowerCase();
+    if (numeric === 3 || text.includes('waiting')) return 'waiting';
+    if (numeric === 1 || text.includes('running')) return 'running';
+    if (numeric === 2 || text.includes('completed')) return 'completed';
+    if (numeric === 4 || text.includes('failed')) return 'failed';
+    return text;
   }
 
   nodeIcon(node: FlowNode): string {
