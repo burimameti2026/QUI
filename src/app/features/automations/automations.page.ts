@@ -26,30 +26,39 @@ import { AutomationsService } from "./automations.service";
         <button [class.active]="statusFilter==='paused'" (click)="statusFilter='paused'" type="button">Paused</button>
         <button [class.active]="statusFilter==='failed'" (click)="statusFilter='failed'" type="button">Failed runs</button>
       </qai-refined-tabs>
-      <qai-data-grid>
-        <div class="toolbar">
+      <div class="prospect-timeline-shell">
+        <div class="prospect-timeline-toolbar">
           <label class="search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search automations, triggers, actions..." /></label>
           <button type="button" class="toolbar-button">▽ Filters</button><button type="button" class="toolbar-button">↕ Sort</button>
           <span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
         </div>
-        <table>
-          <thead><tr><th>Automation</th><th>Trigger</th><th>Business actions</th><th>Status</th><th>Last run</th><th>Actions</th></tr></thead>
-          <tbody><tr *ngFor="let a of visibleRows">
-            <td><div class="lead-person"><b>{{ a.name }}</b><small>{{ conditionSummary(a) }}</small></div></td>
-            <td><span class="eyebrow">{{ a.trigger }}</span><small class="meta">{{ triggerMeaning(a.trigger) }}</small></td>
-            <td>{{ actions(a) }}</td>
-            <td><span class="status" [class.hot]="a.active">{{ a.active ? 'Active' : 'Paused' }}</span></td>
-            <td>{{ automationLastRun(a.id) }}</td>
-            <td><div class="actions"><button class="small" (click)="run(a)">▶ Run</button><button class="small" [disabled]="!a.active" (click)="publish(a)">Test</button><button class="small button-primary" (click)="open(a)">Edit</button></div></td>
-          </tr><tr class="empty" *ngIf="!visibleRows.length"><td colspan="6"><strong>No automations available</strong><span>Create an automation or change the current filter.</span></td></tr></tbody>
-        </table>
-      </qai-data-grid>
-      <qai-data-grid *ngIf="runs.length || deadLetters.length">
-        <div class="toolbar"><strong>Execution history</strong><span class="toolbar-spacer"></span><span>{{ runs.length }} runs · {{ failedCount }} failed</span></div>
-        <table><thead><tr><th>Run</th><th>Automation</th><th>Created</th><th>Status</th><th>Activity</th><th></th></tr></thead>
-          <tbody><tr *ngFor="let run of runs"><td>{{ run.id?.slice(0,8) }}</td><td>{{ ruleName(run.ruleId) }}</td><td>{{ run.createdAtUtc | date:'medium' }}</td><td><span class="status" [class.hot]="run.status==='completed'">{{ run.status }}</span></td><td>{{ runSummary(run) }}</td><td><button class="small" *ngIf="run.status==='failed'" (click)="retry(run)">Retry</button></td></tr></tbody>
-        </table>
-      </qai-data-grid>
+        <div class="prospect-timeline">
+          <article class="prospect-timeline-item" *ngFor="let a of visibleRows">
+            <div class="prospect-timeline-rail"><span class="prospect-timeline-dot" [class.hot]="a.active" [class.muted]="!a.active"></span></div>
+            <div class="prospect-timeline-date">{{ automationLastRun(a.id) }}</div>
+            <div class="prospect-timeline-content">
+              <div class="prospect-timeline-heading"><div><span class="eyebrow">AUTOMATION</span><h3>{{ a.name }}</h3></div><span class="status" [class.hot]="a.active">{{ a.active ? 'Active' : 'Paused' }}</span></div>
+              <p class="prospect-timeline-summary">{{ a.trigger }} · {{ triggerMeaning(a.trigger) }}</p>
+              <div class="prospect-timeline-meta"><span><b>{{ actions(a) }}</b></span><span>{{ conditionSummary(a) }}</span><div class="actions"><button class="small" (click)="run(a)">▶ Run</button><button class="small" [disabled]="!a.active" (click)="publish(a)">Test</button><button class="small button-primary" (click)="open(a)">Edit</button></div></div>
+            </div>
+          </article>
+          <div class="prospect-timeline-empty" *ngIf="!visibleRows.length"><strong>No automations available</strong><span>Create an automation or change the current filter.</span></div>
+        </div>
+      </div>
+      <div class="prospect-timeline-shell" *ngIf="runs.length || deadLetters.length">
+        <div class="prospect-timeline-heading-bar"><span class="eyebrow">EXECUTION HISTORY</span><strong>{{ runs.length }} runs · {{ failedCount }} failed</strong></div>
+        <div class="prospect-timeline execution-timeline">
+          <article class="prospect-timeline-item" *ngFor="let run of runs">
+            <div class="prospect-timeline-rail"><span class="prospect-timeline-dot" [class.hot]="run.status==='completed'" [class.muted]="run.status==='failed'"></span></div>
+            <div class="prospect-timeline-date">{{ run.createdAtUtc | date:'medium' }}</div>
+            <div class="prospect-timeline-content">
+              <div class="prospect-timeline-heading"><div><span class="eyebrow">RUN</span><h3>{{ ruleName(run.ruleId) }}</h3></div><span class="status" [class.hot]="run.status==='completed'">{{ run.status }}</span></div>
+              <p class="prospect-timeline-summary">{{ runSummary(run) }}</p>
+              <div class="prospect-timeline-meta"><span>Run {{ run.id?.slice(0,8) }}</span><button class="small" *ngIf="run.status==='failed'" (click)="retry(run)">Retry</button></div>
+            </div>
+          </article>
+        </div>
+      </div>
       <qai-modal [open]="show" [title]="form.id ? 'Edit automation' : 'Create automation'" (close)="show=false"><form class="form" (ngSubmit)="save()"><label>Name<input [(ngModel)]="form.name" name="name" required /></label><label>Trigger<select [(ngModel)]="form.trigger" name="trigger"><option>lead.score.changed</option><option>lead.qualified</option><option>conversation.sales_intent</option><option>ticket.sla_breach</option><option>meeting.booked</option><option>schedule.weekday</option></select></label><label>Conditions JSON<textarea [(ngModel)]="form.conditionsJson" name="conditions"></textarea></label><label>Actions JSON<textarea [(ngModel)]="form.actionsJson" name="actions"></textarea></label><label class="list-item"><input type="checkbox" [(ngModel)]="form.active" name="active" /> Active</label><footer class="actions"><button type="button" (click)="show=false">Cancel</button><button class="button-primary" type="submit">Save automation</button></footer></form></qai-modal>
     </section>`,
 })
