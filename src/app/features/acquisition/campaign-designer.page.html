@@ -1,3 +1,7 @@
+
+<style>
+  .message-workbench{margin-top:18px;padding:20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}.message-workbench-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.message-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;margin-top:14px}.message-card{padding:16px;border:1px solid #e1e5eb;border-radius:12px;background:#fafbfc}.message-card-head{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px}.message-card-head span{font-size:11px;color:#667085}.message-card label{display:block;margin:9px 0 5px;font-size:11px;font-weight:700}.message-card input,.message-card textarea,.message-card select{width:100%;box-sizing:border-box;border:1px solid #d9dee6;border-radius:8px;padding:9px;background:#fff}.message-preview{margin-top:12px;padding:12px;border-radius:9px;background:#f0f2f5}.message-preview small{display:block;font-size:9px;font-weight:800;letter-spacing:.08em}.message-preview strong{display:block;margin-top:5px}.message-preview p{white-space:pre-wrap;margin:6px 0 0}.message-workbench-head p{max-width:800px}
+</style>
 <main class="page designer-page">
   <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Build, configure and monitor the campaign flow. Configuration is stored as Campaign PlanJson; users work with fields, not JSON.">
     <button class="button-quiet" type="button" (click)="back()">← Campaigns</button>
@@ -89,5 +93,22 @@
       </aside>
       <ng-template #noSelection><aside class="inspector empty-inspector"><span>◇</span><h3>Select a component</h3><p>Choose a node in the flow to configure its fields and inspect execution.</p></aside></ng-template>
     </section>
+    <section class="message-workbench" *ngIf="campaignSteps.length">
+      <div class="message-workbench-head">
+        <div><span class="eyebrow">EXACT OUTREACH</span><h2>What this campaign will send</h2><p>These are the actual CampaignSteps templates used to generate OutreachMessages. Edit them here and save. Preview values are examples only; no message is sent by previewing.</p></div>
+        <button class="button-primary" type="button" (click)="saveMessages()" [disabled]="messageSaving">{{ messageSaving ? 'Saving…' : 'Save messages' }}</button>
+      </div>
+      <div class="message-grid">
+        <article class="message-card" *ngFor="let step of campaignSteps; let i = index">
+          <div class="message-card-head"><strong>Message {{ i + 1 }}</strong><span>Step {{ step.stepNumber }} · {{ step.delayHours }}h · {{ step.channel }}</span></div>
+          <label>Delay after previous</label><input type="number" min="0" [(ngModel)]="step.delayHours">
+          <label>Channel</label><select [(ngModel)]="step.channel"><option value="email">Email</option><option value="linkedin">LinkedIn</option></select>
+          <label>Subject — exact template</label><input [(ngModel)]="step.subjectTemplate">
+          <label>Body — exact template</label><textarea rows="8" [(ngModel)]="step.bodyTemplate"></textarea>
+          <div class="message-preview"><small>TEST PREVIEW — NOT SENT</small><strong>{{ messagePreview(step.subjectTemplate) }}</strong><p>{{ messagePreview(step.bodyTemplate) }}</p></div>
+        </article>
+      </div>
+    </section>
+
   </ng-container>
 </main>
