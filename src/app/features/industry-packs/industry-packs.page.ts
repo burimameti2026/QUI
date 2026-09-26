@@ -8,6 +8,15 @@ import { PageHeader } from '../../shared/ui';
   standalone: true,
   imports: [CommonModule, PageHeader],
   template: `
+    <style>
+      .scenario-picker{margin:14px 0 4px;padding:12px;border:1px solid #e1e5eb;border-radius:10px;background:#f7f8fa}
+      .scenario-picker>.eyebrow{display:block;margin-bottom:8px}
+      .scenario-picker button{display:block;width:100%;padding:9px 10px;margin:5px 0;border:1px solid #d9dee6;border-radius:8px;background:#fff;text-align:left;cursor:pointer}
+      .scenario-picker button.active{border-color:#222;box-shadow:0 0 0 1px #222}
+      .scenario-picker strong,.scenario-picker small{display:block}
+      .scenario-picker strong{font-size:11px}
+      .scenario-picker small{font-size:9px;opacity:.6;margin-top:2px}
+    </style>
     <main class="page page-industry-packs">
       <qai-page-header
         title="Industry Packs"
