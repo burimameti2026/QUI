@@ -185,16 +185,28 @@ export class IndustryPacksPage implements OnInit {
   advisorHelp(field: keyof PackDraft): void { this.syncAdvisor(); this.aiAdvisor.advise('Review the current Industry Pack and tell me what I should write for the '+String(field)+' field. Give me one concrete value and explain briefly why.').subscribe(); }
 
   draftFromPrompt() {
-    const p=this.aiPrompt.trim(); if(!p) return;
-    const lower=p.toLowerCase();
-    this.draft.name=this.draft.name || (lower.includes('logistics')?'Logistics Sales Pack':'AI Sales Pack');
-    this.draft.code=this.draft.code || this.draft.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    this.draft.industry=this.draft.industry || (lower.includes('logistics')?'Logistics':'');
-    this.draft.purpose=this.draft.purpose || 'Generate and qualify high-fit prospects';
-    this.draft.audience=this.draft.audience || p;
-    this.draft.keywords=this.draft.keywords || p;
-    this.draft.outreach=this.draft.outreach || 'Prepare personalized outreach after qualification and wait for human approval before delivery.';
-    this.message='Draft generated. Review the fields and save the reusable Industry Pack.';
+    const prompt=this.aiPrompt.trim(); if(!prompt || this.saving) return;
+    this.saving=true; this.error=''; this.message='';
+    this.data.buildWithAi<PackDraft>(prompt).subscribe({
+      next: (result:any) => {
+        this.draft = {
+          ...this.emptyDraft(),
+          ...result,
+          minimumScore: Number(result?.minimumScore ?? 70),
+          enrichmentEnabled: result?.enrichmentEnabled !== false,
+          targetListEnabled: result?.targetListEnabled !== false,
+          approvalRequired: result?.approvalRequired !== false
+        };
+        this.saving=false;
+        this.mode='manual';
+        this.syncAdvisor();
+        this.message='AI filled the complete Industry Pack form. Review the values and save when ready.';
+      },
+      error: (e:any) => {
+        this.saving=false;
+        this.error=e?.error?.detail || e?.error?.error || 'AI could not build the Industry Pack. Try again.';
+      }
+    });
   }
 
   templateJson() {
