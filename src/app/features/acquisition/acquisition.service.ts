@@ -55,6 +55,15 @@ export class AcquisitionService {
       prospectIds,
     );
   }
+  aiPrepare(tenantId: string, input: any) {
+    return this.api.post<any>(`ai-campaign-operator/tenants/${tenantId}/prepare`, input);
+  }
+  aiStart(tenantId: string, campaignId: string) {
+    return this.api.post<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/start`, {});
+  }
+  aiStatus(tenantId: string, campaignId: string) {
+    return this.api.get<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/status`);
+  }
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
