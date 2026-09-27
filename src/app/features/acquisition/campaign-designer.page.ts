@@ -170,6 +170,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     });
   }
 
+  get selectedTargetListName(): string {
+    return this.targetLists.find(x => x.id === this.selectedTargetListId)?.name || 'Not attached';
+  }
+
   get isRunning(): boolean {
     return this.statusText(this.campaign?.status) === 'Running';
   }
