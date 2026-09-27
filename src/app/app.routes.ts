@@ -35,6 +35,7 @@ export const routes: Routes = [
   {path:'analytics',canActivate:[requireModule('analytics')],loadComponent:()=>import('./features/analytics/analytics.page').then(m=>m.AnalyticsPage)},
   {path:'billing',canActivate:[requireModule('billing')],loadComponent:()=>import('./features/billing/billing.page').then(m=>m.BillingPage)},
   {path:'platform',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/platform-management/platform-management.page').then(m=>m.PlatformManagementPage)},
+  {path:'admin/campaign-history',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaign-history.page').then(m=>m.CampaignHistoryPage)},
   {path:'admin/modules',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/module-admin.page').then(m=>m.ModuleAdminPage)},
   {path:'admin/email-test',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/admin-email-test.page').then(m=>m.AdminEmailTestPage)},
   {path:'admin/tenants/:tenantId/provisioning',canActivate:[requirePermission('system.admin')],loadComponent:()=>import('./features/module-admin/provisioning.page').then(m=>m.ProvisioningPage)},
