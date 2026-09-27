@@ -14,7 +14,17 @@
 
   <ng-container *ngIf="!loading && campaign">
     <section class="designer-toolbar">
-      <div><span class="eyebrow">CAMPAIGN</span><strong>{{ campaign.name }}</strong><small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small></div>
+      <div>
+        <span class="eyebrow">CAMPAIGN CONTAINER</span>
+        <strong>{{ campaign.name }}</strong>
+        <small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small>
+      </div>
+      <label class="container-selector" *ngIf="containers.length">
+        <span>Container</span>
+        <select [(ngModel)]="selectedContainerId" (ngModelChange)="containerChanged()">
+          <option *ngFor="let container of containers" [value]="container.id">{{ container.name }} · {{ container.status }}</option>
+        </select>
+      </label>
       <div class="toolbar-actions">
         <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
         <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
@@ -72,13 +82,22 @@
           <textarea [(ngModel)]="selected.description" rows="3"></textarea>
         </div>
 
+        <div class="inspector-section" *ngIf="selected.type==='TargetAudience'">
+          <label>Prospect Group / Target List</label>
+          <select [ngModel]="selectedTargetListId" (ngModelChange)="targetListChanged($event)">
+            <option value="">Select prospect group…</option>
+            <option *ngFor="let list of targetLists" [value]="list.id">{{ list.name }}</option>
+          </select>
+          <small *ngIf="selectedTargetListId">This group will be executed by the selected campaign container.</small>
+        </div>
+
         <div class="inspector-section" *ngFor="let field of fieldEntries()">
           <label>{{ field.label }}</label>
-          <input *ngIf="field.kind==='string'" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)">
-          <input *ngIf="field.kind==='number'" type="number" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,+$event)">
-          <label class="check-field" *ngIf="field.kind==='boolean'"><input type="checkbox" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)"> Enabled</label>
-          <textarea *ngIf="field.kind==='array'" [ngModel]="field.value.join(', ')" (ngModelChange)="updateArray(field.key,$event)" rows="3"></textarea>
-          <textarea *ngIf="field.kind==='object'" [ngModel]="field.value | json" disabled rows="4"></textarea>
+          <input *ngIf="selected.type!=='TargetAudience' && field.kind==='string'" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)">
+          <input *ngIf="selected.type!=='TargetAudience' && field.kind==='number' type="number" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,+$event)">
+          <label class="check-field" *ngIf="selected.type!=='TargetAudience' && field.kind==='boolean'"><input type="checkbox" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)"> Enabled</label>
+          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='array' [ngModel]="field.value.join(', ')" (ngModelChange)="updateArray(field.key,$event)" rows="3"></textarea>
+          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='object' [ngModel]="field.value | json" disabled rows="4"></textarea>
         </div>
 
         <div class="inspector-section execution" *ngIf="selected.status">
