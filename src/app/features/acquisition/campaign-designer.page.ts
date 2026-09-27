@@ -46,6 +46,9 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   targetLists: any[] = [];
   selectedContainerId = '';
   selectedTargetListId = '';
+  activityLogs: any[] = [];
+  logsOpen = false;
+  logsStepId: string | null = null;
   nodes: FlowNode[] = [];
   selected: FlowNode | null = null;
   loading = true;
@@ -198,7 +201,26 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   refreshExecution(): void {
     this.data.campaignDetail(this.id).subscribe({
-      next: detail => { this.applyDetail(detail, true); this.syncAdvisorContext(); },
+      next: detail => { this.applyDetail(detail, true); this.syncAdvisorContext(); this.refreshActivity(); },
+      error: () => undefined
+    });
+  }
+
+  openLogs(taskId: string | null = null): void {
+    this.logsStepId = taskId;
+    this.logsOpen = true;
+    this.refreshActivity();
+  }
+
+  closeLogs(): void {
+    this.logsOpen = false;
+    this.logsStepId = null;
+  }
+
+  refreshActivity(): void {
+    if (!this.selectedContainerId) return;
+    this.data.containerActivity(this.id, this.selectedContainerId, this.logsStepId).subscribe({
+      next: rows => this.activityLogs = (rows || []).sort((a: any, b: any) => new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()),
       error: () => undefined
     });
   }
@@ -214,6 +236,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
         this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
         this.ensureTargetAudienceNode();
         this.syncAdvisorContext();
+        this.refreshActivity();
       },
       error: e => this.error = e?.error?.detail || e?.error?.error || 'Campaign containers could not be loaded.'
     });
