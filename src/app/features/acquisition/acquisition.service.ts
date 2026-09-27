@@ -95,6 +95,15 @@ export class AcquisitionService {
       {},
     );
   }
+  rejectApproval(id: string) {
+    return this.api.post<any>(
+      `email-operations/messages/${id}/reject-approval`,
+      {},
+    );
+  }
+  approve(id: string) {
+    return this.approveAndSend(id);
+  }
   approveAndSend(id: string) {
     return this.api.post<any>(
       `email-operations/messages/${id}/approve-and-send`,
