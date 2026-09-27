@@ -1,0 +1,45 @@
+<main class="page page-campaign-history">
+  <qai-page-header title="Campaign History" subtitle="Persistent execution history across campaigns, containers, agents and workflow steps.">
+    <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button>
+  </qai-page-header>
+
+  <section class="history-filters">
+    <div class="filter-head"><div><span class="eyebrow">EXECUTION HISTORY</span><h2>Every persisted campaign execution event</h2></div><strong>{{ rows.length }} events</strong></div>
+    <div class="filter-grid">
+      <label>Search<input [(ngModel)]="search" (ngModelChange)="load(true)" placeholder="Campaign, run, message…"></label>
+      <label>Campaign name<input [(ngModel)]="campaignName" placeholder="Campaign"></label>
+      <label>Container name<input [(ngModel)]="containerName" placeholder="Container"></label>
+      <label>Agent<input [(ngModel)]="agentName" placeholder="Agent"></label>
+      <label>Industry Pack<input [(ngModel)]="packCode" placeholder="Pack code"></label>
+      <label>Status<select [(ngModel)]="status"><option value="">All statuses</option><option>Running</option><option>Completed</option><option>Waiting</option><option>Failed</option><option>Info</option></select></label>
+      <label>Step type<select [(ngModel)]="stepType"><option value="">All steps</option><option>Discover</option><option>Qualify</option><option>Enrich</option><option>BuildTargetList</option><option>Outreach</option></select></label>
+      <label>From<input type="datetime-local" [(ngModel)]="fromUtc"></label>
+      <label>To<input type="datetime-local" [(ngModel)]="toUtc"></label>
+    </div>
+    <div class="filter-actions"><button class="button-primary" type="button" (click)="load()">Apply filters</button><button class="button-quiet" type="button" (click)="clear()">Clear</button></div>
+  </section>
+
+  <p class="notice alert-error" *ngIf="error">{{ error }}</p>
+
+  <section class="history-grid-wrap">
+    <table class="history-grid">
+      <thead><tr><th>Time</th><th>Campaign</th><th>Container</th><th>Agent</th><th>Pack</th><th>Run</th><th>Step</th><th>Event</th><th>Status</th><th>Message</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td class="mono">{{ row.atUtc | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+          <td><b>{{ row.campaignName }}</b></td>
+          <td>{{ row.containerName }}</td>
+          <td>{{ row.agentName }}</td>
+          <td><span class="pack">{{ row.packCode || 'Custom' }}</span></td>
+          <td class="mono run">{{ row.runId ? (row.runId | slice:0:8) : '—' }}</td>
+          <td>{{ row.stepName || row.stepType || 'Container' }}</td>
+          <td class="event">{{ row.eventType }}</td>
+          <td><span class="status" [ngClass]="'status-'+(row.status || 'Info').toLowerCase()">{{ statusLabel(row.status) }}</span></td>
+          <td class="message">{{ row.message }}</td>
+        </tr>
+        <tr *ngIf="!loading && !rows.length"><td colspan="10" class="empty">No execution events match the selected filters.</td></tr>
+        <tr *ngIf="loading"><td colspan="10" class="empty">Loading execution history…</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
