@@ -183,7 +183,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
       'Return a concise execution summary and include the created campaignId when available.',
       'User request: ' + goal
     ].join('\n');
-    this.data.aiPrepare(tenantId, { brief: goal }).subscribe({
+    this.data.aiPrepare(tenantId, { brief: goal, goal: 'book-demo' }).subscribe({
       next: (result: any) => {
         this.aiWorking = false;
         this.operatorResult = result;
@@ -225,7 +225,24 @@ export class CampaignsPage implements OnDestroy, OnInit {
     });
   }
 
-  private startOperatorPolling(): void { const tenantId = this.tenantRuntime.runtime()?.tenantId; const campaignId = this.operatorResult?.campaignId; if (!tenantId || !campaignId) return; if (this.operatorPoll) clearInterval(this.operatorPoll); const poll = () => this.data.aiStatus(tenantId, campaignId).subscribe({ next: x => { this.operatorLive = x; if (['completed','attention'].includes(String(x?.aiStatus)) && this.operatorPoll) { clearInterval(this.operatorPoll); this.operatorPoll = null; } } }); poll(); this.operatorPoll = setInterval(poll, 3000); }
+  private startOperatorPolling(): void {
+    const tenantId = this.tenantRuntime.runtime()?.tenantId;
+    const campaignId = this.operatorResult?.campaignId;
+    if (!tenantId || !campaignId) return;
+    if (this.operatorPoll) clearInterval(this.operatorPoll);
+    const poll = () => this.data.aiStatus(tenantId, campaignId).subscribe({
+      next: x => {
+        this.operatorLive = x;
+        if (['completed', 'attention', 'failed'].includes(String(x?.aiStatus)) && this.operatorPoll) {
+          clearInterval(this.operatorPoll);
+          this.operatorPoll = null;
+        }
+      },
+      error: e => this.aiError = this.apiError(e, 'Live campaign status could not be loaded.')
+    });
+    poll();
+    this.operatorPoll = setInterval(poll, 3000);
+  }
 
   liveLabel(): string { switch (String(this.operatorLive?.aiStatus || 'ready')) { case 'queued': return 'Run queued — waiting for acquisition worker'; case 'running': return 'AI acquisition is running'; case 'completed': return 'Acquisition run completed'; case 'attention': return 'Run needs attention'; default: return 'Ready to launch'; } }
 
