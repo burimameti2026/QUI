@@ -131,7 +131,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   get canStart(): boolean {
     const status = this.statusText(this.campaign?.status);
-    return ['Draft', 'Paused', 'Stopped', 'Completed'].includes(status);
+    return ['Draft', 'Paused', 'Stopped'].includes(status);
   }
 
   start(): void {
