@@ -64,6 +64,12 @@ export class AcquisitionService {
   setContainerTargetList(campaignId: string, containerId: string, targetListId: string | null) {
     return this.api.put<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/target-list`, { targetListId });
   }
+  startContainer(campaignId: string, containerId: string) {
+    return this.api.post<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/start`, {});
+  }
+  stopContainer(campaignId: string, containerId: string) {
+    return this.api.post<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/stop`, {});
+  }
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
