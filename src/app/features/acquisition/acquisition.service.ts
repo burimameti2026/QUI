@@ -55,6 +55,15 @@ export class AcquisitionService {
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
+  targetLists() {
+    return this.api.get<any[]>("acquisition/target-lists");
+  }
+  containers(campaignId: string) {
+    return this.api.get<any[]>(`acquisition/campaigns/${campaignId}/containers`);
+  }
+  setContainerTargetList(campaignId: string, containerId: string, targetListId: string | null) {
+    return this.api.put<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/target-list`, { targetListId });
+  }
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
