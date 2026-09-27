@@ -2,3 +2,10 @@
 
 
 .container-selector{display:flex;flex-direction:column;gap:5px;min-width:260px}.container-selector span{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#667085}.container-selector select{min-height:38px;border:1px solid #d9dee6;border-radius:8px;background:#fff;padding:0 10px;font:inherit}.inspector-section small{display:block;margin-top:6px;color:#667085;font-size:11px}
+.logs-overlay{position:fixed;inset:0;background:rgba(15,23,42,.42);display:flex;align-items:center;justify-content:center;padding:28px;z-index:1000}
+.logs-modal{width:min(980px,96vw);max-height:86vh;background:#fff;border:1px solid #dfe4ea;border-radius:16px;box-shadow:0 24px 70px rgba(15,23,42,.2);display:flex;flex-direction:column;overflow:hidden}
+.logs-modal-head{display:flex;justify-content:space-between;gap:20px;padding:22px 24px;border-bottom:1px solid #e8ebef}
+.logs-modal-head h2{margin:4px 0 2px}.logs-modal-head p{margin:0;color:#687385;font-size:13px}.logs-head-actions{display:flex;gap:8px;align-items:flex-start}
+.logs-body{padding:10px 18px 22px;overflow:auto}.log-line{display:grid;grid-template-columns:150px 28px 1fr;gap:10px;padding:12px 6px;border-bottom:1px solid #eef1f4;align-items:start}
+.log-line time{font-size:11px;color:#7a8493;padding-top:2px}.log-state{font-size:14px}.log-copy{display:flex;flex-direction:column;gap:2px}.log-copy strong{font-size:12px}.log-copy span{font-size:13px;color:#263142}.log-copy small{font-size:10px;color:#9099a7;letter-spacing:.04em}.log-line.warning .log-state{color:#9a6700}.log-line.error .log-state{color:#b42318}.log-empty{padding:36px 12px;color:#687385;text-align:center}
+.inspector-actions{display:flex;align-items:center;gap:8px}.logs-button{white-space:nowrap}
