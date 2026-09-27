@@ -27,6 +27,7 @@
       </label>
       <div class="toolbar-actions">
         <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
+        <button class="button-secondary" type="button" *ngIf="selectedContainerId" (click)="openLogs()">☷ View logs</button>
         <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
         <button class="button-secondary" type="button" *ngIf="isRunning" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
         <button class="button-secondary" type="button" *ngIf="statusText(campaign?.status)==='Paused'" (click)="resume()" [disabled]="saving">▶ Resume</button>
@@ -69,7 +70,7 @@
       <aside class="inspector" *ngIf="selected; else noSelection">
         <div class="inspector-head">
           <div><span class="eyebrow">PROPERTIES</span><h2>{{ nodeIcon(selected) }} {{ selected.name }}</h2><p>{{ selected.description }}</p></div>
-          <span class="state-pill" [class]="nodeStatus(selected)">{{ nodeStatus(selected) }}</span>
+          <div class="inspector-actions"><span class="state-pill" [class]="nodeStatus(selected)">{{ nodeStatus(selected) }}</span><button class="button-secondary logs-button" type="button" (click)="openLogs(selected.id)">☷ Logs</button></div>
         </div>
 
         <div class="inspector-section">
@@ -130,4 +131,32 @@
     </section>
 
   </ng-container>
+
+    <div class="logs-overlay" *ngIf="logsOpen" (click)="closeLogs()">
+      <section class="logs-modal" (click)="$event.stopPropagation()">
+        <header class="logs-modal-head">
+          <div>
+            <span class="eyebrow">CONTAINER ACTIVITY</span>
+            <h2>{{ campaign?.name || 'Campaign container' }}</h2>
+            <p>{{ logsStepId ? 'Events for the selected step.' : 'Live operational history for this container.' }}</p>
+          </div>
+          <div class="logs-head-actions">
+            <button class="button-secondary" type="button" (click)="refreshActivity()">↻ Refresh</button>
+            <button class="button-quiet" type="button" (click)="closeLogs()">×</button>
+          </div>
+        </header>
+        <div class="logs-body">
+          <div class="log-empty" *ngIf="!activityLogs.length">No execution events recorded yet. Start the container and this window will show what each step finds, completes, warns about or fails on.</div>
+          <article class="log-line" *ngFor="let log of activityLogs" [class]="log.level">
+            <time>{{ formatDate(log.atUtc) }}</time>
+            <span class="log-state">{{ log.level === 'error' ? '✕' : log.level === 'warning' ? '⚠' : '✓' }}</span>
+            <div class="log-copy">
+              <strong>{{ log.stepName || 'Container' }}</strong>
+              <span>{{ log.message }}</span>
+              <small>{{ log.eventType }}</small>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
 </main>
