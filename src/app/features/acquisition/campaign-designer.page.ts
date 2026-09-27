@@ -82,6 +82,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     this.id = this.route.snapshot.paramMap.get('id') || '';
     this.load();
     this.timer = setInterval(() => {
+      if (this.selectedContainerId) {
+        this.loadContainerContext();
+        this.refreshActivity();
+      }
       if (this.campaign?.status === 2 || this.statusText(this.campaign?.status) === 'Running') this.refreshExecution();
     }, 3000);
   }
@@ -223,6 +227,9 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   refreshActivity(): void {
     if (!this.selectedContainerId) return;
+    if (this.logsOpen === false && this.selectedContainerId) {
+      this.logsStepId = null;
+    }
     this.data.containerActivity(this.id, this.selectedContainerId, this.logsStepId).subscribe({
       next: (rows: any[]) => {
         this.activityLogs = (rows || []).sort((a: any, b: any) =>
