@@ -6,6 +6,7 @@ import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
 import { IndustryPacksService } from '../industry-packs/industry-packs.service';
 import { AiAdvisorService } from '../../core/ai-advisor.service';
+import { TenantRuntimeService } from '../../core/tenant-runtime.service';
 
 @Component({
   standalone: true,
@@ -34,12 +35,15 @@ export class CampaignsPage implements OnInit {
   aiWorking = false;
   aiResult = '';
   aiError = '';
+  operatorResult: any = null;
+  operatorStarting = false;
 
   constructor(
     private readonly data: AcquisitionService,
     private readonly router: Router,
     private readonly packsService: IndustryPacksService,
-    private readonly aiAdvisor: AiAdvisorService
+    private readonly aiAdvisor: AiAdvisorService,
+    private readonly tenantRuntime: TenantRuntimeService
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +159,12 @@ export class CampaignsPage implements OnInit {
   createWithAi(): void {
     const goal = this.aiGoal.trim();
     if (!goal || this.aiWorking) return;
+    const tenantId = this.tenantRuntime.runtime()?.tenantId;
+    if (!tenantId) {
+      this.aiError = 'Workspace runtime is not ready. Refresh the page and try again.';
+      this.tenantRuntime.load().subscribe({ error: e => this.aiError = this.apiError(e, 'Workspace runtime could not be loaded.') });
+      return;
+    }
     this.aiWorking = true;
     this.aiError = '';
     this.aiResult = '';
@@ -169,16 +179,15 @@ export class CampaignsPage implements OnInit {
       'Return a concise execution summary and include the created campaignId when available.',
       'User request: ' + goal
     ].join('\n');
-    this.aiAdvisor.runAgent(instruction).subscribe({
+    this.data.aiPrepare(tenantId, { brief: goal }).subscribe({
       next: (result: any) => {
         this.aiWorking = false;
-        this.aiResult = result?.message || result?.toolResult || JSON.stringify(result);
-        const campaignId = result?.campaignId || result?.toolResult?.campaignId;
+        this.operatorResult = result;
+        this.aiResult = (result?.actions || []).join(' · ') || (result?.status === 'ready' ? 'Campaign is ready to launch.' : 'AI prepared the campaign.');
+        const campaignId = result?.campaignId;
         if (campaignId) {
-          this.message = 'AI created the campaign. Opening the Campaign Designer…';
-          this.aiCreateOpen = false;
+          this.message = result?.status === 'ready' ? 'AI prepared the campaign. Ready to launch.' : 'AI prepared the campaign.';
           this.load();
-          void this.router.navigate(['/campaigns', campaignId, 'designer']);
         } else {
           this.load();
         }
@@ -186,6 +195,26 @@ export class CampaignsPage implements OnInit {
       error: (e: any) => {
         this.aiWorking = false;
         this.aiError = this.apiError(e, 'AI could not create the campaign.');
+      }
+    });
+  }
+
+  startAiPrepared(): void {
+    const tenantId = this.tenantRuntime.runtime()?.tenantId;
+    const campaignId = this.operatorResult?.campaignId;
+    if (!tenantId || !campaignId || this.operatorStarting) return;
+    this.operatorStarting = true;
+    this.aiError = '';
+    this.data.aiStart(tenantId, campaignId).subscribe({
+      next: (result: any) => {
+        this.operatorStarting = false;
+        this.aiCreateOpen = false;
+        this.message = 'Campaign started. AI acquisition run is queued.';
+        this.load();
+      },
+      error: (e: any) => {
+        this.operatorStarting = false;
+        this.aiError = this.apiError(e, 'Campaign could not be started.');
       }
     });
   }
