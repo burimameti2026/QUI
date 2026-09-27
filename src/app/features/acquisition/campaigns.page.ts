@@ -29,6 +29,11 @@ export class CampaignsPage implements OnInit {
   icps: any[] = [];
   selectedIcpId = '';
   creating = false;
+  aiCreateOpen = false;
+  aiGoal = '';
+  aiWorking = false;
+  aiResult = '';
+  aiError = '';
 
   constructor(
     private readonly data: AcquisitionService,
@@ -123,6 +128,66 @@ export class CampaignsPage implements OnInit {
       senderName: campaign?.senderName,
       startsAtUtc: campaign?.startsAtUtc
     };
+  }
+
+  openAiCreate(): void {
+    this.aiCreateOpen = true;
+    this.aiGoal = '';
+    this.aiResult = '';
+    this.aiError = '';
+    this.aiWorking = false;
+    this.aiAdvisor.setContext({
+      page: 'AI Campaign Operator',
+      section: 'Campaign Creation',
+      title: 'Create Campaign with AI',
+      values: {
+        availablePacks: this.packs.map(x => ({ id: x.id, code: x.code, name: x.name, description: x.description })),
+        availableIcps: this.icps.map(x => ({ id: x.id, name: x.name, industry: x.industry, countries: x.countriesCsv }))
+      }
+    });
+  }
+
+  closeAiCreate(): void {
+    if (this.aiWorking) return;
+    this.aiCreateOpen = false;
+  }
+
+  createWithAi(): void {
+    const goal = this.aiGoal.trim();
+    if (!goal || this.aiWorking) return;
+    this.aiWorking = true;
+    this.aiError = '';
+    this.aiResult = '';
+    const instruction = [
+      'You are the LeadsAI Campaign Operator.',
+      'The user wants you to create and provision a real campaign, not merely explain how.',
+      'Use the existing campaign/industry-pack/ICP/provisioning tools available to you.',
+      'First inspect the available Industry Packs and ICPs in the supplied workspace context.',
+      'Choose the closest existing reusable pack and ICP when possible.',
+      'Create/provision the campaign container and its workflow. Do not invent database IDs.',
+      'If an existing campaign already matches the request, reuse/reconcile it instead of creating a duplicate.',
+      'Return a concise execution summary and include the created campaignId when available.',
+      'User request: ' + goal
+    ].join('\n');
+    this.aiAdvisor.runAgent(instruction).subscribe({
+      next: (result: any) => {
+        this.aiWorking = false;
+        this.aiResult = result?.message || result?.toolResult || JSON.stringify(result);
+        const campaignId = result?.campaignId || result?.toolResult?.campaignId;
+        if (campaignId) {
+          this.message = 'AI created the campaign. Opening the Campaign Designer…';
+          this.aiCreateOpen = false;
+          this.load();
+          void this.router.navigate(['/campaigns', campaignId, 'designer']);
+        } else {
+          this.load();
+        }
+      },
+      error: (e: any) => {
+        this.aiWorking = false;
+        this.aiError = this.apiError(e, 'AI could not create the campaign.');
+      }
+    });
   }
 
   openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
