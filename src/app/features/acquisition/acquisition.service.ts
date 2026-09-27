@@ -64,6 +64,13 @@ export class AcquisitionService {
   aiStatus(tenantId: string, campaignId: string) {
     return this.api.get<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/status`);
   }
+  campaignHistory(filters: any = {}) {
+    const params = Object.entries(filters)
+      .filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '')
+      .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
+      .join('&');
+    return this.api.get<any>(`acquisition/campaign-history${params ? '?' + params : ''}`);
+  }
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
