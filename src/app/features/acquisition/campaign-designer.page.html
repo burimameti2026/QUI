@@ -109,9 +109,9 @@
           <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='object'" [ngModel]="field.value | json" disabled rows="4"></textarea>
         </div>
 
-        <div class="inspector-section execution" *ngIf="selected.status">
+        <div class="inspector-section execution" *ngIf="selectedContainerId">
           <label>Execution</label>
-          <div class="execution-row"><span>Status</span><b>{{ selected.status }}</b></div>
+          <div class="execution-row"><span>Container status</span><b>{{ containerStatusText() }}</b></div>
           <div class="execution-row"><span>Started</span><b>{{ formatDate(selected.startedAtUtc) }}</b></div>
           <div class="execution-row"><span>Completed</span><b>{{ formatDate(selected.completedAtUtc) }}</b></div>
           <div class="error-box" *ngIf="nodeStatus(selected)==='failed'"><strong>!</strong><span>{{ errorDetails(selected) }}</span></div>
