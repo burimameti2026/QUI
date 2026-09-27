@@ -13,6 +13,9 @@ export class AcquisitionService {
   createIcp(input: any) {
     return this.api.post<any>("acquisition/icp", input);
   }
+  saveIcp(input: any) {
+    return this.api.post<any>("acquisition/icp", input);
+  }
   discoveryProviders() {
     return this.api.get<any[]>("acquisition/discovery/providers");
   }
@@ -55,9 +58,6 @@ export class AcquisitionService {
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
   }
-  targetLists() {
-    return this.api.get<any[]>("acquisition/target-lists");
-  }
   containers(campaignId: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${campaignId}/containers`);
   }
@@ -96,5 +96,29 @@ export class AcquisitionService {
   }
   startCampaign(id: string) {
     return this.api.post<any>(`acquisition/campaigns/${id}/start`, {});
+  }
+  pauseCampaign(id: string) {
+    return this.api.post<any>(`acquisition/campaigns/${id}/pause`, {});
+  }
+  resumeCampaign(id: string) {
+    return this.api.post<any>(`acquisition/campaigns/${id}/resume`, {});
+  }
+  stopCampaign(id: string) {
+    return this.api.post<any>(`acquisition/campaigns/${id}/stop`, {});
+  }
+  deleteCampaign(id: string) {
+    return this.api.delete<any>(`acquisition/campaigns/${id}`);
+  }
+  runAutonomousCampaign(id: string) {
+    return this.startCampaign(id);
+  }
+  campaignDetail(id: string) {
+    return this.api.get<any>(`acquisition/campaigns/${id}`);
+  }
+  saveCampaignPlan(id: string, planJson: string) {
+    return this.api.put<any>(`acquisition/campaigns/${id}/plan`, { planJson });
+  }
+  saveCampaignMessages(id: string, steps: any[]) {
+    return this.api.put<any>(`acquisition/campaigns/${id}/messages`, { steps });
   }
 }
