@@ -94,10 +94,10 @@
         <div class="inspector-section" *ngFor="let field of fieldEntries()">
           <label>{{ field.label }}</label>
           <input *ngIf="selected.type!=='TargetAudience' && field.kind==='string'" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)">
-          <input *ngIf="selected.type!=='TargetAudience' && field.kind==='number' type="number" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,+$event)">
+          <input *ngIf="selected.type!=='TargetAudience' && field.kind==='number'" type="number" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,+$event)">
           <label class="check-field" *ngIf="selected.type!=='TargetAudience' && field.kind==='boolean'"><input type="checkbox" [ngModel]="field.value" (ngModelChange)="updateConfig(field.key,$event)"> Enabled</label>
-          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='array' [ngModel]="field.value.join(', ')" (ngModelChange)="updateArray(field.key,$event)" rows="3"></textarea>
-          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='object' [ngModel]="field.value | json" disabled rows="4"></textarea>
+          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='array'" [ngModel]="field.value.join(', ')" (ngModelChange)="updateArray(field.key,$event)" rows="3"></textarea>
+          <textarea *ngIf="selected.type!=='TargetAudience' && field.kind==='object'" [ngModel]="field.value | json" disabled rows="4"></textarea>
         </div>
 
         <div class="inspector-section execution" *ngIf="selected.status">
