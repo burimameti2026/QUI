@@ -220,7 +220,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   refreshActivity(): void {
     if (!this.selectedContainerId) return;
     this.data.containerActivity(this.id, this.selectedContainerId, this.logsStepId).subscribe({
-      next: rows => this.activityLogs = (rows || []).sort((a: any, b: any) => new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()),
+      next: (rows: any[]) => this.activityLogs = (rows || []).sort((a: any, b: any) => new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()),
       error: () => undefined
     });
   }
