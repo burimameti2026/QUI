@@ -106,6 +106,7 @@
           <button class="settings-button" type="button" aria-label="Campaign settings" (click)="settingsOpenId=settingsOpenId===campaign.id?null:campaign.id">⚙</button>
           <div class="settings-menu" *ngIf="settingsOpenId===campaign.id">
             <button type="button" (click)="openDesigner(campaign)">✎ Configure / Designer</button>
+            <button type="button" (click)="openContainerLogs(campaign)">▤ View Container Logs</button>
             <button type="button" (click)="start(campaign)" *ngIf="status(campaign.status)==='Draft'||status(campaign.status)==='Scheduled'||status(campaign.status)==='Stopped'" [disabled]="busy">▶ Start</button>
             <button type="button" (click)="runAutonomous(campaign)" *ngIf="status(campaign.status)==='Running' && campaign.agentId && !(campaign.runPending || campaign.runRunning)" [disabled]="busy">✦ Run AI Acquisition</button>
             <button type="button" (click)="pause(campaign)" *ngIf="status(campaign.status)==='Running'" [disabled]="busy">Ⅱ Pause</button>
@@ -125,4 +126,48 @@
     </article>
   </section>
   <ng-template #emptyCampaigns><section class="empty card"><h3>{{ search ? "No matching campaign containers" : "No campaign containers yet" }}</h3><p>{{ search ? "Try another search." : "Create a container and choose how its definition should be created." }}</p><button class="button-primary" type="button" (click)="openCreate()" *ngIf="!search">Create Container</button></section></ng-template>
+  <div class="create-backdrop container-logs-backdrop" *ngIf="logsOpen" (click)="closeContainerLogs()">
+    <section class="container-logs-dialog" (click)="$event.stopPropagation()">
+      <header>
+        <div>
+          <span class="eyebrow">CONTAINER ACTIVITY</span>
+          <h2>{{ logsCampaign?.name || 'Campaign container' }}</h2>
+          <p *ngIf="logsContainer">
+            {{ logsContainer.name }} · {{ logsContainer.packageCode || 'Custom' }}
+            · <strong>{{ containerStatus(logsContainer.status) }}</strong>
+          </p>
+          <p *ngIf="!logsContainer && !logsLoading">No container is configured for this campaign.</p>
+        </div>
+        <button class="close" type="button" (click)="closeContainerLogs()">×</button>
+      </header>
+
+      <div class="container-logs-toolbar" *ngIf="logsContainer">
+        <span><b>{{ containerLogs.length }}</b> events</span>
+        <span>Live · refreshes every 3s</span>
+        <button type="button" class="button-quiet" (click)="openDesigner(logsCampaign); closeContainerLogs()">Open container</button>
+      </div>
+
+      <div class="container-logs-list" *ngIf="logsContainer && containerLogs.length; else logsEmpty">
+        <article class="container-log-row" *ngFor="let log of containerLogs">
+          <div class="container-log-time">{{ log.atUtc | date:'dd.MM.yyyy HH:mm:ss' }}</div>
+          <div class="container-log-main">
+            <div class="container-log-head">
+              <strong>{{ log.stepName || log.stepType || log.eventType || 'Container' }}</strong>
+              <span class="container-log-level" [ngClass]="'level-'+(log.level || 'info')">{{ log.level || 'info' }}</span>
+            </div>
+            <p>{{ log.message || log.eventType }}</p>
+            <small *ngIf="log.eventType">{{ log.eventType }}</small>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #logsEmpty>
+        <div class="container-logs-empty">
+          <span *ngIf="logsLoading">Loading container activity…</span>
+          <span *ngIf="!logsLoading && logsContainer">No activity has been recorded yet. Start the container and the events will appear here.</span>
+          <span *ngIf="!logsLoading && !logsContainer">This campaign has no container.</span>
+        </div>
+      </ng-template>
+    </section>
+  </div>
 </main>
