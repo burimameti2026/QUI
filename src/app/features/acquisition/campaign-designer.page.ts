@@ -224,8 +224,15 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   refreshActivity(): void {
     if (!this.selectedContainerId) return;
     this.data.containerActivity(this.id, this.selectedContainerId, this.logsStepId).subscribe({
-      next: (rows: any[]) => this.activityLogs = (rows || []).sort((a: any, b: any) => new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()),
-      error: () => undefined
+      next: (rows: any[]) => {
+        this.activityLogs = (rows || []).sort((a: any, b: any) =>
+          new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()
+        );
+      },
+      error: e => {
+        this.activityLogs = [];
+        this.error = e?.error?.detail || e?.error?.error || 'Container activity could not be loaded.';
+      }
     });
   }
 
@@ -259,7 +266,19 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     const node = this.nodes.find(x => x.type === 'TargetAudience');
     if (node) node.config.targetListId = this.selectedTargetListId;
     this.selected = node || this.selected;
+    this.activityLogs = [];
     this.syncAdvisorContext();
+    this.refreshActivity();
+  }
+
+  selectedContainer(): any | null {
+    return this.containers.find(x => x.id === this.selectedContainerId) || null;
+  }
+
+  containerStatusText(): string {
+    const value = this.selectedContainer()?.status;
+    if (value === null || value === undefined || value === '') return 'Unknown';
+    return String(value);
   }
 
   targetListChanged(value: string): void {
@@ -322,6 +341,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     if (node.type === 'TargetAudience') this.selectedTargetListId = node.config?.targetListId || '';
     this.message = '';
     this.error = '';
+    this.refreshActivity();
   }
 
   addFromPalette(item: PaletteItem): void {
