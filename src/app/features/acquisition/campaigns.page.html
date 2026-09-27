@@ -38,15 +38,35 @@
         <p class="notice alert-error" *ngIf="aiError">{{ aiError }}</p>
         <div class="ai-result" *ngIf="aiResult"><span class="eyebrow">AI RESULT</span><p>{{ aiResult }}</p>
           <div class="operator-checks" *ngIf="operatorResult">
-            <strong>{{ operatorResult.status === 'ready' ? '✓ Ready to launch' : 'Needs attention' }}</strong>
+            <strong>{{ operatorLive ? liveLabel() : (operatorResult.status === 'ready' ? '✓ Ready to launch' : 'Needs attention') }}</strong>
             <div class="check-row" *ngFor="let check of operatorResult.checks"><span>{{ check.name }}</span><b>{{ check.status }}</b></div>
             <small *ngIf="operatorResult.pack">Pack: {{ operatorResult.pack.name }} · Agent: configured · Workflow: configured</small>
+          </div>
+          <div class="operator-live" *ngIf="operatorResult && operatorLive">
+            <div class="live-head"><span class="eyebrow">LIVE CAMPAIGN LOOP</span><span class="live-state">{{ liveLabel() }}</span></div>
+            <div class="live-flow">
+              <div [ngClass]="lifecycleStep('prepare')"><b>1</b><span>Prepare</span></div><i>→</i>
+              <div [ngClass]="lifecycleStep('run')"><b>2</b><span>Runtime</span></div><i>→</i>
+              <div [ngClass]="lifecycleStep('discover')"><b>3</b><span>Discover</span></div><i>→</i>
+              <div [ngClass]="lifecycleStep('qualify')"><b>4</b><span>Qualify</span></div><i>→</i>
+              <div [ngClass]="lifecycleStep('outreach')"><b>5</b><span>Outreach</span></div><i>→</i>
+              <div [ngClass]="lifecycleStep('approval')"><b>6</b><span>Approval</span></div>
+            </div>
+            <div class="live-metrics">
+              <div><b>{{ operatorLive.metrics?.recipients || 0 }}</b><span>Recipients</span></div>
+              <div><b>{{ operatorLive.metrics?.active || 0 }}</b><span>Active</span></div>
+              <div><b>{{ operatorLive.metrics?.awaitingDelivery || 0 }}</b><span>Approval / delivery</span></div>
+              <div><b>{{ operatorLive.metrics?.sent || 0 }}</b><span>Sent</span></div>
+              <div><b>{{ operatorLive.metrics?.replied || 0 }}</b><span>Replies</span></div>
+              <div><b>{{ operatorLive.metrics?.failed || 0 }}</b><span>Failed</span></div>
+            </div>
           </div>
         </div>
       </div>
       <footer>
         <button class="button-quiet" type="button" (click)="closeAiCreate()" [disabled]="aiWorking">Cancel</button>
-        <button class="button-primary" type="button" (click)="createWithAi()" [disabled]="!aiGoal.trim() || aiWorking">{{ aiWorking ? 'Preparing…' : '✦ Prepare Campaign' }}</button>
+        <button class="button-primary" type="button" (click)="startAiPrepared()" *ngIf="operatorResult?.canStart && !operatorLive" [disabled]="operatorStarting">{{ operatorStarting ? 'Starting…' : '▶ Start Campaign' }}</button>
+        <button class="button-primary" type="button" (click)="createWithAi()" *ngIf="!operatorResult || operatorLive" [disabled]="!aiGoal.trim() || aiWorking">{{ aiWorking ? 'Preparing…' : '✦ Prepare Campaign' }}</button>
       </footer>
     </section>
   </div>
