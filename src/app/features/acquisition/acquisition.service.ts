@@ -73,6 +73,10 @@ export class AcquisitionService {
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
+  containerActivity(campaignId: string, containerId: string, taskId?: string | null) {
+    const suffix = taskId ? `?taskId=${encodeURIComponent(taskId)}` : '';
+    return this.api.get<any[]>(`acquisition/campaigns/${campaignId}/containers/${containerId}/activity${suffix}`);
+  }
   messages() {
     return this.api.get<any[]>("acquisition/messages");
   }
