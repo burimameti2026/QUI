@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
@@ -14,7 +14,7 @@ import { TenantRuntimeService } from '../../core/tenant-runtime.service';
   templateUrl: './campaigns.page.html',
   styleUrls: ['./campaigns.page.css']
 })
-export class CampaignsPage implements OnInit {
+export class CampaignsPage implements OnDestroy, OnInit {
   rows: any[] = [];
   settingsOpenId: string | null = null;
   loading = false;
@@ -37,6 +37,8 @@ export class CampaignsPage implements OnInit {
   aiError = '';
   operatorResult: any = null;
   operatorStarting = false;
+  operatorLive: any = null;
+  private operatorPoll: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     private readonly data: AcquisitionService,
@@ -45,6 +47,8 @@ export class CampaignsPage implements OnInit {
     private readonly aiAdvisor: AiAdvisorService,
     private readonly tenantRuntime: TenantRuntimeService
   ) {}
+
+  ngOnDestroy(): void { if (this.operatorPoll) clearInterval(this.operatorPoll); }
 
   ngOnInit(): void {
     this.load();
@@ -183,6 +187,7 @@ export class CampaignsPage implements OnInit {
       next: (result: any) => {
         this.aiWorking = false;
         this.operatorResult = result;
+        this.operatorLive = null;
         this.aiResult = (result?.actions || []).join(' · ') || (result?.status === 'ready' ? 'Campaign is ready to launch.' : 'AI prepared the campaign.');
         const campaignId = result?.campaignId;
         if (campaignId) {
@@ -208,9 +213,10 @@ export class CampaignsPage implements OnInit {
     this.data.aiStart(tenantId, campaignId).subscribe({
       next: (result: any) => {
         this.operatorStarting = false;
-        this.aiCreateOpen = false;
         this.message = 'Campaign started. AI acquisition run is queued.';
+        this.operatorLive = { aiStatus: 'queued' };
         this.load();
+        this.startOperatorPolling();
       },
       error: (e: any) => {
         this.operatorStarting = false;
@@ -218,6 +224,12 @@ export class CampaignsPage implements OnInit {
       }
     });
   }
+
+  private startOperatorPolling(): void { const tenantId = this.tenantRuntime.runtime()?.tenantId; const campaignId = this.operatorResult?.campaignId; if (!tenantId || !campaignId) return; if (this.operatorPoll) clearInterval(this.operatorPoll); const poll = () => this.data.aiStatus(tenantId, campaignId).subscribe({ next: x => { this.operatorLive = x; if (['completed','attention'].includes(String(x?.aiStatus)) && this.operatorPoll) { clearInterval(this.operatorPoll); this.operatorPoll = null; } } }); poll(); this.operatorPoll = setInterval(poll, 3000); }
+
+  liveLabel(): string { switch (String(this.operatorLive?.aiStatus || 'ready')) { case 'queued': return 'Run queued — waiting for acquisition worker'; case 'running': return 'AI acquisition is running'; case 'completed': return 'Acquisition run completed'; case 'attention': return 'Run needs attention'; default: return 'Ready to launch'; } }
+
+  lifecycleStep(step: string): 'done' | 'active' | 'pending' { const s=String(this.operatorLive?.aiStatus||'ready'); const m=this.operatorLive?.metrics||{}; if(step==='prepare') return this.operatorResult?'done':'pending'; if(step==='run') return s==='ready'?'pending':s==='queued'?'active':'done'; if(step==='discover') return s==='queued'?'pending':'done'; if(step==='qualify') return m.recipients>0?'done':s==='running'?'active':'pending'; if(step==='outreach') return m.awaitingDelivery>0||m.sent>0?'done':m.recipients>0?'active':'pending'; if(step==='approval') return m.awaitingDelivery>0?'active':m.sent>0?'done':'pending'; return 'pending'; }
 
   openCreate(): void { this.createOpen = true; this.createMode = 'pack'; this.selectedPack = null; this.selectedScenario = ''; this.selectedIcpId = ''; this.loadPacks(); }
 
