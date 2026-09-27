@@ -78,7 +78,7 @@
       <aside class="inspector" *ngIf="selected; else noSelection">
         <div class="inspector-head">
           <div><span class="eyebrow">PROPERTIES</span><h2>{{ nodeIcon(selected) }} {{ selected.name }}</h2><p>{{ selected.description }}</p></div>
-          <div class="inspector-actions"><span class="state-pill" [class]="nodeStatus(selected)">{{ nodeStatus(selected) }}</span><button class="button-secondary logs-button" type="button" (click)="openLogs(selected.type)">☷ Logs</button></div>
+          <div class="inspector-actions"><span class="state-pill" [class]="containerStatusText().toLowerCase()">{{ containerStatusText() }}</span><button class="button-secondary logs-button" type="button" (click)="openLogs()">☷ Logs</button></div>
         </div>
 
         <div class="inspector-section">
