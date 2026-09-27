@@ -42,6 +42,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   campaign: any;
   latestRun: any;
   campaignSteps: any[] = [];
+  containers: any[] = [];
+  targetLists: any[] = [];
+  selectedContainerId = '';
+  selectedTargetListId = '';
   nodes: FlowNode[] = [];
   selected: FlowNode | null = null;
   loading = true;
@@ -54,6 +58,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   private timer?: ReturnType<typeof setInterval>;
 
   readonly palette: PaletteItem[] = [
+    { type: 'TargetAudience', name: 'Select prospect group', description: 'Choose the Prospect Group / Target List that this campaign container will execute.', icon: '◎', config: { targetListId: '' } },
     { type: 'Discovery', name: 'Discover companies', description: 'Find companies with SerpAPI or another configured discovery provider.', icon: '⌕', config: { provider: 'serpapi', region: 'North Macedonia', keywords: ['logistics companies'], maxResults: 50 } },
     { type: 'Qualification', name: 'Qualify prospects', description: 'Score companies against ICP and intent rules.', icon: '✓', config: { minimumScore: 70, criteria: {}, intentSignals: [] } },
     { type: 'Enrichment', name: 'Enrich company intelligence', description: 'Collect company and buyer intelligence.', icon: '✦', config: { sources: ['website'], fields: ['company', 'size', 'website', 'buyer', 'signals'] } },
@@ -104,6 +109,12 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
           senderName: campaign.senderName,
           senderEmail: campaign.senderEmail
         },
+        container: {
+          id: this.selectedContainerId,
+          name: this.containers.find(x => x.id === this.selectedContainerId)?.name,
+          targetListId: this.selectedTargetListId,
+          targetListName: this.targetLists.find(x => x.id === this.selectedTargetListId)?.name
+        },
         workflow: this.nodes.map(x => ({ id: x.id, type: x.type, name: x.name, config: x.config })),
         outreach: this.campaignSteps.map(x => ({ stepNumber: x.stepNumber, subject: x.subjectTemplate, body: x.bodyTemplate, delayHours: x.delayHours }))
       }
@@ -152,6 +163,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     this.data.campaignDetail(this.id).subscribe({
       next: detail => {
         this.applyDetail(detail);
+        this.loadContainerContext();
         this.syncAdvisorContext();
         this.loading = false;
       },
@@ -168,6 +180,63 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
       error: () => undefined
     });
   }
+
+  loadContainerContext(): void {
+    this.data.containers(this.id).subscribe({
+      next: rows => {
+        this.containers = rows || [];
+        if (!this.selectedContainerId && this.containers.length) {
+          this.selectedContainerId = this.containers[0].id;
+        }
+        const selected = this.containers.find(x => x.id === this.selectedContainerId);
+        this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
+        this.ensureTargetAudienceNode();
+        this.syncAdvisorContext();
+      },
+      error: e => this.error = e?.error?.detail || e?.error?.error || 'Campaign containers could not be loaded.'
+    });
+    this.data.targetLists().subscribe({
+      next: rows => {
+        this.targetLists = rows || [];
+        this.ensureTargetAudienceNode();
+      },
+      error: e => this.error = e?.error?.detail || e?.error?.error || 'Prospect groups could not be loaded.'
+    });
+  }
+
+  containerChanged(): void {
+    const selected = this.containers.find(x => x.id === this.selectedContainerId);
+    this.selectedTargetListId = selected?.targetListId || '';
+    const node = this.nodes.find(x => x.type === 'TargetAudience');
+    if (node) node.config.targetListId = this.selectedTargetListId;
+    this.selected = node || this.selected;
+    this.syncAdvisorContext();
+  }
+
+  targetListChanged(value: string): void {
+    this.selectedTargetListId = value || '';
+    if (this.selected?.type === 'TargetAudience') this.selected.config.targetListId = this.selectedTargetListId;
+  }
+
+  ensureTargetAudienceNode(): void {
+    if (!this.targetLists.length && !this.selectedContainerId) return;
+    if (this.nodes.some(x => x.type === 'TargetAudience')) {
+      const node = this.nodes.find(x => x.type === 'TargetAudience')!;
+      node.config.targetListId = this.selectedTargetListId;
+      return;
+    }
+    const node: FlowNode = {
+      id: 'target-audience-' + Date.now().toString(36),
+      type: 'TargetAudience',
+      name: 'Select prospect group',
+      description: 'The prospect group executed by this campaign container.',
+      config: { targetListId: this.selectedTargetListId },
+      x: 80,
+      y: 60
+    };
+    this.nodes = [node, ...this.nodes.map((x, i) => ({ ...x, y: 210 + i * 150 }))];
+  }
+
 
   private applyDetail(detail: any, preserveSelection = false): void {
     this.campaign = detail.campaign;
@@ -201,6 +270,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   select(node: FlowNode): void {
     this.selected = node;
+    if (node.type === 'TargetAudience') this.selectedTargetListId = node.config?.targetListId || '';
     this.message = '';
     this.error = '';
   }
@@ -218,6 +288,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
       y: previous ? previous.y + 150 : 60
     };
     this.nodes = [...this.nodes, node];
+    if (node.type === 'TargetAudience') node.config.targetListId = this.selectedTargetListId;
     this.selected = node;
     this.message = 'Component added to the campaign flow.';
     this.error = '';
@@ -283,11 +354,31 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
       edges,
       stages
     };
+    const persist = () => {
+      if (!this.selectedContainerId) {
+        this.saving = false;
+        this.campaign.planJson = JSON.stringify(plan);
+        this.message = 'Campaign flow saved.';
+        return;
+      }
+      this.data.setContainerTargetList(this.id, this.selectedContainerId, this.selectedTargetListId || null).subscribe({
+        next: () => {
+          this.saving = false;
+          this.campaign.planJson = JSON.stringify(plan);
+          const container = this.containers.find(x => x.id === this.selectedContainerId);
+          if (container) container.targetListId = this.selectedTargetListId || null;
+          this.message = 'Container workflow and prospect group saved.';
+        },
+        error: e => {
+          this.saving = false;
+          this.error = e?.error?.detail || e?.error?.error || 'Prospect group could not be attached to the container.';
+        }
+      });
+    };
     this.data.saveCampaignPlan(this.id, JSON.stringify(plan)).subscribe({
       next: result => {
-        this.saving = false;
         this.campaign.planJson = result.planJson;
-        this.message = 'Campaign flow saved. Runtime will rebuild the executable plan.';
+        persist();
       },
       error: e => {
         this.saving = false;
