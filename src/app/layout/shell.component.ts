@@ -212,6 +212,7 @@ export class ShellComponent {
       i("Security", "/security", "◇"),
       i("White Label", "/white-label", "□"),
       i("Audit & Governance", "/audit", "▤"),
+      i("Campaign History", "/admin/campaign-history", "◴"),
       i("Clients & Licenses", "/admin/modules", "▦"),
       i("Email Test Center", "/admin/email-test", "✉", undefined, "system.admin"),
     ]},
