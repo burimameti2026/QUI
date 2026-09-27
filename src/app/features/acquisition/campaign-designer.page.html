@@ -36,6 +36,14 @@
       </div>
     </section>
 
+    <section class="runtime-summary">
+      <div><span class="eyebrow">STATUS</span><strong>{{ statusText(campaign.status) }}</strong><small>{{ isRunning ? 'Execution is live' : 'Not executing' }}</small></div>
+      <div><span class="eyebrow">INDUSTRY PACK</span><strong>{{ campaign.packageCode || 'Custom' }}</strong><small>{{ campaign.packageVersion || '—' }}</small></div>
+      <div><span class="eyebrow">AGENT</span><strong>{{ campaign.agentId ? 'Configured' : 'Not configured' }}</strong><small>{{ campaign.agentId || '—' }}</small></div>
+      <div><span class="eyebrow">PROSPECT GROUP</span><strong>{{ targetLists.find(x => x.id === selectedTargetListId)?.name || 'Not attached' }}</strong><small>{{ selectedTargetListId || 'Select a target list' }}</small></div>
+      <div><span class="eyebrow">LATEST RUN</span><strong>{{ latestRunStatus() || 'None' }}</strong><small>{{ formatDate(latestRun?.scheduledAtUtc || latestRun?.startedAtUtc) }}</small></div>
+    </section>
+
     <section class="designer-shell">
       <aside class="palette">
         <div class="panel-head"><div><span class="eyebrow">COMPONENTS</span><strong>Campaign building blocks</strong></div></div>
