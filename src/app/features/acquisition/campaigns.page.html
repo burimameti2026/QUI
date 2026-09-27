@@ -1,6 +1,7 @@
 <main class="page page-campaigns">
   <qai-page-header title="Campaign Containers" subtitle="Provisioned campaigns are managed here. Open a campaign to edit its workflow definition.">
     <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ Refresh</button>
+    <button class="button-secondary" type="button" (click)="openAiCreate()">✦ Create with AI</button>
     <button class="button-primary" type="button" (click)="openCreate()">+ Create Container</button>
   </qai-page-header>
   <section class="campaign-intro">
@@ -19,6 +20,30 @@
       <small>{{ running }} running</small>
     </div>
   </section> 
+  <div class="create-backdrop" *ngIf="aiCreateOpen" (click)="closeAiCreate()">
+    <section class="ai-create-dialog" (click)="$event.stopPropagation()">
+      <header>
+        <div><span class="eyebrow">AI CAMPAIGN OPERATOR</span><h2>Tell AI what you want to achieve.</h2><p>AI uses the existing Industry Packs, ICPs, campaign containers and workflow capabilities. It builds the real campaign instead of only drafting an idea.</p></div>
+        <button type="button" class="close" (click)="closeAiCreate()">×</button>
+      </header>
+      <div class="ai-create-body">
+        <textarea [(ngModel)]="aiGoal" rows="7" placeholder="Example: Find logistics and freight companies in North Macedonia, Kosovo and Albania. Qualify them at 70+, enrich the best prospects and prepare a 3-step outreach campaign aimed at booking demos."></textarea>
+        <div class="ai-context">
+          <span>AI can use</span>
+          <b>{{ packs.length }} Industry Packs</b>
+          <b>{{ icps.length }} ICPs</b>
+          <b>Campaign Containers</b>
+          <b>Workflow + Agents</b>
+        </div>
+        <p class="notice alert-error" *ngIf="aiError">{{ aiError }}</p>
+        <div class="ai-result" *ngIf="aiResult"><span class="eyebrow">AI RESULT</span><p>{{ aiResult }}</p></div>
+      </div>
+      <footer>
+        <button class="button-quiet" type="button" (click)="closeAiCreate()" [disabled]="aiWorking">Cancel</button>
+        <button class="button-primary" type="button" (click)="createWithAi()" [disabled]="!aiGoal.trim() || aiWorking">{{ aiWorking ? 'Building campaign…' : '✦ Build Campaign' }}</button>
+      </footer>
+    </section>
+  </div>
   <div class="create-backdrop" *ngIf="createOpen" (click)="closeCreate()">
     <section class="create-dialog" (click)="$event.stopPropagation()">
       <header><div><span class="eyebrow">NEW CAMPAIGN CONTAINER</span><h2>How do you want to start?</h2><p>Choose a reusable industry definition or build a new definition that can become a reusable pack.</p></div><button type="button" class="close" (click)="closeCreate()">×</button></header>
