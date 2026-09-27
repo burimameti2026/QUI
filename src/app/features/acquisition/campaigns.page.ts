@@ -39,6 +39,12 @@ export class CampaignsPage implements OnDestroy, OnInit {
   operatorStarting = false;
   operatorLive: any = null;
   private operatorPoll: ReturnType<typeof setInterval> | null = null;
+  private logsPoll: ReturnType<typeof setInterval> | null = null;
+  logsOpen = false;
+  logsLoading = false;
+  logsCampaign: any = null;
+  logsContainer: any = null;
+  containerLogs: any[] = [];
 
   constructor(
     private readonly data: AcquisitionService,
@@ -48,7 +54,10 @@ export class CampaignsPage implements OnDestroy, OnInit {
     private readonly tenantRuntime: TenantRuntimeService
   ) {}
 
-  ngOnDestroy(): void { if (this.operatorPoll) clearInterval(this.operatorPoll); }
+  ngOnDestroy(): void {
+    if (this.operatorPoll) clearInterval(this.operatorPoll);
+    if (this.logsPoll) clearInterval(this.logsPoll);
+  }
 
   ngOnInit(): void {
     this.load();
@@ -97,6 +106,64 @@ export class CampaignsPage implements OnDestroy, OnInit {
         this.error = this.apiError(error, 'Campaign containers could not be loaded.');
       }
     });
+  }
+
+  openContainerLogs(campaign: any): void {
+    this.settingsOpenId = null;
+    this.logsCampaign = campaign;
+    this.logsContainer = null;
+    this.containerLogs = [];
+    this.logsOpen = true;
+    this.logsLoading = true;
+    if (this.logsPoll) clearInterval(this.logsPoll);
+
+    const load = () => {
+      this.data.containers(campaign.id).subscribe({
+        next: (containers: any[]) => {
+          const container = (containers || [])[0];
+          this.logsContainer = container || null;
+          if (!container) {
+            this.logsLoading = false;
+            this.containerLogs = [];
+            return;
+          }
+          this.data.containerActivity(campaign.id, container.id).subscribe({
+            next: (rows: any[]) => {
+              this.containerLogs = (rows || []).sort((a: any, b: any) =>
+                new Date(b.atUtc).getTime() - new Date(a.atUtc).getTime()
+              );
+              this.logsLoading = false;
+            },
+            error: e => {
+              this.logsLoading = false;
+              this.error = this.apiError(e, 'Container logs could not be loaded.');
+            }
+          });
+        },
+        error: e => {
+          this.logsLoading = false;
+          this.error = this.apiError(e, 'Campaign container could not be loaded.');
+        }
+      });
+    };
+
+    load();
+    this.logsPoll = setInterval(load, 3000);
+  }
+
+  closeContainerLogs(): void {
+    this.logsOpen = false;
+    this.logsCampaign = null;
+    this.logsContainer = null;
+    this.containerLogs = [];
+    if (this.logsPoll) {
+      clearInterval(this.logsPoll);
+      this.logsPoll = null;
+    }
+  }
+
+  containerStatus(value: any): string {
+    return ['Stopped', 'Running', 'Paused', 'Failed', 'Pending'][Number(value)] || String(value ?? 'Unknown');
   }
 
   openDesigner(campaign: any): void {
