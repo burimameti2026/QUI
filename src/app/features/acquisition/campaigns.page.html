@@ -52,6 +52,10 @@
               <div [ngClass]="lifecycleStep('outreach')"><b>5</b><span>Outreach</span></div><i>→</i>
               <div [ngClass]="lifecycleStep('approval')"><b>6</b><span>Approval</span></div>
             </div>
+            <div class="live-plan" *ngIf="operatorResult.plan">
+              <span class="eyebrow">AI PLAN</span>
+              <div><span>{{ operatorResult.plan.industry || 'General' }}</span><span>{{ operatorResult.plan.region || 'Europe' }}</span><span>{{ operatorResult.plan.prospectLimit || 0 }} prospects</span><span>Score ≥ {{ operatorResult.plan.minimumScore || 0 }}</span><span *ngIf="operatorResult.plan.decisionMakers">Decision makers</span></div>
+            </div>
             <div class="live-metrics">
               <div><b>{{ operatorLive.metrics?.recipients || 0 }}</b><span>Recipients</span></div>
               <div><b>{{ operatorLive.metrics?.active || 0 }}</b><span>Active</span></div>
