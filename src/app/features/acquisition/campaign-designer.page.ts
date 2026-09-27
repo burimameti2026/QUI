@@ -131,10 +131,32 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     return ['Draft', 'Paused', 'Stopped', 'Completed'].includes(status);
   }
 
-  start(): void { this.runAction('startCampaign', 'Campaign started.'); }
+  start(): void {
+    if (!this.selectedContainerId) {
+      this.runAction('startCampaign', 'Campaign started.');
+      return;
+    }
+    this.saving = true;
+    this.error = '';
+    this.data.startContainer(this.id, this.selectedContainerId).subscribe({
+      next: () => { this.saving = false; this.message = 'Selected campaign container started.'; this.loadContainerContext(); this.refreshExecution(); },
+      error: e => { this.saving = false; this.error = e?.error?.detail || e?.error?.error || 'Container could not be started.'; }
+    });
+  }
   pause(): void { this.runAction('pauseCampaign', 'Campaign paused.'); }
   resume(): void { this.runAction('resumeCampaign', 'Campaign resumed.'); }
-  stop(): void { this.runAction('stopCampaign', 'Campaign stopped.'); }
+  stop(): void {
+    if (!this.selectedContainerId) {
+      this.runAction('stopCampaign', 'Campaign stopped.');
+      return;
+    }
+    this.saving = true;
+    this.error = '';
+    this.data.stopContainer(this.id, this.selectedContainerId).subscribe({
+      next: () => { this.saving = false; this.message = 'Selected campaign container stopped.'; this.loadContainerContext(); this.refreshExecution(); },
+      error: e => { this.saving = false; this.error = e?.error?.detail || e?.error?.error || 'Container could not be stopped.'; }
+    });
+  }
 
   private runAction(method: 'startCampaign' | 'pauseCampaign' | 'resumeCampaign' | 'stopCampaign', success: string): void {
     this.saving = true;
