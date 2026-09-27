@@ -4,63 +4,99 @@ import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AutomationRule } from "../../core/models/platform.models";
 import { Modal, PageHeader } from "../../shared/ui";
-import { RefinedDataGrid } from "../../shared/components/refined-data-grid.component";
-import { RefinedTabs } from "../../shared/components/refined-tabs.component";
 import { AutomationsService } from "./automations.service";
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedTabs],
+  imports: [CommonModule, FormsModule, Modal, PageHeader],
   styleUrls: ["./automations.page.css"],
-  template: `
-    <section class="page page-automations">
-      <qai-page-header title="Automations" subtitle="Manage business rules, triggers and execution controls.">
-        <button class="button-quiet" type="button" (click)="load()">↻ Refresh data</button>
-        <button class="button-secondary" type="button" (click)="runAll()">▶ Run sales engine</button>
-        <button class="button-primary" type="button" (click)="open()">+ Create Automation</button>
-      </qai-page-header>
-      <div class="callout warning" *ngIf="publishedMessage"><span class="icon">!</span><div><b>Automation event</b><p>{{ publishedMessage }}</p></div></div>
-      <qai-refined-tabs>
-        <button [class.active]="statusFilter===''" (click)="statusFilter=''" type="button">All</button>
-        <button [class.active]="statusFilter==='active'" (click)="statusFilter='active'" type="button">Active</button>
-        <button [class.active]="statusFilter==='paused'" (click)="statusFilter='paused'" type="button">Paused</button>
-        <button [class.active]="statusFilter==='failed'" (click)="statusFilter='failed'" type="button">Failed runs</button>
-      </qai-refined-tabs>
-      <div class="prospect-timeline-shell">
-        <div class="prospect-timeline-toolbar">
-          <label class="search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search automations, triggers, actions..." /></label>
-          <button type="button" class="toolbar-button">▽ Filters</button><button type="button" class="toolbar-button">↕ Sort</button>
-          <span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
-        </div>
-        <div class="prospect-timeline">
-          <article class="prospect-timeline-item" *ngFor="let a of visibleRows">
-            <div class="prospect-timeline-rail"><span class="prospect-timeline-dot" [class.hot]="a.active" [class.muted]="!a.active"></span></div>
-            <div class="prospect-timeline-date">{{ automationLastRun(a.id) }}</div>
-            <div class="prospect-timeline-content">
-              <div class="prospect-timeline-heading"><div><span class="eyebrow">AUTOMATION</span><h3>{{ a.name }}</h3></div><span class="status" [class.hot]="a.active">{{ a.active ? 'Active' : 'Paused' }}</span></div>
-              <p class="prospect-timeline-summary">{{ a.trigger }} · {{ triggerMeaning(a.trigger) }}</p>
-              <div class="prospect-timeline-meta"><span><b>{{ actions(a) }}</b></span><span>{{ conditionSummary(a) }}</span><div class="actions"><button class="small" (click)="run(a)">▶ Run</button><button class="small" [disabled]="!a.active" (click)="publish(a)">Test</button><button class="small button-primary" (click)="open(a)">Edit</button></div></div>
-            </div>
-          </article>
-          <div class="prospect-timeline-empty" *ngIf="!visibleRows.length"><strong>No automations available</strong><span>Create an automation or change the current filter.</span></div>
-        </div>
+  template: `<style>.automation-timeline{position:relative;padding:4px 0 4px 28px}.automation-timeline::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--wl-border,#d8dde6)}.automation-event{position:relative;display:grid;grid-template-columns:160px minmax(0,1fr) auto;gap:18px;align-items:center;padding:16px 0}.automation-event::before{content:"";position:absolute;left:-23px;top:23px;width:9px;height:9px;border-radius:50%;background:#6b7280;border:3px solid #fff;box-shadow:0 0 0 1px var(--wl-border,#d8dde6)}.automation-event time{font-size:11px;color:#6b7280}.automation-event strong{display:block;font-size:13px}.automation-event small{display:block;margin-top:4px;color:#6b7280}.event-actions{display:flex;align-items:center;gap:10px;white-space:nowrap}@media(max-width:800px){.automation-event{grid-template-columns:1fr auto;gap:8px}.automation-event time{grid-column:1/-1}} </style><main class="page page-automations">
+    <qai-page-header title="Automations" subtitle="Turn customer and sales signals into automated revenue actions.">
+      <button class="button-secondary" (click)="openWorkspaceMode()">Workspace data mode</button>
+      <button class="button-secondary" (click)="runAll()">▶ Run sales engine</button>
+      <button class="button-primary" (click)="open()">+ New automation</button>
+    </qai-page-header>
+
+    <section class="hero">
+      <div>
+        <span class="eyebrow">AUTOMATION EVENT FLOW</span>
+        <h2>What starts a rule and where it runs</h2>
+        <p>A business signal is matched to an active rule. The rule records a run, checks conditions, executes actions and leaves a log or dead letter. Run executes directly in Platform API; Publish event sends a test trigger through RabbitMQ.</p>
       </div>
-      <div class="prospect-timeline-shell" *ngIf="runs.length || deadLetters.length">
-        <div class="prospect-timeline-heading-bar"><span class="eyebrow">EXECUTION HISTORY</span><strong>{{ runs.length }} runs · {{ failedCount }} failed</strong></div>
-        <div class="prospect-timeline execution-timeline">
-          <article class="prospect-timeline-item" *ngFor="let run of runs">
-            <div class="prospect-timeline-rail"><span class="prospect-timeline-dot" [class.hot]="run.status==='completed'" [class.muted]="run.status==='failed'"></span></div>
-            <div class="prospect-timeline-date">{{ run.createdAtUtc | date:'medium' }}</div>
-            <div class="prospect-timeline-content">
-              <div class="prospect-timeline-heading"><div><span class="eyebrow">RUN</span><h3>{{ ruleName(run.ruleId) }}</h3></div><span class="status" [class.hot]="run.status==='completed'">{{ run.status }}</span></div>
-              <p class="prospect-timeline-summary">{{ runSummary(run) }}</p>
-              <div class="prospect-timeline-meta"><span>Run {{ run.id?.slice(0,8) }}</span><button class="small" *ngIf="run.status==='failed'" (click)="retry(run)">Retry</button></div>
-            </div>
-          </article>
-        </div>
+      <div class="steps">
+        <span><b>1</b> Business signal</span>
+        <span><b>2</b> Active rule</span>
+        <span><b>3</b> Actions &amp; controls</span>
+        <span><b>4</b> Run log / retry</span>
       </div>
-      <qai-modal [open]="show" [title]="form.id ? 'Edit automation' : 'Create automation'" (close)="show=false"><form class="form" (ngSubmit)="save()"><label>Name<input [(ngModel)]="form.name" name="name" required /></label><label>Trigger<select [(ngModel)]="form.trigger" name="trigger"><option>lead.score.changed</option><option>lead.qualified</option><option>conversation.sales_intent</option><option>ticket.sla_breach</option><option>meeting.booked</option><option>schedule.weekday</option></select></label><label>Conditions JSON<textarea [(ngModel)]="form.conditionsJson" name="conditions"></textarea></label><label>Actions JSON<textarea [(ngModel)]="form.actionsJson" name="actions"></textarea></label><label class="list-item"><input type="checkbox" [(ngModel)]="form.active" name="active" /> Active</label><footer class="actions"><button type="button" (click)="show=false">Cancel</button><button class="button-primary" type="submit">Save automation</button></footer></form></qai-modal>
-    </section>`,
+    </section>
+
+    <p class="notice success" *ngIf="publishedMessage">{{ publishedMessage }}</p>
+
+        <section class="card">
+      <header class="card-header">
+        <div>
+          <span class="eyebrow">Revenue automation</span>
+          <h2>Automation rules</h2>
+          <p>Review triggers, business actions and execution controls in one workspace.</p>
+        </div>
+        <div class="facts">
+          <span><b>{{ rows.length }}</b>Total</span>
+          <span><b>{{ activeCount }}</b>Active</span>
+          <span><b>{{ failedCount }}</b>Failed runs</span>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <label class="search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search automation or trigger" /></label>
+        <select [(ngModel)]="statusFilter"><option value="">All statuses</option><option value="active">Active</option><option value="paused">Paused</option></select>
+        <strong>{{ visibleRows.length }} shown · Last run {{ lastRun }}</strong>
+      </div>
+
+      <div class="table" *ngIf="visibleRows.length; else noAutomations">
+        <table>
+          <thead><tr><th>Automation</th><th>Trigger</th><th>Business actions</th><th>Status</th><th>Enabled</th><th>Actions</th></tr></thead>
+          <tbody><tr *ngFor="let a of visibleRows">
+            <td><div class="identity"><i>⚡</i><span><b>{{ a.name }}</b><small>{{ conditionSummary(a) }}</small></span></div></td>
+            <td><span class="eyebrow">{{ a.trigger }}</span><small class="meta">{{ triggerMeaning(a.trigger) }}</small></td>
+            <td>{{ actions(a) }}</td>
+            <td><span class="status" [class.success]="a.active" [class.status-pending]="!a.active">{{ a.active ? 'Active' : 'Paused' }}</span></td>
+            <td><label class="toggle" [attr.aria-label]="'Enable ' + a.name"><input type="checkbox" [(ngModel)]="a.active" (change)="toggle(a)" /><span></span></label></td>
+            <td><div class="actions"><button (click)="run(a)">▶ Run now</button><button [disabled]="!a.active" (click)="publish(a)">Publish test event</button><button class="button-primary" (click)="open(a)">Edit</button></div></td>
+          </tr></tbody>
+        </table>
+      </div>
+      <ng-template #noAutomations><div class="empty"><i>⚡</i><strong>No automation rules found</strong><span>Adjust the filter or create a new automation.</span><button class="button-primary" (click)="open()">Create automation</button></div></ng-template>
+    </section>
+
+    <section class="card">
+      <header class="card-header"><div><span class="eyebrow">AUTOMATION TIMELINE</span><h2>Execution history</h2><p>Chronological run activity, failures and retries.</p></div><button class="button-secondary" (click)="load()">↻ Refresh</button></header>
+      <div class="automation-timeline" *ngIf="runs.length; else noRuns">
+        <article class="automation-event" *ngFor="let run of runs">
+          <time>{{ run.createdAtUtc | date:'medium' }}</time>
+          <div><strong>{{ ruleName(run.ruleId) }}</strong><small>{{ runSummary(run) }}</small></div>
+          <div class="event-actions"><span class="status" [class.success]="run.status === 'completed'" [class.status-error]="run.status === 'failed'">{{ run.status }}</span><button *ngIf="run.status === 'failed'" (click)="retry(run)">Retry</button></div>
+        </article>
+      </div>
+      <ng-template #noRuns><div class="empty"><strong>No automation has executed yet.</strong><span>Execution history will appear here after the first run.</span></div></ng-template>
+    </section>
+
+    <section class="card" *ngIf="deadLetters.length">
+      <header class="card-header"><div><h2>Dead-letter queue</h2><p>Runs that exhausted automatic retries.</p></div></header>
+      <div class="table"><table><thead><tr><th>Created</th><th>Entity</th><th>Error</th><th>Status</th></tr></thead><tbody><tr *ngFor="let x of deadLetters"><td>{{ x.createdAtUtc | date:'short' }}</td><td>{{ x.entityType }}</td><td><small>{{ x.error }}</small></td><td><span class="status status-error">{{ x.status }}</span></td></tr></tbody></table></div>
+    </section>
+
+    <qai-modal [open]="show" [title]="form.id ? 'Edit automation' : 'Create revenue automation'" (close)="show = false">
+      <form class="form" (ngSubmit)="save()">
+        <label>Name<input [(ngModel)]="form.name" name="name" required /></label>
+        <label>Trigger<select [(ngModel)]="form.trigger" name="trigger"><option>lead.score.changed</option><option>lead.qualified</option><option>conversation.sales_intent</option><option>ticket.sla_breach</option><option>meeting.booked</option><option>schedule.weekday</option></select></label>
+        <label>Conditions JSON<textarea [(ngModel)]="form.conditionsJson" name="conditions"></textarea></label>
+        <label>Actions JSON<textarea [(ngModel)]="form.actionsJson" name="actions"></textarea></label>
+        <label class="list-item"><input type="checkbox" [(ngModel)]="form.active" name="active" /> Active</label>
+        <footer class="actions"><button type="button" (click)="show = false">Cancel</button><button class="button-primary" type="submit">Save automation</button></footer>
+      </form>
+    </qai-modal>
+  </main>`,
 })
 export class AutomationsPage implements OnInit {
   rows: AutomationRule[] = [];
@@ -79,7 +115,7 @@ export class AutomationsPage implements OnInit {
   get visibleRows() {
     const term = this.query.trim().toLowerCase();
     return this.rows.filter(x => {
-      const statusMatches = !this.statusFilter || (this.statusFilter === "active" ? x.active : this.statusFilter === "paused" ? !x.active : this.failedCount > 0);
+      const statusMatches = !this.statusFilter || (this.statusFilter === "active" ? x.active : !x.active);
       return statusMatches && (!term || `${x.name} ${x.trigger} ${this.actions(x)}`.toLowerCase().includes(term));
     });
   }
@@ -109,7 +145,6 @@ export class AutomationsPage implements OnInit {
   retry(run: any) { this.data.retry(run.id).subscribe({ next: () => this.load(), error: e => alert(e?.error?.detail || "Retry failed.") }); }
   publish(a: AutomationRule) { this.data.publishTrigger(a.id).subscribe({ next: r => this.publishedMessage = `Test event ${r.eventId} was published to RabbitMQ for “${a.name}”. Open execution history to see the consumer result.`, error: () => alert("Event could not be published. Check that the rule is active.") }); }
   ruleName(id: string) { return this.rows.find(x => x.id === id)?.name || id?.slice(0, 8) || "Unknown"; }
-  automationLastRun(id: string) { const r=this.runs.find(x=>x.ruleId===id); return r?.createdAtUtc ? new Date(r.createdAtUtc).toLocaleDateString() : "Never"; }
   runSummary(run: any) { try { return JSON.parse(run.logJson || "[]").map((x: any) => x.message || x).join(" · "); } catch { return run.logJson || "—"; } }
   runAll() { this.data.runSales().subscribe(r => { this.lastRun = new Date().toLocaleString(); alert(`Processed ${r.processed || 0} leads; ${r.opportunitiesCreated || 0} opportunities; ${r.tasksCreated || 0} tasks; ${r.pipelineCreated || 0} pipeline.`); }); }
   openWorkspaceMode() { void this.router.navigateByUrl("/dashboard"); }
