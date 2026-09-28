@@ -418,3 +418,14 @@ button,.button-primary,.button-secondary,.button-quiet{border-radius:var(--wl-bu
 .button-primary,button.primary,a.primary,.button.primary,.button-secondary,button.secondary,a.secondary,.button.secondary{background:var(--wl-navy-gradient);color:#fff;box-shadow:0 6px 18px rgba(21,35,46,.18)}
 .button-primary:hover,button.primary:hover,a.primary:hover,.button.primary:hover,.button-secondary:hover,button.secondary:hover,a.secondary:hover,.button.secondary:hover{background:var(--wl-accent);box-shadow:0 7px 20px rgba(245,80,11,.24)}
 @media(max-width:800px){.sidebar:hover{width:100%}.shell:has(.sidebar:hover){grid-template-columns:1fr}}
+
+
+/* Header/button correction: preserve the existing button palette; dark headers never use dark text. */
+.card-header,.section-header{background:var(--wl-navy-gradient);color:#fff}
+.card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong,.card-header p,.card-header span,.card-header label{color:#fff}
+.card-header .eyebrow{color:var(--wl-accent)}
+.card-header button,.card-header a{color:#fff}
+.button-primary,button.primary,a.primary,.button.primary{background:var(--wl-accent);color:#fff;box-shadow:none}
+.button-primary:hover,button.primary:hover,a.primary:hover,.button.primary:hover{background:var(--wl-accent-hover);color:#fff;box-shadow:none}
+.button-secondary,button.secondary,a.secondary,.button.secondary{background:#fff;color:var(--wl-navy-1);box-shadow:none;border-color:var(--wl-border)}
+.button-secondary:hover,button.secondary:hover,a.secondary:hover,.button.secondary:hover{background:#f3f5f7;color:var(--wl-navy-1);box-shadow:none}
