@@ -1,1 +1,51 @@
-/* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
+/* Pro SaaS automation workspace — aligned with the shared navy/white/orange system. */
+.page-automations{max-width:1400px;margin:0 auto;padding:24px 28px 40px;display:grid;gap:18px}
+.page-automations qai-page-header{display:block}
+.page-automations .hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(360px,.8fr);gap:24px;align-items:center;padding:22px 24px;background:#fff;border:1px solid var(--wl-border,#dce3e8);border-radius:14px;box-shadow:0 6px 20px rgba(21,35,46,.05)}
+.page-automations .hero h2{margin:5px 0 7px;font-size:22px;line-height:1.2;color:var(--wl-navy-1,#15232e)}
+.page-automations .hero p{margin:0;max-width:760px;color:#64737e;font-size:13px;line-height:1.55}
+.page-automations .steps{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.page-automations .steps span{display:flex;align-items:center;gap:9px;min-height:42px;padding:9px 11px;border:1px solid #e2e7eb;border-radius:9px;background:#f7f9fa;color:#4e5d67;font-size:11px;font-weight:700}
+.page-automations .steps b{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--wl-navy-gradient);color:#fff;font-size:11px}
+.page-automations .card{overflow:hidden;padding:0;background:#fff;border:1px solid var(--wl-border,#dce3e8);border-radius:14px;box-shadow:0 6px 20px rgba(21,35,46,.045)}
+.page-automations .card-header{min-height:76px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--wl-navy-gradient);color:#fff}
+.page-automations .card-header>div:first-child{min-width:0}
+.page-automations .card-header h2{margin:3px 0 2px;font-size:17px;line-height:1.2;color:#fff}
+.page-automations .card-header p{margin:0;color:rgba(255,255,255,.72);font-size:11px;line-height:1.4}
+.page-automations .card-header .eyebrow{color:var(--wl-accent,#f28c28);font-size:9px;font-weight:800;letter-spacing:.1em}
+.page-automations .facts{display:flex;align-items:stretch;gap:0;flex:none}
+.page-automations .facts span{display:grid;gap:2px;min-width:72px;padding:0 13px;border-left:1px solid rgba(255,255,255,.16);font-size:9px;color:rgba(255,255,255,.68);text-align:right}
+.page-automations .facts b{font-size:17px;color:#fff}
+.page-automations .toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 150px auto;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #e8edf0;background:#fff}
+.page-automations .toolbar>strong{font-size:11px;color:#73818a;text-align:right;font-weight:600}
+.page-automations .search{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid #d9e1e5;border-radius:8px;background:#fff}
+.page-automations .search span{font-size:18px;color:#87949c}
+.page-automations .search input{width:100%;border:0;outline:0;font-size:12px;background:transparent}
+.page-automations .toolbar select{height:36px;padding:0 10px;border:1px solid #d9e1e5;border-radius:8px;background:#fff;color:#465761;font-size:12px}
+.page-automations .table{overflow-x:auto}
+.page-automations table{width:100%;border-collapse:collapse;table-layout:fixed}
+.page-automations th{height:38px;padding:0 14px;background:#f7f9fa;border-bottom:1px solid #e1e7ea;color:#78868e;font-size:9px;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+.page-automations td{height:62px;padding:9px 14px;border-bottom:1px solid #edf0f2;color:#344650;font-size:12px;vertical-align:middle}
+.page-automations tbody tr:last-child td{border-bottom:0}
+.page-automations tbody tr:hover{background:#fafcfd}
+.page-automations .identity{display:flex;align-items:center;gap:10px;min-width:0}
+.page-automations .identity i{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:8px;background:#fff4e8;color:var(--wl-accent,#f28c28);font-style:normal;font-size:16px}
+.page-automations .identity span{min-width:0}
+.page-automations .identity b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#263943;font-size:12px}
+.page-automations .identity small,.page-automations .meta{display:block;margin-top:3px;color:#85929a;font-size:10px}
+.page-automations .status{display:inline-flex;align-items:center;min-height:24px;padding:0 9px;border-radius:999px;background:#f0f3f5;color:#62717a;font-size:10px;font-weight:800}
+.page-automations .status.success{background:#e8f7ef;color:#168451}
+.page-automations .status.status-error{background:#fdecec;color:#bd3c3c}
+.page-automations .status.status-pending{background:#f4f1e9;color:#876c27}
+.page-automations .actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;white-space:nowrap}
+.page-automations .actions button{height:30px;padding:0 9px;border:1px solid #dce3e7;border-radius:7px;background:#fff;color:#53646e;font-size:10px;font-weight:700}
+.page-automations .actions button:hover{border-color:#c7d2d8;background:#f7f9fa}
+.page-automations .actions .button-primary{border-color:transparent;background:var(--wl-accent,#f28c28);color:#fff}
+.page-automations .actions .button-primary:hover{background:var(--wl-accent-hover,#df7615)}
+.page-automations .automation-timeline{padding:4px 20px 8px}
+.page-automations .automation-event{padding:13px 0}
+.page-automations .empty{padding:34px 20px;text-align:center;color:#74828a}
+.page-automations .empty strong{display:block;margin-bottom:5px;color:#3b4d57}
+.page-automations .empty span{font-size:11px}
+@media(max-width:900px){.page-automations{padding:18px}.page-automations .hero{grid-template-columns:1fr}.page-automations .toolbar{grid-template-columns:1fr 140px}.page-automations .toolbar>strong{grid-column:1/-1;text-align:left}.page-automations .facts span{min-width:62px}}
+@media(max-width:650px){.page-automations{padding:14px 12px}.page-automations .card-header{align-items:flex-start;flex-direction:column}.page-automations .facts{width:100%}.page-automations .facts span{flex:1;text-align:left}.page-automations .toolbar{grid-template-columns:1fr}.page-automations .steps{grid-template-columns:1fr}}
