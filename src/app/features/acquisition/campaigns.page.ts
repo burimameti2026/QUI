@@ -175,7 +175,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
       entityId: campaign?.id,
       values: { campaign: this.campaignContext(campaign), availableCampaigns: this.rows.map(x => this.campaignContext(x)) }
     });
-    void this.router.navigate(['/campaigns', campaign.id]);
+    void this.router.navigate(['/campaigns', campaign.id, 'designer']);
   }
 
   private syncAdvisorContext(): void {
