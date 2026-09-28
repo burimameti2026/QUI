@@ -9,17 +9,23 @@
 .discovery-kpis .metric > strong { display:block; margin-top:0; }
 @media (max-width:760px) { .discovery-summary { gap:6px; } }
 
-.discovery-progress { padding-bottom: 18px; }
+.discovery-progress { padding: 0 0 14px; }
+.discovery-progress > .eyebrow { margin: 14px 16px 0; }
 .discovery-timeline {
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   min-width: 0;
-  padding: 22px 8px 4px;
+  margin: 10px 14px 0;
+  padding: 0;
+  border: 1px solid var(--wl-border);
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .discovery-timeline-track {
   position: absolute;
-  top: 37px;
+  top: 38px;
   left: 12.5%;
   right: 12.5%;
   height: 1px;
@@ -31,9 +37,12 @@
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: 8px;
+  gap: 9px;
   min-width: 0;
+  min-height: 86px;
+  padding: 14px 12px;
   text-align: center;
+  border-right: 1px solid var(--wl-border);
 }
 .discovery-timeline-node {
   display: grid;
@@ -47,6 +56,7 @@
 }
 .discovery-timeline-copy {
   display: grid;
+  padding: 0 4px;
   gap: 2px;
   min-width: 0;
 }
@@ -81,12 +91,14 @@
   color: var(--wl-text);
 }
 @media (max-width: 760px) {
-  .discovery-timeline { grid-template-columns: 1fr 1fr; gap: 18px 0; }
-  .discovery-timeline-track { top: 37px; left: 25%; right: 25%; }
+  .discovery-timeline { grid-template-columns: 1fr 1fr; gap: 0; }
+  .discovery-timeline-track { top: 38px; left: 25%; right: 25%; }
   .discovery-timeline-step:nth-child(3) { grid-column: 1; }
   .discovery-timeline-step:nth-child(4) { grid-column: 2; }
 }
 @media (max-width: 520px) {
-  .discovery-timeline { grid-template-columns: 1fr; gap: 14px; padding-top: 12px; }
+  .discovery-timeline { grid-template-columns: 1fr; gap: 0; }
   .discovery-timeline-track { display: none; }
+  .discovery-timeline-step { border-right: 0; border-bottom: 1px solid var(--wl-border); min-height: 72px; }
+  .discovery-timeline-step:last-child { border-bottom: 0; }
 }
