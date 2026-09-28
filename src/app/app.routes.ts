@@ -14,7 +14,9 @@ export const routes: Routes = [
   {path:'packages/new',redirectTo:'industry-packs',pathMatch:'full'},
   {path:'catalog/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/catalog/product-editor.page').then(m=>m.ProductEditorPage)},
   {path:'campaigns',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaigns.page').then(m=>m.CampaignsPage)},
+  {path:'campaigns/:id',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaign-detail.page').then(m=>m.CampaignDetailPage)},
   {path:'campaigns/:id/designer',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/campaign-designer.page').then(m=>m.CampaignDesignerPage)},
+  {path:'jobs',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/jobs.page').then(m=>m.JobsPage)},
 
   {path:'acquisition/approval-queue',canActivate:[requireModule('crm')],loadComponent:()=>import('./features/acquisition/approval-queue.page').then(m=>m.ApprovalQueuePage)},
   {path:'inbox',canActivate:[requireModule('inbox')],loadComponent:()=>import('./features/inbox/inbox.page').then(m=>m.InboxPage)},
