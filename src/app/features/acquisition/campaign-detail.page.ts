@@ -23,6 +23,6 @@ export class CampaignDetailPage implements OnInit,OnDestroy {
   openPack(){this.router.navigateByUrl('/industry-packs');}
   openCompanies(){this.router.navigateByUrl('/crm/companies');}
   openProspects(){this.router.navigateByUrl('/discover');}
-  setTab(v:string){this.active=v;}
+  setTab(v:string){this.active=v;} openJobs(){void this.router.navigateByUrl('/jobs');}
   track(_:number,x:any){return x.taskId||x.sequence||x.name;}
 }
