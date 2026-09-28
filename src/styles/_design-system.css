@@ -3,7 +3,7 @@
  --wl-app-bg:#eef2f5;--wl-surface:#fff;--wl-text:#17212b;--wl-muted:#64717d;--wl-border:#d9e0e6;--wl-border-strong:#c5d0d9;
  --wl-navy-1:#15232e;--wl-navy-2:#2b455e;--wl-navy-gradient:linear-gradient(270deg,#15232e 0%,#2b455e 100%);
  --wl-accent:#f5500b;--wl-accent-hover:#d94305;--wl-danger:#b42318;--wl-success:#087443;
- --wl-page-padding:10px;--wl-card-padding:16px;--wl-control-height:40px;--wl-card-radius:10px;--wl-button-radius:7px;--wl-input-radius:7px;--wl-shadow:0 10px 28px rgba(15,23,42,.10);--wl-card-shadow:0 10px 28px rgba(15,23,42,.10);
+ --wl-page-padding:10px;--wl-card-padding:16px;--wl-control-height:40px;--wl-card-radius:12px;--wl-button-radius:7px;--wl-input-radius:7px;--wl-shadow:0 10px 28px rgba(15,23,42,.10);--wl-card-shadow:0 10px 28px rgba(15,23,42,.10);
  --wl-page-bg:var(--wl-app-bg);--wl-card-bg:#fff;--wl-card-header-bg:var(--wl-navy-gradient);--wl-card-border:var(--wl-border);--wl-card-header-border:var(--wl-accent);
  --brand-primary:var(--wl-accent);--brand-primary-hover:#000;--brand-accent:var(--wl-accent)
 }
@@ -429,3 +429,9 @@ button,.button-primary,.button-secondary,.button-quiet{border-radius:var(--wl-bu
 .button-primary:hover,button.primary:hover,a.primary:hover,.button.primary:hover{background:var(--wl-accent-hover);color:#fff;box-shadow:none}
 .button-secondary,button.secondary,a.secondary,.button.secondary{background:#fff;color:var(--wl-navy-1);box-shadow:none;border-color:var(--wl-border)}
 .button-secondary:hover,button.secondary:hover,a.secondary:hover,.button.secondary:hover{background:#f3f5f7;color:var(--wl-navy-1);box-shadow:none}
+
+
+/* Canonical rounded SaaS surfaces — all pages inherit the Prospect card language. */
+.card,.hero,.section,.metric,.toolbar,.table,.notice,.alert,.empty,.form,.summary{border-radius:var(--wl-card-radius)!important;}
+.card-header{border-radius:var(--wl-card-radius) var(--wl-card-radius) 0 0;}
+.card-body,.card-footer{border-radius:0;}
