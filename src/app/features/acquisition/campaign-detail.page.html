@@ -12,6 +12,12 @@
     <nav class="tabs">
       <button *ngFor="let t of ['overview','workflow','packs','runtime','jobs','companies','outreach','activity']" [class.active]="active===t" (click)="setTab(t)">{{t | titlecase}}</button>
     </nav>
+    <section *ngIf="active==='overview'" class="summary-grid">
+      <article class="metric"><span>STATUS</span><strong>{{status(runtimeInfo.status)}}</strong></article>
+      <article class="metric"><span>CONTAINER</span><strong>{{runtimeInfo.containerStatus || '—'}}</strong><small>{{runtimeInfo.containerVersionLabel || runtimeInfo.containerVersion || 'No version'}}</small></article>
+      <article class="metric"><span>JOB</span><strong>{{runtimeInfo.jobStatus || 'No job'}}</strong><small>{{runtimeInfo.jobId || '—'}}</small></article>
+      <article class="metric"><span>TASKS</span><strong>{{runtimeInfo.completedTasks || 0}} / {{runtimeInfo.taskCount || 0}}</strong><small>completed</small></article>
+    </section>
     <section *ngIf="active==='overview'" class="grid">
       <article class="card"><span>Objective</span><strong>{{campaign.objective || campaign.goal || '—'}}</strong></article>
       <article class="card"><span>Industry Pack</span><strong>{{pack}}</strong><button (click)="openPack()">View packs</button></article>
