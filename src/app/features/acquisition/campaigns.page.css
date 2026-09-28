@@ -25,3 +25,21 @@
 
 /* Pro SaaS surface: neutral cards, color reserved for state. */
 .campaign-mark{background:#eef5f5;color:#0d6265}.campaign-tile.campaign-pending .campaign-mark{background:#fff6d9}.campaign-tile.campaign-failed .campaign-mark{background:#fff0ef}.campaign-tile.campaign-success .campaign-mark{background:#eaf7ef}.campaign-tile{box-shadow:0 1px 3px rgba(15,23,42,.04)}.campaign-tile:hover{box-shadow:0 6px 20px rgba(15,23,42,.07);transform:translateY(-1px);transition:.15s ease}
+
+/* Campaigns follows the same dashboard visual language — no separate legacy tile style. */
+.page-campaigns{max-width:none;margin:0}
+.campaign-intro{grid-template-columns:minmax(0,1fr) minmax(360px,480px);gap:20px;margin:0 0 10px;padding:16px 18px;border:0;border-top:2px solid var(--wl-accent);border-radius:10px;background:#fff;box-shadow:var(--wl-card-shadow)}
+.campaign-intro h2{font-size:19px;color:var(--wl-text)}
+.creation-path{background:#f5f7f9;border:1px solid var(--wl-border);border-radius:8px}.creation-path span{border-color:var(--wl-border);border-radius:6px}.creation-path span.active{background:var(--wl-navy-gradient);border-color:transparent}
+.campaign-toolbar{margin:0 0 10px;padding:10px;background:#fff;border:0;box-shadow:var(--wl-card-shadow);border-radius:10px}
+.search-box{border-color:var(--wl-border);border-radius:7px;box-shadow:none}
+.campaign-count{border:0;border-left:1px solid var(--wl-border);border-radius:0;box-shadow:none}
+.campaign-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.campaign-tile{border:1px solid var(--wl-border);border-radius:10px;background:#fff!important;color:var(--wl-text)!important;box-shadow:var(--wl-card-shadow)!important;overflow:hidden}
+.campaign-tile:hover{transform:none;box-shadow:0 12px 30px rgba(21,35,46,.12)!important}
+.tile-top{padding:0;background:var(--wl-navy-gradient);min-height:58px;color:#fff}
+.campaign-mark{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.12)!important;color:#fff!important;box-shadow:0 0 14px rgba(255,255,255,.14)}
+.campaign-title h3{color:#fff}.campaign-title small{color:rgba(255,255,255,.66)}.campaign-tile .eyebrow{color:rgba(255,255,255,.55);opacity:1}
+.settings-button{background:rgba(255,255,255,.10);color:#fff}.settings-button:hover{background:#fff;color:var(--wl-navy-1)}
+.tile-body{padding:12px 14px 14px}.status-line{color:var(--wl-text)}.stats div{background:#f5f7f9!important;border:1px solid var(--wl-border)}.stats b{color:var(--wl-text)}.mini-flow{color:var(--wl-muted);opacity:1}.open-designer{color:var(--wl-accent);padding-top:8px;border-top:1px solid var(--wl-border)}
+@media(max-width:900px){.campaign-grid{grid-template-columns:1fr}}
