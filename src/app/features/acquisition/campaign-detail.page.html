@@ -7,7 +7,7 @@
   <div *ngIf="!loading && data" class="workspace">
     <header class="hero">
       <div><span class="eyebrow">CAMPAIGN</span><h1>{{campaign.name}}</h1><p>{{campaign.objective || campaign.goal || 'Acquisition campaign'}}</p></div>
-      <span class="status-pill" [class]="status(runtimeInfo.status).toLowerCase().replace(' ','-')">● {{status(runtimeInfo.status)}}</span>
+      <span class="status-pill" [class]="statusClass(runtimeInfo.status)">● {{status(runtimeInfo.status)}}</span>
     </header>
     <nav class="tabs">
       <button *ngFor="let t of ['overview','workflow','packs','runtime','jobs','companies','outreach','activity']" [class.active]="active===t" (click)="setTab(t)">{{t | titlecase}}</button>
