@@ -30,6 +30,7 @@ interface PackDraft {
   imports: [CommonModule, FormsModule, PageHeader],
   template: `
     <style>
+      .page-industry-packs{max-width:1280px;margin:0 auto}.hero{margin:14px 0;padding:18px 20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}.hero h2{margin:4px 0;font-size:18px}.hero p{margin:0;max-width:760px;font-size:12px;line-height:1.5;color:#667085}.content-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}.card{border:1px solid #e1e5eb;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.04);overflow:hidden}.card:hover{box-shadow:0 6px 18px rgba(15,23,42,.07)}
       .builder{margin:18px 0;padding:20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}
       .builder-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
       .mode{display:flex;gap:6px;margin:16px 0}.mode button{padding:8px 12px;border:1px solid #d9dee6;background:#fff;border-radius:8px;cursor:pointer}.mode button.active{background:#555;color:#fff}
@@ -233,7 +234,7 @@ export class IndustryPacksPage implements OnInit {
 
   packTemplate(pack:any): any { try { return JSON.parse(pack?.templateJson||'{}'); } catch { return {}; } }
 
-  openCampaign(pack:any) { if (pack?.campaignId) void this.router.navigate(['/campaigns', pack.campaignId, 'designer']); }
+  openCampaign(pack:any) { if (pack?.campaignId) void this.router.navigate(['/campaigns', pack.campaignId]); }
 
   provision(pack:any) {
     this.busyId=pack.id; this.error='';
