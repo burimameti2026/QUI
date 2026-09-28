@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PageHeader } from '../../shared/ui';
 import { AcquisitionService } from './acquisition.service';
 import { TenantRuntimeService } from '../../core/tenant-runtime.service';
 
-@Component({standalone:true,imports:[CommonModule,PageHeader],templateUrl:'./campaign-detail.page.html',styleUrls:['./campaign-detail.page.css']})
+@Component({standalone:true,imports:[CommonModule,TitleCasePipe,PageHeader],templateUrl:'./campaign-detail.page.html',styleUrls:['./campaign-detail.page.css']})
 export class CampaignDetailPage implements OnInit,OnDestroy {
   id=''; data:any=null; jobs:any[]=[]; containers:any[]=[]; loading=true; error=''; active='overview';
   private timer:any;
