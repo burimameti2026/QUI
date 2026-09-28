@@ -2,9 +2,9 @@ name: QUI UI CI
 
 on:
   push:
-    branches: [renova, newstyle]
+    branches: [renova, newstyle,refactor/acquisition-ui-consolidated]
   pull_request:
-    branches: [renova, newstyle]
+    branches: [renova, newstyle,refactor/acquisition-ui-consolidated]
 
 concurrency:
   group: qui-ui-${{ github.ref }}
