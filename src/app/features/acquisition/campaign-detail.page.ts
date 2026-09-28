@@ -18,7 +18,7 @@ export class CampaignDetailPage implements OnInit,OnDestroy {
   get runtimeInfo(){return this.data?.runtime||{}}
   get workflow(){return this.data?.workflow?.steps||[]}
   get pack(){return this.data?.packageCode||this.campaign.packageCode||'—'}
-  status(v:any){return String(v??'Unknown').replace(/([a-z])([A-Z])/g,'$1 $2');}
+  status(v:any){return String(v??'Unknown').replace(/([a-z])([A-Z])/g,'$1 $2');} statusClass(v:any){return this.status(v).toLowerCase().replace(/ /g,'-');}
   openDesigner(){this.router.navigate(['/campaigns',this.id,'designer']);}
   openPack(){this.router.navigateByUrl('/industry-packs');}
   openCompanies(){this.router.navigateByUrl('/crm/companies');}
