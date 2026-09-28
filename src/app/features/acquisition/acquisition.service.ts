@@ -144,14 +144,11 @@ export class AcquisitionService {
   campaignDetail(id: string) {
     return this.api.get<any>(`acquisition/campaigns/${id}`);
   }
-  campaignPlan(id: string) {
-    return this.api.get<any>(`autonomous-acquisition/tenants/${this.tenantId()}/campaigns/${id}/plan`);
+  campaignPlan(tenantId: string, id: string) {
+    return this.api.get<any>(`autonomous-acquisition/tenants/${tenantId}/campaigns/${id}/plan`);
   }
   agentJobs(tenantId: string) {
     return this.api.get<any[]>(`autonomous-acquisition/tenants/${tenantId}/runs`);
-  }
-  private tenantId(): string {
-    return localStorage.getItem('tenantId') || '';
   }
   saveCampaignPlan(id: string, planJson: string) {
     return this.api.put<any>(`acquisition/campaigns/${id}/plan`, { planJson });
