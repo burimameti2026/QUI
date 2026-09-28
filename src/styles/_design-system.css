@@ -404,3 +404,17 @@ button,.button-primary,.button-secondary,.button-quiet{border-radius:var(--wl-bu
 .card-header .button-quiet:hover,.card-header .button-secondary:hover,.card-header .button-primary:hover{background:#fff;color:var(--wl-navy-1);border-color:#fff}
 .page-actions .button-primary, .page-actions button.primary, .page-actions a.primary{background:var(--wl-navy-gradient)}
 .page-actions .button-primary:hover, .page-actions button.primary:hover, .page-actions a.primary:hover{background:var(--wl-accent)}
+
+
+/* Final visual polish — modern SaaS chrome, larger illuminated navigation icons, quiet scrollbars. */
+.reference-menu{scrollbar-width:none;scrollbar-color:transparent transparent}.reference-menu::-webkit-scrollbar{width:0;height:0}.sidebar:hover .reference-menu{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent}.sidebar:hover .reference-menu::-webkit-scrollbar{width:5px}.sidebar:hover .reference-menu::-webkit-scrollbar-track{background:transparent}.sidebar:hover .reference-menu::-webkit-scrollbar-thumb{background:rgba(255,255,255,.24);border-radius:10px}
+.nav-icon{position:relative;width:30px;height:30px;display:grid;place-items:center;flex:0 0 30px;font-size:21px;font-weight:800;line-height:1;color:#fff;border-radius:9px;background:rgba(255,255,255,.08);text-shadow:0 0 10px rgba(255,255,255,.25);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 3px 12px rgba(0,0,0,.12);transition:all .16s ease}
+.nav-node:nth-child(1) .nav-icon{color:#7dd3fc;text-shadow:0 0 12px rgba(125,211,252,.55)}.nav-node:nth-child(2) .nav-icon{color:#a78bfa;text-shadow:0 0 12px rgba(167,139,250,.55)}.nav-node:nth-child(3) .nav-icon{color:#34d399;text-shadow:0 0 12px rgba(52,211,153,.55)}.nav-node:nth-child(4) .nav-icon{color:#fbbf24;text-shadow:0 0 12px rgba(251,191,36,.55)}.nav-node:nth-child(5) .nav-icon{color:#fb7185;text-shadow:0 0 12px rgba(251,113,133,.55)}.nav-node:nth-child(6) .nav-icon{color:#60a5fa;text-shadow:0 0 12px rgba(96,165,250,.55)}.nav-node:nth-child(7) .nav-icon{color:#f97316;text-shadow:0 0 12px rgba(249,115,22,.55)}.nav-node:nth-child(8) .nav-icon{color:#22d3ee;text-shadow:0 0 12px rgba(34,211,238,.55)}
+.menu-item:hover .nav-icon,.menu-item.active .nav-icon{transform:scale(1.08);background:rgba(255,255,255,.15);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),0 0 18px currentColor}
+.group-heading{margin-top:4px;color:rgba(255,255,255,.46)}
+.brand-logo{width:30px;height:30px;flex-basis:30px;border-radius:9px;background:var(--wl-accent);box-shadow:0 0 18px rgba(245,80,11,.35)}
+.card-header{background:var(--wl-navy-gradient);min-height:50px}.card-header::after{height:2px}.card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong{font-size:14px;color:#fff}.card-header .eyebrow{color:rgba(255,255,255,.58)}
+.card,.hero,.section,.metric,.toolbar,.table{border-radius:10px}
+.button-primary,button.primary,a.primary,.button.primary,.button-secondary,button.secondary,a.secondary,.button.secondary{background:var(--wl-navy-gradient);color:#fff;box-shadow:0 6px 18px rgba(21,35,46,.18)}
+.button-primary:hover,button.primary:hover,a.primary:hover,.button.primary:hover,.button-secondary:hover,button.secondary:hover,a.secondary:hover,.button.secondary:hover{background:var(--wl-accent);box-shadow:0 7px 20px rgba(245,80,11,.24)}
+@media(max-width:800px){.sidebar:hover{width:100%}.shell:has(.sidebar:hover){grid-template-columns:1fr}}
