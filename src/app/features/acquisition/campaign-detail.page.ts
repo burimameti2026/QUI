@@ -12,7 +12,7 @@ export class CampaignDetailPage implements OnInit,OnDestroy {
   constructor(private route:ActivatedRoute,private api:AcquisitionService,private runtime:TenantRuntimeService,private router:Router){}
   ngOnInit(){this.id=this.route.snapshot.paramMap.get('id')||'';this.load();this.timer=setInterval(()=>this.load(false),5000);}
   ngOnDestroy(){if(this.timer)clearInterval(this.timer);}
-  load(show=true){if(show)this.loading=true;this.api.campaignPlan(this.id).subscribe({next:x=>{this.data=x;this.loading=false;this.error='';this.loadJobs();},error:e=>{this.loading=false;this.error=e?.error?.detail||'Campaign workspace could not be loaded.';}});}
+  load(show=true){if(show)this.loading=true;const tenant=this.runtime.runtime()?.tenantId;if(!tenant){this.runtime.load().subscribe({next:()=>this.load(show),error:()=>{this.loading=false;this.error='Workspace runtime is not ready.'}});return}this.api.campaignPlan(tenant,this.id).subscribe({next:x=>{this.data=x;this.loading=false;this.error='';this.loadJobs();},error:e=>{this.loading=false;this.error=e?.error?.detail||'Campaign workspace could not be loaded.';}});}
   loadJobs(){const tenant=this.runtime.runtime()?.tenantId;if(!tenant)return;this.api.agentJobs(tenant).subscribe({next:x=>this.jobs=(x||[]).filter((j:any)=>j.campaignId===this.id),error:()=>{}});}
   get campaign(){return this.data?.campaign||{}}
   get runtimeInfo(){return this.data?.runtime||{}}
