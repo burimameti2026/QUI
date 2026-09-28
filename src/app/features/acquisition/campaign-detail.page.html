@@ -1,0 +1,34 @@
+<main class="page campaign-workspace">
+  <qai-page-header [title]="campaign.name || 'Campaign'" subtitle="Campaign workspace — one place for workflow, packs, runtime, jobs and results.">
+    <button class="button-quiet" type="button" (click)="load()">↻ Refresh</button>
+    <button class="button-secondary" type="button" (click)="openDesigner()">Workflow Designer</button>
+  </qai-page-header>
+  <p class="error" *ngIf="error">{{error}}</p>
+  <div *ngIf="!loading && data" class="workspace">
+    <header class="hero">
+      <div><span class="eyebrow">CAMPAIGN</span><h1>{{campaign.name}}</h1><p>{{campaign.objective || campaign.goal || 'Acquisition campaign'}}</p></div>
+      <span class="status-pill" [class]="status(runtimeInfo.status).toLowerCase().replace(' ','-')">● {{status(runtimeInfo.status)}}</span>
+    </header>
+    <nav class="tabs">
+      <button *ngFor="let t of ['overview','workflow','packs','runtime','jobs','companies','outreach','activity']" [class.active]="active===t" (click)="setTab(t)">{{t | titlecase}}</button>
+    </nav>
+    <section *ngIf="active==='overview'" class="grid">
+      <article class="card"><span>Objective</span><strong>{{campaign.objective || campaign.goal || '—'}}</strong></article>
+      <article class="card"><span>Industry Pack</span><strong>{{pack}}</strong><button (click)="openPack()">View packs</button></article>
+      <article class="card"><span>Agent</span><strong>{{data.agent?.name || 'Not configured'}}</strong></article>
+      <article class="card"><span>Target List</span><strong>{{campaign.targetListId || 'Not selected'}}</strong></article>
+    </section>
+    <section *ngIf="active==='workflow'" class="panel">
+      <div class="section-head"><div><span class="eyebrow">WORKFLOW</span><h2>{{data.workflow?.name || 'Campaign workflow'}}</h2></div><button class="button-primary" (click)="openDesigner()">Edit workflow</button></div>
+      <div class="flow"><div class="node" *ngFor="let s of workflow;trackBy:track"><i [class]="String(s.status||'IDLE').toLowerCase()"></i><div><small>STEP {{s.sequence}} · {{s.key}}</small><b>{{s.name}}</b><span>{{s.status}}</span></div><em *ngIf="s.error">{{s.error}}</em></div></div>
+    </section>
+    <section *ngIf="active==='packs'" class="panel"><div class="section-head"><div><span class="eyebrow">INSTALLED INDUSTRY PACK</span><h2>{{pack}}</h2><p>Pack resolved for this campaign container.</p></div><button class="button-secondary" (click)="openPack()">Industry Packs</button></div><div class="runtime-row"><b>{{campaign.packageVersion || data.container?.versionLabel || 'Current version'}}</b><span>Campaign container use</span><strong>{{data.container?.status || 'Unknown'}}</strong></div></section>
+    <section *ngIf="active==='runtime'" class="grid runtime-grid">
+      <article class="card"><span>Container ID</span><strong>{{data.container?.id || '—'}}</strong></article><article class="card"><span>Version</span><strong>{{runtimeInfo.containerVersionLabel || runtimeInfo.containerVersion || '—'}}</strong></article><article class="card"><span>Container Status</span><strong>{{runtimeInfo.containerStatus || '—'}}</strong></article><article class="card"><span>Job Status</span><strong>{{runtimeInfo.jobStatus || '—'}}</strong></article><article class="card"><span>Job ID</span><strong>{{runtimeInfo.jobId || '—'}}</strong></article><article class="card"><span>Tasks</span><strong>{{runtimeInfo.completedTasks || 0}} / {{runtimeInfo.taskCount || 0}}</strong></article>
+    </section>
+    <section *ngIf="active==='jobs'" class="panel"><div class="section-head"><div><span class="eyebrow">EXECUTION</span><h2>Jobs</h2></div><button class="button-secondary" routerLink="/jobs">Open all jobs</button></div><div class="job" *ngFor="let j of jobs"><b>{{j.type || j.taskType || 'campaign.execute'}}</b><span>{{j.id}}</span><strong>{{status(j.status)}}</strong><small>{{j.discoveredCount||0}} discovered · {{j.qualifiedCount||0}} qualified · {{j.emailsSentCount||0}} sent</small></div><p *ngIf="!jobs.length">No jobs recorded for this campaign.</p></section>
+    <section *ngIf="active==='companies'" class="panel empty-state"><h2>Companies & Prospects</h2><p>Results remain in the shared acquisition data layer; open the global views without losing the campaign context.</p><div><button class="button-primary" (click)="openCompanies()">Companies</button><button class="button-secondary" (click)="openProspects()">Prospects</button></div></section>
+    <section *ngIf="active==='outreach'" class="panel empty-state"><h2>Outreach</h2><p>Campaign message templates and approval flow are managed in the workflow designer.</p><button class="button-primary" (click)="openDesigner()">Open outreach</button></section>
+    <section *ngIf="active==='activity'" class="panel"><div class="section-head"><div><span class="eyebrow">ACTIVITY</span><h2>Latest execution state</h2></div></div><pre>{{data.runtime | json}}</pre></section>
+  </div>
+</main>
