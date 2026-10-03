@@ -1,15 +1,8 @@
 <main class="page">
-  <header class="hero">
-    <div>
-      <span class="eyebrow">PRODUCT HUB</span>
-      <h1>Product Catalog</h1>
-      <p>Manage product information, markets, languages and publication from one workspace.</p>
-    </div>
-    <div class="actions">
-      <button class="button-secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
-      <a class="button-primary" routerLink="/catalog/new">+ Add Product</a>
-    </div>
-  </header>
+  <qai-page-header title="Product Catalog" subtitle="Manage product information, markets, languages and publication from one workspace.">
+    <button class="button-secondary" type="button" (click)="load()" [disabled]="loading">Refresh</button>
+    <a class="button-primary" routerLink="/catalog/new">+ Add Product</a>
+  </qai-page-header>
 
   <section class="metric-grid" aria-label="Catalog summary">
     <article class="metric"><span class="metric-top"><span class="metric-icon">▦</span><span class="metric-label">Total products</span></span><strong>{{ products.length }}</strong><small>catalog records</small></article>
