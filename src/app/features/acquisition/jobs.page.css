@@ -1,1 +1,9 @@
-.jobs-panel{background:#fff;border:1px solid rgba(20,50,70,.11);border-radius:16px;overflow:hidden}.job-row{display:grid;grid-template-columns:1.2fr 2fr 2fr 1fr 2fr;gap:16px;padding:16px 20px;border-bottom:1px solid #e8edef;align-items:center}.job-row.head{font-size:10px;font-weight:800;color:#7a8992;background:#f7f9fa}.job-row strong{font-size:12px}.job-row strong.running,.job-row strong.queued{color:#08777a}.job-row strong.failed{color:#c23c3c}.job-row strong.completed{color:#238452}.job-row code{font-size:11px;overflow:hidden;text-overflow:ellipsis}.empty{text-align:center;padding:40px;color:#75838c}.error{padding:12px;background:#fdecec;color:#a52d2d;border-radius:10px}@media(max-width:900px){.job-row{grid-template-columns:1fr 1fr}.job-row.head{display:none}}
+/* Jobs uses the canonical table/surface language. */
+.jobs-panel{background:#fff;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);box-shadow:var(--wl-card-shadow);overflow:hidden}
+.job-row{display:grid;grid-template-columns:1.2fr 2fr 2fr 1fr 2fr;gap:16px;padding:12px 16px;border-bottom:1px solid var(--wl-border);align-items:center;min-width:0}
+.job-row:last-child{border-bottom:0}.job-row.head{font-size:9px;font-weight:800;letter-spacing:.06em;color:var(--wl-muted);background:#fafafa;text-transform:uppercase}
+.job-row strong{font-size:11px}.job-row strong.running,.job-row strong.queued{color:var(--wl-accent)}.job-row strong.failed{color:var(--wl-danger)}.job-row strong.completed{color:var(--wl-success)}
+.job-row code{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.job-row:hover:not(.head){background:#fafafa}
+.jobs-page .empty{margin:0;border:0;border-radius:0;box-shadow:none;text-align:center;padding:32px}
+.jobs-page .error{border-radius:var(--wl-card-radius)}
+@media(max-width:900px){.job-row{grid-template-columns:1fr 1fr}.job-row.head{display:none}}
