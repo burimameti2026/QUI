@@ -1,8 +1,8 @@
 <main class="page">
-  <header class="hero">
-    <div><a routerLink="/catalog" class="button-quiet">← {{ i18n.t('Product Catalog') }}</a><span class="eyebrow">CATALOG</span><h1>{{ i18n.t(editingId ? 'Edit Product' : 'Add Product') }}</h1><p>{{ i18n.t('Prepare one product for the portal and AI promotion workflow.') }}</p></div>
-    <div class="actions"><button class="button-secondary" routerLink="/catalog">{{ i18n.t('Cancel') }}</button><button class="button-primary" [disabled]="saving" (click)="save()">{{ saving ? i18n.t('Saving…') : i18n.t('Save Product') }}</button></div>
-  </header>
+  <qai-page-header [title]="i18n.t(editingId ? 'Edit Product' : 'Add Product')" subtitle="Prepare one product for the portal and AI promotion workflow.">
+    <a routerLink="/catalog" class="button-secondary">{{ i18n.t('Cancel') }}</a>
+    <button class="button-primary" [disabled]="saving" (click)="save()">{{ saving ? i18n.t('Saving…') : i18n.t('Save Product') }}</button>
+  </qai-page-header>
 
   <section class="toolbar" aria-label="Content language">
     <div><b>{{ i18n.t('Content language') }}</b><span>{{ i18n.t('The selected languages are stored as product localizations in the tenant database.') }}</span></div>
