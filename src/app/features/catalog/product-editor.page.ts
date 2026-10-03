@@ -5,11 +5,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { AdminI18nService } from '../../core/admin-i18n.service';
+import { PageHeader } from '../../shared/ui';
 
 interface Category { id: string; name: string; code?: string | null; }
 interface ProductDetails { product: any; variants: any[]; localizations: any[]; assets?: any[]; targetMarkets?: any[]; promotions?: any[]; }
 
-@Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink],templateUrl:'./product-editor.page.html',styleUrl:'./product-editor.page.css'})
+@Component({standalone:true,imports:[CommonModule,FormsModule,RouterLink,PageHeader],templateUrl:'./product-editor.page.html',styleUrl:'./product-editor.page.css'})
 export class ProductEditorPage implements OnInit {
   readonly i18n = inject(AdminI18nService);
   categories: Category[] = [];
