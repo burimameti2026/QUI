@@ -29,19 +29,6 @@ interface PackDraft {
   standalone: true,
   imports: [CommonModule, FormsModule, PageHeader],
   template: `
-    <style>
-      .page-industry-packs{max-width:1280px;margin:0 auto}.hero{margin:14px 0;padding:18px 20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}.hero h2{margin:4px 0;font-size:18px}.hero p{margin:0;max-width:760px;font-size:12px;line-height:1.5;color:#667085}.content-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}.card{border:1px solid #e1e5eb;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.04);overflow:hidden}.card:hover{box-shadow:0 6px 18px rgba(15,23,42,.07)}
-      .builder{margin:18px 0;padding:20px;border:1px solid #e1e5eb;border-radius:14px;background:#fff}
-      .builder-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-      .mode{display:flex;gap:6px;margin:16px 0}.mode button{padding:8px 12px;border:1px solid #d9dee6;background:#fff;border-radius:8px;cursor:pointer}.mode button.active{background:#555;color:#fff}
-      .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700}.field input,.field textarea,.field select{border:1px solid #d9dee6;border-radius:8px;padding:9px;background:#fff}.field textarea{min-height:72px}
-      .builder-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
-      .ai-hint{padding:12px;border-radius:10px;background:#f5f6f8;margin-bottom:12px}
-      .pack-tools{display:flex;justify-content:space-between;align-items:center;margin:16px 0;gap:12px}.pack-tools input{max-width:360px;padding:9px;border:1px solid #d9dee6;border-radius:8px}
-      .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.card-body{padding:16px}.card-footer{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #eee}
-      .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}.chip{padding:4px 7px;background:#f0f2f5;border-radius:999px;font-size:10px}.empty{padding:30px;text-align:center}
-      @media(max-width:800px){.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.builder-head{flex-direction:column}}
-    </style>
     <main class="page page-industry-packs">
       <qai-page-header title="Industry Packs" subtitle="Reusable business definitions that turn an industry, offer and ICP into campaign-ready automation.">
         <button class="button-primary" type="button" (click)="startCreate()">+ Create Industry Pack</button>
