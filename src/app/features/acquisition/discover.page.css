@@ -1,104 +1,16 @@
-/* Focused Discovery refinements; canonical tokens and surfaces remain global. */
-.discovery-summary { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-.discovery-summary .status { display:inline-flex; align-items:center; gap:5px; min-height:28px; padding:5px 9px; border:0; box-shadow:var(--wl-card-shadow); background:var(--wl-surface); font-size:11px; font-weight:600; }
-.discovery-summary .status b { font-size:12px; }
-.discovery-summary .status-priority { border-color:var(--wl-accent); }
-.discovery-kpis .metric { min-width:0; }
-.discovery-kpis .metric-top { margin-bottom:10px; }
-.discovery-kpis .metric-icon { flex:0 0 auto; }
-.discovery-kpis .metric > strong { display:block; margin-top:0; }
-@media (max-width:760px) { .discovery-summary { gap:6px; } }
-
-.discovery-progress { padding: 0 0 14px; }
-.discovery-progress > .eyebrow { margin: 14px 16px 0; }
-.discovery-timeline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  min-width: 0;
-  margin: 10px 14px 0;
-  padding: 0;
-  border: 1px solid var(--wl-border);
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-}
-.discovery-timeline-track {
-  position: absolute;
-  top: 38px;
-  left: 12.5%;
-  right: 12.5%;
-  height: 1px;
-  background: var(--wl-border-strong);
-}
-.discovery-timeline-step {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 9px;
-  min-width: 0;
-  min-height: 86px;
-  padding: 14px 12px;
-  text-align: center;
-  border-right: 1px solid var(--wl-border);
-}
-.discovery-timeline-node {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--wl-border-strong);
-  background: var(--wl-surface);
-  font-size: 10px;
-  font-weight: 700;
-}
-.discovery-timeline-copy {
-  display: grid;
-  padding: 0 4px;
-  gap: 2px;
-  min-width: 0;
-}
-.discovery-timeline-copy strong {
-  font-size: 12px;
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.discovery-timeline-copy small {
-  color: var(--wl-muted);
-  font-size: 10px;
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.discovery-timeline-step.is-current .discovery-timeline-node {
-  border: 2px solid var(--wl-accent);
-  color: var(--wl-accent);
-}
-.discovery-timeline-step.is-current .discovery-timeline-copy strong {
-  color: var(--wl-accent);
-}
-.discovery-timeline-step.is-complete .discovery-timeline-node {
-  background: var(--wl-text);
-  color: var(--wl-surface);
-  border-color: var(--wl-text);
-}
-.discovery-timeline-step.is-complete .discovery-timeline-copy strong {
-  color: var(--wl-text);
-}
-@media (max-width: 760px) {
-  .discovery-timeline { grid-template-columns: 1fr 1fr; gap: 0; }
-  .discovery-timeline-track { top: 38px; left: 25%; right: 25%; }
-  .discovery-timeline-step:nth-child(3) { grid-column: 1; }
-  .discovery-timeline-step:nth-child(4) { grid-column: 2; }
-}
-@media (max-width: 520px) {
-  .discovery-timeline { grid-template-columns: 1fr; gap: 0; }
-  .discovery-timeline-track { display: none; }
-  .discovery-timeline-step { border-right: 0; border-bottom: 1px solid var(--wl-border); min-height: 72px; }
-  .discovery-timeline-step:last-child { border-bottom: 0; }
-}
+/* Discovery-specific layout only. Shared surfaces, spacing, controls and typography come from _design-system.css. */
+.discovery-summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.discovery-summary .status{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:5px 9px;background:#fff;border:1px solid var(--wl-border);box-shadow:none;border-radius:var(--wl-input-radius)}
+.discovery-summary .status b{font-size:12px}
+.discovery-kpis .metric{min-width:0}.discovery-kpis .metric-top{margin-bottom:8px}.discovery-kpis .metric-icon{flex:0 0 auto}.discovery-kpis .metric>strong{display:block;margin-top:0}
+.discovery-progress{padding:0 0 14px}.discovery-progress>.eyebrow{margin:14px 16px 0}
+.discovery-timeline{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));min-width:0;margin:10px 14px 0;padding:0;border:1px solid var(--wl-border);background:#fff;border-radius:var(--wl-card-radius);overflow:hidden;box-shadow:none}
+.discovery-timeline-track{position:absolute;top:38px;left:12.5%;right:12.5%;height:1px;background:var(--wl-border-strong)}
+.discovery-timeline-step{position:relative;z-index:1;display:grid;justify-items:center;align-content:start;gap:9px;min-width:0;min-height:86px;padding:14px 12px;text-align:center;border-right:1px solid var(--wl-border)}
+.discovery-timeline-step:last-child{border-right:0}
+.discovery-timeline-node{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--wl-border-strong);border-radius:50%;background:var(--wl-surface);font-size:10px;font-weight:700}
+.discovery-timeline-copy{display:grid;padding:0 4px;gap:2px;min-width:0}.discovery-timeline-copy strong{font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.discovery-timeline-copy small{color:var(--wl-muted);font-size:10px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.discovery-timeline-step.is-current .discovery-timeline-node{border:2px solid var(--wl-accent);color:var(--wl-accent)}.discovery-timeline-step.is-current .discovery-timeline-copy strong{color:var(--wl-accent)}
+.discovery-timeline-step.is-complete .discovery-timeline-node{background:var(--wl-text);color:#fff;border-color:var(--wl-text)}.discovery-timeline-step.is-complete .discovery-timeline-copy strong{color:var(--wl-text)}
+@media(max-width:760px){.discovery-timeline{grid-template-columns:1fr 1fr}.discovery-timeline-track{top:38px;left:25%;right:25%}.discovery-timeline-step:nth-child(3){grid-column:1}.discovery-timeline-step:nth-child(4){grid-column:2}}
+@media(max-width:520px){.discovery-timeline{grid-template-columns:1fr}.discovery-timeline-track{display:none}.discovery-timeline-step{border-right:0;border-bottom:1px solid var(--wl-border);min-height:72px}.discovery-timeline-step:last-child{border-bottom:0}}
