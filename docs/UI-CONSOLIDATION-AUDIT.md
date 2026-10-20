@@ -27,8 +27,8 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 ## Still needs verification / follow-up
 
-1. The Leads “Filters” toolbar button has no action and is redundant with the temperature filter. Remove it or implement a real filter panel.
-2. Leads page currently treats a Contacts lookup error as a fatal Leads-page error, potentially hiding already-loaded leads. Separate the contact-picker error from the leads-list error.
+1. The dead Leads “Filters” toolbar button was removed; the working temperature filter remains.
+2. Leads now separates Contacts lookup errors from the Leads list, so a failed contact picker does not hide the list.
 3. Add consistent saving/loading guards to ICP create/edit, Opportunity save/close, and CRM destructive actions to prevent duplicate requests.
 4. Normalize status-pill semantics (success, pending, warning, failed) across Discovery, Campaigns, CRM and approval queue.
 5. Verify empty results vs. loading vs. API failure states on every page; several pages can otherwise appear blank.
