@@ -32,9 +32,9 @@ export class ApprovalQueuePage implements OnInit {
   }
 
   get pending() { return this.messages.filter(x => this.messageStatus(x) === 'Queued' && !x.approvalRequested).length; }
-  get requested() { return this.messages.filter(x => x.approvalRequested).length; }
+  get requested() { return this.messages.filter(x => x.approvalRequested && !this.isProcessed(x)).length; }
   get safeDemo() { return this.messages.length > 0 && this.messages.every(x => String(x.email || '').endsWith('.test')); }
-  get approved() { return this.messages.filter(x => ['Sent', 'Delivered'].includes(this.messageStatus(x))).length; }
+  get approved() { return this.messages.filter(x => ['Sent', 'Delivered', 'Replied'].includes(this.messageStatus(x))).length; }
   get failed() { return ['Failed', 'Suppressed'].filter(status => this.messages.some(x => this.messageStatus(x) === status)).length ? this.messages.filter(x => ['Failed', 'Suppressed'].includes(this.messageStatus(x))).length : 0; }
   get visibleMessages() {
     const q = this.query.trim().toLowerCase();
@@ -43,7 +43,7 @@ export class ApprovalQueuePage implements OnInit {
       const filterOk =
         this.filter === 'all' ||
         (this.filter === 'pending' && !x.approvalRequested && status === 'Queued') ||
-        (this.filter === 'requested' && !!x.approvalRequested) ||
+        (this.filter === 'requested' && !!x.approvalRequested && !this.isProcessed(x)) ||
         (this.filter === 'processed' && ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(status));
       const text = [x.prospect, x.contactName, x.email, x.campaign, x.subject, x.body, status].filter(Boolean).join(' ').toLowerCase();
       return filterOk && (!q || text.includes(q));
@@ -119,7 +119,7 @@ export class ApprovalQueuePage implements OnInit {
   }
 
   statusLabel(message: any): string {
-    if (message.approvalRequested) return 'Awaiting approval';
+    if (message.approvalRequested && !this.isProcessed(message)) return 'Awaiting approval';
     return this.messageStatus(message);
   }
 }
