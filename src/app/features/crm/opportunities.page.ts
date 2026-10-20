@@ -38,13 +38,26 @@ export class OpportunitiesPage implements OnInit {
   ngOnInit() { this.load(); }
   load() { this.loading = true; this.error = ""; this.crm.opportunities().subscribe({ next: r => { this.rows = r || []; this.loading = false; }, error: e => { this.error = this.apiError(e); this.loading = false; } }); this.crm.salesPipelines().subscribe({ next: r => { this.pipelines = r?.pipelines || []; this.stages = r?.stages || []; }, error: e => { if (!this.error) this.error = this.apiError(e); } }); }
   open(x?: Opportunity) { this.form = x ? { ...x } : { status: 0, amount: 0 }; this.formPipelineId = x?.pipelineStageId ? this.stage(x.pipelineStageId)?.pipelineId || "" : this.defaultPipeline?.id || ""; if (!x && this.formPipelineId) this.form.pipelineStageId = this.formStages[0]?.id; this.closeDate = x?.expectedCloseUtc ? String(x.expectedCloseUtc).slice(0, 10) : ""; this.show = true; }
-  save() { this.form.expectedCloseUtc = this.closeDate ? new Date(this.closeDate).toISOString() : null; const desired = this.status(this.form.status); const op = this.form.id ? this.crm.updateOpportunity(this.form.id, this.form) : this.crm.createOpportunity(this.form); op.subscribe({ next: r => this.applyStatus(r, desired), error: e => this.error = this.apiError(e) }); }
+  save() {
+    this.error = "";
+    const desired = this.status(this.form.status);
+    const current = this.form.id ? this.rows.find(x => x.id === this.form.id) : null;
+    let lossReason = "";
+    if (desired === "Lost" && this.status(current?.status) !== "Lost") {
+      const answer = prompt("Why was this opportunity lost?");
+      if (answer === null) return;
+      lossReason = answer.trim() || "Not specified";
+    }
+    this.form.expectedCloseUtc = this.closeDate ? new Date(this.closeDate).toISOString() : null;
+    const op = this.form.id ? this.crm.updateOpportunity(this.form.id, this.form) : this.crm.createOpportunity(this.form);
+    op.subscribe({ next: r => this.applyStatus(r, desired, lossReason), error: e => this.error = this.apiError(e) });
+  }
   get defaultPipeline() { return this.pipelines.find(x => x.isDefault) || this.pipelines[0]; }
   get formStages() { return this.stages.filter(x => x.pipelineId === this.formPipelineId).sort((a,b) => a.sortOrder - b.sortOrder); }
   choosePipeline(id: string) { this.formPipelineId = id; this.form.pipelineStageId = this.formStages[0]?.id; }
   stage(id?: string) { return this.stages.find(x => x.id === id); }
   stageLabel(x: Opportunity) { const stage = this.stage(x.pipelineStageId); return stage ? `${this.pipelines.find(p => p.id === stage.pipelineId)?.name || 'Pipeline'} · ${stage.name}` : 'Unassigned'; }
-  private applyStatus(r: Opportunity, desired: string) { const finish = (saved: Opportunity) => { const i = this.rows.findIndex(x => x.id === saved.id); i >= 0 ? (this.rows[i] = saved) : this.rows.unshift(saved); this.show = false; }; if (desired === this.status(r.status)) { finish(r); return; } if (desired === "Open") { this.crm.reopenOpportunity(r.id).subscribe({ next: finish, error: e => this.error = this.apiError(e) }); return; } const lossReason = desired === "Lost" ? prompt("Why was this opportunity lost?") || "Not specified" : ""; this.crm.closeOpportunity(r.id, desired === "Won", lossReason).subscribe({ next: finish, error: e => this.error = this.apiError(e) }); }
+  private applyStatus(r: Opportunity, desired: string, lossReason = "") { const finish = (saved: Opportunity) => { const i = this.rows.findIndex(x => x.id === saved.id); i >= 0 ? (this.rows[i] = saved) : this.rows.unshift(saved); this.show = false; }; if (desired === this.status(r.status)) { finish(r); return; } if (desired === "Open") { this.crm.reopenOpportunity(r.id).subscribe({ next: finish, error: e => this.error = this.apiError(e) }); return; } this.crm.closeOpportunity(r.id, desired === "Won", lossReason).subscribe({ next: finish, error: e => this.error = this.apiError(e) }); }
   money(v: number) { return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v || 0); }
   status(v: any) { return typeof v === "string" ? v : ["Open", "Won", "Lost"][v] || String(v); }
   private apiError(e: any) { return e?.error?.detail || e?.error?.title || (e?.status ? `CRM API returned ${e.status}.` : "CRM API is unavailable."); }
