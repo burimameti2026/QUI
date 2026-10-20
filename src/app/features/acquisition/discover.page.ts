@@ -214,12 +214,21 @@ export class DiscoverPage implements OnInit {
   constructor(private data: AcquisitionService, private router: Router) {}
   ngOnInit() { this.load(); }
   load() {
-    this.data.overview().subscribe((r) => (this.overview = r));
+    this.error = "";
+    this.data.overview().subscribe({ next: (r) => (this.overview = r), error: (e) => (this.error = e?.error?.detail || "Discovery overview could not be loaded.") });
     this.data.discoveryProviders().subscribe({ next: (r) => (this.discoveryProviders = r), error: () => (this.discoveryProviders = []) });
-    this.data.icps().subscribe((r) => { this.icps = r; if (!this.activeIcp) this.selectedIcpId = r.find((x) => x.active)?.id || ""; });
+    this.data.icps().subscribe({
+      next: (r) => { this.icps = r || []; if (!this.activeIcp) this.selectedIcpId = this.icps.find((x) => x.active)?.id || ""; },
+      error: (e) => (this.error = e?.error?.detail || "ICP profiles could not be loaded.")
+    });
     this.loadProspects();
   }
-  loadProspects() { this.data.prospects(this.minimumScore).subscribe((r) => { this.prospects = r; this.selectedIds = new Set([...this.selectedIds].filter((id) => r.some((x) => x.id === id))); }); }
+  loadProspects() {
+    this.data.prospects(this.minimumScore).subscribe({
+      next: (r) => { this.prospects = r || []; this.selectedIds = new Set([...this.selectedIds].filter((id) => this.prospects.some((x) => x.id === id))); },
+      error: (e) => (this.error = e?.error?.detail || "Prospects could not be loaded.")
+    });
+  }
   get activeIcp() { return this.icps.find((x) => x.id === this.selectedIcpId && x.active); }
   get selectedDiscoveryProvider() { return this.discoveryProviders.find((x) => x.name === this.onlineDiscovery.source); }
   get journeyStep() { if (!this.activeIcp) return 0; if (!this.prospects.length) return 1; if (!this.selectedIds.size) return 2; return 3; }
@@ -237,13 +246,34 @@ export class DiscoverPage implements OnInit {
   status(v: number) { return ["Discovered", "Enriched", "Qualified", "Nurturing", "Replied", "Demo ready", "Converted", "Suppressed"][v] || v; }
   toggle(id: string) { this.selectedIds.has(id) ? this.selectedIds.delete(id) : this.selectedIds.add(id); }
   toggleAll() { this.allSelected ? this.selectedIds.clear() : this.prospects.forEach((x) => this.selectedIds.add(x.id)); }
-  saveIcp() { this.data.createIcp(this.icp).subscribe((r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Import verified companies to build its target audience."; }); }
-  saveProspect() { this.data.addProspect(this.prospect).subscribe((r) => { this.prospects.unshift(r); this.prospectOpen = false; this.data.overview().subscribe((x) => (this.overview = x)); }); }
+  saveIcp() {
+    this.error = "";
+    this.data.createIcp(this.icp).subscribe({
+      next: (r) => { this.icps.push(r); this.selectedIcpId = r.id; this.icpOpen = false; this.icpStep = 0; this.message = "Profile saved. Import verified companies to build its target audience."; },
+      error: (e) => (this.error = e?.error?.detail || "ICP profile could not be saved.")
+    });
+  }
+  saveProspect() {
+    this.error = "";
+    if (!this.prospect.companyName?.trim()) { this.error = "Company name is required."; return; }
+    this.data.addProspect(this.prospect).subscribe({
+      next: (r) => { this.prospects.unshift(r); this.prospectOpen = false; this.data.overview().subscribe({ next: (x) => (this.overview = x), error: () => {} }); },
+      error: (e) => (this.error = e?.error?.detail || "Prospect could not be saved.")
+    });
+  }
   selectDataset(event: Event) { const file = (event.target as HTMLInputElement).files?.[0]; this.bulkFile = file; this.bulkPreview = undefined; this.bulkRows = []; this.bulkError = ""; if (!file) return; if (file.size > 15_000_000) { this.bulkError = "The import file must be smaller than 15 MB."; return; } this.loadPreview(); }
   reloadSheet() { if (this.bulkFile) this.loadPreview(this.bulkSheet); }
   private loadPreview(sheet = "") { if (!this.bulkFile) return; this.bulkImporting = true; this.bulkError = ""; this.data.previewProspectImport(this.bulkFile, sheet).subscribe({ next: (preview) => { this.bulkPreview = preview; this.bulkSheet = preview.selectedSheet; this.bulkMapping = { ...preview.suggestedMappings }; this.rebuildMappedRows(); this.bulkImporting = false; }, error: (error) => { this.bulkImporting = false; this.bulkError = error?.error?.detail || "The company dataset could not be read."; } }); }
   rebuildMappedRows() { const sourceRows: any[] = this.bulkPreview?.rows || []; const mapped = sourceRows.map((source) => { const row: any = {}; for (const field of this.importFields) { const header = this.bulkMapping[field.key]; row[field.key] = header ? source[header] ?? "" : ""; } row.fitScore = Math.max(0, Math.min(100, Number(row.fitScore) || 0)); row.intentScore = Math.max(0, Math.min(100, Number(row.intentScore) || 0)); return row; }); this.bulkRows = mapped.filter((row) => String(row.companyName).trim() && String(row.domain).trim()); this.bulkRejected = mapped.length - this.bulkRows.length; this.bulkError = !this.bulkMapping["companyName"] || !this.bulkMapping["domain"] ? "Map both Company name and Website / domain." : ""; }
   importDataset() { if (!this.bulkRows.length || !this.bulkConfirmed) return; this.bulkImporting = true; this.data.importProspects({ source: this.bulkSource, complianceConfirmed: this.bulkConfirmed, targetListName: this.bulkListName, icpProfileId: this.selectedIcpId || null, prospects: this.bulkRows }).subscribe({ next: (result) => { this.bulkImporting = false; this.bulkOpen = false; this.bulkStep = 0; this.message = `${result.imported} imported; ${result.updated || 0} enriched; ${result.duplicates} duplicate rows and ${result.rejected + this.bulkRejected} invalid rows skipped.`; this.bulkRows = []; this.load(); if (result.targetListId && confirm("Target list is ready. Continue to campaign setup?")) this.router.navigate(["/campaigns"], { queryParams: { targetListId: result.targetListId } }); }, error: (error) => { this.bulkImporting = false; this.bulkError = error?.error?.detail || "Company import failed."; } }); }
-  addSignal() { if (!this.signalFor) return; this.data.addSignal(this.signalFor.id, this.signal).subscribe((r) => { Object.assign(this.signalFor, r); this.signalOpen = false; }); }
+  addSignal() {
+    if (!this.signalFor) return;
+    this.error = "";
+    if (!this.signal.evidence?.trim()) { this.error = "Evidence is required to add an intent signal."; return; }
+    this.data.addSignal(this.signalFor.id, this.signal).subscribe({
+      next: (r) => { Object.assign(this.signalFor, r); this.signalOpen = false; this.message = "Intent evidence saved."; },
+      error: (e) => (this.error = e?.error?.detail || "Intent evidence could not be saved.")
+    });
+  }
   createList() { if (!this.selectedIds.size || !this.listName.trim()) return; this.error = ""; this.data.createTargetList({ name: this.listName, description: "Selected from prospect discovery", icpProfileId: this.selectedIcpId || null, dynamic: false }).subscribe({ next: (list) => this.data.addMembers(list.id, [...this.selectedIds]).subscribe({ next: () => { this.message = `Target list “${this.listName}” created with ${this.selectedIds.size} prospects.`; this.selectedIds.clear(); this.listName = ""; }, error: (e) => (this.error = e?.error?.detail || "The list was created, but prospects could not be added.") }), error: (e) => (this.error = e?.error?.detail || "Target list could not be created.") }); }
 }
