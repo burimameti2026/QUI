@@ -29,7 +29,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
       </qai-refined-tabs>
       <qai-data-grid *ngIf="!loading && !error">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><select [(ngModel)]="temp"><option value="">All temperatures</option><option>Hot</option><option>Warm</option><option>Cold</option></select><button type="button" class="toolbar-button">▽ Filters</button><button type="button" class="toolbar-button">↕ Sort</button><span class="toolbar-spacer"></span><button type="button" class="toolbar-button">⇧ Export</button><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
+          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><select [(ngModel)]="temp"><option value="">All temperatures</option><option>Hot</option><option>Warm</option><option>Cold</option></select><button type="button" class="toolbar-button">▽ Filters</button><button type="button" class="toolbar-button" (click)="toggleSort()">↕ {{ sortByScore ? 'Sort by date' : 'Sort by score' }}</button><span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="exportCsv()">⇧ Export CSV</button><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
         </div>
         <table>
           <thead><tr><th class="check-col"><input type="checkbox" [checked]="allVisibleSelected" (change)="toggleAll($event)" /></th><th>Customer</th><th>Company</th><th>Email</th><th>Status</th><th>Manager</th><th>Source</th><th>Score</th><th>Created</th><th>Actions</th></tr></thead>
@@ -46,16 +46,16 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   `
 })
 export class LeadsPage implements OnInit {
-  rows:any[]=[]; contacts:any[]=[]; q=''; temp=''; activeTab='All'; selected:any[]=[]; showCreate=false; showEdit=false; loading=false; error='';
+  rows:any[]=[]; contacts:any[]=[]; q=''; temp=''; activeTab='All'; selected:any[]=[]; showCreate=false; showEdit=false; loading=false; error=''; sortByScore=false;
   form:any={contactId:'',source:'manual',score:50,estimatedValue:0,intentSummary:''}; editForm:any={};
   constructor(private data:CrmService){}
   ngOnInit(){this.load()}
   load(){this.loading=true;this.error='';this.data.leads().subscribe({next:r=>{this.rows=r||[];this.loading=false},error:e=>{this.error=this.apiError(e);this.loading=false}});this.data.contacts().subscribe({next:r=>this.contacts=r||[],error:e=>this.error=this.apiError(e)})}
   openCreate(){this.form={contactId:this.contacts[0]?.id||'',source:'manual',score:50,estimatedValue:0,intentSummary:''};this.showCreate=true}
-  createLead(){if(!this.form.contactId||!this.form.intentSummary.trim())return;this.data.createLead(this.form).subscribe({next:r=>{this.rows.unshift(r);this.showCreate=false},error:()=>alert('Lead creation failed. Check the selected contact and API logs.')})}
+  createLead(){if(!this.form.contactId||!this.form.intentSummary.trim())return;this.data.createLead(this.form).subscribe({next:r=>{this.rows.unshift(r);this.showCreate=false},error:e=>this.error=this.apiError(e)})}
   contactName(c:any){return `${c.firstName||''} ${c.lastName||''}`.trim()||c.email||'Contact'}
   setTab(tab:string){this.activeTab=tab;this.clearSelection()}
-  get visible(){const query=this.q.trim().toLowerCase();return this.rows.filter(x=>{const status=String(x.status||'').toLowerCase();const tabOk=this.activeTab==='All'||(this.activeTab==='Favourite'&&(x.favorite||x.isFavorite))||(this.activeTab==='New'&&(status==='new'||!x.status))||(this.activeTab==='Assigned to me'&&!!x.manager)||(this.activeTab==='Overdue'&&(x.overdue===true||status==='overdue'))||(this.activeTab==='Hot'&&Number(x.score)>=80);const text=`${x.intentSummary||''} ${x.company||''} ${x.email||''} ${x.source||''} ${x.status||''}`.toLowerCase();return tabOk&&(!query||text.includes(query))&&(!this.temp||this.temperature(x)===this.temp)})}
+  get visible(){const query=this.q.trim().toLowerCase();return this.rows.filter(x=>{const status=String(x.status||'').toLowerCase();const tabOk=this.activeTab==='All'||(this.activeTab==='Favourite'&&(x.favorite||x.isFavorite))||(this.activeTab==='New'&&(status==='new'||!x.status))||(this.activeTab==='Assigned to me'&&!!x.manager)||(this.activeTab==='Overdue'&&(x.overdue===true||status==='overdue'))||(this.activeTab==='Hot'&&Number(x.score)>=80);const text=`${x.intentSummary||''} ${x.company||''} ${x.email||''} ${x.source||''} ${x.status||''}`.toLowerCase();return tabOk&&(!query||text.includes(query))&&(!this.temp||this.temperature(x)===this.temp)}).sort((a,b)=>this.sortByScore?(Number(b.score)||0)-(Number(a.score)||0):new Date(b.createdAt||b.created||b.createdDate||0).getTime()-new Date(a.createdAt||a.created||a.createdDate||0).getTime())}
   isSelected(x:any){return this.selected.some(s=>s.id===x.id)}
   get allVisibleSelected(){return this.visible.length>0&&this.visible.every(x=>this.isSelected(x))}
   toggleSelected(x:any){this.isSelected(x)?this.selected=this.selected.filter(s=>s.id!==x.id):this.selected=[...this.selected,x]}
@@ -63,7 +63,26 @@ export class LeadsPage implements OnInit {
   clearSelection(){this.selected=[]}
   editLead(x:any){this.editForm={...x};this.showEdit=true}
   editSelected(){if(this.selected.length)this.editLead(this.selected[0])}
-  deleteSelected(){const ids=this.selected.map(x=>x.id);this.clearSelection();ids.forEach(id=>this.data.deleteLead(id).subscribe({next:()=>this.rows=this.rows.filter(x=>x.id!==id),error:()=>{}}))}
+  toggleSort(){this.sortByScore=!this.sortByScore}
+  exportCsv(){
+    const columns:[string,(x:any)=>any][]=[
+      ['Intent summary',x=>x.intentSummary],['Company',x=>x.company],['Email',x=>x.email],['Status',x=>x.status],
+      ['Manager',x=>x.manager],['Source',x=>x.source],['Score',x=>x.score],['Estimated value',x=>x.estimatedValue],['Created',x=>x.createdAt||x.created||x.createdDate]
+    ];
+    const quote=(value:any)=>'"'+String(value??'').replaceAll('"','""')+'"';
+    const csv=[columns.map(([label])=>quote(label)).join(','),...this.visible.map(x=>columns.map(([,value])=>quote(value(x))).join(','))].join('\\r\\n');
+    const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+    const anchor=document.createElement('a');anchor.href=url;anchor.download='leadsai-leads.csv';anchor.click();URL.revokeObjectURL(url);
+  }
+  deleteSelected(){
+    const targets=[...this.selected];
+    if(!targets.length||!confirm(`Delete ${targets.length} selected lead(s)? This cannot be undone.`))return;
+    this.error='';
+    targets.forEach(item=>this.data.deleteLead(item.id).subscribe({
+      next:()=>{this.rows=this.rows.filter(row=>row.id!==item.id);this.selected=this.selected.filter(row=>row.id!==item.id)},
+      error:e=>{this.error=this.apiError(e)}
+    }));
+  }
 
   count(a:number,b:number){return this.rows.filter(x=>x.score>=a&&x.score<b).length}
   countNew(){return this.rows.filter(x=>{const status=String(x.status||'').toLowerCase();return status==='new'||!status}).length}
@@ -71,7 +90,7 @@ export class LeadsPage implements OnInit {
   createdDate(x:any){const v=x.createdAt||x.created||x.createdDate;if(!v)return'—';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(d)}
   temperature(x:any){return x.score>=80?'Hot':x.score>=50?'Warm':'Cold'}
   money(v:number){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v||0)}
-  saveEdit(){if(!this.editForm?.id)return;this.data.updateLead(this.editForm.id,this.editForm).subscribe({next:r=>{const i=this.rows.findIndex(x=>x.id===this.editForm.id);if(i>=0)this.rows[i]=r;this.showEdit=false},error:()=>alert('Lead update failed.')})}
+  saveEdit(){if(!this.editForm?.id)return;this.data.updateLead(this.editForm.id,this.editForm).subscribe({next:r=>{const i=this.rows.findIndex(x=>x.id===this.editForm.id);if(i>=0)this.rows[i]=r;this.showEdit=false},error:e=>this.error=this.apiError(e)})}
   qualify(x:any){this.data.qualify(x.id).subscribe({next:r=>Object.assign(x,r),error:()=>alert('Lead qualification failed.')})}
   convert(x:any){this.data.convert(x.id).subscribe({next:()=>alert('Opportunity created and follow-up automation scheduled.'),error:()=>alert('Could not create opportunity.')})}
   private apiError(e:any){return e?.error?.detail||e?.error?.title||(e?.status?`CRM API returned ${e.status}.`:'CRM API is unavailable.')}
