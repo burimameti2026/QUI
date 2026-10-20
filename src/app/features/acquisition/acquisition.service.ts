@@ -20,7 +20,7 @@ export class AcquisitionService {
     return this.api.get<any[]>("acquisition/discovery/providers");
   }
   discoverOnline(icpId: string, input: any) {
-    return this.api.post<any>(`acquisition/icp/${icpId}/discover`, input);
+    return this.api.post<any>(`acquisition/icp/${icpId}/discover`, input, 90000);
   }
   prospects(minimumScore = 0) {
     return this.api.get<any[]>(
@@ -38,7 +38,7 @@ export class AcquisitionService {
     form.append("file", file);
     if (sheetName) form.append("sheetName", sheetName);
     if (headerRow) form.append("headerRow", String(headerRow));
-    return this.api.post<any>("acquisition/prospects/import/preview", form);
+    return this.api.post<any>("acquisition/prospects/import/preview", form, 60000);
   }
   addSignal(id: string, input: any) {
     return this.api.post<any>(`acquisition/prospects/${id}/signals`, input);
@@ -56,20 +56,20 @@ export class AcquisitionService {
     );
   }
   aiPrepare(tenantId: string, input: any) {
-    return this.api.post<any>(`ai-campaign-operator/tenants/${tenantId}/prepare`, input);
+    return this.api.post<any>(`ai-campaign-operator/tenants/${tenantId}/prepare`, input, 120000);
   }
   aiStart(tenantId: string, campaignId: string) {
     return this.api.post<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/start`, {});
   }
   aiStatus(tenantId: string, campaignId: string) {
-    return this.api.get<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/status`);
+    return this.api.get<any>(`ai-campaign-operator/tenants/${tenantId}/campaigns/${campaignId}/status`, 30000);
   }
   campaignHistory(filters: any = {}) {
     const params = Object.entries(filters)
       .filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '')
       .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
       .join('&');
-    return this.api.get<any>(`acquisition/campaign-history${params ? '?' + params : ''}`);
+    return this.api.get<any>(`acquisition/campaigns/history${params ? '?' + params : ''}`);
   }
   campaigns() {
     return this.api.get<any[]>("acquisition/campaigns");
