@@ -17,7 +17,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
       <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
       <button class="button-primary" type="button" (click)="openCreate()">+ Create Lead</button>
     </qai-page-header>
-    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Leads could not be loaded</b><p>{{ error }}</p></div></div>
+    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Lead action failed</b><p>{{ error }}</p></div></div><div class="callout success" *ngIf="message">{{ message }}</div>
     <qai-kpi-strip>
         <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">#</span><span class="metric-label">Total leads</span></div><strong>{{ rows.length }}</strong><small>All leads currently in CRM</small></article>
         <article class="metric lead-kpi"><div class="metric-top"><span class="metric-icon">N</span><span class="metric-label">New</span></div><strong>{{ countNew() }}</strong><small>New or unqualified enquiries</small></article>
