@@ -22,7 +22,7 @@
 <section class="metric-grid">
   <article class="metric"><span class="metric-label">Messages</span><strong>{{ messages.length }}</strong><small>Prepared by acquisition campaigns</small></article>
   <article class="metric"><span class="metric-label">Approval requested</span><strong>{{ requested }}</strong><small>Awaiting human review</small></article>
-  <article class="metric"><span class="metric-label">Still queued</span><strong>{{ pending }}</strong><small>No approval request recorded</small></article>
+  <article class="metric"><span class="metric-label">Needs review</span><strong>{{ pending }}</strong><small>{{ approvedQueued }} approved · queued for delivery</small></article>
   <article class="metric"><span class="metric-label">Processed</span><strong>{{ approved + failed }}</strong><small>{{ approved }} sent · {{ failed }} blocked/failed</small></article>
 </section>
 
@@ -35,7 +35,7 @@
     <label class="search"><span>⌕</span><input [(ngModel)]="query" placeholder="Search prospect, campaign, subject..." /></label>
     <div class="filter-group" role="tablist" aria-label="Approval queue filters">
       <button type="button" [class.active]="filter === 'all'" (click)="setFilter('all')">All <b>{{ messages.length }}</b></button>
-      <button type="button" [class.active]="filter === 'pending'" (click)="setFilter('pending')">Queued <b>{{ pending }}</b></button>
+      <button type="button" [class.active]="filter === 'pending'" (click)="setFilter('pending')">Needs review <b>{{ pending }}</b></button>
       <button type="button" [class.active]="filter === 'requested'" (click)="setFilter('requested')">Awaiting approval <b>{{ requested }}</b></button>
       <button type="button" [class.active]="filter === 'processed'" (click)="setFilter('processed')">Processed <b>{{ approved + failed }}</b></button>
     </div>
