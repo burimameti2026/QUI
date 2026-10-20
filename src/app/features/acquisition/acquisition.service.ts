@@ -94,7 +94,7 @@ export class AcquisitionService {
     return this.api.get<any[]>(`acquisition/campaigns/${campaignId}/containers/${containerId}/activity${suffix}`);
   }
   messages() {
-    return this.api.get<any[]>("acquisition/messages");
+    return this.api.get<any[]>("acquisition/campaigns/messages");
   }
   requestApproval(id: string) {
     return this.api.post<any>(
