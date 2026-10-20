@@ -70,7 +70,7 @@
       <footer>
         <button class="button-quiet" type="button" (click)="closeAiCreate()" [disabled]="aiWorking">Cancel</button>
         <button class="button-primary" type="button" (click)="startAiPrepared()" *ngIf="operatorResult?.canStart && !operatorLive" [disabled]="operatorStarting">{{ operatorStarting ? 'Starting…' : '▶ Start Campaign' }}</button>
-        <button class="button-primary" type="button" (click)="createWithAi()" *ngIf="!operatorResult || operatorLive" [disabled]="!aiGoal.trim() || aiWorking">{{ aiWorking ? 'Preparing…' : '✦ Prepare Campaign' }}</button>
+        <button class="button-primary" type="button" (click)="createWithAi()" *ngIf="canPrepareAgain()" [disabled]="!aiGoal.trim() || aiWorking || operatorStarting">{{ aiWorking ? 'Preparing…' : '✦ Prepare Campaign' }}</button>
       </footer>
     </section>
   </div>
