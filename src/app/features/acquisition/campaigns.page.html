@@ -97,7 +97,7 @@
   </div>
   <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p><p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
-  <section class="campaign-grid" *ngIf="rows.length; else emptyCampaigns">
+  <section class="campaign-grid" *ngIf="filteredRows.length; else emptyCampaigns">
     <article class="campaign-tile" *ngFor="let campaign of filteredRows" [ngClass]="'campaign-'+visualStatus(campaign)">
       <div class="tile-top">
         <div class="campaign-mark">◎</div>
@@ -108,7 +108,7 @@
             <button type="button" (click)="openDesigner(campaign)">✎ Configure / Designer</button>
             <button type="button" (click)="openContainerLogs(campaign)">▤ View Container Logs</button>
             <button type="button" (click)="start(campaign)" *ngIf="status(campaign.status)==='Draft'||status(campaign.status)==='Scheduled'||status(campaign.status)==='Stopped'" [disabled]="busy">▶ Start</button>
-            <button type="button" (click)="runAutonomous(campaign)" *ngIf="status(campaign.status)==='Running' && campaign.agentId && !(campaign.runPending || campaign.runRunning)" [disabled]="busy">✦ Run AI Acquisition</button>
+            <button type="button" (click)="runAutonomous(campaign)" *ngIf="status(campaign.status)==='Running' && campaign.agentId && !(campaign.queuedJobs || campaign.runningJobs)" [disabled]="busy">✦ Run AI Acquisition</button>
             <button type="button" (click)="pause(campaign)" *ngIf="status(campaign.status)==='Running'" [disabled]="busy">Ⅱ Pause</button>
             <button type="button" (click)="resume(campaign)" *ngIf="status(campaign.status)==='Paused'" [disabled]="busy">▶ Resume</button>
             <button type="button" (click)="stop(campaign)" *ngIf="status(campaign.status)!=='Completed'&&status(campaign.status)!=='Stopped'" [disabled]="busy">■ Stop</button>
@@ -152,6 +152,7 @@
         <button type="button" class="button-quiet" (click)="openDesigner(logsCampaign); closeContainerLogs()">Open campaign</button>
       </div>
 
+      <p class="notice alert-error" *ngIf="logsError">{{ logsError }}</p>
       <div class="container-logs-list" *ngIf="logsContainer && containerLogs.length; else logsEmpty">
         <article class="container-log-row" *ngFor="let log of containerLogs">
           <div class="container-log-time">{{ log.atUtc | date:'dd.MM.yyyy HH:mm:ss' }}</div>
