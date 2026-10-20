@@ -104,7 +104,7 @@ export class AcquisitionService {
   }
   rejectApproval(id: string) {
     return this.api.post<any>(
-      `email-operations/messages/${id}/reject-approval`,
+      `email-operations/messages/${id}/reject`,
       {},
     );
   }
@@ -113,7 +113,7 @@ export class AcquisitionService {
   }
   approveAndSend(id: string) {
     return this.api.post<any>(
-      `email-operations/messages/${id}/approve-and-send`,
+      `email-operations/messages/${id}/approve`,
       {},
     );
   }
