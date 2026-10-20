@@ -46,7 +46,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   `
 })
 export class LeadsPage implements OnInit {
-  rows:any[]=[]; contacts:any[]=[]; q=''; temp=''; activeTab='All'; selected:any[]=[]; showCreate=false; showEdit=false; loading=false; error=''; contactsError=''; sortByScore=false;
+  rows:any[]=[]; contacts:any[]=[]; q=''; temp=''; activeTab='All'; selected:any[]=[]; showCreate=false; showEdit=false; loading=false; error=''; message=''; contactsError=''; sortByScore=false;
   form:any={contactId:'',source:'manual',score:50,estimatedValue:0,intentSummary:''}; editForm:any={};
   constructor(private data:CrmService){}
   ngOnInit(){this.load()}
@@ -91,7 +91,7 @@ export class LeadsPage implements OnInit {
   temperature(x:any){return x.score>=80?'Hot':x.score>=50?'Warm':'Cold'}
   money(v:number){return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v||0)}
   saveEdit(){if(!this.editForm?.id)return;this.data.updateLead(this.editForm.id,this.editForm).subscribe({next:r=>{const i=this.rows.findIndex(x=>x.id===this.editForm.id);if(i>=0)this.rows[i]=r;this.showEdit=false},error:e=>this.error=this.apiError(e)})}
-  qualify(x:any){this.data.qualify(x.id).subscribe({next:r=>Object.assign(x,r),error:()=>alert('Lead qualification failed.')})}
-  convert(x:any){this.data.convert(x.id).subscribe({next:()=>alert('Opportunity created and follow-up automation scheduled.'),error:()=>alert('Could not create opportunity.')})}
+  qualify(x:any){this.error='';this.data.qualify(x.id).subscribe({next:r=>{Object.assign(x,r);this.message='Lead qualification updated.'},error:e=>this.error=this.apiError(e)})}
+  convert(x:any){this.error='';this.data.convert(x.id).subscribe({next:()=>{this.message='Opportunity created and follow-up automation scheduled.'},error:e=>this.error=this.apiError(e)})}
   private apiError(e:any){return e?.error?.detail||e?.error?.title||(e?.status?`CRM API returned ${e.status}.`:'CRM API is unavailable.')}
 }
