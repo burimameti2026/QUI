@@ -34,7 +34,7 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 1. The dead Leads “Filters” toolbar button was removed; the working temperature filter remains.
 2. Leads now separates Contacts lookup errors from the Leads list, so a failed contact picker does not hide the list.
-3. Opportunity save and CRM delete actions now guard duplicate requests; verify status transitions and all destructive actions across remaining CRM pages.
+3. Opportunity save and CRM delete actions now guard duplicate requests; Companies and Contacts refresh actions are blocked while mutations are in progress to avoid stale-response overwrites.
 4. Normalize status-pill semantics (success, pending, warning, failed) across Discovery, Campaigns, CRM and approval queue.
 5. Verify empty results vs. loading vs. API failure states on every page; several pages can otherwise appear blank.
 6. Validate responsive layouts at narrow desktop/tablet/mobile widths, including tables, modal forms, long labels and action groups.
