@@ -33,7 +33,7 @@ import { CrmService } from './crm.service';
               <td><div class="identity"><span class="avatar">{{ initials(x.name) }}</span><span class="stack"><b>{{ x.name }}</b><small>CRM account</small></span></div></td>
               <td><a class="button-quiet" [href]="companyUrl(x.domain)" target="_blank" rel="noopener">{{ x.domain || '—' }}</a></td>
               <td>{{ x.industry || '—' }}</td><td>{{ x.country || '—' }}</td><td>{{ x.employees || '—' }}</td><td>{{ x.annualRevenue ? money(x.annualRevenue) : '—' }}</td>
-              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
+              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)" [disabled]="deletingIds.has(x.id)">{{ deletingIds.has(x.id) ? 'Deleting…' : 'Delete' }}</button></div></td>
             </tr></tbody>
           </table>
         </div>
@@ -55,14 +55,14 @@ import { CrmService } from './crm.service';
   `
 })
 export class CompaniesPage implements OnInit {
-  rows: Company[] = []; q = ''; show = false; loading = false; saving = false; error = ''; form: Partial<Company> = {};
+  rows: Company[] = []; q = ''; show = false; loading = false; saving = false; error = ''; deletingIds = new Set<string>(); form: Partial<Company> = {};
   constructor(private readonly crm: CrmService) {}
   ngOnInit(): void { this.load(); }
   load(): void { if (this.loading) return; this.loading = true; this.error = ''; this.crm.companies().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } }); }
   get visible(): Company[] { const term = this.q.trim().toLowerCase(); return this.rows.filter((company) => !term || `${company.name} ${company.domain} ${company.industry} ${company.country}`.toLowerCase().includes(term)); }
   open(company?: Company): void { this.form = company ? { ...company } : {}; this.show = true; }
-  save(): void { if (this.saving) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateCompany(this.form.id, this.form) : this.crm.createCompany(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((row) => row.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
-  remove(company: Company): void { if (!confirm(`Delete ${company.name}?`)) return; this.error = ''; this.crm.deleteCompany(company.id).subscribe({ next: () => this.rows = this.rows.filter((row) => row.id !== company.id), error: (error) => this.error = this.apiError(error) }); }
+  save(): void { if (this.saving || !this.form.name?.trim()) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateCompany(this.form.id, this.form) : this.crm.createCompany(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((row) => row.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
+  remove(company: Company): void { if (this.deletingIds.has(company.id) || !confirm(`Delete ${company.name}?`)) return; this.error = ''; this.deletingIds.add(company.id); this.crm.deleteCompany(company.id).subscribe({ next: () => { this.rows = this.rows.filter((row) => row.id !== company.id); this.deletingIds.delete(company.id); }, error: (error) => { this.error = this.apiError(error); this.deletingIds.delete(company.id); } }); }
   initials(name: string): string { return name.split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'CO'; }
   companyUrl(domain: string): string { if (!domain) return '#'; return /^https?:\/\//i.test(domain) ? domain : `https://${domain}`; }
   money(value: number): string { return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value); }
