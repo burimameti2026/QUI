@@ -93,6 +93,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
   }
 
   load(): void {
+    if (this.loading || this.busy || this.creating) return;
     this.loading = true;
     this.error = '';
 
@@ -232,6 +233,9 @@ export class CampaignsPage implements OnDestroy, OnInit {
     this.aiResult = '';
     this.aiError = '';
     this.aiWorking = false;
+    this.operatorResult = null;
+    this.operatorLive = null;
+    if (this.operatorPoll) { clearInterval(this.operatorPoll); this.operatorPoll = null; }
     this.aiAdvisor.setContext({
       page: 'AI Campaign Operator',
       section: 'Campaign Creation',
@@ -260,17 +264,6 @@ export class CampaignsPage implements OnDestroy, OnInit {
     this.aiWorking = true;
     this.aiError = '';
     this.aiResult = '';
-    const instruction = [
-      'You are the LeadsAI Campaign Operator.',
-      'The user wants you to create and provision a real campaign, not merely explain how.',
-      'Use the existing campaign/industry-pack/ICP/provisioning tools available to you.',
-      'First inspect the available Industry Packs and ICPs in the supplied workspace context.',
-      'Choose the closest existing reusable pack and ICP when possible.',
-      'Create/provision the campaign container and its workflow. Do not invent database IDs.',
-      'If an existing campaign already matches the request, reuse/reconcile it instead of creating a duplicate.',
-      'Return a concise execution summary and include the created campaignId when available.',
-      'User request: ' + goal
-    ].join('\n');
     this.data.aiPrepare(tenantId, { brief: goal, goal: 'book-demo' }).subscribe({
       next: (result: any) => {
         this.aiWorking = false;
@@ -330,6 +323,11 @@ export class CampaignsPage implements OnDestroy, OnInit {
     });
     poll();
     this.operatorPoll = setInterval(poll, 3000);
+  }
+
+  canPrepareAgain(): boolean {
+    const status = String(this.operatorLive?.aiStatus || '').toLowerCase();
+    return !this.operatorResult || ['completed', 'attention', 'failed'].includes(status);
   }
 
   liveLabel(): string { switch (String(this.operatorLive?.aiStatus || 'ready')) { case 'queued': return 'Run queued — waiting for acquisition worker'; case 'running': return 'AI acquisition is running'; case 'completed': return 'Acquisition run completed'; case 'attention': return 'Run needs attention'; default: return 'Ready to launch'; } }
