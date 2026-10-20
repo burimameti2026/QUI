@@ -44,6 +44,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
   logsLoading = false;
   logsCampaign: any = null;
   logsContainer: any = null;
+  logsContainers: any[] = [];
   containerLogs: any[] = [];
 
   constructor(
@@ -112,49 +113,63 @@ export class CampaignsPage implements OnDestroy, OnInit {
     this.settingsOpenId = null;
     this.logsCampaign = campaign;
     this.logsContainer = null;
+    this.logsContainers = [];
     this.containerLogs = [];
     this.logsOpen = true;
     this.logsLoading = true;
     if (this.logsPoll) clearInterval(this.logsPoll);
 
-    const load = () => {
-      this.data.containers(campaign.id).subscribe({
-        next: (containers: any[]) => {
-          const container = (containers || [])[0];
-          this.logsContainer = container || null;
-          if (!container) {
-            this.logsLoading = false;
-            this.containerLogs = [];
-            return;
-          }
-          this.data.containerActivity(campaign.id, container.id).subscribe({
-            next: (rows: any[]) => {
-              this.containerLogs = (rows || []).sort((a: any, b: any) =>
-                new Date(b.atUtc).getTime() - new Date(a.atUtc).getTime()
-              );
-              this.logsLoading = false;
-            },
-            error: e => {
-              this.logsLoading = false;
-              this.error = this.apiError(e, 'Container logs could not be loaded.');
-            }
-          });
-        },
-        error: e => {
+    this.data.containers(campaign.id).subscribe({
+      next: (containers: any[]) => {
+        this.logsContainers = containers || [];
+        const initialContainer = this.logsContainers[0];
+        if (!initialContainer) {
           this.logsLoading = false;
-          this.error = this.apiError(e, 'Campaign container could not be loaded.');
+          return;
         }
-      });
-    };
+        this.selectLogContainer(String(initialContainer.id));
+        this.logsPoll = setInterval(() => {
+          if (this.logsContainer?.id) this.loadSelectedContainerLogs(true);
+        }, 3000);
+      },
+      error: e => {
+        this.logsLoading = false;
+        this.error = this.apiError(e, 'Campaign containers could not be loaded.');
+      }
+    });
+  }
 
-    load();
-    this.logsPoll = setInterval(load, 3000);
+  selectLogContainer(containerId: string): void {
+    this.logsContainer = this.logsContainers.find(x => String(x.id) === String(containerId)) || null;
+    this.loadSelectedContainerLogs();
+  }
+
+  private loadSelectedContainerLogs(silent = false): void {
+    if (!this.logsCampaign?.id || !this.logsContainer?.id) {
+      this.containerLogs = [];
+      this.logsLoading = false;
+      return;
+    }
+    if (!silent) this.logsLoading = true;
+    this.data.containerActivity(this.logsCampaign.id, this.logsContainer.id).subscribe({
+      next: (rows: any[]) => {
+        this.containerLogs = (rows || []).sort((a: any, b: any) =>
+          new Date(b.atUtc).getTime() - new Date(a.atUtc).getTime()
+        );
+        this.logsLoading = false;
+      },
+      error: e => {
+        this.logsLoading = false;
+        this.error = this.apiError(e, 'Container logs could not be loaded.');
+      }
+    });
   }
 
   closeContainerLogs(): void {
     this.logsOpen = false;
     this.logsCampaign = null;
     this.logsContainer = null;
+    this.logsContainers = [];
     this.containerLogs = [];
     if (this.logsPoll) {
       clearInterval(this.logsPoll);
@@ -163,7 +178,13 @@ export class CampaignsPage implements OnDestroy, OnInit {
   }
 
   containerStatus(value: any): string {
-    return ['Stopped', 'Running', 'Paused', 'Failed', 'Pending'][Number(value)] || String(value ?? 'Unknown');
+    const states = ['Stopped', 'Running', 'Paused', 'Failed', 'Pending', 'Queued', 'Starting', 'Completed', 'Waiting'];
+    if (typeof value === 'number' || (typeof value === 'string' && /^\\d+$/.test(value))) {
+      return states[Number(value)] || 'Unknown';
+    }
+    const normalized = String(value ?? '').trim();
+    if (!normalized) return 'Unknown';
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
   }
 
   openDesigner(campaign: any): void {
