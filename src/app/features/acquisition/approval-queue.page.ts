@@ -56,6 +56,10 @@ export class ApprovalQueuePage implements OnInit {
     return ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(this.messageStatus(message));
   }
 
+  isApprovedAndQueued(message: any): boolean {
+    return !!message?.approvalGranted && this.messageStatus(message) === 'Queued';
+  }
+
   messageStatus(message: any): string {
     const value = message?.status;
     if (value === 0 || String(value).toLowerCase() === 'queued') return 'Queued';
@@ -120,6 +124,7 @@ export class ApprovalQueuePage implements OnInit {
 
   statusLabel(message: any): string {
     if (message.approvalRequested && !this.isProcessed(message)) return 'Awaiting approval';
+    if (this.isApprovedAndQueued(message)) return 'Approved · queued for delivery';
     return this.messageStatus(message);
   }
 }
