@@ -25,6 +25,7 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
   fromUtc = '';
   toUtc = '';
   private timer: ReturnType<typeof setInterval> | null = null;
+  private requestInFlight = false;
 
   constructor(private readonly data: AcquisitionService) {}
 
@@ -38,6 +39,18 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
   }
 
   load(silent = false): void {
+    if (this.requestInFlight) return;
+    const from = this.fromUtc ? new Date(this.fromUtc) : null;
+    const to = this.toUtc ? new Date(this.toUtc) : null;
+    if ((from && Number.isNaN(from.getTime())) || (to && Number.isNaN(to.getTime()))) {
+      this.error = 'Enter valid From and To dates.';
+      return;
+    }
+    if (from && to && from > to) {
+      this.error = 'The From date must be earlier than or equal to the To date.';
+      return;
+    }
+    this.requestInFlight = true;
     if (!silent) this.loading = true;
     this.error = '';
     this.data.campaignHistory({
@@ -52,12 +65,14 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
       take: 1000
     }).subscribe({
       next: r => {
-        this.allRows = r?.items || [];
+        this.allRows = Array.isArray(r) ? r : (r?.items || []);
         this.applySearch();
         this.loading = false;
+        this.requestInFlight = false;
       },
       error: e => {
         this.loading = false;
+        this.requestInFlight = false;
         this.error = e?.error?.detail || e?.error?.error || 'Campaign execution history could not be loaded.';
       }
     });
