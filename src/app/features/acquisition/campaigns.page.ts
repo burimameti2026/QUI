@@ -40,6 +40,9 @@ export class CampaignsPage implements OnDestroy, OnInit {
   operatorLive: any = null;
   private operatorPoll: ReturnType<typeof setInterval> | null = null;
   private logsPoll: ReturnType<typeof setInterval> | null = null;
+  private logsRequestInFlight = false;
+  private logsRequestSequence = 0;
+  private logsRequestContainerId: string | null = null;
   logsOpen = false;
   logsLoading = false;
   logsCampaign: any = null;
@@ -141,7 +144,9 @@ export class CampaignsPage implements OnDestroy, OnInit {
   }
 
   selectLogContainer(containerId: string): void {
-    this.logsContainer = this.logsContainers.find(x => String(x.id) === String(containerId)) || null;
+    const next = this.logsContainers.find(x => String(x.id) === String(containerId)) || null;
+    if (String(next?.id ?? '') !== String(this.logsContainer?.id ?? '')) this.logsRequestSequence++;
+    this.logsContainer = next;
     this.loadSelectedContainerLogs();
   }
 
@@ -151,17 +156,32 @@ export class CampaignsPage implements OnDestroy, OnInit {
       this.logsLoading = false;
       return;
     }
+    if (this.logsRequestInFlight) return;
+    const requestSequence = ++this.logsRequestSequence;
+    const requestedContainerId = String(this.logsContainer.id);
+    this.logsRequestContainerId = requestedContainerId;
+    this.logsRequestInFlight = true;
     if (!silent) this.logsLoading = true;
-    this.data.containerActivity(this.logsCampaign.id, this.logsContainer.id).subscribe({
+    this.data.containerActivity(this.logsCampaign.id, requestedContainerId).subscribe({
       next: (rows: any[]) => {
-        this.containerLogs = (rows || []).sort((a: any, b: any) =>
-          new Date(b.atUtc).getTime() - new Date(a.atUtc).getTime()
-        );
-        this.logsLoading = false;
+        if (requestSequence === this.logsRequestSequence && String(this.logsContainer?.id ?? '') === requestedContainerId) {
+          this.containerLogs = (rows || []).sort((a: any, b: any) =>
+            new Date(b.atUtc).getTime() - new Date(a.atUtc).getTime()
+          );
+          this.logsLoading = false;
+        }
+        this.logsRequestInFlight = false;
+        this.logsRequestContainerId = null;
+        if (String(this.logsContainer?.id ?? '') !== requestedContainerId) this.loadSelectedContainerLogs(true);
       },
       error: e => {
-        this.logsLoading = false;
-        this.error = this.apiError(e, 'Container logs could not be loaded.');
+        if (requestSequence === this.logsRequestSequence) {
+          this.logsLoading = false;
+          this.error = this.apiError(e, 'Container logs could not be loaded.');
+        }
+        this.logsRequestInFlight = false;
+        this.logsRequestContainerId = null;
+        if (String(this.logsContainer?.id ?? '') !== requestedContainerId) this.loadSelectedContainerLogs(true);
       }
     });
   }
@@ -330,7 +350,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
     return !this.operatorResult || ['completed', 'attention', 'failed'].includes(status);
   }
 
-  liveLabel(): string { switch (String(this.operatorLive?.aiStatus || 'ready')) { case 'queued': return 'Run queued — waiting for acquisition worker'; case 'running': return 'AI acquisition is running'; case 'completed': return 'Acquisition run completed'; case 'attention': return 'Run needs attention'; default: return 'Ready to launch'; } }
+  liveLabel(): string { switch (String(this.operatorLive?.aiStatus || 'ready').toLowerCase()) { case 'queued': return 'Run queued — waiting for acquisition worker'; case 'running': return 'AI acquisition is running'; case 'waiting': return 'Run waiting for approval or another dependency'; case 'completed': return 'Acquisition run completed'; case 'attention': case 'failed': return 'Run needs attention'; default: return 'Ready to launch'; } }
 
   lifecycleStep(step: string): 'done' | 'active' | 'pending' { const s=String(this.operatorLive?.aiStatus||'ready'); const m=this.operatorLive?.metrics||{}; if(step==='prepare') return this.operatorResult?'done':'pending'; if(step==='run') return s==='ready'?'pending':s==='queued'?'active':'done'; if(step==='discover') return s==='queued'?'pending':'done'; if(step==='qualify') return m.recipients>0?'done':s==='running'?'active':'pending'; if(step==='outreach') return m.awaitingDelivery>0||m.sent>0?'done':m.recipients>0?'active':'pending'; if(step==='approval') return m.awaitingDelivery>0?'active':m.sent>0?'done':'pending'; return 'pending'; }
 
