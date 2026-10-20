@@ -19,6 +19,17 @@ export class ApprovalQueuePage implements OnInit {
   loading = false;
   error = '';
   notice = '';
+  readonly busyMessageIds = new Set<string>();
+
+  isBusy(message: any): boolean { return this.busyMessageIds.has(String(message?.id)); }
+  private beginAction(message: any): boolean {
+    const id = String(message?.id ?? '');
+    if (!id || this.busyMessageIds.has(id)) return false;
+    this.busyMessageIds.add(id);
+    this.error = '';
+    this.notice = '';
+    return true;
+  }
 
   get pending() { return this.messages.filter(x => this.messageStatus(x) === 'Queued' && !x.approvalRequested).length; }
   get requested() { return this.messages.filter(x => x.approvalRequested).length; }
@@ -33,7 +44,7 @@ export class ApprovalQueuePage implements OnInit {
         this.filter === 'all' ||
         (this.filter === 'pending' && !x.approvalRequested && status === 'Queued') ||
         (this.filter === 'requested' && !!x.approvalRequested) ||
-        (this.filter === 'processed' && ['Sent', 'Delivered', 'Failed', 'Suppressed'].includes(status));
+        (this.filter === 'processed' && ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(status));
       const text = [x.prospect, x.contactName, x.email, x.campaign, x.subject, x.body, status].filter(Boolean).join(' ').toLowerCase();
       return filterOk && (!q || text.includes(q));
     });
@@ -42,7 +53,7 @@ export class ApprovalQueuePage implements OnInit {
     this.filter = filter;
   }
   isProcessed(message: any) {
-    return ['Sent', 'Delivered', 'Failed', 'Suppressed'].includes(this.messageStatus(message));
+    return ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(this.messageStatus(message));
   }
 
   messageStatus(message: any): string {
@@ -53,48 +64,58 @@ export class ApprovalQueuePage implements OnInit {
     if (value === 3 || String(value).toLowerCase() === 'replied') return 'Replied';
     if (value === 4 || String(value).toLowerCase() === 'failed') return 'Failed';
     if (value === 5 || String(value).toLowerCase() === 'suppressed') return 'Suppressed';
+    if (String(value).toLowerCase() === 'cancelled' || String(value).toLowerCase() === 'canceled') return 'Cancelled';
     return String(value ?? 'Unknown'); 
   }
 
   ngOnInit(): void { void this.load(); }
 
   async load() {
-    this.loading = true; this.error = ''; this.notice = '';
+    if (this.loading) return;
+    this.loading = true; this.error = '';
     try { this.messages = await firstValueFrom(this.data.messages()) || []; }
     catch (error: any) { this.error = error?.error?.detail || 'Could not load the acquisition approval queue.'; }
     finally { this.loading = false; }
   }
 
   async requestApproval(message: any) {
+    if (!this.beginAction(message)) return;
     try {
       await firstValueFrom(this.data.requestApproval(message.id));
-      this.notice = 'Approval task created. Review is now recorded for this outreach message.';
       await this.load();
+      this.notice = 'Approval task created. Review is now recorded for this outreach message.';
     } catch (error: any) { this.error = error?.error?.detail || 'Could not request approval.'; }
+    finally { this.busyMessageIds.delete(String(message.id)); }
   }
 
   async reject(message: any) {
+    if (!this.beginAction(message)) return;
     try {
       await firstValueFrom(this.data.rejectApproval(message.id));
-      this.notice = 'Message rejected. It will not be sent.';
       await this.load();
+      this.notice = 'Message rejected. It will not be sent.';
     } catch (error: any) { this.error = error?.error?.detail || 'Could not reject the message.'; }
+    finally { this.busyMessageIds.delete(String(message.id)); }
   }
 
   async retry(message: any) {
+    if (!this.beginAction(message)) return;
     try {
       await firstValueFrom(this.data.retryMessage(message.id));
-      this.notice = 'Retry was accepted by the delivery service.';
       await this.load();
+      this.notice = 'Retry was accepted by the delivery service.';
     } catch (error: any) { this.error = error?.error?.detail || 'Could not retry the message.'; }
+    finally { this.busyMessageIds.delete(String(message.id)); }
   }
 
   async approve(message: any) {
+    if (!message?.approvalRequested || this.isProcessed(message) || !this.beginAction(message)) return;
     try {
       await firstValueFrom(this.data.approve(message.id));
-      this.notice = 'Approval recorded. The message remains queued; the campaign delivery worker can send it only after the approval gate is complete.';
       await this.load();
-    } catch (error: any) { this.error = error?.error?.detail || 'The message could not be sent. Backend safety controls may have blocked delivery.'; }
+      this.notice = 'Approval recorded. The backend still enforces sender, suppression, provider and tenant delivery gates.';
+    } catch (error: any) { this.error = error?.error?.detail || 'The message could not be approved. Backend safety controls may have blocked delivery.'; }
+    finally { this.busyMessageIds.delete(String(message.id)); }
   }
 
   statusLabel(message: any): string {
