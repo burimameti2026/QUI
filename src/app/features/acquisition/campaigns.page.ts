@@ -42,7 +42,6 @@ export class CampaignsPage implements OnDestroy, OnInit {
   private logsPoll: ReturnType<typeof setInterval> | null = null;
   private logsRequestInFlight = false;
   private logsRequestSequence = 0;
-  private logsRequestContainerId: string | null = null;
   logsOpen = false;
   logsLoading = false;
   logsCampaign: any = null;
@@ -159,7 +158,6 @@ export class CampaignsPage implements OnDestroy, OnInit {
     if (this.logsRequestInFlight) return;
     const requestSequence = ++this.logsRequestSequence;
     const requestedContainerId = String(this.logsContainer.id);
-    this.logsRequestContainerId = requestedContainerId;
     this.logsRequestInFlight = true;
     if (!silent) this.logsLoading = true;
     this.data.containerActivity(this.logsCampaign.id, requestedContainerId).subscribe({
@@ -171,7 +169,6 @@ export class CampaignsPage implements OnDestroy, OnInit {
           this.logsLoading = false;
         }
         this.logsRequestInFlight = false;
-        this.logsRequestContainerId = null;
         if (String(this.logsContainer?.id ?? '') !== requestedContainerId) this.loadSelectedContainerLogs(true);
       },
       error: e => {
@@ -180,7 +177,6 @@ export class CampaignsPage implements OnDestroy, OnInit {
           this.error = this.apiError(e, 'Container logs could not be loaded.');
         }
         this.logsRequestInFlight = false;
-        this.logsRequestContainerId = null;
         if (String(this.logsContainer?.id ?? '') !== requestedContainerId) this.loadSelectedContainerLogs(true);
       }
     });
