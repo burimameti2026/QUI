@@ -27,6 +27,7 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Leads qualification/conversion: replaced generic browser alerts with consistent in-page success/error feedback; CSV row separators were corrected.
 - Contacts export: renamed the exported file to leadsai-contacts.csv.
 - ICP: added loading state, duplicate-save guard, score range validation (0–100), JSON validation and a responsive token-based stylesheet.
+- Opportunities: added a duplicate-save guard and disables the Save button while the save/status transition is pending.
 - Industry Packs and Opportunities: moved embedded styles to component CSS files and replaced hard-coded neutral colors / redundant token fallbacks.
 
 ## Still needs verification / follow-up
