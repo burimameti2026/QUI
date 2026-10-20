@@ -12,6 +12,7 @@ import { AcquisitionService } from './acquisition.service';
 })
 export class CampaignHistoryPage implements OnInit, OnDestroy {
   rows: any[] = [];
+  private allRows: any[] = [];
   loading = false;
   error = '';
   search = '';
@@ -51,11 +52,8 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
       take: 1000
     }).subscribe({
       next: r => {
-        const q = this.search.trim().toLowerCase();
-        const items = r?.items || [];
-        this.rows = q
-          ? items.filter((x: any) => [x.campaignName, x.containerName, x.agentName, x.packCode, x.stepName, x.stepType, x.eventType, x.message, x.runId].some(v => String(v ?? '').toLowerCase().includes(q)))
-          : items;
+        this.allRows = r?.items || [];
+        this.applySearch();
         this.loading = false;
       },
       error: e => {
@@ -63,6 +61,15 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
         this.error = e?.error?.detail || e?.error?.error || 'Campaign execution history could not be loaded.';
       }
     });
+  }
+
+  applySearch(): void {
+    const q = this.search.trim().toLowerCase();
+    this.rows = q
+      ? this.allRows.filter((x: any) =>
+          [x.campaignName, x.containerName, x.agentName, x.packCode, x.stepName, x.stepType, x.eventType, x.message, x.runId]
+            .some(value => String(value ?? '').toLowerCase().includes(q)))
+      : [...this.allRows];
   }
 
   clear(): void {
