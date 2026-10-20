@@ -119,7 +119,7 @@
       </div>
       <button class="tile-body" type="button" (click)="openDesigner(campaign)">
         <div class="status-line"><span class="status-dot"></span><strong>{{ status(campaign.status) }}</strong><span>{{ campaign.objective || campaign.goal || 'Acquisition workflow' }}</span></div>
-        <div class="stats"><div><b>{{ campaign.runs || 0 }}</b><span>Runs</span></div><div><b>{{ campaign.runSuccess || 0 }}</b><span>Success</span></div><div><b>{{ campaign.runFailed || 0 }}</b><span>Failed</span></div><div><b>{{ campaign.runPending || 0 }}</b><span>Pending</span></div></div>
+        <div class="stats"><div><b>{{ campaign.jobs || 0 }}</b><span>Jobs</span></div><div><b>{{ campaign.completedJobs || 0 }}</b><span>Completed</span></div><div><b>{{ campaign.failedJobs || 0 }}</b><span>Failed</span></div><div><b>{{ campaign.queuedJobs || 0 }}</b><span>Queued</span></div><div><b>{{ campaign.runningJobs || 0 }}</b><span>Running</span></div></div>
         <div class="mini-flow"><span>⌕ Discover</span><i>→</i><span>✓ Qualify</span><i>→</i><span>✉ Outreach</span><i>→</i><span>⚿ Approval</span></div>
         <div class="open-designer">Open Designer <span>→</span></div>
       </button>
