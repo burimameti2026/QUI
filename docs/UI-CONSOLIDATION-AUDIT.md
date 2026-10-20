@@ -30,6 +30,14 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Opportunities: added a duplicate-save guard and disables the Save button while the save/status transition is pending.
 - Industry Packs and Opportunities: moved embedded styles to component CSS files and replaced hard-coded neutral colors / redundant token fallbacks.
 
+### Acquisition queue, history and campaign operator — current pass
+
+- Approval queue actions now prevent duplicate in-flight requests per message and disable conflicting actions while one is running.
+- Approval/rejection/retry success feedback is retained after refreshing the queue rather than being immediately cleared by the reload.
+- Processed messages (including Replied) are excluded from the awaiting-approval count/filter; processed messages no longer display a stale “Awaiting approval” label or allow approval actions.
+- Campaign History now guards overlapping polling/manual requests and validates date ranges before converting them to UTC and querying the API. It accepts either an array response or the documented `items` envelope.
+- Campaign Containers now avoid list refreshes during mutations, reset stale AI operator state when reopening the dialog, and prevent a second AI prepare action while a campaign is actively running.
+
 ## Still needs verification / follow-up
 
 1. The dead Leads “Filters” toolbar button was removed; the working temperature filter remains.
@@ -42,7 +50,7 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 ## Next pass order
 
-1. Finish dead/misleading controls and separate list errors from auxiliary lookup errors.
-2. Continue token consolidation across remaining Industry Packs styles and CRM components.
-3. Standardize CRM tables, filters, empty states and form validation.
+1. Verify Campaign Containers → container activity and Campaign History against real persisted backend events; confirm endpoint contracts against the backend runtime.
+2. Finish dead/misleading controls and normalize status-pill semantics across all modules.
+3. Continue token consolidation and standardize CRM tables, filters, empty states and form validation.
 4. Build, then perform a route-by-route interaction and responsive audit.
