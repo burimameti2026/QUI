@@ -37,6 +37,9 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Processed messages (including Replied) are excluded from the awaiting-approval count/filter; processed messages no longer display a stale “Awaiting approval” label or allow approval actions.
 - Campaign History now guards overlapping polling/manual requests and validates date ranges before converting them to UTC and querying the API. It accepts either an array response or the documented `items` envelope.
 - Campaign Containers now avoid list refreshes during mutations, reset stale AI operator state when reopening the dialog, and prevent a second AI prepare action while a campaign is actively running.
+- Cross-checked the UI against backend branch `refactor/tenant-job-runtime`: the approval queue message list used a route that does not exist, and reject/approve actions used outdated route suffixes. Corrected the list to `GET /api/acquisition/campaigns/messages` and actions to the actual `POST /api/email-operations/messages/{id}/reject|approve` endpoints.
+- Campaign cards previously read `runs/runSuccess/runFailed/runPending`, but the backend returns persisted job counters (`jobs/completedJobs/failedJobs/queuedJobs/runningJobs`). Cards now display the actual backend values; the Run AI Acquisition action uses the real active-job counters.
+- Campaign History step/status filters now match backend activity values, and empty search results show the proper empty state instead of a blank grid. Container log polling prevents overlapping requests and exposes activity API failures inside the dialog.
 
 ## Still needs verification / follow-up
 
@@ -50,7 +53,7 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 ## Next pass order
 
-1. Verify Campaign Containers → container activity and Campaign History against real persisted backend events; confirm endpoint contracts against the backend runtime.
+1. Run the latest frontend build and verify Campaign Containers → container activity and Campaign History against real persisted backend events in a live tenant; source-level endpoint contracts are now cross-checked.
 2. Finish dead/misleading controls and normalize status-pill semantics across all modules.
 3. Continue token consolidation and standardize CRM tables, filters, empty states and form validation.
 4. Build, then perform a route-by-route interaction and responsive audit.
