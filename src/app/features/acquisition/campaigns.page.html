@@ -141,10 +141,15 @@
         <button class="close" type="button" (click)="closeContainerLogs()">×</button>
       </header>
 
-      <div class="container-logs-toolbar" *ngIf="logsContainer">
+      <div class="container-logs-toolbar" *ngIf="logsContainers.length">
+        <label class="container-log-selector">Container
+          <select [ngModel]="logsContainer?.id || ''" (ngModelChange)="selectLogContainer($event)">
+            <option *ngFor="let container of logsContainers" [value]="container.id">{{ container.name || container.id }} · {{ containerStatus(container.status) }}</option>
+          </select>
+        </label>
         <span><b>{{ containerLogs.length }}</b> events</span>
         <span>Live · refreshes every 3s</span>
-        <button type="button" class="button-quiet" (click)="openDesigner(logsCampaign); closeContainerLogs()">Open container</button>
+        <button type="button" class="button-quiet" (click)="openDesigner(logsCampaign); closeContainerLogs()">Open campaign</button>
       </div>
 
       <div class="container-logs-list" *ngIf="logsContainer && containerLogs.length; else logsEmpty">
