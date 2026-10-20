@@ -6,9 +6,9 @@ Scope: focused source review of Acquisition Discovery, ICP, Industry Packs, Lead
 ## Confirmed design inconsistencies
 
 ### P1 — Page-level styling has multiple competing owners
-- src/app/features/industry-packs/industry-packs.page.ts embeds a large <style> block in its inline Angular template. It defines its own card, form, button, input and spacing rules; the active mode uses gray (#555) instead of the shared orange accent. Its 14px builder radius differs from the canonical 12px card radius.
+- Industry Packs previously embedded a large <style> block in its inline Angular template. This was moved to industry-packs.page.css and its neutral colors were partially replaced with shared design tokens; the remaining component rules still need a complete token and visual consistency review.
 - src/app/features/crm/opportunities.page.ts also embeds page CSS inside the template and hard-codes neutral colors, while other CRM pages rely on the global design system.
-- src/app/features/acquisition/icp.page.ts has an inline template without a page stylesheet and does not use the same field/grid conventions as Discovery and Industry Packs.
+- ICP previously had no page stylesheet. A responsive token-based icp.page.css is now wired, but its field/grid conventions still need a visual comparison against Discovery and Industry Packs.
 - Several CRM *.page.css files are intentionally empty and labeled deprecated, but page templates still use page-specific classes. The intended boundary between global styles and component styles is therefore unclear.
 
 Action: move page-specific rules to component stylesheets, replace hard-coded values with design tokens, and standardize page header, field, card, table, empty/loading/error and action patterns. Do not delete legacy styles until imports and selectors are traced.
@@ -34,7 +34,7 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 1. The dead Leads “Filters” toolbar button was removed; the working temperature filter remains.
 2. Leads now separates Contacts lookup errors from the Leads list, so a failed contact picker does not hide the list.
-3. Add consistent saving/loading guards to Opportunity save/close and CRM destructive actions to prevent duplicate requests.
+3. Opportunity save and CRM delete actions now guard duplicate requests; verify status transitions and all destructive actions across remaining CRM pages.
 4. Normalize status-pill semantics (success, pending, warning, failed) across Discovery, Campaigns, CRM and approval queue.
 5. Verify empty results vs. loading vs. API failure states on every page; several pages can otherwise appear blank.
 6. Validate responsive layouts at narrow desktop/tablet/mobile widths, including tables, modal forms, long labels and action groups.
