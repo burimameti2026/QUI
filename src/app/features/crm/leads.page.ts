@@ -70,7 +70,7 @@ export class LeadsPage implements OnInit {
       ['Manager',x=>x.manager],['Source',x=>x.source],['Score',x=>x.score],['Estimated value',x=>x.estimatedValue],['Created',x=>x.createdAt||x.created||x.createdDate]
     ];
     const quote=(value:any)=>'"'+String(value??'').replaceAll('"','""')+'"';
-    const csv=[columns.map(([label])=>quote(label)).join(','),...this.visible.map(x=>columns.map(([,value])=>quote(value(x))).join(','))].join('\\r\\n');
+    const csv=[columns.map(([label])=>quote(label)).join(','),...this.visible.map(x=>columns.map(([,value])=>quote(value(x))).join(','))].join('\r\n');
     const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
     const anchor=document.createElement('a');anchor.href=url;anchor.download='leadsai-leads.csv';anchor.click();URL.revokeObjectURL(url);
   }
