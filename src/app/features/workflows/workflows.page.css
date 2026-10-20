@@ -1,1 +1,39 @@
 /* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
+
+/* Workflow directory and designer — shared LeadsAI visual language */
+.page-workflows{max-width:1540px;margin:0 auto;padding-bottom:28px}
+.page-workflows>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.35fr);align-items:center;gap:24px;margin:14px 0;padding:20px 22px;border:1px solid #dfe6ec;border-radius:14px;background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09)}
+.page-workflows>.hero .eyebrow{color:#ff9a6b}
+.page-workflows>.hero h2{margin:6px 0;font-size:clamp(20px,2.2vw,28px);line-height:1.2;letter-spacing:-.025em}
+.page-workflows>.hero p{color:rgba(255,255,255,.72);font-size:11px;line-height:1.55}
+.page-workflows .progress{padding:13px;border:1px solid rgba(255,255,255,.17);border-radius:10px;background:rgba(255,255,255,.07)}
+.page-workflows .progress>div{display:flex;align-items:center;justify-content:space-between;gap:10px;color:rgba(255,255,255,.75);font-size:10px}
+.page-workflows .progress strong{color:#fff;font-size:18px}
+.page-workflows .progress>i{display:block;height:5px;margin-top:10px;border-radius:999px;background:#f5500b}
+.page-workflows .steps{gap:0;overflow:hidden;border:1px solid #dfe6ec;border-radius:12px;background:#fff}
+.page-workflows .steps>div{min-width:0;padding:10px;border-right:1px solid #e7edf1;background:#fff}
+.page-workflows .steps>div:last-child{border-right:0}
+.page-workflows .steps>div.active{background:#fff6f1}
+.page-workflows .steps>div>b{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:9px;background:#edf2f5;color:#526575}
+.page-workflows .steps>div.active>b{background:#f5500b;color:#fff}
+.page-workflows .steps>div span{min-width:0}
+.page-workflows .steps>div strong{font-size:10px;color:#253b4c}
+.page-workflows .steps>div small{font-size:9px;color:#70818e}
+.page-workflows .content-grid{align-items:start;gap:14px}
+.page-workflows .card{min-width:0;border-radius:13px;box-shadow:0 4px 16px rgba(21,35,46,.045)}
+.page-workflows .card-header .eyebrow{color:#f5500b}
+.page-workflows .list-item{gap:10px;transition:background .14s ease}
+.page-workflows button.list-item{width:100%;text-align:left;background:#fff;cursor:pointer}
+.page-workflows button.list-item:hover,.page-workflows .list-item.active{background:#f4f8fa}
+.page-workflows .avatar{border-radius:9px;background:#edf2f5;color:#2b455e}
+.page-workflows .table{overflow:auto;border-radius:0 0 13px 13px}
+.page-workflows table tbody tr{cursor:pointer}
+.page-workflows table tbody tr:hover{background:#f5f8fa}
+.page-workflows .form{padding:14px}
+.page-workflows .form label{gap:7px;color:#526575;font-size:10px}
+.page-workflows .form input,.page-workflows .form select,.page-workflows .form textarea{border:1px solid #d7e0e6;border-radius:8px;padding:9px 10px}
+.page-workflows .form input:focus,.page-workflows .form select:focus,.page-workflows .form textarea:focus{outline:0;border-color:#f5500b;box-shadow:0 0 0 3px rgba(245,80,11,.1)}
+.page-workflows .notice{border:1px solid #e2eaf0;border-radius:9px;background:#f5f8fa;color:#526575;line-height:1.5}
+.page-workflows .status{border-radius:999px}
+@media(max-width:850px){.page-workflows>.hero{grid-template-columns:1fr;padding:16px}.page-workflows .steps{grid-template-columns:repeat(2,minmax(0,1fr))}.page-workflows .steps>div{border-bottom:1px solid #e7edf1}.page-workflows .steps>div:nth-child(2n){border-right:0}}
+@media(max-width:620px){.page-workflows .steps{grid-template-columns:1fr}.page-workflows .steps>div{border-right:0}.page-workflows .content-grid{grid-template-columns:minmax(0,1fr)}}
