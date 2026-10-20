@@ -1,0 +1,17 @@
+/* ICP library: responsive fields and cards aligned to the canonical design tokens. */
+.page-icp .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px}
+.page-icp .form-grid label{display:flex;flex-direction:column;gap:6px;min-width:0;color:var(--wl-text);font-size:12px;font-weight:650}
+.page-icp .form-grid input,.page-icp .form-grid textarea{width:100%;min-width:0;min-height:var(--wl-control-height);padding:9px 11px;border:1px solid var(--wl-border-strong);border-radius:var(--wl-input-radius);background:var(--wl-surface);color:var(--wl-text);font:inherit}
+.page-icp .form-grid textarea{min-height:92px;resize:vertical}
+.page-icp .form-grid .full{grid-column:1/-1}
+.page-icp .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px}
+.page-icp .card{min-width:0;overflow:hidden;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-surface);box-shadow:var(--wl-shadow)}
+.page-icp .card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.page-icp .card-header h2{margin:0;font-size:15px}
+.page-icp .card-body{padding:16px}
+.page-icp .card-footer{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--wl-border)}
+.page-icp .list-item{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:9px 0;border-bottom:1px solid var(--wl-border)}
+.page-icp .list-item:last-child{border-bottom:0}
+.page-icp .list-item span:last-child{text-align:right;overflow-wrap:anywhere}
+.page-icp button:disabled{opacity:.65;cursor:wait}
+@media(max-width:700px){.page-icp .form-grid{grid-template-columns:1fr}.page-icp .form-grid .full{grid-column:auto}.page-icp .list-item{flex-direction:column;gap:3px}.page-icp .list-item span:last-child{text-align:left}}
