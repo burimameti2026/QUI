@@ -88,10 +88,6 @@
         <p class="notice" *ngIf="!selectedIcpId">Select an ICP before creating the container.</p>
         <button class="button-primary" type="button" [disabled]="!selectedIcpId || creating" (click)="createContainer()">{{creating ? 'Creating…' : 'Create Campaign Container'}}</button>
       </div>
-      <div class="create-options" *ngIf="false">
-        <button type="button" class="create-option active" (click)="openIndustryPacks()"><b>Use an Industry Pack</b><span>Start with Logistics, SaaS, Ecommerce, 3PL and other reusable definitions.</span><small>Recommended starting point</small></button>
-        <button type="button" class="create-option" (click)="createFromScratch()"><b>Create from scratch</b><span>Define purpose, industry, discovery source, qualification and outreach yourself.</span><small>Save it later as a reusable Industry Pack template</small></button>
-      </div>
       <div class="create-timeline"><b>Minimum campaign definition</b><span>Purpose</span><span>→</span><span>Industry + ICP</span><span>→</span><span>Discovery source</span><span>→</span><span>Qualification</span><span>→</span><span>Outreach</span><span>→</span><span>Approval</span></div>
     </section>
   </div>
