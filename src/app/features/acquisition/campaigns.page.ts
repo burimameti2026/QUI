@@ -179,7 +179,7 @@ export class CampaignsPage implements OnDestroy, OnInit {
 
   containerStatus(value: any): string {
     const states = ['Stopped', 'Running', 'Paused', 'Failed', 'Pending', 'Queued', 'Starting', 'Completed', 'Waiting'];
-    if (typeof value === 'number' || (typeof value === 'string' && /^\\d+$/.test(value))) {
+    if (typeof value === 'number' || (typeof value === 'string' && /^\d+$/.test(value))) {
       return states[Number(value)] || 'Unknown';
     }
     const normalized = String(value ?? '').trim();
