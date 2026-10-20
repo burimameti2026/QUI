@@ -6,7 +6,7 @@
   <section class="history-filters">
     <div class="filter-head"><div><span class="eyebrow">EXECUTION HISTORY</span><h2>Every persisted campaign execution event</h2></div><strong>{{ rows.length }} events</strong></div>
     <div class="filter-grid">
-      <label>Search<input [(ngModel)]="search" (ngModelChange)="load(true)" placeholder="Campaign, run, message…"></label>
+      <label>Search<input [(ngModel)]="search" (ngModelChange)="applySearch()" placeholder="Campaign, run, message…"></label>
       <label>Campaign name<input [(ngModel)]="campaignName" placeholder="Campaign"></label>
       <label>Container name<input [(ngModel)]="containerName" placeholder="Container"></label>
       <label>Agent<input [(ngModel)]="agentName" placeholder="Agent"></label>
