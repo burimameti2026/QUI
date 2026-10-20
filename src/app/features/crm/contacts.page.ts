@@ -36,7 +36,7 @@ import { CrmService } from './crm.service';
               <td><a class="button-quiet" [href]="'mailto:' + x.email">{{ x.email || '—' }}</a></td><td>{{ x.phone || '—' }}</td>
               <td><span class="status">{{ x.lifecycleStage || 'visitor' }}</span></td>
               <td>{{ x.createdAtUtc | date: 'mediumDate' }}</td>
-              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)">Delete</button></div></td>
+              <td><div class="actions"><button class="button-quiet" (click)="open(x)">✎ Edit</button><button class="button-danger" (click)="remove(x)" [disabled]="deletingIds.has(x.id)">{{ deletingIds.has(x.id) ? 'Deleting…' : 'Delete' }}</button></div></td>
             </tr></tbody>
           </table>
         </div>
@@ -53,7 +53,7 @@ import { CrmService } from './crm.service';
     </main>`
 })
 export class ContactsPage implements OnInit {
-  rows: Contact[] = []; q = ''; stage = ''; show = false; loading = false; saving = false; error = '';
+  rows: Contact[] = []; q = ''; stage = ''; show = false; loading = false; saving = false; error = ''; deletingIds = new Set<string>();
   form: Partial<Contact> = { lifecycleStage: 'lead' };
   constructor(private readonly crm: CrmService) {}
   ngOnInit(): void { this.load(); }
@@ -62,9 +62,9 @@ export class ContactsPage implements OnInit {
   get leadCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'lead').length; }
   get customerCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'customer').length; }
   open(x?: Contact): void { this.form = x ? { ...x } : { lifecycleStage: 'lead' }; this.show = true; }
-  save(): void { if (this.saving) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((x) => x.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
-  remove(x: Contact): void { if (!confirm(`Delete ${x.firstName} ${x.lastName}?`)) return; this.error = ''; this.crm.deleteContact(x.id).subscribe({ next: () => this.rows = this.rows.filter((v) => v.id !== x.id), error: (error) => this.error = this.apiError(error) }); }
+  save(): void { if (this.saving || !this.form.firstName?.trim()) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((x) => x.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
+  remove(x: Contact): void { if (this.deletingIds.has(x.id) || !confirm(`Delete ${x.firstName} ${x.lastName}?`)) return; this.error = ''; this.deletingIds.add(x.id); this.crm.deleteContact(x.id).subscribe({ next: () => { this.rows = this.rows.filter((v) => v.id !== x.id); this.deletingIds.delete(x.id); }, error: (error) => { this.error = this.apiError(error); this.deletingIds.delete(x.id); } }); }
   initials(x: Contact): string { return ((x.firstName || '?')[0] + (x.lastName || '')[0]).toUpperCase(); }
-  exportCsv(): void { const header = 'FirstName,LastName,Email,Phone,Lifecycle\n'; const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n'); const anchor = document.createElement('a'); anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' })); anchor.download = 'leadsai-contacts.csv'; anchor.click(); setTimeout(() => URL.revokeObjectURL(anchor.href), 0); }
+  exportCsv(): void { const header = 'FirstName,LastName,Email,Phone,Lifecycle\r\n'; const body = this.visible.map((x) => [x.firstName,x.lastName,x.email,x.phone,x.lifecycleStage].map((v) => `"${String(v ?? '').replaceAll('"','""')}"`).join(',')).join('\n'); const anchor = document.createElement('a'); anchor.href = URL.createObjectURL(new Blob([header + body], { type: 'text/csv' })); anchor.download = 'leadsai-contacts.csv'; anchor.click(); setTimeout(() => URL.revokeObjectURL(anchor.href), 0); }
   private apiError(error: any): string { return error?.error?.detail || error?.error?.title || (error?.status ? `CRM API returned ${error.status}.` : 'CRM API is unavailable.'); }
 }
