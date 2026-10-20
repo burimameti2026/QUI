@@ -57,11 +57,11 @@ export class ContactsPage implements OnInit {
   form: Partial<Contact> = { lifecycleStage: 'lead' };
   constructor(private readonly crm: CrmService) {}
   ngOnInit(): void { this.load(); }
-  load(): void { if (this.loading) return; this.loading = true; this.error = ''; this.crm.contacts().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } }); }
+  load(): void { if (this.loading || this.saving || this.deletingIds.size) return; this.loading = true; this.error = ''; this.crm.contacts().subscribe({ next: (rows) => { this.rows = rows || []; this.loading = false; }, error: (error) => { this.error = this.apiError(error); this.loading = false; } }); }
   get visible(): Contact[] { const q = this.q.trim().toLowerCase(); return this.rows.filter((x) => (!q || `${x.firstName} ${x.lastName} ${x.email} ${x.phone}`.toLowerCase().includes(q)) && (!this.stage || x.lifecycleStage === this.stage)); }
   get leadCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'lead').length; }
   get customerCount(): number { return this.rows.filter((x) => x.lifecycleStage === 'customer').length; }
-  open(x?: Contact): void { this.form = x ? { ...x } : { lifecycleStage: 'lead' }; this.show = true; }
+  open(x?: Contact): void { if (this.saving) return; this.form = x ? { ...x } : { lifecycleStage: 'lead' }; this.show = true; }
   save(): void { if (this.saving || !this.form.firstName?.trim()) return; this.saving = true; this.error = ''; const operation = this.form.id ? this.crm.updateContact(this.form.id, this.form) : this.crm.createContact(this.form); operation.subscribe({ next: (result) => { const index = this.rows.findIndex((x) => x.id === result.id); if (index >= 0) this.rows[index] = result; else this.rows.unshift(result); this.show = false; this.saving = false; }, error: (error) => { this.error = this.apiError(error); this.saving = false; } }); }
   remove(x: Contact): void { if (this.deletingIds.has(x.id) || !confirm(`Delete ${x.firstName} ${x.lastName}?`)) return; this.error = ''; this.deletingIds.add(x.id); this.crm.deleteContact(x.id).subscribe({ next: () => { this.rows = this.rows.filter((v) => v.id !== x.id); this.deletingIds.delete(x.id); }, error: (error) => { this.error = this.apiError(error); this.deletingIds.delete(x.id); } }); }
   initials(x: Contact): string { return ((x.firstName || '?')[0] + (x.lastName || '')[0]).toUpperCase(); }
