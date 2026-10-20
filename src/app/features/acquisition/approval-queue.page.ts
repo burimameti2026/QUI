@@ -31,7 +31,8 @@ export class ApprovalQueuePage implements OnInit {
     return true;
   }
 
-  get pending() { return this.messages.filter(x => this.messageStatus(x) === 'Queued' && !x.approvalRequested).length; }
+  get pending() { return this.messages.filter(x => this.messageStatus(x) === 'Queued' && !x.approvalRequested && !x.approvalGranted).length; }
+  get approvedQueued() { return this.messages.filter(x => this.isApprovedAndQueued(x)).length; }
   get requested() { return this.messages.filter(x => x.approvalRequested && !this.isProcessed(x)).length; }
   get safeDemo() { return this.messages.length > 0 && this.messages.every(x => String(x.email || '').endsWith('.test')); }
   get approved() { return this.messages.filter(x => ['Sent', 'Delivered', 'Replied'].includes(this.messageStatus(x))).length; }
@@ -42,10 +43,10 @@ export class ApprovalQueuePage implements OnInit {
       const status = this.messageStatus(x);
       const filterOk =
         this.filter === 'all' ||
-        (this.filter === 'pending' && !x.approvalRequested && status === 'Queued') ||
+        (this.filter === 'pending' && !x.approvalRequested && !x.approvalGranted && status === 'Queued') ||
         (this.filter === 'requested' && !!x.approvalRequested && !this.isProcessed(x)) ||
         (this.filter === 'processed' && ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(status));
-      const text = [x.prospect, x.contactName, x.email, x.campaign, x.subject, x.body, status].filter(Boolean).join(' ').toLowerCase();
+      const text = [x.prospect, x.contactName, x.email, x.campaign, x.subject, x.body, this.statusLabel(x)].filter(Boolean).join(' ').toLowerCase();
       return filterOk && (!q || text.includes(q));
     });
   }
