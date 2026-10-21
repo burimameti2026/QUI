@@ -67,3 +67,4 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - GitHub Actions validation is pending for the latest UI commits. These CSS changes are source-level consolidation only; they do not substitute for responsive visual QA or live tenant/runtime verification.
 - Campaign History filters and table were made more readable: labels/cells are no longer rendered in 8–10px microtype, white surfaces and hard-coded borders now use the shared LeadsAI design tokens, and hover/pack/event styles follow the same surface palette.
 - Leads page no longer imports the unused KPI-strip component; its standalone imports now match the actual template and avoid retaining dead UI dependencies.
+- CI caught an orphaned `<qai-kpi-strip>` element left in the Leads template after its component import was removed. The remaining markup has now been removed as intended; a fresh build is required to verify the fix.
