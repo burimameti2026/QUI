@@ -58,3 +58,9 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 2. Finish dead/misleading controls and normalize status-pill semantics across all modules.
 3. Continue token consolidation and standardize CRM tables, filters, empty states and form validation.
 4. Build, then perform a route-by-route interaction and responsive audit.
+
+## Update — 2026-10-21
+
+- Campaign History status badges now explicitly style Queued/Pending, Waiting, Running, Paused/Info, Completed and Failed. Running is visually distinct from a completed/successful run; status colors follow the shared semantic palette rather than treating active work as success.
+- Campaign Container cards no longer use full-card black/yellow/red/green fills for lifecycle state. Cards use the common surface and text colors with a narrow semantic top border, keeping the workflow counters readable and the status visible without overpowering the page.
+- GitHub Actions validation is pending for the latest UI commits. These CSS changes are source-level consolidation only; they do not substitute for responsive visual QA or live tenant/runtime verification.
