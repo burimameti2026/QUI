@@ -38,7 +38,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
             <tr class="empty" *ngIf="!visible.length"><td colspan="10"><strong>No leads available</strong><span>Create a lead or run the acquisition workflow.</span></td></tr>
           </tbody>
         </table>
-        <div class="notice" *ngIf="selected.length"><span>Selected: {{ selected.length }}</span><button type="button" (click)="editSelected()">✎ Edit</button><button type="button" (click)="deleteSelected()">⌫ Delete</button><button type="button" class="button-danger" (click)="clearSelection()">Discard</button></div>
+        <div class="notice" *ngIf="selected.length"><span>Selected: {{ selected.length }}</span><button type="button" (click)="editSelected()">✎ Edit</button><button type="button" (click)="deleteSelected()" [disabled]="deleting">{{ deleting ? 'Deleting…' : '⌫ Delete' }}</button><button type="button" class="button-danger" (click)="clearSelection()">Discard</button></div>
       </qai-data-grid>
     </section>
     <qai-modal [open]="showEdit" title="Edit lead" (close)="showEdit=false"><form class="form" (ngSubmit)="saveEdit()"><label>Intent summary<input [(ngModel)]="editForm.intentSummary" name="editIntent" required /></label><div class="content-grid"><label>Source<input [(ngModel)]="editForm.source" name="editSource" /></label><label>Score<input type="number" min="0" max="100" [(ngModel)]="editForm.score" name="editScore" /></label></div><footer><button type="button" (click)="showEdit=false">Cancel</button><button class="button-primary" type="submit">Save changes</button></footer></form></qai-modal>
@@ -46,6 +46,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
   `
 })
 export class LeadsPage implements OnInit {
+  deleting = false;
   rows:any[]=[]; contacts:any[]=[]; q=''; temp=''; activeTab='All'; selected:any[]=[]; showCreate=false; showEdit=false; loading=false; error=''; message=''; contactsError=''; sortByScore=false;
   form:any={contactId:'',source:'manual',score:50,estimatedValue:0,intentSummary:''}; editForm:any={};
   constructor(private data:CrmService){}
@@ -75,12 +76,16 @@ export class LeadsPage implements OnInit {
     const anchor=document.createElement('a');anchor.href=url;anchor.download='leadsai-leads.csv';anchor.click();URL.revokeObjectURL(url);
   }
   deleteSelected(){
+    if(this.deleting)return;
     const targets=[...this.selected];
     if(!targets.length||!confirm(`Delete ${targets.length} selected lead(s)? This cannot be undone.`))return;
+    this.deleting=true;
     this.error='';
+    let remaining=targets.length;
+    const finishOne=()=>{remaining--;if(remaining===0)this.deleting=false;};
     targets.forEach(item=>this.data.deleteLead(item.id).subscribe({
-      next:()=>{this.rows=this.rows.filter(row=>row.id!==item.id);this.selected=this.selected.filter(row=>row.id!==item.id)},
-      error:e=>{this.error=this.apiError(e)}
+      next:()=>{this.rows=this.rows.filter(row=>row.id!==item.id);this.selected=this.selected.filter(row=>row.id!==item.id);finishOne()},
+      error:e=>{this.error=this.apiError(e);finishOne()}
     }));
   }
 
