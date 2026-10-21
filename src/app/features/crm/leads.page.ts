@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { CrmService } from './crm.service';
 import { Modal, PageHeader } from '../../shared/ui';
 import { RefinedDataGrid } from '../../shared/components/refined-data-grid.component';
-import { RefinedKpiStrip } from '../../shared/components/refined-kpi-strip.component';
 import { RefinedTabs } from '../../shared/components/refined-tabs.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedKpiStrip, RefinedTabs],
+  imports: [CommonModule, FormsModule, Modal, PageHeader, RefinedDataGrid, RefinedTabs],
   styleUrls: ['./leads.page.css'],
   template: `
     <section class="page page-crm-leads">
