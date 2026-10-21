@@ -425,8 +425,34 @@ export class CampaignsPage implements OnDestroy, OnInit {
   }
 
   runAutonomous(campaign: any): void {
+    const runtime = this.tenantRuntime.runtime();
+    if (runtime?.tenantId) {
+      this.runAutonomousForTenant(runtime.tenantId, campaign);
+      return;
+    }
+
+    this.busy = true;
+    this.error = '';
+    this.tenantRuntime.load().subscribe({
+      next: loaded => {
+        this.busy = false;
+        this.runAutonomousForTenant(loaded.tenantId, campaign);
+      },
+      error: error => {
+        this.busy = false;
+        this.error = this.apiError(error, 'Workspace runtime could not be loaded.');
+      }
+    });
+  }
+
+  private runAutonomousForTenant(tenantId: string, campaign: any): void {
+    if (!tenantId || !this.tenantRuntime.isActive()) {
+      this.error = 'An active workspace and license are required to run autonomous acquisition.';
+      return;
+    }
+
     this.runAction(
-      () => this.data.runAutonomousCampaign(campaign.id),
+      () => this.data.runAutonomousCampaign(tenantId, campaign.id),
       'Autonomous acquisition run queued. Discovery and qualification will continue in the background.'
     );
   }
