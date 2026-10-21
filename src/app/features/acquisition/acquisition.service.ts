@@ -138,8 +138,8 @@ export class AcquisitionService {
   deleteCampaign(id: string) {
     return this.api.delete<any>(`acquisition/campaigns/${id}`);
   }
-  runAutonomousCampaign(id: string) {
-    return this.startCampaign(id);
+  runAutonomousCampaign(tenantId: string, id: string) {
+    return this.aiStart(tenantId, id);
   }
   campaignDetail(id: string) {
     return this.api.get<any>(`acquisition/campaigns/${id}`);
