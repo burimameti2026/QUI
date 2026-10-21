@@ -63,4 +63,5 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 
 - Campaign History status badges now explicitly style Queued/Pending, Waiting, Running, Paused/Info, Completed and Failed. Running is visually distinct from a completed/successful run; status colors follow the shared semantic palette rather than treating active work as success.
 - Campaign Container cards no longer use full-card black/yellow/red/green fills for lifecycle state. Cards use the common surface and text colors with a narrow semantic top border, keeping the workflow counters readable and the status visible without overpowering the page.
+- Leads bulk deletion now blocks duplicate submissions while the selected deletes are in flight, shows a `Deleting…` state, and keeps failed rows selected so they can be retried after the API error is addressed.
 - GitHub Actions validation is pending for the latest UI commits. These CSS changes are source-level consolidation only; they do not substitute for responsive visual QA or live tenant/runtime verification.
