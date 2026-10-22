@@ -4,12 +4,12 @@
   <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Design each container’s own acquisition workflow, choose its prospect group, and inspect persisted runtime activity.">
     <button class="button-quiet" type="button" (click)="back()">← Campaigns</button>
     <button class="button-secondary" type="button" (click)="load()" [disabled]="loading || saving">↻ Refresh</button>
-    <button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || !nodes.length || isRunning">Save flow</button>
+    <button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || !nodes.length || containerConfigLocked">Save flow</button>
   </qai-page-header>
 
   <p class="notice success" *ngIf="message">{{ message }}</p>
   <p class="notice alert-error" *ngIf="error">{{ error }}</p>
-  <p class="notice designer-lock-notice" *ngIf="selectedContainerId && isRunning">This container is running. Stop it before saving workflow changes; edits are not applied to an active run.</p>
+  <p class="notice designer-lock-notice" *ngIf="selectedContainerId && containerConfigLocked">This container has queued or active work. Stop or finish the run before saving workflow changes so the execution version stays traceable.</p>
 
   <ng-container *ngIf="!loading && campaign">
     <section class="designer-toolbar">
@@ -117,7 +117,7 @@
           <div class="attention-box" *ngIf="nodeStatus(selected)==='attention'"><strong>⚠</strong><span>{{ attentionDetails(selected) }}</span></div>
         </div>
 
-        <div class="inspector-footer"><button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || isRunning">Save component changes</button></div>
+        <div class="inspector-footer"><button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || containerConfigLocked">Save component changes</button></div>
       </aside>
       <ng-template #noSelection><aside class="inspector empty-inspector"><span>◇</span><h3>Configure your flow</h3><p>Select a step on the canvas to edit its settings, review execution status, and inspect logs.</p></aside></ng-template>
     </section>
