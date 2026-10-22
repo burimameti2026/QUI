@@ -63,14 +63,32 @@ export class ApprovalQueuePage implements OnInit {
 
   messageStatus(message: any): string {
     const value = message?.status;
-    if (value === 0 || String(value).toLowerCase() === 'queued') return 'Queued';
-    if (value === 1 || String(value).toLowerCase() === 'sent') return 'Sent';
-    if (value === 2 || String(value).toLowerCase() === 'delivered') return 'Delivered';
-    if (value === 3 || String(value).toLowerCase() === 'replied') return 'Replied';
-    if (value === 4 || String(value).toLowerCase() === 'failed') return 'Failed';
-    if (value === 5 || String(value).toLowerCase() === 'suppressed') return 'Suppressed';
-    if (String(value).toLowerCase() === 'cancelled' || String(value).toLowerCase() === 'canceled') return 'Cancelled';
-    return String(value ?? 'Unknown'); 
+    const text = String(value ?? '').toLowerCase();
+    // Keep numeric values aligned with LeadsAI.Domain.Core.OutreachStatus:
+    // Queued=0, Sending=1, Sent=2, Delivered=3, Replied=4, Failed=5, Suppressed=6.
+    const numeric: Record<number, string> = {
+      0: 'Queued', 1: 'Sending', 2: 'Sent', 3: 'Delivered',
+      4: 'Replied', 5: 'Failed', 6: 'Suppressed'
+    };
+    if (typeof value === 'number' && numeric[value]) return numeric[value];
+    const normalized: Record<string, string> = {
+      queued: 'Queued', sending: 'Sending', sent: 'Sent', delivered: 'Delivered',
+      replied: 'Replied', failed: 'Failed', suppressed: 'Suppressed',
+      cancelled: 'Cancelled', canceled: 'Cancelled'
+    };
+    return normalized[text] || String(value ?? 'Unknown');
+  }
+
+  canRequestApproval(message: any): boolean {
+    return this.messageStatus(message) === 'Queued' && !message?.approvalRequested && !message?.approvalGranted;
+  }
+
+  canReview(message: any): boolean {
+    return this.messageStatus(message) === 'Queued' && !!message?.approvalRequested && !this.isProcessed(message);
+  }
+
+  canRetry(message: any): boolean {
+    return this.messageStatus(message) === 'Failed';
   }
 
   ngOnInit(): void { void this.load(); }
@@ -114,7 +132,7 @@ export class ApprovalQueuePage implements OnInit {
   }
 
   async approve(message: any) {
-    if (!message?.approvalRequested || this.isProcessed(message) || !this.beginAction(message)) return;
+    if (!this.canReview(message) || !this.beginAction(message)) return;
     try {
       await firstValueFrom(this.data.approve(message.id));
       await this.load();
