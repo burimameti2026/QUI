@@ -557,6 +557,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   nodeStatus(node: FlowNode): string {
     const s = String(node.status ?? '').toLowerCase();
     const numeric = Number(node.status);
+    try {
+      const result = JSON.parse(node.resultJson || '{}');
+      if (String(result?.status || '').toLowerCase() === 'provider-not-configured') return 'attention';
+    } catch { /* malformed legacy result data should not break the designer */ }
     if (numeric === 4 || s.includes('failed')) return 'failed';
     if (numeric === 1 || s.includes('running')) return 'running';
     if (numeric === 2 || s.includes('completed')) {
@@ -582,6 +586,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   nodeIcon(node: FlowNode): string {
     const state = this.nodeStatus(node);
     if (state === 'failed') return '!';
+    if (state === 'attention') return '⚠';
     if (state === 'completed') return '✓';
     if (state === 'running') return '●';
     if (state === 'waiting') return '⚿';
@@ -589,7 +594,17 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   errorDetails(node: FlowNode): string {
-    return node.error || 'No execution error recorded.';
+    if (node.error) return node.error;
+    try {
+      const result = JSON.parse(node.resultJson || '{}');
+      if (String(result?.status || '').toLowerCase() === 'provider-not-configured')
+        return result.note || 'An enrichment provider is not configured.';
+    } catch { /* ignore malformed result JSON */ }
+    return 'No execution error recorded.';
+  }
+
+  attentionDetails(node: FlowNode): string {
+    return this.errorDetails(node);
   }
 
   formatDate(value?: string | null): string {
