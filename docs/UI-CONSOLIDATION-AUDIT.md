@@ -76,3 +76,10 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Campaign Designer activity polling now prevents overlapping requests and stale responses from a previously selected container overwriting the current activity view. Poll responses are checked against the selected container and step filter.
 - Removed the remaining inline `<style>` block from `campaign-designer.page.html`; outreach editor styles now live in `campaign-designer.page.css` and use shared surface, border and muted-text tokens.
 - The frontend build on the previous UI batch completed successfully. A new build is required for the latest Campaign Designer changes; live API execution still requires an active tenant/backend environment and is not represented as verified by a compile-only build.
+
+## Consolidated functional fixes — 2026-10-22
+
+- Campaign Designer runtime status and Start eligibility now use the selected container status when a container is selected, instead of presenting campaign-level status as if it described the container.
+- Pause/Resume remain campaign-level actions and are hidden in container mode because the UI service currently exposes container Start/Stop but no container Pause/Resume endpoints. This avoids sending a container action to the wrong campaign-level API.
+- Industry Pack AI draft results are normalized before being written into the editor. Both flat editor fields and nested template fields are supported for discovery provider/keywords, scenarios, outreach, qualification score, enrichment and target-list settings. This prevents array/object values from leaking into string fields and breaking a later save.
+- These are code-level fixes; end-to-end runtime behavior still requires the API and an authorized active tenant.
