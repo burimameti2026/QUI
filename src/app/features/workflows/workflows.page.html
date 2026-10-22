@@ -9,7 +9,7 @@
     </select>
     <button class="button-secondary" *ngIf="view === 'list'" (click)="templateOpen = true">Use template</button>
     <button class="button-primary" *ngIf="view === 'list'" (click)="newOpen = true">+ New workflow</button>
-    <button class="button-secondary" *ngIf="view === 'designer'" [disabled]="saving || !activeId || !canRunOrchestration" (click)="runOrchestration()">▶ Run orchestration</button><button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
+    <button class="button-secondary" *ngIf="view === 'designer'" [disabled]="saving || !activeId || !canRunOrchestration" (click)="runOrchestration()">▶ Run orchestration</button><button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save()">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
   </qai-page-header>
 
   <ng-template #workflowList>
