@@ -301,7 +301,7 @@ export class WorkflowsPage implements OnInit, OnDestroy {
       next: () => this.data.run(this.activeId).subscribe({
         next: (r) => {
           this.saving = false;
-          this.message = `Orchestration accepted: ${(r.startedContainers || []).length} container job(s) queued, ${(r.automations || []).length} automation run(s) processed.`;
+          this.message = `Workflow graph validated (${r.validatedSteps || this.nodes.length} steps): ${(r.startedContainers || []).length} container job(s) queued, ${(r.automations || []).length} automation run(s) processed.`;
           this.loadOrchestration();
         },
         error: (e) => {
