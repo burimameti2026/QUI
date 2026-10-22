@@ -281,7 +281,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
           this.selectedContainerId = this.containers[0].id;
         }
         const selected = this.containers.find(x => x.id === this.selectedContainerId);
-        if (!preserveTargetSelection) this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
+        if (!preserveTargetSelection) {
+          this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
+          this.applyContainerPlan(selected);
+        }
         this.ensureTargetAudienceNode();
         this.syncAdvisorContext();
         this.refreshActivity();
@@ -300,12 +303,27 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   containerChanged(): void {
     const selected = this.containers.find(x => x.id === this.selectedContainerId);
     this.selectedTargetListId = selected?.targetListId || '';
+    this.applyContainerPlan(selected);
     const node = this.nodes.find(x => x.type === 'TargetAudience');
     if (node) node.config.targetListId = this.selectedTargetListId;
     this.selected = node || this.selected;
     this.activityLogs = [];
     this.syncAdvisorContext();
     this.refreshActivity();
+  }
+
+  private applyContainerPlan(container: any | null): void {
+    if (!container) return;
+    try {
+      const configuration = JSON.parse(container.configurationJson || container.ConfigurationJson || '{}');
+      const plan = configuration?.workflowPlan;
+      if (!plan || typeof plan !== 'object') return;
+      const selectedId = this.selected?.id;
+      this.nodes = this.readNodes(plan);
+      this.selected = this.nodes.find(node => node.id === selectedId) || this.nodes[0] || null;
+    } catch {
+      this.error = 'This container has invalid workflow configuration. The campaign default was kept.';
+    }
   }
 
   selectedContainer(): any | null {
@@ -465,31 +483,39 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
       edges,
       stages
     };
-    const persist = () => {
-      if (!this.selectedContainerId) {
-        this.saving = false;
-        this.campaign.planJson = JSON.stringify(plan);
-        this.message = 'Campaign flow saved.';
-        return;
-      }
-      this.data.setContainerTargetList(this.id, this.selectedContainerId, this.selectedTargetListId || null).subscribe({
-        next: () => {
+
+    if (this.selectedContainerId) {
+      const container = this.selectedContainer();
+      let configuration: any = {};
+      try { configuration = JSON.parse(container?.configurationJson || container?.ConfigurationJson || '{}'); }
+      catch { configuration = {}; }
+      configuration.targetListId = this.selectedTargetListId || null;
+      configuration.workflowPlan = plan;
+      this.data.saveContainerConfiguration(this.id, this.selectedContainerId, JSON.stringify(configuration)).subscribe({
+        next: result => {
           this.saving = false;
-          this.campaign.planJson = JSON.stringify(plan);
-          const container = this.containers.find(x => x.id === this.selectedContainerId);
-          if (container) container.targetListId = this.selectedTargetListId || null;
-          this.message = 'Container workflow and prospect group saved.';
+          if (container) {
+            container.configurationJson = result?.configurationJson || JSON.stringify(configuration);
+            container.targetListId = this.selectedTargetListId || null;
+            container.version = result?.version ?? container.version;
+            container.versionLabel = result?.versionLabel ?? container.versionLabel;
+          }
+          this.message = 'Workflow saved to this container only.';
+          this.syncAdvisorContext();
         },
         error: e => {
           this.saving = false;
-          this.error = e?.error?.detail || e?.error?.error || 'Prospect group could not be attached to the container.';
+          this.error = e?.error?.detail || e?.error?.error || 'Container workflow could not be saved.';
         }
       });
-    };
+      return;
+    }
+
     this.data.saveCampaignPlan(this.id, JSON.stringify(plan)).subscribe({
       next: result => {
+        this.saving = false;
         this.campaign.planJson = result.planJson;
-        persist();
+        this.message = 'Campaign default workflow saved.';
       },
       error: e => {
         this.saving = false;
