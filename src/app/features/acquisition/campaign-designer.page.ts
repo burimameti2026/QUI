@@ -85,7 +85,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     this.load();
     this.timer = setInterval(() => {
       if (this.selectedContainerId) {
-        this.loadContainerContext();
+        this.loadContainerContext(true);
         this.refreshActivity();
       }
       if (this.campaign?.status === 2 || this.statusText(this.campaign?.status) === 'Running') this.refreshExecution();
@@ -273,7 +273,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     });
   }
 
-  loadContainerContext(): void {
+  loadContainerContext(preserveTargetSelection = false): void {
     this.data.containers(this.id).subscribe({
       next: rows => {
         this.containers = rows || [];
@@ -281,7 +281,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
           this.selectedContainerId = this.containers[0].id;
         }
         const selected = this.containers.find(x => x.id === this.selectedContainerId);
-        this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
+        if (!preserveTargetSelection) this.selectedTargetListId = selected?.targetListId || this.campaign?.targetListId || '';
         this.ensureTargetAudienceNode();
         this.syncAdvisorContext();
         this.refreshActivity();
