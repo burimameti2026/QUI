@@ -39,7 +39,7 @@
         <div class="ai-result" *ngIf="aiResult"><span class="eyebrow">AI RESULT</span><p>{{ aiResult }}</p>
           <div class="operator-checks" *ngIf="operatorResult">
             <strong>{{ operatorLive ? liveLabel() : (operatorResult.status === 'ready' ? '✓ Ready to launch' : 'Needs attention') }}</strong>
-            <div class="check-row" *ngFor="let check of operatorResult.checks"><span>{{ check.name }}</span><b>{{ check.status }}</b></div>
+            <div class="check-row" *ngFor="let check of operatorResult.checks"><span>{{ check.name }}</span><b [ngClass]="operatorCheckClass(check.status)">{{ operatorCheckLabel(check.status) }}</b></div>
             <small *ngIf="operatorResult.pack">Pack: {{ operatorResult.pack.name }} · Agent: configured · Workflow: configured</small>
           </div>
           <div class="operator-live" *ngIf="operatorResult && operatorLive">
