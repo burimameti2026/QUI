@@ -93,6 +93,6 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
   }
 
   statusLabel(value: any): string {
-    return String(value || 'Info');
+    return String(value ?? 'Info');
   }
 }
