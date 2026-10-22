@@ -27,15 +27,15 @@
         <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
         <button class="button-secondary" type="button" *ngIf="selectedContainerId" (click)="openLogs()">☷ View logs</button>
         <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
-        <button class="button-secondary" type="button" *ngIf="isRunning" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
-        <button class="button-secondary" type="button" *ngIf="statusText(campaign?.status)==='Paused'" (click)="resume()" [disabled]="saving">▶ Resume</button>
-        <button class="button-secondary" type="button" *ngIf="isRunning || statusText(campaign?.status)==='Paused'" (click)="stop()" [disabled]="saving">■ Stop</button>
+        <button class="button-secondary" type="button" *ngIf="isRunning && !selectedContainerId" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
+        <button class="button-secondary" type="button" *ngIf="!selectedContainerId && statusText(campaign?.status)==='Paused'" (click)="resume()" [disabled]="saving">▶ Resume</button>
+        <button class="button-secondary" type="button" *ngIf="isRunning || (!selectedContainerId && statusText(campaign?.status)==='Paused')" (click)="stop()" [disabled]="saving">■ Stop</button>
         <span class="error-badge" *ngIf="hasErrors">! {{ failedCount }} issue(s)</span>
       </div>
     </section>
 
     <section class="runtime-summary">
-      <div><span class="eyebrow">STATUS</span><strong>{{ statusText(campaign.status) }}</strong><small>{{ isRunning ? 'Execution is live' : 'Not executing' }}</small></div>
+      <div><span class="eyebrow">STATUS</span><strong>{{ effectiveStatusText() }}</strong><small>{{ isRunning ? 'Execution is live' : 'Not executing' }}</small></div>
       <div><span class="eyebrow">INDUSTRY PACK</span><strong>{{ campaign.packageCode || 'Custom' }}</strong><small>{{ campaign.packageVersion || '—' }}</small></div>
       <div><span class="eyebrow">AGENT</span><strong>{{ campaign.agentId ? 'Configured' : 'Not configured' }}</strong><small>{{ campaign.agentId || '—' }}</small></div>
       <div><span class="eyebrow">PROSPECT GROUP</span><strong>{{ selectedTargetListName }}</strong><small>{{ selectedTargetListId || 'Select a target list' }}</small></div>
