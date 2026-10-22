@@ -69,3 +69,10 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Leads page no longer imports the unused KPI-strip component; its standalone imports now match the actual template and avoid retaining dead UI dependencies.
 - CI caught an orphaned `<qai-kpi-strip>` element left in the Leads template after its component import was removed. The remaining markup has now been removed as intended; a fresh build is required to verify the fix.
 - Functional acquisition fix: the campaign-card “Run AI Acquisition” action previously called the ordinary `/acquisition/campaigns/{id}/start` endpoint through an alias, so the UI label promised an autonomous run without creating the AI operator run. It now calls the tenant-scoped AI campaign operator start endpoint via `aiStart`, loads the workspace runtime when needed, and refuses to submit unless the workspace and license are active. Backend tenant isolation and authorization remain authoritative.
+
+
+## Update — 2026-10-22
+
+- Campaign Designer activity polling now prevents overlapping requests and stale responses from a previously selected container overwriting the current activity view. Poll responses are checked against the selected container and step filter.
+- Removed the remaining inline `<style>` block from `campaign-designer.page.html`; outreach editor styles now live in `campaign-designer.page.css` and use shared surface, border and muted-text tokens.
+- The frontend build on the previous UI batch completed successfully. A new build is required for the latest Campaign Designer changes; live API execution still requires an active tenant/backend environment and is not represented as verified by a compile-only build.
