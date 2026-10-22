@@ -36,7 +36,7 @@ export class ApprovalQueuePage implements OnInit {
   get requested() { return this.messages.filter(x => x.approvalRequested && !this.isProcessed(x)).length; }
   get safeDemo() { return this.messages.length > 0 && this.messages.every(x => String(x.email || '').endsWith('.test')); }
   get approved() { return this.messages.filter(x => ['Sent', 'Delivered', 'Replied'].includes(this.messageStatus(x))).length; }
-  get failed() { return ['Failed', 'Suppressed'].filter(status => this.messages.some(x => this.messageStatus(x) === status)).length ? this.messages.filter(x => ['Failed', 'Suppressed'].includes(this.messageStatus(x))).length : 0; }
+  get failed() { return this.messages.filter(x => ['Failed', 'Suppressed'].includes(this.messageStatus(x))).length; }
   get visibleMessages() {
     const q = this.query.trim().toLowerCase();
     return this.messages.filter(x => {
