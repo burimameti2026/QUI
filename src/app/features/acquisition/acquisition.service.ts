@@ -113,7 +113,7 @@ export class AcquisitionService {
   }
   approveAndSend(id: string) {
     return this.api.post<any>(
-      `email-operations/messages/${id}/approve`,
+      `email-operations/messages/${id}/approve-and-send`,
       {},
     );
   }
