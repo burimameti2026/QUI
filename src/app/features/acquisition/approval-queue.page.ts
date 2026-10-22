@@ -24,7 +24,7 @@ export class ApprovalQueuePage implements OnInit {
   isBusy(message: any): boolean { return this.busyMessageIds.has(String(message?.id)); }
   private beginAction(message: any): boolean {
     const id = String(message?.id ?? '');
-    if (!id || this.busyMessageIds.has(id)) return false;
+    if (!id || this.busyMessageIds.size > 0 || this.busyMessageIds.has(id)) return false;
     this.busyMessageIds.add(id);
     this.error = '';
     this.notice = '';
