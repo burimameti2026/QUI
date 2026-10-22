@@ -192,9 +192,8 @@ export class WorkflowsPage implements OnInit {
   loadDesigner(): void {
     if (this.activeId)
       this.data.designer(this.activeId).subscribe({ next: (r) => {
-        this.nodes = (r.nodes || []).filter((node: any) => node.nodeKey !== '__orchestration_binding__');
-        this.edges = (r.edges || []).filter((edge: any) =>
-          edge.fromNodeKey !== '__orchestration_binding__' && edge.toNodeKey !== '__orchestration_binding__');
+        this.nodes = r.nodes || [];
+        this.edges = r.edges || [];
         this.selected = this.nodes[0] || null;
         this.syncAdvisorContext();
       }, error: (e) => (this.error = this.apiError(e, 'Workflow details could not be loaded.')) });
@@ -208,17 +207,11 @@ export class WorkflowsPage implements OnInit {
         this.automations = r.automations || [];
         this.data.orchestration(this.activeId).subscribe({
           next: (o) => {
-            this.selectedCampaignId = o.campaignId || o.campaign?.id || null;
-            this.selectedPipelineId = o.pipelineId || o.pipeline?.id || null;
-            this.selectedAutomationIds = o.automationRuleIds || (o.automations || []).map((x: any) => x.id);
-            this.selectedContainerIds = o.containerIds || (o.containers || []).map((x: any) => x.id);
-            this.orchestration = {
-              ...o,
-              campaign: this.campaigns.find((x: any) => x.id === this.selectedCampaignId) || null,
-              pipeline: this.pipelines.find((x: any) => x.id === this.selectedPipelineId) || null,
-              automations: this.automations.filter((x: any) => this.selectedAutomationIds.includes(x.id)),
-              containers: []
-            };
+            this.orchestration = o;
+            this.selectedCampaignId = o.campaign?.id || null;
+            this.selectedPipelineId = o.pipeline?.id || null;
+            this.selectedAutomationIds = (o.automations || []).map((x: any) => x.id);
+            this.selectedContainerIds = (o.containers || []).map((x: any) => x.id);
             this.syncAdvisorContext();
             this.loadContainers();
           },
@@ -236,15 +229,7 @@ export class WorkflowsPage implements OnInit {
   loadContainers(): void {
     if (!this.selectedCampaignId) return;
     this.data.containers(this.selectedCampaignId).subscribe({
-      next: (rows) => {
-        this.containers = rows || [];
-        if (this.orchestration) {
-          this.orchestration = {
-            ...this.orchestration,
-            containers: this.containers.filter((x: any) => this.selectedContainerIds.includes(x.id))
-          };
-        }
-      },
+      next: (rows) => this.containers = rows || [],
       error: (e) => this.error = this.apiError(e, 'Campaign containers could not be loaded.')
     });
   }
@@ -279,10 +264,10 @@ export class WorkflowsPage implements OnInit {
       trigger: 'manual',
       active: true
     }).subscribe({
-      next: () => {
+      next: (o) => {
+        this.orchestration = o;
         this.saving = false;
-        this.message = 'Workflow orchestration bindings saved to the workflow definition.';
-        this.loadOrchestration();
+        this.message = 'Workflow orchestration bindings saved.';
         this.syncAdvisorContext();
       },
       error: (e) => {
