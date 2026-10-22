@@ -16,9 +16,6 @@ export class AcquisitionService {
   saveIcp(input: any) {
     return this.api.post<any>("acquisition/icp", input);
   }
-  updateIcp(id: string, input: any) {
-    return this.api.put<any>(`acquisition/icp/${id}`, input);
-  }
   discoveryProviders() {
     return this.api.get<any[]>("acquisition/discovery/providers");
   }
