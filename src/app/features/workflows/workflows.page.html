@@ -9,7 +9,7 @@
     </select>
     <button class="button-secondary" *ngIf="view === 'list'" (click)="templateOpen = true">Use template</button>
     <button class="button-primary" *ngIf="view === 'list'" (click)="newOpen = true">+ New workflow</button>
-    <button class="button-secondary" *ngIf="view === 'designer'" [disabled]="saving || !activeId || readiness < 100" (click)="runOrchestration()">▶ Run orchestration</button><button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
+    <button class="button-secondary" *ngIf="view === 'designer'" [disabled]="saving || !activeId || !canRunOrchestration" (click)="runOrchestration()">▶ Run orchestration</button><button class="button-primary" *ngIf="view === 'designer'" [disabled]="saving || !activeId" (click)="save">{{ saving ? 'Saving…' : 'Save workflow' }}</button>
   </qai-page-header>
 
   <ng-template #workflowList>
@@ -68,7 +68,7 @@
               <span class="stack"><strong>{{container.name}}</strong><small>{{container.status}} · {{container.packageCode || 'No package'}}</small></span>
             </label>
           </div>
-          <footer class="card-footer"><span class="meta" *ngIf="orchestration">Campaign, containers, automations and pipeline are bound to this workflow.</span><div class="actions"><button class="button-secondary" [disabled]="saving" (click)="saveOrchestration()">{{saving ? 'Saving…' : 'Save orchestration'}}</button><button class="button-primary" [disabled]="saving || readiness < 100 || !selectedCampaignId" (click)="runOrchestration()">▶ Run now</button></div></footer>
+          <footer class="card-footer"><span class="meta" *ngIf="orchestration">Campaign, containers, automations and pipeline are bound to this workflow.</span><div class="actions"><button class="button-secondary" [disabled]="saving" (click)="saveOrchestration()">{{saving ? 'Saving…' : 'Save orchestration'}}</button><button class="button-primary" [disabled]="saving || !canRunOrchestration" (click)="runOrchestration()">▶ Run now</button></div></footer>
           <div class="card-body" *ngIf="orchestration">
             <span class="eyebrow">LIVE EXECUTION MAP</span>
             <div class="facts">
