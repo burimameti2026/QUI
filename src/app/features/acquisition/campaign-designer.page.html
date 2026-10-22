@@ -64,7 +64,7 @@
             <ng-container *ngFor="let node of nodes; let last = last; let i = index">
               <button class="flow-node" type="button" [class.selected]="selected?.id===node.id" [class]="'flow-node '+nodeStatus(node)" (click)="select(node)">
                 <span class="node-icon">{{ nodeIcon(node) }}</span>
-                <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
+                <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='attention'">{{ attentionDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
                 <span class="node-state">{{ nodeStatus(node) }}</span>
               </button>
               <div class="flow-connector" *ngIf="!last"><span>↓</span></div>
@@ -113,6 +113,7 @@
           <div class="execution-row"><span>Started</span><b>{{ formatDate(selected.startedAtUtc) }}</b></div>
           <div class="execution-row"><span>Completed</span><b>{{ formatDate(selected.completedAtUtc) }}</b></div>
           <div class="error-box" *ngIf="nodeStatus(selected)==='failed'"><strong>!</strong><span>{{ errorDetails(selected) }}</span></div>
+          <div class="attention-box" *ngIf="nodeStatus(selected)==='attention'"><strong>⚠</strong><span>{{ attentionDetails(selected) }}</span></div>
         </div>
 
         <div class="inspector-footer"><button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving">Save component changes</button></div>
