@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Modal, PageHeader } from '../../shared/ui';
 import { WorkflowsService } from './workflows.service';
@@ -42,7 +42,9 @@ interface WorkflowSummary {
   templateUrl: './workflows.page.html',
   styleUrl: './workflows.page.css'
 })
-export class WorkflowsPage implements OnInit {
+export class WorkflowsPage implements OnInit, OnDestroy {
+  private orchestrationPoll?: ReturnType<typeof setInterval>;
+  private orchestrationRequestInFlight = false;
   flows: WorkflowSummary[] = [];
   view: 'list' | 'designer' = 'list';
   workflowQuery = '';
@@ -115,6 +117,9 @@ export class WorkflowsPage implements OnInit {
   constructor(private readonly data: WorkflowsService, private readonly aiAdvisor: AiAdvisorService) {}
   ngOnInit(): void {
     this.load();
+  }
+  ngOnDestroy(): void {
+    if (this.orchestrationPoll) clearInterval(this.orchestrationPoll);
   }
   get activeName(): string {
     return this.flows.find((x) => x.id === this.activeId)?.name || 'Select a workflow';
@@ -205,27 +210,63 @@ export class WorkflowsPage implements OnInit {
       }, error: (e) => (this.error = this.apiError(e, 'Workflow details could not be loaded.')) });
   }
   loadOrchestration(): void {
-    if (!this.activeId) return;
+    if (!this.activeId || this.orchestrationRequestInFlight) return;
+    const requestedFlowId = this.activeId;
+    this.orchestrationRequestInFlight = true;
     this.data.resources().subscribe({
       next: (r) => {
+        if (this.activeId !== requestedFlowId) {
+          this.orchestrationRequestInFlight = false;
+          this.loadOrchestration();
+          return;
+        }
         this.campaigns = r.campaigns || [];
         this.pipelines = r.pipelines?.pipelines || [];
         this.automations = r.automations || [];
-        this.data.orchestration(this.activeId).subscribe({
+        this.data.orchestration(requestedFlowId).subscribe({
           next: (o) => {
-            this.orchestration = o;
-            this.selectedCampaignId = o.campaign?.id || null;
-            this.selectedPipelineId = o.pipeline?.id || null;
-            this.selectedAutomationIds = (o.automations || []).map((x: any) => x.id);
-            this.selectedContainerIds = (o.containers || []).map((x: any) => x.id);
-            this.syncAdvisorContext();
-            this.loadContainers();
+            if (this.activeId === requestedFlowId) {
+              this.orchestration = o;
+              this.selectedCampaignId = o.campaign?.id || null;
+              this.selectedPipelineId = o.pipeline?.id || null;
+              this.selectedAutomationIds = (o.automations || []).map((x: any) => x.id);
+              this.selectedContainerIds = (o.containers || []).map((x: any) => x.id);
+              this.syncAdvisorContext();
+              this.loadContainers();
+              this.refreshOrchestrationPolling();
+            }
+            this.orchestrationRequestInFlight = false;
+            if (this.activeId !== requestedFlowId) this.loadOrchestration();
           },
-          error: (e) => this.error = this.apiError(e, 'Workflow orchestration could not be loaded.')
+          error: (e) => {
+            this.orchestrationRequestInFlight = false;
+            if (this.activeId === requestedFlowId)
+              this.error = this.apiError(e, 'Workflow orchestration could not be loaded.');
+            else this.loadOrchestration();
+          }
         });
       },
-      error: (e) => this.error = this.apiError(e, 'Workflow resources could not be loaded.')
+      error: (e) => {
+        this.orchestrationRequestInFlight = false;
+        if (this.activeId === requestedFlowId)
+          this.error = this.apiError(e, 'Workflow resources could not be loaded.');
+        else this.loadOrchestration();
+      }
     });
+  }
+  private refreshOrchestrationPolling(): void {
+    const activeStatuses = ['queued', 'running', 'waiting', 'starting'];
+    const hasActiveJob = (this.orchestration?.containers || []).some((container: any) => {
+      const jobStatus = String(container.latestJob?.status || '').toLowerCase();
+      const containerStatus = String(container.status || '').toLowerCase();
+      return activeStatuses.includes(jobStatus) || activeStatuses.includes(containerStatus);
+    });
+    if (hasActiveJob && !this.orchestrationPoll) {
+      this.orchestrationPoll = setInterval(() => this.loadOrchestration(), 3000);
+    } else if (!hasActiveJob && this.orchestrationPoll) {
+      clearInterval(this.orchestrationPoll);
+      this.orchestrationPoll = undefined;
+    }
   }
   campaignChanged(): void {
     this.selectedContainerIds = [];
