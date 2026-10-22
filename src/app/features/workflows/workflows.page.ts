@@ -323,7 +323,14 @@ export class WorkflowsPage implements OnInit {
           campaign: this.orchestration?.campaign ? { id: this.orchestration.campaign.id, name: this.orchestration.campaign.name, status: this.orchestration.campaign.status } : null,
           pipeline: this.orchestration?.pipeline ? { id: this.orchestration.pipeline.id, name: this.orchestration.pipeline.name } : null,
           automations: (this.orchestration?.automations || []).map((x: any) => ({ id: x.id, name: x.name, active: x.active })),
-          containers: (this.orchestration?.containers || []).map((x: any) => ({ id: x.id, name: x.name, status: x.status, activeRunCount: x.activeRunCount, runCount: x.runCount })),
+          containers: (this.orchestration?.containers || []).map((x: any) => ({
+            id: x.id, name: x.name, status: x.status,
+            activeRunCount: x.activeRunCount, runCount: x.runCount,
+            latestJob: x.latestJob ? {
+              id: x.latestJob.id, type: x.latestJob.type, status: x.latestJob.status,
+              attemptCount: x.latestJob.attemptCount, error: x.latestJob.error
+            } : null
+          })),
           selectedContainerIds: this.selectedContainerIds
         }
       }
