@@ -26,6 +26,7 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
   toUtc = '';
   private timer: ReturnType<typeof setInterval> | null = null;
   private requestInFlight = false;
+  private reloadRequested = false;
 
   constructor(private readonly data: AcquisitionService) {}
 
@@ -39,7 +40,10 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
   }
 
   load(silent = false): void {
-    if (this.requestInFlight) return;
+    if (this.requestInFlight) {
+      if (!silent) this.reloadRequested = true;
+      return;
+    }
     const from = this.fromUtc ? new Date(this.fromUtc) : null;
     const to = this.toUtc ? new Date(this.toUtc) : null;
     if ((from && Number.isNaN(from.getTime())) || (to && Number.isNaN(to.getTime()))) {
@@ -69,13 +73,21 @@ export class CampaignHistoryPage implements OnInit, OnDestroy {
         this.applySearch();
         this.loading = false;
         this.requestInFlight = false;
+        this.flushQueuedReload();
       },
       error: e => {
         this.loading = false;
         this.requestInFlight = false;
         this.error = e?.error?.detail || e?.error?.error || 'Campaign execution history could not be loaded.';
+        this.flushQueuedReload();
       }
     });
+  }
+
+  private flushQueuedReload(): void {
+    if (!this.reloadRequested) return;
+    this.reloadRequested = false;
+    queueMicrotask(() => this.load());
   }
 
   applySearch(): void {
