@@ -1,7 +1,7 @@
 
 
 <main class="page designer-page">
-  <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Build, configure and monitor the campaign flow. Configuration is stored as Campaign PlanJson; users work with fields, not JSON.">
+  <qai-page-header [title]="campaign?.name || 'Campaign Designer'" subtitle="Design each container’s own acquisition workflow, choose its prospect group, and inspect persisted runtime activity.">
     <button class="button-quiet" type="button" (click)="back()">← Campaigns</button>
     <button class="button-secondary" type="button" (click)="load()" [disabled]="loading || saving">↻ Refresh</button>
     <button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving || !nodes.length">Save flow</button>
@@ -13,18 +13,18 @@
   <ng-container *ngIf="!loading && campaign">
     <section class="designer-toolbar">
       <div>
-        <span class="eyebrow">CAMPAIGN CONTAINER</span>
-        <strong>{{ campaign.name }}</strong>
-        <small>{{ statusText(campaign.status) }} · {{ nodes.length }} components</small>
+        <span class="eyebrow">CONTAINER WORKSPACE</span>
+        <strong>{{ selectedContainer()?.name || campaign.name }}</strong>
+        <small>{{ selectedContainerId ? 'Container workflow' : 'Campaign default workflow' }} · {{ nodes.length }} steps</small>
       </div>
       <label class="container-selector" *ngIf="containers.length">
-        <span>Container</span>
+        <span>Editing container</span>
         <select [(ngModel)]="selectedContainerId" (ngModelChange)="containerChanged()">
           <option *ngFor="let container of containers" [value]="container.id">{{ container.name }} · {{ container.status }}</option>
         </select>
       </label>
       <div class="toolbar-actions">
-        <span class="execution-badge" [class.live]="isRunning">● {{ isRunning ? 'Live execution' : 'Design mode' }}</span>
+        <span class="execution-badge" [class.live]="isRunning"><span class="status-dot"></span>{{ isRunning ? 'Live execution' : 'Design mode' }}</span>
         <button class="button-secondary" type="button" *ngIf="selectedContainerId" (click)="openLogs()">☷ View logs</button>
         <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
         <button class="button-secondary" type="button" *ngIf="isRunning && !selectedContainerId" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
@@ -44,8 +44,8 @@
 
     <section class="designer-shell">
       <aside class="palette">
-        <div class="panel-head"><div><span class="eyebrow">COMPONENTS</span><strong>Campaign building blocks</strong></div></div>
-        <input class="palette-search" [(ngModel)]="paletteFilter" placeholder="Search components…">
+        <div class="panel-head"><div><span class="eyebrow">COMPONENTS</span><strong>Workflow steps</strong></div></div>
+        <input class="palette-search" [(ngModel)]="paletteFilter" placeholder="Find a step…">
         <div class="palette-group">
           <button class="palette-item" *ngFor="let item of filteredPalette" type="button" draggable="true" (dragstart)="dragPalette($event,item)" (click)="addFromPalette(item)">
             <span class="palette-icon">{{ item.icon }}</span>
@@ -53,19 +53,19 @@
             <i>+</i>
           </button>
         </div>
-        <div class="palette-help">Drag a component onto the flow or click <b>+</b> to add it after the current flow.</div>
+        <div class="palette-help">Add a step with <b>+</b>, or drag it into the canvas. Select any step to configure its settings.</div>
       </aside>
 
       <section class="canvas-panel" (drop)="onDrop($event)" (dragover)="allowDrop($event)">
-        <div class="canvas-head"><div><span class="eyebrow">CAMPAIGN FLOW</span><strong>Visual execution workflow</strong></div><div class="canvas-tools"><button type="button" (click)="moveSelected('up')" [disabled]="!selected">↑</button><button type="button" (click)="moveSelected('down')" [disabled]="!selected">↓</button><button type="button" class="danger-tool" (click)="removeSelected()" [disabled]="!selected">⌫</button></div></div>
+        <div class="canvas-head"><div><span class="eyebrow">CAMPAIGN FLOW</span><strong>{{ selectedContainer()?.name || 'Campaign default flow' }}</strong></div><div class="canvas-tools"><button type="button" (click)="moveSelected('up')" [disabled]="!selected">↑</button><button type="button" (click)="moveSelected('down')" [disabled]="!selected">↓</button><button type="button" class="danger-tool" (click)="removeSelected()" [disabled]="!selected">⌫</button></div></div>
         <div class="flow-canvas">
           <div class="drop-hint" *ngIf="!nodes.length">Drag components here to build the campaign.</div>
           <div class="flow-column">
             <ng-container *ngFor="let node of nodes; let last = last; let i = index">
-              <button class="flow-node" type="button" [class.selected]="selected?.id===node.id" [class]="'flow-node '+nodeStatus(node)" (click)="select(node)">
+              <button class="flow-node" type="button" [ngClass]="['flow-node', nodeStatus(node), selected?.id===node.id ? 'selected' : '']" (click)="select(node)">
                 <span class="node-icon">{{ nodeIcon(node) }}</span>
                 <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='attention'">{{ attentionDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
-                <span class="node-state">{{ nodeStatus(node) }}</span>
+                <span class="node-state">{{ nodeStatus(node) === 'attention' ? 'Needs setup' : nodeStatus(node) }}</span>
               </button>
               <div class="flow-connector" *ngIf="!last"><span>↓</span></div>
             </ng-container>
@@ -75,7 +75,7 @@
 
       <aside class="inspector" *ngIf="selected; else noSelection">
         <div class="inspector-head">
-          <div><span class="eyebrow">PROPERTIES</span><h2>{{ nodeIcon(selected) }} {{ selected.name }}</h2><p>{{ selected.description }}</p></div>
+          <div><span class="eyebrow">STEP CONFIGURATION</span><h2>{{ nodeIcon(selected) }} {{ selected.name }}</h2><p>{{ selected.description }}</p></div>
           <div class="inspector-actions"><span class="state-pill" [class]="containerStatusText().toLowerCase()">{{ containerStatusText() }}</span><button class="button-secondary logs-button" type="button" (click)="openLogs()">☷ Logs</button></div>
         </div>
 
@@ -118,7 +118,7 @@
 
         <div class="inspector-footer"><button class="button-primary" type="button" (click)="savePlan()" [disabled]="saving">Save component changes</button></div>
       </aside>
-      <ng-template #noSelection><aside class="inspector empty-inspector"><span>◇</span><h3>Select a component</h3><p>Choose a node in the flow to configure its fields and inspect execution.</p></aside></ng-template>
+      <ng-template #noSelection><aside class="inspector empty-inspector"><span>◇</span><h3>Configure your flow</h3><p>Select a step on the canvas to edit its settings, review execution status, and inspect logs.</p></aside></ng-template>
     </section>
     <section class="message-workbench" *ngIf="campaignSteps.length">
       <div class="message-workbench-head">
