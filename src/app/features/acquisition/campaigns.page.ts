@@ -82,6 +82,23 @@ export class CampaignsPage implements OnDestroy, OnInit {
     return this.rows.filter(x => this.status(x.status) === 'Running').length;
   }
 
+  operatorCheckLabel(value: any): string {
+    const status = String(value ?? '').toLowerCase();
+    const labels: Record<string, string> = {
+      ok: 'Ready', fixed: 'Ready', configured: 'Configured',
+      missing: 'Missing', 'not-configured': 'Not configured',
+      failed: 'Failed', warning: 'Attention'
+    };
+    return labels[status] || String(value ?? 'Unknown');
+  }
+
+  operatorCheckClass(value: any): string {
+    const status = String(value ?? '').toLowerCase();
+    if (status === 'ok' || status === 'fixed' || status === 'configured') return 'check-ready';
+    if (status === 'missing' || status === 'not-configured' || status === 'failed' || status === 'warning') return 'check-attention';
+    return 'check-pending';
+  }
+
   status(value: any): string {
     return ['Draft', 'Scheduled', 'Running', 'Paused', 'Completed', 'Stopped'][Number(value)]
       || String(value ?? 'Unknown');
