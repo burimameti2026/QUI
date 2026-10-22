@@ -316,7 +316,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     const value = this.selectedContainer()?.status;
     if (value === null || value === undefined || value === '') return 'Unknown';
     const states = ['Stopped', 'Running', 'Paused', 'Failed', 'Pending', 'Queued', 'Starting', 'Completed', 'Waiting'];
-    if (typeof value === 'number' || (typeof value === 'string' && /^\\d+$/.test(value))) {
+    if (typeof value === 'number' || (typeof value === 'string' && /^\d+$/.test(value))) {
       return states[Number(value)] || 'Unknown';
     }
     const normalized = String(value).trim();
