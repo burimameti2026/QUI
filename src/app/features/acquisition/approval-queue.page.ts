@@ -126,7 +126,7 @@ export class ApprovalQueuePage implements OnInit {
     try {
       await firstValueFrom(this.data.retryMessage(message.id));
       await this.load();
-      this.notice = 'Retry was accepted by the delivery service.';
+      this.notice = 'Retry queued for a fresh approval. Review and approve it before delivery can continue.';
     } catch (error: any) { this.error = error?.error?.detail || 'Could not retry the message.'; }
     finally { this.busyMessageIds.delete(String(message.id)); }
   }
