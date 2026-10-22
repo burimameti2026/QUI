@@ -21,3 +21,5 @@
   .message-grid { grid-template-columns: minmax(0, 1fr); }
   .message-card { min-width: 0; }
 }
+
+.flow-node.attention{border-color:#d97706;background:#fffbeb}.flow-node.attention .node-icon{background:#fef3c7;color:#92400e}.state-pill.attention{background:#fef3c7;color:#92400e}.attention-box{display:flex;gap:8px;margin-top:10px;padding:10px;border:1px solid #f5d08a;border-radius:8px;background:#fffbeb;color:#92400e;font-size:11px;line-height:1.45;overflow-wrap:anywhere}.attention-box strong{font-size:15px;flex:0 0 auto}
