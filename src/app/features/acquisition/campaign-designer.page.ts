@@ -313,16 +313,21 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   private applyContainerPlan(container: any | null): void {
-    if (!container) return;
+    const selectedId = this.selected?.id;
+    if (!container) {
+      this.nodes = this.readNodes(this.parsePlan());
+      this.selected = this.nodes.find(node => node.id === selectedId) || this.nodes[0] || null;
+      return;
+    }
     try {
       const configuration = JSON.parse(container.configurationJson || container.ConfigurationJson || '{}');
       const plan = configuration?.workflowPlan;
-      if (!plan || typeof plan !== 'object') return;
-      const selectedId = this.selected?.id;
-      this.nodes = this.readNodes(plan);
+      this.nodes = this.readNodes(plan && typeof plan === 'object' ? plan : this.parsePlan());
       this.selected = this.nodes.find(node => node.id === selectedId) || this.nodes[0] || null;
     } catch {
-      this.error = 'This container has invalid workflow configuration. The campaign default was kept.';
+      this.nodes = this.readNodes(this.parsePlan());
+      this.selected = this.nodes.find(node => node.id === selectedId) || this.nodes[0] || null;
+      this.error = 'This container has invalid workflow configuration. The campaign default was loaded.';
     }
   }
 
