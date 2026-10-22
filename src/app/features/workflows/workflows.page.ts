@@ -238,18 +238,31 @@ export class WorkflowsPage implements OnInit {
     if (i >= 0) list.splice(i, 1); else list.push(id);
   }
   runOrchestration(): void {
-    if (!this.activeId) return;
+    if (!this.activeId || this.saving) return;
+    if (this.readiness < 100) {
+      this.error = 'Save a complete workflow with a start, qualification rule, action and connected transitions before running it.';
+      return;
+    }
     this.saving = true;
     this.error = '';
-    this.data.run(this.activeId).subscribe({
-      next: (r) => {
-        this.saving = false;
-        this.message = `Workflow executed: ${(r.startedContainers || []).length} container(s) started, ${(r.automations || []).length} automation(s) processed.`;
-        this.loadOrchestration();
-      },
+    this.message = '';
+    // Persist the latest designer state first. Otherwise Run could launch jobs
+    // using old saved configuration while the canvas shows unsaved steps.
+    this.data.saveDesigner(this.activeId, { nodes: this.nodes, edges: this.edges }).subscribe({
+      next: () => this.data.run(this.activeId).subscribe({
+        next: (r) => {
+          this.saving = false;
+          this.message = `Orchestration accepted: ${(r.startedContainers || []).length} container job(s) queued, ${(r.automations || []).length} automation run(s) processed.`;
+          this.loadOrchestration();
+        },
+        error: (e) => {
+          this.saving = false;
+          this.error = this.apiError(e, 'Workflow could not be executed.');
+        }
+      }),
       error: (e) => {
         this.saving = false;
-        this.error = this.apiError(e, 'Workflow could not be executed.');
+        this.error = this.apiError(e, 'Workflow changes could not be saved, so execution was not started.');
       }
     });
   }
