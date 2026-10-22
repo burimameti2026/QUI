@@ -26,7 +26,6 @@ export class IcpPage implements OnInit {
   if(!Number.isFinite(score)||score<0||score>100){this.error='Minimum score must be between 0 and 100.';return}
   try{if(this.editing.criteriaJson)JSON.parse(this.editing.criteriaJson)}catch{this.error='Criteria JSON is not valid JSON.';return}
   this.saving=true;
-  const request=this.editing.id?this.data.updateIcp(this.editing.id,this.editing):this.data.saveIcp(this.editing);
-  request.subscribe({next:()=>{this.saving=false;this.message=this.editing.id?'ICP changes saved.':'ICP created.';this.editing=null;this.load()},error:e=>{this.saving=false;this.error=e?.error?.detail||e?.error?.error||'ICP could not be saved.'}})
+  this.data.saveIcp(this.editing).subscribe({next:()=>{this.saving=false;this.message=this.editing.id?'ICP changes saved.':'ICP created.';this.editing=null;this.load()},error:e=>{this.saving=false;this.error=e?.error?.detail||e?.error?.error||'ICP could not be saved.'}})
 }
 }
