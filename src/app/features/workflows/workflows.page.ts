@@ -331,6 +331,7 @@ export class WorkflowsPage implements OnInit, OnDestroy {
         this.saving = false;
         this.message = 'Workflow orchestration bindings saved.';
         this.syncAdvisorContext();
+        this.refreshOrchestrationPolling();
       },
       error: (e) => {
         this.saving = false;
