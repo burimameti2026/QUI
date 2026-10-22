@@ -141,6 +141,12 @@ export class WorkflowsPage implements OnInit {
     ];
     return this.nodes.length ? checks.filter(Boolean).length * 25 : 0;
   }
+  get canRunOrchestration(): boolean {
+    const hasRunnableBinding = this.selectedContainerIds.length > 0 || this.selectedAutomationIds.length > 0;
+    return this.readiness === 100 &&
+      hasRunnableBinding &&
+      (this.selectedContainerIds.length === 0 || !!this.selectedCampaignId);
+  }
   load(): void {
     this.data.list().subscribe({ next: (r) => (this.flows = r), error: (e) => (this.error = this.apiError(e, 'Workflows could not be loaded.')) });
   }
@@ -239,8 +245,10 @@ export class WorkflowsPage implements OnInit {
   }
   runOrchestration(): void {
     if (!this.activeId || this.saving) return;
-    if (this.readiness < 100) {
-      this.error = 'Save a complete workflow with a start, qualification rule, action and connected transitions before running it.';
+    if (!this.canRunOrchestration) {
+      this.error = this.readiness < 100
+        ? 'Save a complete workflow with a start, qualification rule, action and connected transitions before running it.'
+        : 'Select at least one automation or campaign container. Container jobs also require their campaign to be selected.';
       return;
     }
     this.saving = true;
