@@ -45,7 +45,7 @@ export class ApprovalQueuePage implements OnInit {
         this.filter === 'all' ||
         (this.filter === 'pending' && !x.approvalRequested && !x.approvalGranted && status === 'Queued') ||
         (this.filter === 'requested' && !!x.approvalRequested && !this.isProcessed(x)) ||
-        (this.filter === 'processed' && ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(status));
+        (this.filter === 'processed' && ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed', 'Cancelled'].includes(status));
       const text = [x.prospect, x.contactName, x.email, x.campaign, x.subject, x.body, this.statusLabel(x)].filter(Boolean).join(' ').toLowerCase();
       return filterOk && (!q || text.includes(q));
     });
@@ -54,7 +54,7 @@ export class ApprovalQueuePage implements OnInit {
     this.filter = filter;
   }
   isProcessed(message: any) {
-    return ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed'].includes(this.messageStatus(message));
+    return ['Sent', 'Delivered', 'Replied', 'Failed', 'Suppressed', 'Cancelled'].includes(this.messageStatus(message));
   }
 
   isApprovedAndQueued(message: any): boolean {
