@@ -88,3 +88,5 @@
   .campaign-toolbar{margin:10px 0}
   .campaign-tile .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+.operator-checks .check-row b.check-ready{color:#16794b;background:#eaf8f0}.operator-checks .check-row b.check-attention{color:#9a5b08;background:#fff4df}.operator-checks .check-row b.check-pending{color:#475569;background:#eef2f6}
