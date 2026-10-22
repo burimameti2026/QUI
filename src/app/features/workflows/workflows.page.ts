@@ -363,7 +363,13 @@ export class WorkflowsPage implements OnInit, OnDestroy {
         orchestration: {
           campaign: this.orchestration?.campaign ? { id: this.orchestration.campaign.id, name: this.orchestration.campaign.name, status: this.orchestration.campaign.status } : null,
           pipeline: this.orchestration?.pipeline ? { id: this.orchestration.pipeline.id, name: this.orchestration.pipeline.name } : null,
-          automations: (this.orchestration?.automations || []).map((x: any) => ({ id: x.id, name: x.name, active: x.active })),
+          automations: (this.orchestration?.automations || []).map((x: any) => ({
+            id: x.id, name: x.name, active: x.active, trigger: x.trigger,
+            latestRun: x.latestRun ? {
+              id: x.latestRun.id, status: x.latestRun.status,
+              createdAtUtc: x.latestRun.createdAtUtc, completedAtUtc: x.latestRun.completedAtUtc
+            } : null
+          })),
           containers: (this.orchestration?.containers || []).map((x: any) => ({
             id: x.id, name: x.name, status: x.status,
             activeRunCount: x.activeRunCount, runCount: x.runCount,
