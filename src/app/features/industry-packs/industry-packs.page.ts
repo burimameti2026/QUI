@@ -179,12 +179,24 @@ export class IndustryPacksPage implements OnInit {
     this.saving=true; this.error=''; this.message='';
     this.data.buildWithAi<PackDraft>(prompt).subscribe({
       next: (result:any) => {
+        const base = this.emptyDraft();
+        const keywords = result?.keywords ?? result?.discovery?.keywords ?? [];
+        const scenarios = result?.scenarios ?? [];
+        const outreach = result?.outreach?.definition ?? result?.outreach ?? '';
         this.draft = {
-          ...this.emptyDraft(),
+          ...base,
           ...result,
-          minimumScore: Number(result?.minimumScore ?? 70),
-          enrichmentEnabled: result?.enrichmentEnabled !== false,
-          targetListEnabled: result?.targetListEnabled !== false,
+          // AI providers can return either the editor's flat fields or the
+          // nested template shape. Normalize both into the editable form.
+          discoveryProvider: result?.discoveryProvider ?? result?.discovery?.provider ?? base.discoveryProvider,
+          keywords: Array.isArray(keywords) ? keywords.join(', ') : String(keywords ?? ''),
+          scenarios: Array.isArray(scenarios)
+            ? scenarios.map((x: any) => typeof x === 'string' ? x : x?.name).filter(Boolean).join(', ')
+            : String(scenarios ?? ''),
+          outreach: typeof outreach === 'string' ? outreach : JSON.stringify(outreach),
+          minimumScore: Number(result?.minimumScore ?? result?.qualification?.minimumScore ?? 70),
+          enrichmentEnabled: (result?.enrichmentEnabled ?? result?.enrichment?.enabled) !== false,
+          targetListEnabled: (result?.targetListEnabled ?? result?.targetList?.enabled) !== false,
           approvalRequired: result?.approvalRequired !== false
         };
         this.saving=false;
