@@ -80,6 +80,9 @@ export class AcquisitionService {
   setContainerTargetList(campaignId: string, containerId: string, targetListId: string | null) {
     return this.api.put<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/target-list`, { targetListId });
   }
+  saveContainerConfiguration(campaignId: string, containerId: string, configurationJson: string) {
+    return this.api.put<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/configuration`, { configurationJson });
+  }
   startContainer(campaignId: string, containerId: string) {
     return this.api.post<any>(`acquisition/campaigns/${campaignId}/containers/${containerId}/start`, {});
   }
