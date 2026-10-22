@@ -88,3 +88,12 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - The three-second container refresh now preserves an unsaved target-list selection while still refreshing runtime state.
 - Cancelled outreach is treated as terminal in the approval queue and cannot appear as awaiting approval or be approved again.
 - Campaign History queues an explicit filter/clear refresh when another request is in flight, preventing old filter results from winning a race.
+
+
+## Functional integration pass — 2026-10-22
+
+- Approval Queue status mapping now matches the backend enum, including the intermediate `Sending` state: `Queued=0`, `Sending=1`, `Sent=2`, `Delivered=3`, `Replied=4`, `Failed=5`, `Suppressed=6`. Request approval, review, and retry actions are shown only for eligible states.
+- Target-list creation now preserves the original selected prospect IDs while the API calls are in flight. If membership insertion fails after list creation, Retry reuses the original list and selection instead of creating duplicate lists.
+- Workflow Orchestrator now saves the current designer graph before it requests execution, so a run cannot be launched while the UI silently holds unsaved graph changes.
+- Cross-checked the UI contracts against backend branch `refactor/tenant-job-runtime`. That branch contains the tenant-scoped ICP upsert, discovery/provider, campaign-container, approval/reject/retry, AI operator and workflow orchestration endpoints. It was also missing the prospect create/import/evidence and standalone target-list create/member routes used by Discovery; those routes are being completed in the backend branch with tenant ownership validation and idempotent target-list membership.
+- Latest frontend and backend CI runs are still in progress at the time of this update. No live tenant end-to-end run is claimed until those builds pass and the authorized runtime is exercised.
