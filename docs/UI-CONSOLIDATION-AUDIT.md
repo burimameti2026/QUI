@@ -83,3 +83,8 @@ Action: move page-specific rules to component stylesheets, replace hard-coded va
 - Pause/Resume remain campaign-level actions and are hidden in container mode because the UI service currently exposes container Start/Stop but no container Pause/Resume endpoints. This avoids sending a container action to the wrong campaign-level API.
 - Industry Pack AI draft results are normalized before being written into the editor. Both flat editor fields and nested template fields are supported for discovery provider/keywords, scenarios, outreach, qualification score, enrichment and target-list settings. This prevents array/object values from leaking into string fields and breaking a later save.
 - These are code-level fixes; end-to-end runtime behavior still requires the API and an authorized active tenant.
+
+- Numeric container status enums are normalized to the same labels used on the Campaigns page, so Start eligibility and live status are evaluated correctly.
+- The three-second container refresh now preserves an unsaved target-list selection while still refreshing runtime state.
+- Cancelled outreach is treated as terminal in the approval queue and cannot appear as awaiting approval or be approved again.
+- Campaign History queues an explicit filter/clear refresh when another request is in flight, preventing old filter results from winning a race.
