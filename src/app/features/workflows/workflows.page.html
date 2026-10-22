@@ -79,7 +79,15 @@
             </div>
             <div class="list" *ngIf="orchestration.containers?.length">
               <div class="list-item" *ngFor="let container of orchestration.containers">
-                <span class="avatar">▣</span><span class="stack"><strong>{{container.name}}</strong><small>{{container.status}} · {{container.packageCode || 'No package'}}</small></span><span class="status">{{container.status}}</span>
+                <span class="avatar">▣</span>
+                <span class="stack">
+                  <strong>{{container.name}}</strong>
+                  <small>{{container.status}} · {{container.packageCode || 'No package'}}</small>
+                  <small *ngIf="container.latestJob">Job {{container.latestJob.id | slice:0:8}} · {{container.latestJob.type}} · {{container.latestJob.status}} · attempt {{container.latestJob.attemptCount}}/{{container.latestJob.maxAttempts}}</small>
+                  <small class="error-text" *ngIf="container.latestJob?.error">{{container.latestJob.error}}</small>
+                  <small *ngIf="!container.latestJob">No job has been queued for this container yet.</small>
+                </span>
+                <span class="status">{{container.latestJob?.status || container.status}}</span>
               </div>
             </div>
           </div>
