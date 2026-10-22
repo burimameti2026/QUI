@@ -59,6 +59,8 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   paletteFilter = '';
   executionMode = false;
   private timer?: ReturnType<typeof setInterval>;
+  private activityRequestInFlight = false;
+  private activityRequestSequence = 0;
 
   readonly palette: PaletteItem[] = [
     { type: 'TargetAudience', name: 'Select prospect group', description: 'Choose the Prospect Group / Target List that this campaign container will execute.', icon: '◎', config: { targetListId: '' } },
@@ -226,19 +228,39 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   refreshActivity(): void {
-    if (!this.selectedContainerId) return;
-    if (this.logsOpen === false && this.selectedContainerId) {
-      this.logsStepId = null;
+    if (!this.selectedContainerId) {
+      this.activityLogs = [];
+      return;
     }
-    this.data.containerActivity(this.id, this.selectedContainerId, this.logsStepId).subscribe({
+    if (this.logsOpen === false) this.logsStepId = null;
+    // The three-second execution poll must not stack requests or let an older
+    // container response overwrite activity for the container now selected.
+    if (this.activityRequestInFlight) return;
+    const requestedContainerId = String(this.selectedContainerId);
+    const requestedStepId = this.logsStepId;
+    const requestSequence = ++this.activityRequestSequence;
+    this.activityRequestInFlight = true;
+    this.data.containerActivity(this.id, requestedContainerId, requestedStepId).subscribe({
       next: (rows: any[]) => {
-        this.activityLogs = (rows || []).sort((a: any, b: any) =>
-          new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()
-        );
+        if (requestSequence === this.activityRequestSequence &&
+            String(this.selectedContainerId) === requestedContainerId &&
+            this.logsStepId === requestedStepId) {
+          this.activityLogs = (rows || []).sort((a: any, b: any) =>
+            new Date(a.atUtc).getTime() - new Date(b.atUtc).getTime()
+          );
+        }
+        this.activityRequestInFlight = false;
+        if (String(this.selectedContainerId) !== requestedContainerId ||
+            this.logsStepId !== requestedStepId) this.refreshActivity();
       },
       error: e => {
-        this.activityLogs = [];
-        this.error = e?.error?.detail || e?.error?.error || 'Container activity could not be loaded.';
+        if (requestSequence === this.activityRequestSequence &&
+            String(this.selectedContainerId) === requestedContainerId) {
+          this.error = e?.error?.detail || e?.error?.error || 'Container activity could not be loaded.';
+        }
+        this.activityRequestInFlight = false;
+        if (String(this.selectedContainerId) !== requestedContainerId ||
+            this.logsStepId !== requestedStepId) this.refreshActivity();
       }
     });
   }
