@@ -87,7 +87,7 @@ import { AcquisitionService } from "./acquisition.service";
         <span><b>Prospects selected</b><small>{{ selectedIds.size ? 'Ready to create an audience' : 'Select accounts from the grid below' }}</small></span>
       </div>
       <label>Target list name<input [(ngModel)]="listName" placeholder="DACH manufacturers with freight demand" /></label>
-      <div class="actions"><button class="button-primary" [disabled]="!selectedIds.size || !listName.trim()" (click)="createList()">Create target list <span>→</span></button></div>
+      <div class="actions"><button class="button-primary" [disabled]="!selectedIds.size || !listName.trim()" (click)="createList()">{{ pendingTargetListId ? 'Retry adding members' : 'Create target list' }} <span>→</span></button></div>
       <small>Creating a list does not send outreach.</small>
     </article>
   </section>
@@ -180,6 +180,9 @@ export class DiscoverPage implements OnInit {
   minimumScore = 0;
   selectedIds = new Set<string>();
   listName = "";
+  pendingTargetListId = "";
+  pendingTargetListName = "";
+  pendingTargetListMemberIds: string[] = [];
   selectedIcpId = "";
   message = "";
   error = "";
@@ -275,5 +278,48 @@ export class DiscoverPage implements OnInit {
       error: (e) => (this.error = e?.error?.detail || "Intent evidence could not be saved.")
     });
   }
-  createList() { if (!this.selectedIds.size || !this.listName.trim()) return; this.error = ""; this.data.createTargetList({ name: this.listName, description: "Selected from prospect discovery", icpProfileId: this.selectedIcpId || null, dynamic: false }).subscribe({ next: (list) => this.data.addMembers(list.id, [...this.selectedIds]).subscribe({ next: () => { this.message = `Target list “${this.listName}” created with ${this.selectedIds.size} prospects.`; this.selectedIds.clear(); this.listName = ""; }, error: (e) => (this.error = e?.error?.detail || "The list was created, but prospects could not be added.") }), error: (e) => (this.error = e?.error?.detail || "Target list could not be created.") }); }
+  createList() {
+    if (this.pendingTargetListId) {
+      this.addPendingTargetListMembers();
+      return;
+    }
+    if (!this.selectedIds.size || !this.listName.trim()) return;
+    this.error = "";
+    this.message = "";
+    const memberIds = [...this.selectedIds];
+    const listName = this.listName.trim();
+    this.data.createTargetList({
+      name: listName,
+      description: "Selected from prospect discovery",
+      icpProfileId: this.selectedIcpId || null,
+      dynamic: false
+    }).subscribe({
+      next: (list) => {
+        this.pendingTargetListId = list.id;
+        this.pendingTargetListName = listName;
+        this.pendingTargetListMemberIds = memberIds;
+        this.addPendingTargetListMembers();
+      },
+      error: (e) => (this.error = e?.error?.detail || "Target list could not be created.")
+    });
+  }
+  private addPendingTargetListMembers(): void {
+    if (!this.pendingTargetListId || !this.pendingTargetListMemberIds.length) return;
+    this.error = "";
+    this.data.addMembers(this.pendingTargetListId, this.pendingTargetListMemberIds).subscribe({
+      next: (result) => {
+        this.message = `Target list “${this.pendingTargetListName}” saved with ${this.pendingTargetListMemberIds.length} selected prospects (${result.added ?? this.pendingTargetListMemberIds.length} newly added).`;
+        this.selectedIds.clear();
+        this.listName = "";
+        this.pendingTargetListId = "";
+        this.pendingTargetListName = "";
+        this.pendingTargetListMemberIds = [];
+        this.load();
+      },
+      error: (e) => {
+        this.error = (e?.error?.detail || "The target list exists, but adding its members failed.") +
+          " Use Retry to finish adding the original selection; another list will not be created.";
+      }
+    });
+  }
 }
