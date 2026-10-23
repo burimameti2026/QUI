@@ -63,7 +63,7 @@
           <div class="drop-hint" *ngIf="!nodes.length">Drag components here to build the campaign.</div>
           <div class="flow-column">
             <ng-container *ngFor="let node of nodes; let last = last; let i = index">
-              <button class="flow-node" type="button" [ngClass]="['flow-node', nodeStatus(node), selected?.id===node.id ? 'selected' : '']" (click)="select(node)">
+              <button type="button" [ngClass]="['flow-node', nodeStatus(node), selected?.id===node.id ? 'selected' : '']" (click)="select(node)">
                 <span class="node-icon">{{ nodeIcon(node) }}</span>
                 <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='attention'">{{ attentionDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
                 <span class="node-state">{{ nodeStatus(node) === 'attention' ? 'Needs setup' : nodeStatus(node) }}</span>
