@@ -55,6 +55,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   saving = false;
   messageSaving = false;
   error = '';
+  configEditorError = '';
   message = '';
   paletteFilter = '';
   executionMode = false;
@@ -589,7 +590,9 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     return Object.keys(c).map(key => ({
       key,
       label: this.label(key),
-      kind: Array.isArray(c[key]) ? 'array' : typeof c[key],
+      kind: Array.isArray(c[key])
+        ? (c[key].some((value: any) => value !== null && typeof value === 'object') ? 'json-array' : 'array')
+        : typeof c[key],
       value: c[key]
     }));
   }
@@ -597,11 +600,32 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   updateConfig(key: string, value: any): void {
     if (!this.selected) return;
     this.selected.config[key] = value;
+    this.configEditorError = '';
   }
 
   updateArray(key: string, value: string): void {
     if (!this.selected) return;
     this.selected.config[key] = value.split(',').map(x => x.trim()).filter(Boolean);
+    this.configEditorError = '';
+  }
+
+  jsonValue(value: any): string {
+    try { return JSON.stringify(value ?? [], null, 2); } catch { return '[]'; }
+  }
+
+  updateJsonArray(key: string, value: string): void {
+    if (!this.selected) return;
+    try {
+      const parsed = JSON.parse(value);
+      if (!Array.isArray(parsed)) {
+        this.configEditorError = 'This setting must remain a JSON array.';
+        return;
+      }
+      this.selected.config[key] = parsed;
+      this.configEditorError = '';
+    } catch {
+      this.configEditorError = 'Fix the JSON syntax before saving this workflow.';
+    }
   }
 
   label(key: string): string {
