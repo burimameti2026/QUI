@@ -185,7 +185,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   get containerConfigLocked(): boolean {
-    return this.selectedContainerId && ['Running', 'Starting', 'Queued', 'Waiting'].includes(this.containerStatusText());
+    return !!this.selectedContainerId && ['Running', 'Starting', 'Queued', 'Waiting'].includes(this.containerStatusText());
   }
 
   effectiveStatusText(): string {
