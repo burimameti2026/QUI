@@ -71,7 +71,6 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
     { type: 'TargetList', name: 'Build target list', description: 'Put qualified prospects into the campaign target list.', icon: '◎', config: { minimumScore: 70, dynamic: true } },
     { type: 'Outreach', name: 'Prepare outreach', description: 'Prepare personalized outreach before approval.', icon: '✉', config: { channel: 'email', steps: [] } },
     { type: 'Approval', name: 'Human approval', description: 'Pause outreach until an authorized user approves it.', icon: '⚿', config: { required: true }, requiresApproval: true },
-    { type: 'Delivery', name: 'Deliver outreach', description: 'Deliver only approved outreach while the campaign is running.', icon: '➤', config: { provider: '', dailyLimit: 10 } }
   ];
 
   constructor(
