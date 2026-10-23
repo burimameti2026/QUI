@@ -223,7 +223,30 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   refreshExecution(): void {
     this.data.campaignDetail(this.id).subscribe({
-      next: detail => { this.applyDetail(detail, true); this.syncAdvisorContext(); this.refreshActivity(); },
+      next: detail => {
+        this.applyDetail(detail, true);
+        // Campaign detail carries the shared default plan. Reapply the selected
+        // container's own graph after polling so it cannot be replaced every 3s.
+        if (this.selectedContainerId) {
+          const selectedNodeId = this.selected?.id;
+          this.applyContainerPlan(this.selectedContainer());
+          const execution = new Map<string, any>((detail.tasks || []).map((task: any) => [this.taskKey(task), task]));
+          this.nodes = this.nodes.map(node => {
+            const task = execution.get(node.id) || execution.get(node.type);
+            return {
+              ...node,
+              status: task?.status,
+              error: task?.error || null,
+              resultJson: task?.resultJson || '{}',
+              startedAtUtc: task?.startedAtUtc,
+              completedAtUtc: task?.completedAtUtc
+            };
+          });
+          this.selected = this.nodes.find(node => node.id === selectedNodeId) || this.nodes[0] || null;
+        }
+        this.syncAdvisorContext();
+        this.refreshActivity();
+      },
       error: () => undefined
     });
   }
