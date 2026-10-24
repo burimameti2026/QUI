@@ -53,7 +53,7 @@ const i = (
         <a class="brand-link" routerLink="/dashboard" aria-label="LeadsAI home"
           ><span class="brand-logo">L</span
           ><span class="brand-copy"
-            ><strong>FindLeads<span> AI</span></strong
+            ><strong>Leads<span>AI</span></strong
             ></span
           ></a
 >
