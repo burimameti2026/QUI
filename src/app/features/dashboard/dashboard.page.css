@@ -11,9 +11,9 @@
 .page-dashboard>.hero>.stack>span:last-child{border-bottom:0}
 .page-dashboard>.hero>.stack b{color:#fff;font-size:16px}
 .page-dashboard>.hero .status-dot{background:#32c58a}
-.page-dashboard .content-grid{gap:14px;margin-top:14px;align-items:stretch}
-.page-dashboard .card{min-width:0;border-radius:13px;box-shadow:0 4px 16px rgba(21,35,46,.045)}
-.page-dashboard .card-header .eyebrow{color:#f5500b}
+.page-dashboard .content-grid{gap:10px;margin-top:10px;align-items:stretch}
+.page-dashboard .card{min-width:0;border-radius:var(--wl-card-radius);box-shadow:var(--wl-card-shadow)}
+.page-dashboard .card-header .eyebrow{color:rgba(255,255,255,.72)}
 .page-dashboard .card-header h3{margin-top:4px}
 .page-dashboard .list-item{gap:12px;padding:12px 14px}
 .page-dashboard .list-item:not(.table-head){transition:background .14s ease}
