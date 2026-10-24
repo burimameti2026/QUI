@@ -724,7 +724,7 @@ button,.btn,.page-actions a,.page-actions button{
   --wl-border:#dbe2e9;
 }
 /* Shared shape tokens for all common card-like surfaces. */
-:where(.page,.app-content,main,[class*="page-"]) :is(
+:is(.page,.app-content,main,[class*="page-"]) :is(
   .card,.panel,.content-card,.data-card,.stat-card,.metric-card,.summary-card,
   .section-card,.surface-card,.info-card,.form-card,.table-card,.list-card,
   .detail-card,.settings-card,.campaign-tile,.prospect-card,.lead-card,
@@ -737,7 +737,7 @@ button,.btn,.page-actions a,.page-actions button{
   border-radius:var(--wl-card-radius)!important;
 }
 /* One shared header treatment; do not recolor semantic status badges or action buttons. */
-:where(.page,.app-content,main,[class*="page-"]) :is(
+:is(.page,.app-content,main,[class*="page-"]) :is(
   .card-header,.section-header,.panel-header,.section-title-bar,.section-heading-bar,
   .qualification-model-header,[class*="card-header"],[class*="CardHeader"],
   [class*="panel-header"],[class*="PanelHeader"],[class*="section-header"],
@@ -749,7 +749,7 @@ button,.btn,.page-actions a,.page-actions button{
   border-color:transparent;
   border-radius:var(--wl-card-radius) var(--wl-card-radius) 0 0!important;
 }
-:where(.page,.app-content,main,[class*="page-"]) :is(
+:is(.page,.app-content,main,[class*="page-"]) :is(
   .card-header,.section-header,.panel-header,.section-title-bar,.section-heading-bar,
   .qualification-model-header,[class*="card-header"],[class*="CardHeader"],
   [class*="panel-header"],[class*="PanelHeader"],[class*="section-header"],
@@ -759,18 +759,20 @@ button,.btn,.page-actions a,.page-actions button{
   color:#fff!important;
 }
 /* Default eyebrow/kicker color is neutral; header eyebrow inherits high-contrast white above. */
-:where(.page,.app-content,main,[class*="page-"]) :is(
+:is(.page,.app-content,main,[class*="page-"]) :is(
   .eyebrow,.section-kicker,.card-kicker,.subtitle-label,[class*="eyebrow"],[class*="Eyebrow"],[class*="kicker"],[class*="Kicker"]
 ){
   color:var(--wl-muted);
 }
 /* Cards have one border/shadow source; inner components keep their own layout. */
-:where(.page,.app-content,main,[class*="page-"]) :is(
+:is(.page,.app-content,main,[class*="page-"]) :is(
   .card,.panel,.content-card,.data-card,.stat-card,.metric-card,.summary-card,
   .section-card,.surface-card,.info-card,.form-card,.table-card,.list-card,
   .detail-card,.settings-card,.campaign-tile,.prospect-card,.lead-card,.company-card,
   .contact-card,.opportunity-card,.designer-shell
 ){
-  border-color:var(--wl-border);
-  box-shadow:var(--wl-card-shadow);
+  border-color:var(--wl-border)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+  border-radius:var(--wl-card-radius)!important;
+  overflow:hidden;
 }
