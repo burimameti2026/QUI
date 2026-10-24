@@ -451,3 +451,50 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 .status-failed,.status-error,.status-rejected{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
 .status-paused,.status-info,.status-stopped,.status-cancelled,.status-canceled{color:var(--wl-muted);background:#f5f6f8;border-color:var(--wl-border-strong)}
 
+
+
+/* UI CONSOLIDATION HOTFIX — restore canonical navy/blue surfaces.
+   Keep shared page gutters and spacing consistent; do not introduce brown/earth-tone headers. */
+:root {
+  --wl-page-padding: 10px;
+  --wl-card-header-bg: linear-gradient(115deg, #15232e 0%, #2b455e 100%);
+  --wl-card-header-border: var(--wl-accent);
+}
+.page {
+  width: 100%;
+  min-width: 0;
+  padding: 10px var(--wl-page-padding) 18px;
+}
+.card-header,
+.panel-header,
+.section-title-bar,
+.section-heading-bar,
+.qualification-model-header,
+.qualification-header {
+  background: var(--wl-card-header-bg) !important;
+  color: #fff !important;
+  border-color: transparent;
+}
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header strong,
+.panel-header h1,
+.panel-header h2,
+.panel-header h3,
+.panel-header h4,
+.section-title-bar h1,
+.section-title-bar h2,
+.section-title-bar h3,
+.section-heading-bar h1,
+.section-heading-bar h2,
+.section-heading-bar h3,
+.qualification-model-header h1,
+.qualification-model-header h2,
+.qualification-model-header h3,
+.qualification-header h1,
+.qualification-header h2,
+.qualification-header h3 {
+  color: #fff !important;
+}
