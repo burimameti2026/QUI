@@ -105,13 +105,19 @@ const i = (
     <main class="app-main">
       <header class="app-header">
         <div class="header-search-wrap">
+          <div class="global-search-container">
           <label class="global-search"
             ><span>⌕</span
             ><input
               [(ngModel)]="query"
-              placeholder="Search leads, contacts, invoices..."
+              placeholder="Search pages..."
             /><kbd>Ctrl K</kbd></label
           >
+          <div class="global-search-results" *ngIf="query.trim()" role="listbox" aria-label="Matching pages">
+            <a *ngFor="let result of searchResults" [routerLink]="result.url" (click)="query = ''" role="option">{{ result.label }}</a>
+            <p *ngIf="searchResults.length === 0">No matching pages.</p>
+          </div>
+          </div>
           <div class="header-tools">
             <a class="header-icon notification" routerLink="/inbox" aria-label="Notifications">
               ◌<span class="notification-dot" aria-hidden="true"></span>
@@ -224,6 +230,14 @@ export class ShellComponent {
   get isHub() {
     return this.router.url === "/dashboard" || this.router.url === "/";
   }
+  get searchResults(): Item[] {
+    const term = this.query.trim().toLowerCase();
+    if (!term) return [];
+    return this.navigationGroups
+      .flatMap(group => group.items.flatMap(item => [item, ...(item.children ?? [])]))
+      .filter(item => this.allowed(item) && item.label.toLowerCase().includes(term))
+      .slice(0, 8);
+  }
   navLabel(k: string) {
     return this.navigationTranslations[k]?.[this.i18n.language()] ?? k;
   }
@@ -275,6 +289,12 @@ export class ShellComponent {
     this.adminMenuOpen = false;
     this.auth.logout();
     void this.router.navigate(["/login"]);
+  }
+  @HostListener("document:keydown", ["$event"]) handleGlobalShortcut(event: KeyboardEvent) {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      document.querySelector<HTMLInputElement>(".global-search input")?.focus();
+    }
   }
   @HostListener("document:click") closeAdminMenu() {
     this.adminMenuOpen = false;
