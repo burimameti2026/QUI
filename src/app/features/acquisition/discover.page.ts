@@ -18,8 +18,8 @@ import { AcquisitionService } from "./acquisition.service";
     <button class="button-primary" [disabled]="!activeIcp" (click)="openBulk()">⇧ Import companies</button>
   </qai-page-header>
 
-  <section class="hero">
-    <div class="stack">
+  <section class="hero discovery-hero">
+    <div class="discovery-copy">
       <span class="eyebrow">OPERATING PICTURE</span>
       <h2>Build an evidence-backed target market</h2>
       <p>Define fit, import verified accounts and move only qualified prospects into controlled outreach.</p>
@@ -29,8 +29,11 @@ import { AcquisitionService } from "./acquisition.service";
         <span><b>{{ overview.hot || 0 }}</b> high priority</span>
       </div>
     </div>
-    <div class="card discovery-progress">
-      <span class="eyebrow">Current workflow progress</span>
+  </section>
+
+  <section class="card discovery-progress">
+      <header class="card-header"><div><span class="eyebrow">ACQUISITION WORKFLOW</span><h3>From market definition to approved outreach</h3><p>Track progress from ICP setup through evidence and audience building to launch.</p></div></header>
+      <div class="card-body"><span class="eyebrow">Current workflow progress</span>
       <div class="discovery-timeline" role="list" aria-label="Current workflow progress">
         <div class="discovery-timeline-track" aria-hidden="true"></div>
         <div class="discovery-timeline-step" *ngFor="let step of [
@@ -46,7 +49,7 @@ import { AcquisitionService } from "./acquisition.service";
           </span>
         </div>
       </div>
-    </div>
+      </div>
   </section>
 
   <section class="metric-grid discovery-kpis">
