@@ -16,7 +16,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
       <button class="button-quiet" type="button" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
       <button class="button-primary" type="button" (click)="openCreate()">+ Create Lead</button>
     </qai-page-header>
-    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>Lead action failed</b><p>{{ error }}</p></div></div><div class="callout success" *ngIf="message">{{ message }}</div>
+    <div class="callout warning" *ngIf="error"><span class="icon">!</span><div><b>CRM request failed</b><p>{{ error }}</p></div></div><div class="callout success" *ngIf="message">{{ message }}</div>
     
       <qai-refined-tabs>
         <button [class.active]="activeTab==='All'" (click)="setTab('All')" type="button">All</button><button [class.active]="activeTab==='Favourite'" (click)="setTab('Favourite')" type="button">Favourite</button><button [class.active]="activeTab==='New'" (click)="setTab('New')" type="button">New</button><button [class.active]="activeTab==='Assigned to me'" (click)="setTab('Assigned to me')" type="button">Assigned to me</button><button [class.active]="activeTab==='Overdue'" (click)="setTab('Overdue')" type="button">Overdue</button><button [class.active]="activeTab==='Hot'" (click)="setTab('Hot')" type="button">Hot</button>
