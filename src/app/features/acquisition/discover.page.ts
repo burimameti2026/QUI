@@ -20,7 +20,7 @@ import { AcquisitionService } from "./acquisition.service";
 
   <section class="hero">
     <div class="stack">
-      <span class="eyebrow">Acquisition workflow</span>
+      <span class="eyebrow">OPERATING PICTURE</span>
       <h2>Build an evidence-backed target market</h2>
       <p>Define fit, import verified accounts and move only qualified prospects into controlled outreach.</p>
       <div class="meta">
