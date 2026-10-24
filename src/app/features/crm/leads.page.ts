@@ -23,7 +23,7 @@ import { RefinedTabs } from '../../shared/components/refined-tabs.component';
       </qai-refined-tabs>
       <qai-data-grid *ngIf="!loading && !error">
         <div class="toolbar">
-          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><select [(ngModel)]="temp"><option value="">All temperatures</option><option>Hot</option><option>Warm</option><option>Cold</option></select><button type="button" class="toolbar-button" (click)="toggleSort()">↕ {{ sortByScore ? 'Sort by date' : 'Sort by score' }}</button><span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="exportCsv()">⇧ Export CSV</button><button type="button" class="toolbar-button" (click)="load()">↻ Refresh</button>
+          <label class="search"><span>⌕</span><input [(ngModel)]="q" placeholder="Search leads, companies, contacts..." /></label><select [(ngModel)]="temp"><option value="">All temperatures</option><option>Hot</option><option>Warm</option><option>Cold</option></select><button type="button" class="toolbar-button" (click)="toggleSort()">↕ {{ sortByScore ? 'Sort by date' : 'Sort by score' }}</button><span class="toolbar-spacer"></span><button type="button" class="toolbar-button" (click)="exportCsv()">⇧ Export CSV</button>
         </div>
         <table>
           <thead><tr><th class="check-col"><input type="checkbox" [checked]="allVisibleSelected" (change)="toggleAll($event)" /></th><th>Customer</th><th>Company</th><th>Email</th><th>Status</th><th>Manager</th><th>Source</th><th>Score</th><th>Created</th><th>Actions</th></tr></thead>
