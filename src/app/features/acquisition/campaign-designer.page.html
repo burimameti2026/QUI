@@ -30,7 +30,7 @@
         <button class="button-primary" type="button" *ngIf="canStart" (click)="start()" [disabled]="saving">▶ Start</button>
         <button class="button-secondary" type="button" *ngIf="isRunning && !selectedContainerId" (click)="pause()" [disabled]="saving">Ⅱ Pause</button>
         <button class="button-secondary" type="button" *ngIf="!selectedContainerId && statusText(campaign?.status)==='Paused'" (click)="resume()" [disabled]="saving">▶ Resume</button>
-        <button class="button-secondary" type="button" *ngIf="isRunning || (!selectedContainerId && statusText(campaign?.status)==='Paused')" (click)="stop()" [disabled]="saving">■ Stop</button>
+        <button class="button-secondary" type="button" *ngIf="canStop" (click)="stop()" [disabled]="saving">■ Stop</button>
         <span class="error-badge" *ngIf="hasErrors">! {{ failedCount }} issue(s)</span>
       </div>
     </section>
