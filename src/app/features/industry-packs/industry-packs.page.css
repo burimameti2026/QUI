@@ -14,13 +14,13 @@
 .page-industry-packs>.hero{
   margin:14px 0;
   padding:22px;
-  border:1px solid #2b455e;
-  border-radius:15px;
-  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  border:1px solid var(--wl-navy-2);
+  border-radius:var(--wl-card-radius);
+  background:var(--wl-navy-gradient);
   color:#fff;
   box-shadow:0 8px 24px rgba(21,35,46,.1);
 }
-.page-industry-packs>.hero .eyebrow{color:#ff9a6b;font-weight:800;letter-spacing:.12em}
+.page-industry-packs>.hero .eyebrow{color:rgba(255,255,255,.78);font-weight:800;letter-spacing:.12em}
 .page-industry-packs>.hero h2{margin:8px 0;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.025em;color:#fff}
 .page-industry-packs>.hero p{max-width:760px;margin:0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.65}
 .page-industry-packs .card-header{
@@ -29,7 +29,7 @@
 }
 .page-industry-packs .card-header h2,
 .page-industry-packs .card-header .eyebrow{color:#fff!important}
-.page-industry-packs .card-header .eyebrow{color:#ff9a6b!important}
+.page-industry-packs .card-header .eyebrow{color:rgba(255,255,255,.72)!important}
 .page-industry-packs .card-header .status{flex-shrink:0}
 .page-industry-packs .builder-head .eyebrow{color:var(--wl-accent)}
 @media(max-width:620px){
