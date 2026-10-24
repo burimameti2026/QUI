@@ -1,10 +1,10 @@
 /* QUI — canonical enterprise design system. Keep visual rules here; avoid page-specific override stacks. */
 :root{
  --wl-app-bg:#f5f6f8;--wl-surface:#fff;--wl-text:#171717;--wl-muted:#6b7280;--wl-border:#e1e5ea;--wl-border-strong:#cfd5dc;
- --wl-accent:#f5500b;--wl-accent-hover:#000;--wl-danger:#b42318;--wl-success:#087443;
+ --wl-accent:#f5500b;--wl-accent-hover:#c64008;--wl-danger:#b42318;--wl-success:#087443;
  --wl-page-padding:10px;--wl-card-padding:16px;--wl-control-height:40px;--wl-card-radius:12px;--wl-button-radius:7px;--wl-input-radius:7px;--wl-shadow:0 10px 28px rgba(15,23,42,.10);--wl-card-shadow:0 10px 28px rgba(15,23,42,.10);
  --wl-page-bg:var(--wl-app-bg);--wl-card-bg:#fff;--wl-card-header-bg:linear-gradient(115deg,#15232e 0%,#2b455e 100%);--wl-card-border:var(--wl-border);--wl-card-header-border:var(--wl-accent);
- --brand-primary:var(--wl-accent);--brand-primary-hover:#000;--brand-accent:var(--wl-accent)
+ --brand-primary:var(--wl-accent);--brand-primary-hover:#c64008;--brand-accent:var(--wl-accent)
 }
 *,*::before,*::after{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--wl-app-bg);color:var(--wl-text);font:13px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-width:320px}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}img,svg{max-width:100%}
@@ -514,42 +514,60 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 }
 
 
-/* Canonical card system: consistent with the Dashboard / Automation navy header. */
+
+
+/* LeadsAI canonical visual contract — shared by every route. */
 :root{
-  --wl-card-header-bg:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  --wl-navy-900:#15232e;
+  --wl-navy-700:#2b455e;
+  --wl-navy-gradient:linear-gradient(115deg,var(--wl-navy-900) 0%,var(--wl-navy-700) 100%);
+  --wl-card-header-bg:var(--wl-navy-gradient);
   --wl-card-radius:14px;
   --wl-card-shadow:0 5px 18px rgba(21,35,46,.07);
   --wl-card-gap:18px;
+  --wl-accent-hover:#c64008;
+  --brand-primary-hover:#c64008;
 }
-.card,.section{
+/* All standard cards and section headers use one surface and one text contrast. */
+.card,.section,.metric,.summary,.form,.notice,.empty{
   min-width:0;
-  border:1px solid var(--wl-border);
-  border-radius:var(--wl-card-radius)!important;
+  color:var(--wl-text);
   background:#fff;
-  box-shadow:var(--wl-card-shadow);
+  border-color:var(--wl-border);
+  border-radius:var(--wl-card-radius);
 }
-.card-header{
-  background:var(--wl-card-header-bg)!important;
-  border:0;
-  border-radius:calc(var(--wl-card-radius) - 1px) calc(var(--wl-card-radius) - 1px) 0 0;
-  color:#fff;
+.card{overflow:hidden;box-shadow:var(--wl-card-shadow)}
+.card-header,.section-header,.section-title-bar,.section-heading-bar,
+.qualification-model-header,.qualification-header{
+  color:#fff!important;
+  background:var(--wl-navy-gradient)!important;
+  border-color:transparent!important;
 }
-.card-header::after,.section-header::after{background:var(--wl-accent)}
+.card-header{border-radius:calc(var(--wl-card-radius) - 1px) calc(var(--wl-card-radius) - 1px) 0 0}
 .card-header h1,.card-header h2,.card-header h3,.card-header h4,
-.card-header strong{color:#fff}
-.card-header p{color:rgba(255,255,255,.78)}
-.card-header .eyebrow,.section-header .eyebrow{color:#ffd0ba}
+.card-header strong,.section-header h1,.section-header h2,.section-header h3,
+.section-header h4,.section-title-bar h1,.section-title-bar h2,
+.section-title-bar h3,.section-title-bar h4,.section-heading-bar h1,
+.section-heading-bar h2,.section-heading-bar h3,.section-heading-bar h4,
+.qualification-model-header h1,.qualification-model-header h2,
+.qualification-model-header h3,.qualification-model-header h4,
+.qualification-header h1,.qualification-header h2,
+.qualification-header h3,.qualification-header h4{color:#fff!important}
+.card-header p,.section-header p{color:rgba(255,255,255,.82)!important}
+.card-header .eyebrow,.section-header .eyebrow,
+.section-title-bar .eyebrow,.section-heading-bar .eyebrow,
+.qualification-model-header .eyebrow,.qualification-header .eyebrow{color:#ffd0ba!important}
+.card-header::after,.section-header::after{background:var(--wl-accent)!important}
 .content-grid{gap:var(--wl-card-gap);margin-bottom:var(--wl-card-gap)}
 .page>.card,.page>.section{margin-bottom:var(--wl-card-gap)}
-.page>.hero{border-radius:var(--wl-card-radius);margin-bottom:var(--wl-card-gap)}
-.toolbar{
-  gap:10px;
-  border:1px solid var(--wl-border);
-  border-radius:10px;
-  box-shadow:none;
+.toolbar{gap:10px;border-radius:10px}
+.sidebar{background:var(--wl-navy-gradient)!important;color:#fff!important}
+.sidebar a,.sidebar button,.sidebar [role="menuitem"]{color:rgba(255,255,255,.82)}
+.sidebar a:hover,.sidebar button:hover,.sidebar [role="menuitem"]:hover,
+.sidebar .active,.sidebar [aria-current="page"]{
+  color:#fff!important;
+  background:rgba(255,255,255,.12)!important;
 }
-.table{min-width:0;border-radius:0 0 var(--wl-card-radius) var(--wl-card-radius)}
-@media(max-width:800px){
-  :root{--wl-card-gap:14px}
-  .card-header{align-items:flex-start;flex-wrap:wrap;gap:10px}
-}
+.sidebar .active::before,.sidebar [aria-current="page"]::before{background:var(--wl-accent)}
+.app-header{background:#fff!important;color:var(--wl-text)!important}
+@media(max-width:800px){:root{--wl-card-gap:14px}}
