@@ -21,3 +21,7 @@
 .page-campaign-history .status-paused,.page-campaign-history .status-info{background:#f5f6f8;color:#475467;border-color:var(--wl-border-strong)}
 .page-campaign-history .empty{padding:40px 24px!important;color:#657887;opacity:1}
 @media(max-width:760px){.page-campaign-history .history-filters{padding:13px}.page-campaign-history .filter-head{align-items:flex-start;flex-direction:column}.page-campaign-history .filter-grid{grid-template-columns:1fr}.page-campaign-history .history-grid{min-width:1100px}}
+
+.page-campaign-history .status-starting{background:#eef4ff;color:#2458a6;border-color:#c6d7f5}
+.page-campaign-history .status-stopped,.page-campaign-history .status-cancelled{background:#f5f6f8;color:#475467;border-color:var(--wl-border-strong)}
+.page-campaign-history .status-warning{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
