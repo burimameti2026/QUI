@@ -90,3 +90,19 @@
 }
 
 .operator-checks .check-row b.check-ready{color:#16794b;background:#eaf8f0}.operator-checks .check-row b.check-attention{color:#9a5b08;background:#fff4df}.operator-checks .check-row b.check-pending{color:#475569;background:#eef2f6}
+
+/* Phase 3: responsive acquisition toolbar and modal controls. */
+@media(max-width:700px){
+  .search-box{width:100%;min-width:0;max-width:none;box-sizing:border-box}
+  .campaign-toolbar{align-items:stretch;flex-direction:column}
+  .campaign-toolbar>*{min-width:0;max-width:none}
+  .create-dialog,.ai-create-dialog{width:100%;max-height:calc(100dvh - 24px);overflow:auto;box-sizing:border-box}
+  .create-options{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:420px){
+  .campaign-grid{grid-template-columns:minmax(0,1fr)}
+  .campaign-intro{grid-template-columns:minmax(0,1fr);gap:12px}
+  .creation-path{justify-content:flex-start}
+  .campaign-tile .tile-top{gap:8px}
+  .campaign-tile .tile-body{padding:10px}
+}
