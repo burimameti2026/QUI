@@ -42,8 +42,8 @@
 
 /* Approval Queue uses the same shared operating-picture hero as Dashboard. */
 .page-approval-queue>.hero{
-  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
-  border-color:#2b455e;
+  background:var(--wl-navy-gradient);
+  border-color:var(--wl-navy-2);
 }
-.page-approval-queue>.hero .eyebrow{color:#ff9a6b;font-weight:800;letter-spacing:.12em}
+.page-approval-queue>.hero .eyebrow{color:rgba(255,255,255,.78);font-weight:800;letter-spacing:.12em}
 .page-approval-queue>.hero h2{font-size:clamp(20px,2vw,28px);letter-spacing:-.025em}
