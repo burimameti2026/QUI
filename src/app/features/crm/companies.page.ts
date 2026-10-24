@@ -15,7 +15,7 @@ import { CrmService } from './crm.service';
         <button class="button-quiet" (click)="load()" [disabled]="loading">↻ {{ loading ? 'Loading…' : 'Refresh data' }}</button>
         <button class="button-primary" (click)="open()">+ Add company</button>
       </qai-page-header>
-      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Companies could not be loaded</b><p>{{ error }}</p></div></div>
+      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Company request failed</b><p>{{ error }}</p></div></div>
       <section class="card">
         <header class="card-header">
           <div><span class="eyebrow">CRM DIRECTORY</span><h2>Company workspace</h2><p>Search and manage every account in one consistent directory.</p></div>
