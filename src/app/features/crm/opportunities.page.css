@@ -1,2 +1,28 @@
 /* Opportunities page-specific lifecycle and activity timeline; shared colors use design tokens. */
 .lifecycle{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-top:18px}.lifecycle-item{position:relative;padding:14px 18px 14px 30px;border-top:1px solid var(--wl-border);border-bottom:1px solid var(--wl-border);background:var(--wl-surface)}.lifecycle-item:not(:last-child){border-right:0}.lifecycle-item:not(:first-child)::before{content:"";position:absolute;left:12px;top:50%;width:7px;height:7px;border-radius:50%;background:var(--wl-muted);transform:translate(-50%,-50%)}.lifecycle-item strong{display:block;font-size:12px}.lifecycle-item small{display:block;margin-top:4px;color:var(--wl-muted);font-size:11px}.timeline{position:relative;padding:4px 0 4px 28px}.timeline::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--wl-border)}.timeline-event{position:relative;display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:18px;align-items:center;padding:16px 0}.timeline-event::before{content:"";position:absolute;left:-23px;top:23px;width:9px;height:9px;border-radius:50%;background:var(--wl-muted);border:3px solid var(--wl-surface);box-shadow:0 0 0 1px var(--wl-border)}.timeline-event .time{font-size:11px;color:var(--wl-muted)}.timeline-event .event-main strong{display:block;font-size:13px}.timeline-event .event-main small{display:block;margin-top:4px;color:var(--wl-muted)}.timeline-event .event-meta{text-align:right;white-space:nowrap}@media(max-width:900px){.lifecycle{grid-template-columns:1fr 1fr}.timeline-event{grid-template-columns:1fr auto;gap:8px}.timeline-event .time{grid-column:1/-1}.timeline-event .event-meta{grid-column:2;grid-row:2}}
+
+/* Shared operating-picture hero: match Dashboard and Acquisition surfaces. */
+.page-crm-opportunities .conversion-guide{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  align-items:center;
+  gap:22px;
+  margin:14px 0;
+  padding:22px;
+  border:1px solid #2b455e;
+  border-radius:15px;
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  color:#fff;
+  box-shadow:0 8px 24px rgba(21,35,46,.1);
+}
+.page-crm-opportunities .conversion-guide .eyebrow{color:#ff9a6b;font-weight:800;letter-spacing:.12em}
+.page-crm-opportunities .conversion-guide h2{margin:8px 0;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.025em;color:#fff}
+.page-crm-opportunities .conversion-guide p{max-width:760px;margin:0;color:rgba(255,255,255,.76);font-size:12px;line-height:1.65}
+.page-crm-opportunities .conversion-guide .lifecycle{margin:0;overflow:hidden;border:1px solid rgba(255,255,255,.18);border-radius:11px}
+.page-crm-opportunities .conversion-guide .lifecycle-item{min-width:0;padding:13px 10px 13px 18px;border:0;border-right:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:#fff}
+.page-crm-opportunities .conversion-guide .lifecycle-item:last-child{border-right:0}
+.page-crm-opportunities .conversion-guide .lifecycle-item:not(:first-child)::before{left:8px;background:#ff8a52}
+.page-crm-opportunities .conversion-guide .lifecycle-item strong{color:#fff;font-size:11px}
+.page-crm-opportunities .conversion-guide .lifecycle-item small{color:rgba(255,255,255,.68);font-size:9px}
+@media(max-width:900px){.page-crm-opportunities .conversion-guide{grid-template-columns:1fr;gap:16px}.page-crm-opportunities .conversion-guide .lifecycle{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.page-crm-opportunities .conversion-guide{padding:16px}.page-crm-opportunities .conversion-guide .lifecycle{grid-template-columns:1fr 1fr}.page-crm-opportunities .conversion-guide .lifecycle-item{border-bottom:1px solid rgba(255,255,255,.13)}}
