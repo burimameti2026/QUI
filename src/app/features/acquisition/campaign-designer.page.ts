@@ -656,12 +656,16 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   latestRunStatus(): string {
     const value = this.latestRun?.status;
     const numeric = Number(value);
-    const text = String(value ?? '').toLowerCase();
-    if (numeric === 3 || text.includes('waiting')) return 'waiting';
-    if (numeric === 1 || text.includes('running')) return 'running';
-    if (numeric === 2 || text.includes('completed')) return 'completed';
-    if (numeric === 4 || text.includes('failed')) return 'failed';
-    return text;
+    const text = String(value ?? '').trim().toLowerCase();
+    // AgentJobStatus enum: Queued=0, Running=1, Waiting=2,
+    // Completed=3, Failed=4, Cancelled=5.
+    if (text.includes('queued') || (text !== '' && numeric === 0)) return 'queued';
+    if (text.includes('running') || numeric === 1) return 'running';
+    if (text.includes('waiting') || numeric === 2) return 'waiting';
+    if (text.includes('completed') || numeric === 3) return 'completed';
+    if (text.includes('failed') || numeric === 4) return 'failed';
+    if (text.includes('cancelled') || text.includes('canceled') || numeric === 5) return 'cancelled';
+    return text || 'unknown';
   }
 
   nodeIcon(node: FlowNode): string {
