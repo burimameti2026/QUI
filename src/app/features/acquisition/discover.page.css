@@ -90,3 +90,8 @@
   .discovery-timeline { grid-template-columns: 1fr; gap: 14px; padding-top: 12px; }
   .discovery-timeline-track { display: none; }
 }
+
+/* Prospect section headers use the shared navy gradient. */
+.page .card-header,.page .section-header{background:var(--wl-card-header-bg,#15232e)!important;color:#fff!important}
+.page .card-header h3,.page .card-header p,.page .card-header .eyebrow{color:#fff!important}
+.page .discovery-hero>.stack{padding:0;border:0;background:transparent}
