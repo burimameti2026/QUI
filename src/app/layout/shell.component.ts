@@ -116,7 +116,8 @@ const i = (
             <a class="header-icon notification" routerLink="/inbox" aria-label="Notifications">
               ◌<span class="notification-dot" aria-hidden="true"></span>
             </a>
-            <button type="button" class="header-help" aria-label="Help">?</button>
+            <button type="button" class="header-help" aria-label="Help" [attr.aria-expanded]="helpOpen" (click)="helpOpen = !helpOpen">?</button>
+            <section class="help-popover" *ngIf="helpOpen" role="dialog" aria-label="Quick help"><strong>Need help?</strong><p>Use the AI Advisor for guidance about the page you are working on, or open Knowledge from the sidebar for saved reference material.</p><button type="button" class="help-close" (click)="helpOpen = false">Close</button></section>
           </div>
           <div class="admin-menu" (click)="$event.stopPropagation()">
             <button
@@ -164,6 +165,7 @@ export class ShellComponent {
   readonly navigationTranslations = NAVIGATION_TRANSLATIONS;
   query = "";
   adminMenuOpen = false;
+  helpOpen = false;
   private readonly expandedItems = new Set<string>();
   readonly navigationGroups: Group[] = [
     { label: "COMMAND CENTER", items: [
