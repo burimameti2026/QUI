@@ -7,3 +7,12 @@
 .help-popover strong{display:block;font-size:13px}
 .help-popover p{margin:7px 0 12px;color:var(--wl-muted);font-size:12px;line-height:1.5}
 .help-popover .help-close{min-height:30px;padding:5px 10px;border:1px solid var(--wl-border);border-radius:var(--wl-button-radius);background:var(--wl-surface);color:var(--wl-text);cursor:pointer}
+
+
+/* Global search is page navigation, not a false promise of cross-record search. */
+.global-search-container{position:relative;flex:1;min-width:0;max-width:680px}
+.global-search-container .global-search{width:100%;max-width:none}
+.global-search-results{position:absolute;z-index:80;top:calc(100% + 6px);left:0;right:0;display:grid;gap:2px;padding:6px;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-surface);box-shadow:var(--wl-card-shadow)}
+.global-search-results a{display:block;padding:9px 10px;border-radius:var(--wl-button-radius);color:var(--wl-text);text-decoration:none;font-size:12px;font-weight:600}
+.global-search-results a:hover,.global-search-results a:focus-visible{background:#fff7f2;color:var(--wl-accent);outline:none}
+.global-search-results p{margin:0;padding:9px 10px;color:var(--wl-muted);font-size:12px}
