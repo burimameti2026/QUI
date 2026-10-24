@@ -708,3 +708,75 @@ button,.btn,.page-actions a,.page-actions button{
 :where(.page) :is(h1,h2,h3,h4,h5,h6,.eyebrow,.section-kicker,.card-kicker,.subtitle-label){
   text-decoration-color:currentColor;
 }
+
+
+/* Repository-wide visual lock: Prospects is the reference page.
+   This override intentionally wins over legacy feature CSS that still paints brown
+   headers or resets card corners. */
+:root{
+  --wl-card-radius:14px;
+  --wl-card-header-bg:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  --wl-navy-gradient:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  --wl-card-shadow:0 5px 18px rgba(21,35,46,.08);
+  --wl-border:#dbe2e9;
+}
+/* Cards and panels, including feature-specific names, must share rounded corners. */
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  [class*="card"],[class*="Card"],[class*="panel"],[class*="Panel"],
+  [class*="tile"],[class*="Tile"],[class*="metric"],[class*="Metric"],
+  [class*="summary"],[class*="Summary"],[class*="widget"],[class*="Widget"],
+  [class*="section-box"],[class*="content-box"],[class*="surface"],
+  .hero,.section,.notice,.alert,.empty,.toolbar,.filter-panel,.history-filters,
+  .designer-shell,.inspector-section,.flow-node,.palette-item,.timeline-event
+){
+  border-radius:var(--wl-card-radius)!important;
+}
+/* Inner card headers are rounded with the parent and use navy, never brown/tan. */
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  [class*="card-header"],[class*="CardHeader"],[class*="panel-header"],
+  [class*="PanelHeader"],[class*="section-header"],[class*="SectionHeader"],
+  [class*="model-header"],[class*="ModelHeader"],[class*="qualification-header"],
+  [class*="QualificationHeader"],[class*="tile-top"],[class*="TileTop"],
+  .card-header,.section-title-bar,.section-heading-bar,.qualification-model-header
+){
+  background:var(--wl-navy-gradient)!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  border-radius:var(--wl-card-radius) var(--wl-card-radius) 0 0!important;
+}
+/* Restore high contrast in every navy header; no gold/yellow headline text. */
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  [class*="card-header"],[class*="CardHeader"],[class*="panel-header"],
+  [class*="PanelHeader"],[class*="section-header"],[class*="SectionHeader"],
+  [class*="model-header"],[class*="ModelHeader"],[class*="qualification-header"],
+  [class*="QualificationHeader"],[class*="tile-top"],[class*="TileTop"],
+  .card-header,.section-title-bar,.section-heading-bar,.qualification-model-header
+) :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow,.subtitle,.title){
+  color:#fff!important;
+}
+/* Gold/brown eyebrow styles were a legacy accent, not a status color: remove them. */
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  .eyebrow,.section-kicker,.card-kicker,.subtitle-label,
+  [class*="eyebrow"],[class*="Eyebrow"],[class*="kicker"],[class*="Kicker"]
+){
+  color:var(--wl-muted)!important;
+}
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  .card-header,.section-header,.section-title-bar,.section-heading-bar,
+  [class*="card-header"],[class*="CardHeader"],[class*="section-header"],
+  [class*="SectionHeader"],[class*="model-header"],[class*="ModelHeader"],
+  [class*="qualification-header"],[class*="QualificationHeader"],[class*="tile-top"]
+) :is(.eyebrow,[class*="eyebrow"],[class*="Eyebrow"],[class*="kicker"],[class*="Kicker"]){
+  color:rgba(255,255,255,.88)!important;
+}
+/* Outer card shells own the rounded silhouette; header/body do not square it off. */
+:where(.page,.app-content,main,[class*="page-"]) :is(
+  .card,.panel,.content-card,.data-card,.stat-card,.metric-card,.summary-card,
+  .section-card,.surface-card,.info-card,.form-card,.table-card,.list-card,
+  .detail-card,.settings-card,.campaign-tile,.prospect-card,.lead-card,
+  .company-card,.contact-card,.opportunity-card,.designer-shell
+){
+  overflow:hidden;
+  border:1px solid var(--wl-border)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+}
