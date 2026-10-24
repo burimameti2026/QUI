@@ -39,3 +39,11 @@
 .page-approval-queue .list-item>footer.actions>.notice{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:240px;margin:0;background:var(--wl-app-bg);color:var(--wl-muted);line-height:1.5}
 .page-approval-queue .list-item>footer.actions>.actions{display:flex;gap:7px;flex-wrap:wrap}
 @media(max-width:800px){.page-approval-queue>.hero{grid-template-columns:1fr;padding:16px}.page-approval-queue .toolbar{align-items:stretch}.page-approval-queue .toolbar .search{max-width:none}.page-approval-queue .filter-group{width:100%}.page-approval-queue .filter-group button{flex:1}.page-approval-queue .list-item>footer.actions>.notice{min-width:100%}}
+
+/* Approval Queue uses the same shared operating-picture hero as Dashboard. */
+.page-approval-queue>.hero{
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  border-color:#2b455e;
+}
+.page-approval-queue>.hero .eyebrow{color:#ff9a6b;font-weight:800;letter-spacing:.12em}
+.page-approval-queue>.hero h2{font-size:clamp(20px,2vw,28px);letter-spacing:-.025em}
