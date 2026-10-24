@@ -31,6 +31,7 @@ export class PackageBuilderPage implements OnInit {
   audience = '';
   packageId = '';
   loadingPackage = false;
+  loadError = '';
   features: string[] = [];
   blocks: PackageBlock[] = [
     { id: 'hero', type: 'hero', title: 'Hero', visible: true },
@@ -47,13 +48,17 @@ export class PackageBuilderPage implements OnInit {
 
   loadExistingPackage(): void {
     this.loadingPackage = true;
+    this.loadError = '';
     this.acquisition.workspacePackages().subscribe({
       next: (packages) => {
         const current = packages?.[0];
         if (current) this.applyPackage(current);
         this.loadingPackage = false;
       },
-      error: () => { this.loadingPackage = false; }
+      error: (err) => {
+        this.loadingPackage = false;
+        this.loadError = err?.error?.detail || 'The saved offer could not be loaded. You can still create a new offer and save it.';
+      }
     });
   }
 
