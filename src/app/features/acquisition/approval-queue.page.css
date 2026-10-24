@@ -1,8 +1,8 @@
-/* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
+/* Approval Queue: retain workflow-specific layout; use canonical design tokens for shared colors and surfaces. */
 
 /* Approval queue: clear human-review hierarchy with responsive message cards */
 .page-approval-queue{max-width:1500px;margin:0 auto;padding-bottom:28px}
-.page-approval-queue>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.32fr);gap:20px;align-items:center;margin:14px 0;padding:22px;border:1px solid #dfe6ec;border-radius:15px;background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.1)}
+.page-approval-queue>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.32fr);gap:20px;align-items:center;margin:14px 0;padding:22px;border:1px solid var(--wl-border);border-radius:15px;background:linear-gradient(115deg,var(--wl-card-header-bg, #15232e) 0%,var(--wl-text) 100%);color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.1)}
 .page-approval-queue>.hero h2{max-width:800px;margin:8px 0;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.025em}
 .page-approval-queue>.hero p{max-width:800px;color:rgba(255,255,255,.75);font-size:12px;line-height:1.65}
 .page-approval-queue>.hero .eyebrow{color:#ff9a6b}
@@ -12,30 +12,30 @@
 .page-approval-queue>.hero aside.status strong{font-size:13px}
 .page-approval-queue>.hero aside.status small{font-size:10px;line-height:1.5;color:rgba(255,255,255,.7)}
 .page-approval-queue .metric-grid{gap:12px;margin:14px 0}
-.page-approval-queue .metric{border-radius:12px;border:1px solid #dfe6ec;box-shadow:0 4px 14px rgba(21,35,46,.045)}
+.page-approval-queue .metric{border-radius:12px;border:1px solid var(--wl-border);box-shadow:0 4px 14px rgba(21,35,46,.045)}
 .page-approval-queue>.card{overflow:hidden;border-radius:14px;box-shadow:0 5px 18px rgba(21,35,46,.045)}
 .page-approval-queue .card-header{gap:16px}
-.page-approval-queue .card-header .eyebrow{color:#f5500b}
-.page-approval-queue .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid #e7edf1;background:#f8fafb}
+.page-approval-queue .card-header .eyebrow{color:var(--wl-accent)}
+.page-approval-queue .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--wl-border);background:var(--wl-app-bg)}
 .page-approval-queue .toolbar .search{flex:1;min-width:220px;max-width:520px}
-.page-approval-queue .filter-group{display:flex;gap:4px;flex-wrap:wrap;padding:4px;border:1px solid #dfe6ec;border-radius:10px;background:#fff}
-.page-approval-queue .filter-group button{padding:7px 10px;border:0;border-radius:7px;background:transparent;color:#526575;font-size:10px;white-space:nowrap}
+.page-approval-queue .filter-group{display:flex;gap:4px;flex-wrap:wrap;padding:4px;border:1px solid var(--wl-border);border-radius:10px;background:#fff}
+.page-approval-queue .filter-group button{padding:7px 10px;border:0;border-radius:7px;background:transparent;color:var(--wl-muted);font-size:10px;white-space:nowrap}
 .page-approval-queue .filter-group button.active{background:#15232e;color:#fff}
 .page-approval-queue .filter-group button b{margin-left:4px;opacity:.72}
 .page-approval-queue .list{gap:0}
-.page-approval-queue .list-item{display:grid;gap:12px;padding:16px;border-bottom:1px solid #e9eef2}
+.page-approval-queue .list-item{display:grid;gap:12px;padding:16px;border-bottom:1px solid var(--wl-border)}
 .page-approval-queue .list-item:last-child{border-bottom:0}
 .page-approval-queue .list-item>.identity{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.page-approval-queue .list-item .avatar{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#edf2f5;color:#2b455e;font-weight:800}
+.page-approval-queue .list-item .avatar{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--wl-app-bg);color:var(--wl-text);font-weight:800}
 .page-approval-queue .list-item .identity>.stack{min-width:180px;flex:1}
 .page-approval-queue .list-item .identity>.stack small{overflow-wrap:anywhere}
 .page-approval-queue .list-item .meta{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
 .page-approval-queue .list-item .meta>.stack{min-width:130px;flex:1}
-.page-approval-queue .list-item .meta>.stack b{font-size:9px;color:#657887;text-transform:uppercase;letter-spacing:.05em}
-.page-approval-queue .list-item .status{border-radius:999px}.page-approval-queue .list-item .status.approved{background:#e1f5e8;color:#17663b;border:1px solid #b9e4c8}
-.page-approval-queue .list-item .card-body{padding:12px 14px;border:1px solid #e5ebef;border-radius:10px;background:#f8fafb}
-.page-approval-queue .list-item .card-body p{margin:7px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;color:#344b5c}
+.page-approval-queue .list-item .meta>.stack b{font-size:9px;color:var(--wl-muted);text-transform:uppercase;letter-spacing:.05em}
+.page-approval-queue .list-item .status{border-radius:999px}.page-approval-queue .list-item .status.approved{background:var(--wl-success-soft, #e1f5e8);color:var(--wl-success);border:1px solid var(--wl-success-border, #b9e4c8)}
+.page-approval-queue .list-item .card-body{padding:12px 14px;border:1px solid var(--wl-border);border-radius:10px;background:var(--wl-app-bg)}
+.page-approval-queue .list-item .card-body p{margin:7px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;color:var(--wl-text)}
 .page-approval-queue .list-item>footer.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.page-approval-queue .list-item>footer.actions>.notice{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:240px;margin:0;background:#f2f6f8;color:#526575;line-height:1.5}
+.page-approval-queue .list-item>footer.actions>.notice{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:240px;margin:0;background:var(--wl-app-bg);color:var(--wl-muted);line-height:1.5}
 .page-approval-queue .list-item>footer.actions>.actions{display:flex;gap:7px;flex-wrap:wrap}
 @media(max-width:800px){.page-approval-queue>.hero{grid-template-columns:1fr;padding:16px}.page-approval-queue .toolbar{align-items:stretch}.page-approval-queue .toolbar .search{max-width:none}.page-approval-queue .filter-group{width:100%}.page-approval-queue .filter-group button{flex:1}.page-approval-queue .list-item>footer.actions>.notice{min-width:100%}}
