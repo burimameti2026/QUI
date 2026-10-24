@@ -73,3 +73,71 @@
   .page-automations>.automation-event-flow .steps{grid-template-columns:1fr}
   .page-automations>.automation-event-flow{padding:15px}
 }
+
+/* Automations: blue card headers, consistent rounded cards and clear spacing. */
+.page-automations>.card{
+  margin:0 0 18px;
+  border:1px solid var(--wl-border,#dfe5ec);
+  border-radius:14px!important;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 5px 18px rgba(21,35,46,.07);
+}
+.page-automations>.card>.card-header{
+  background:linear-gradient(115deg,#214f78 0%,#326b98 100%)!important;
+  border:0;
+  border-radius:13px 13px 0 0;
+  padding:15px 18px;
+  color:#fff;
+}
+.page-automations>.card>.card-header::after{
+  height:2px;
+  background:#f5500b;
+}
+.page-automations>.card>.card-header h2,
+.page-automations>.card>.card-header h3,
+.page-automations>.card>.card-header p,
+.page-automations>.card>.card-header .eyebrow{
+  color:#fff;
+}
+.page-automations>.card>.card-header .eyebrow{
+  color:#ffd0ba;
+}
+.page-automations>.card>.card-header .facts{
+  gap:10px;
+}
+.page-automations>.card>.card-header .facts>span{
+  min-width:72px;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:9px;
+  background:rgba(255,255,255,.09);
+  color:rgba(255,255,255,.82);
+}
+.page-automations>.card>.card-header .facts b{color:#fff}
+.page-automations>.automation-event-flow{
+  margin-bottom:18px;
+  border-radius:15px;
+}
+.page-automations>.notice{
+  margin:0 0 18px;
+  border-radius:10px;
+}
+.page-automations .toolbar{
+  padding:14px 16px;
+  gap:12px;
+}
+.page-automations .table{
+  border-radius:0 0 13px 13px;
+  overflow:auto;
+}
+.page-automations .automation-timeline{
+  padding:8px 18px 12px 34px;
+}
+@media(max-width:620px){
+  .page-automations>.card{margin-bottom:14px}
+  .page-automations>.card>.card-header{align-items:flex-start;flex-direction:column;padding:14px}
+  .page-automations>.card>.card-header .facts{width:100%;flex-wrap:wrap}
+  .page-automations .toolbar{align-items:stretch;flex-direction:column}
+  .page-automations .automation-timeline{padding-right:12px;padding-left:28px}
+}
