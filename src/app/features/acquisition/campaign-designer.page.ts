@@ -137,7 +137,7 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   get canStart(): boolean {
     const status = this.effectiveStatusText();
-    return ['Draft', 'Pending', 'Queued', 'Paused', 'Stopped', 'Failed'].includes(status);
+    return ['Draft', 'Pending', 'Paused', 'Stopped', 'Failed'].includes(status);
   }
 
   start(): void {
@@ -182,6 +182,12 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
 
   get isRunning(): boolean {
     return this.effectiveStatusText() === 'Running';
+  }
+
+  get canStop(): boolean {
+    const status = this.effectiveStatusText();
+    return ['Running', 'Starting', 'Queued', 'Waiting'].includes(status) ||
+      (!this.selectedContainerId && status === 'Paused');
   }
 
   get containerConfigLocked(): boolean {
