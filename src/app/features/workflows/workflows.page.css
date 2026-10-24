@@ -50,3 +50,14 @@
 .page-workflows .card-header h2{font-size:clamp(20px,2vw,27px);line-height:1.2;letter-spacing:-.025em}
 .page-workflows .card-header p{max-width:760px;font-size:12px;line-height:1.65;opacity:.78}
 .page-workflows .card-header .meta{color:rgba(255,255,255,.8)}
+
+/* The directory header is the page's primary hero surface. */
+.page-workflows .workflow-directory>.card-header{
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  color:#fff;
+}
+.page-workflows .workflow-directory>.card-header h2,
+.page-workflows .workflow-directory>.card-header p,
+.page-workflows .workflow-directory>.card-header .eyebrow{color:#fff}
+.page-workflows .workflow-directory>.card-header .eyebrow{color:#ff9a6b}
+.page-workflows .workflow-directory>.card-header .meta{color:rgba(255,255,255,.8)}
