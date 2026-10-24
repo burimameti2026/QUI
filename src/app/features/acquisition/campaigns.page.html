@@ -115,7 +115,7 @@
       </button>
     </article>
   </section>
-  <ng-template #emptyCampaigns><section class="empty card"><h3>{{ search ? "No matching campaign containers" : "No campaign containers yet" }}</h3><p>{{ search ? "Try another search." : "Create a container and choose how its definition should be created." }}</p><button class="button-primary" type="button" (click)="openCreate()" *ngIf="!search">Create Container</button></section></ng-template>
+  <ng-template #emptyCampaigns><section class="empty card" *ngIf="!loading && !error"><h3>{{ search ? "No matching campaign containers" : "No campaign containers yet" }}</h3><p>{{ search ? "Try another search." : "Create a container and choose how its definition should be created." }}</p><button class="button-primary" type="button" (click)="openCreate()" *ngIf="!search">Create Container</button></section></ng-template>
   <div class="create-backdrop container-logs-backdrop" *ngIf="logsOpen" (click)="closeContainerLogs()">
     <section class="container-logs-dialog" (click)="$event.stopPropagation()">
       <header>
