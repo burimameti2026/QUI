@@ -3,7 +3,7 @@
 /* Dashboard: operating view, not a wall of disconnected KPIs */
 .page-dashboard{width:100%;max-width:none;margin:0;padding-bottom:18px}
 .page-dashboard>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.3fr);align-items:center;gap:24px;margin:14px 0;padding:22px;border:1px solid #dfe6ec;border-radius:15px;background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09)}
-.page-dashboard>.hero .eyebrow{color:#ff9a6b}
+.page-dashboard>.hero .eyebrow{color:rgba(255,255,255,.88)}
 .page-dashboard>.hero h2{margin:8px 0;font-size:clamp(20px,2.3vw,29px);line-height:1.2;letter-spacing:-.025em}
 .page-dashboard>.hero p{max-width:850px;color:rgba(255,255,255,.74);font-size:12px;line-height:1.7}
 .page-dashboard>.hero>.stack{padding:14px;border:1px solid rgba(255,255,255,.17);border-radius:11px;background:rgba(255,255,255,.07)}
@@ -22,3 +22,41 @@
 .page-dashboard .status{border-radius:999px}
 .page-dashboard .alert-error{border-radius:10px}
 @media(max-width:800px){.page-dashboard>.hero{grid-template-columns:1fr;padding:16px}.page-dashboard .content-grid{grid-template-columns:minmax(0,1fr)}}
+
+
+/* Dashboard page contract: match Discovery/Prospects — navy headers, white type, rounded surfaces. */
+.page-dashboard > .hero,
+.page-dashboard .card,
+.page-dashboard .metric,
+.page-dashboard .alert,
+.page-dashboard .toolbar,
+.page-dashboard .section {
+  border-radius: 14px !important;
+}
+.page-dashboard > .hero {
+  background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
+  color: #fff !important;
+}
+.page-dashboard > .hero .eyebrow,
+.page-dashboard > .hero .eyebrow * {
+  color: rgba(255,255,255,.88) !important;
+}
+.page-dashboard .card > .card-header,
+.page-dashboard .card-header,
+.page-dashboard [class*="section-header"],
+.page-dashboard [class*="panel-header"] {
+  background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 14px 14px 0 0 !important;
+}
+.page-dashboard .card > .card-header *,
+.page-dashboard .card-header *,
+.page-dashboard [class*="section-header"] *,
+.page-dashboard [class*="panel-header"] * {
+  color: #fff !important;
+}
+.page-dashboard .card > .card-header::after,
+.page-dashboard .card-header::after {
+  background: #f5500b !important;
+}
