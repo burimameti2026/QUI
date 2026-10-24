@@ -1,7 +1,7 @@
 /* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
 
 /* Dashboard: operating view, not a wall of disconnected KPIs */
-.page-dashboard{max-width:1540px;margin:0 auto;padding-bottom:28px}
+.page-dashboard{width:100%;max-width:none;margin:0;padding-bottom:18px}
 .page-dashboard>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.3fr);align-items:center;gap:24px;margin:14px 0;padding:22px;border:1px solid #dfe6ec;border-radius:15px;background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09)}
 .page-dashboard>.hero .eyebrow{color:#ff9a6b}
 .page-dashboard>.hero h2{margin:8px 0;font-size:clamp(20px,2.3vw,29px);line-height:1.2;letter-spacing:-.025em}
