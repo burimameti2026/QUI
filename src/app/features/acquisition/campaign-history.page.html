@@ -11,7 +11,7 @@
       <label>Container name<input [(ngModel)]="containerName" placeholder="Container"></label>
       <label>Agent<input [(ngModel)]="agentName" placeholder="Agent"></label>
       <label>Industry Pack<input [(ngModel)]="packCode" placeholder="Pack code"></label>
-      <label>Status<select [(ngModel)]="status"><option value="">All statuses</option><option>Queued</option><option>Running</option><option>Waiting</option><option>Paused</option><option>Completed</option><option>Failed</option><option>Info</option></select></label>
+      <label>Status<select [(ngModel)]="status"><option value="">All statuses</option><option>Queued</option><option>Starting</option><option>Running</option><option>Waiting</option><option>Paused</option><option>Completed</option><option>Stopped</option><option>Cancelled</option><option>Failed</option><option>Info</option><option>Warning</option></select></label>
       <label>Step type<select [(ngModel)]="stepType"><option value="">All steps</option><option value="Discovery">Discovery</option><option value="Qualification">Qualification</option><option value="Enrichment">Enrichment</option><option value="BuildTargetList">Build target list</option><option value="Outreach">Outreach</option></select></label>
       <label>From<input type="datetime-local" [(ngModel)]="fromUtc"></label>
       <label>To<input type="datetime-local" [(ngModel)]="toUtc"></label>
