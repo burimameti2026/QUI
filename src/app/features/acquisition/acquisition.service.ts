@@ -92,8 +92,11 @@ export class AcquisitionService {
   campaignActivity(id: string) {
     return this.api.get<any[]>(`acquisition/campaigns/${id}/activity`);
   }
-  containerActivity(campaignId: string, containerId: string, stepType?: string | null) {
-    const suffix = stepType ? `?stepType=${encodeURIComponent(stepType)}` : '';
+  containerActivity(campaignId: string, containerId: string, taskId?: string | null) {
+    // Campaign Designer passes a persisted task ID when viewing one step's logs.
+    // The API supports taskId and stepType as separate filters; do not send a GUID
+    // as stepType or the filter will silently return an empty activity list.
+    const suffix = taskId ? `?taskId=${encodeURIComponent(taskId)}` : '';
     return this.api.get<any[]>(`acquisition/campaigns/${campaignId}/containers/${containerId}/activity${suffix}`);
   }
   messages() {
