@@ -1,7 +1,7 @@
 /* Approval Queue: retain workflow-specific layout; use canonical design tokens for shared colors and surfaces. */
 
 /* Approval queue: clear human-review hierarchy with responsive message cards */
-.page-approval-queue{max-width:1500px;margin:0 auto;padding-bottom:28px}
+.page-approval-queue{width:100%;max-width:none;margin:0;padding-bottom:18px}
 .page-approval-queue>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.32fr);gap:20px;align-items:center;margin:14px 0;padding:22px;border:1px solid var(--wl-border);border-radius:15px;background:var(--wl-card-header-bg,linear-gradient(115deg,#15232e 0%,#2b455e 100%));color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.1)}
 .page-approval-queue>.hero h2{max-width:800px;margin:8px 0;font-size:clamp(20px,2vw,28px);line-height:1.2;letter-spacing:-.025em}
 .page-approval-queue>.hero p{max-width:800px;color:rgba(255,255,255,.75);font-size:12px;line-height:1.65}
