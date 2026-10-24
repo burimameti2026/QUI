@@ -100,8 +100,14 @@ export class CampaignsPage implements OnDestroy, OnInit {
   }
 
   status(value: any): string {
-    return ['Draft', 'Scheduled', 'Running', 'Paused', 'Completed', 'Stopped'][Number(value)]
-      || String(value ?? 'Unknown');
+    const states = ['Draft', 'Scheduled', 'Running', 'Paused', 'Completed', 'Stopped'];
+    if (typeof value === 'number' || (typeof value === 'string' && /^\\d+$/.test(value))) {
+      return states[Number(value)] || 'Unknown';
+    }
+    const normalized = String(value ?? '').trim();
+    if (!normalized) return 'Unknown';
+    return states.find(state => state.toLowerCase() === normalized.toLowerCase())
+      || normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
   }
 
   visualStatus(campaign: any): string {
