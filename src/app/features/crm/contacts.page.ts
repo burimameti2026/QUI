@@ -16,7 +16,7 @@ import { CrmService } from './crm.service';
         <button class="button-secondary" (click)="exportCsv()">⇩ Export CSV</button>
         <button class="button-primary" (click)="open()">+ Add contact</button>
       </qai-page-header>
-      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Contacts could not be loaded</b><p>{{ error }}</p></div></div>
+      <div class="alert" *ngIf="error"><span class="icon">!</span><div><b>Contact request failed</b><p>{{ error }}</p></div></div>
       <section class="card">
         <header class="card-header">
           <div><span class="eyebrow">CRM DIRECTORY</span><h2>Contact workspace</h2><p>Search, review and manage every person in the customer lifecycle.</p></div>
