@@ -95,3 +95,26 @@
 .page .card-header,.page .section-header{background:var(--wl-card-header-bg,#15232e)!important;color:#fff!important}
 .page .card-header h3,.page .card-header p,.page .card-header .eyebrow{color:#fff!important}
 .page .discovery-hero>.stack{padding:0;border:0;background:transparent}
+
+
+/* Match the Dashboard operating-picture hero on Prospect Discovery. */
+.page .discovery-hero{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:12px;
+  margin:14px 0;padding:22px;border:1px solid #dfe6ec;border-radius:15px;
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09);
+}
+.page .discovery-hero .eyebrow{color:#ff9a6b}
+.page .discovery-hero h2{margin:8px 0;font-size:clamp(20px,2.3vw,29px);line-height:1.2;letter-spacing:-.025em;color:#fff}
+.page .discovery-hero p{max-width:850px;color:rgba(255,255,255,.74);font-size:12px;line-height:1.7}
+.page .discovery-hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.page .discovery-hero .meta>span{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.84);font-size:11px}
+.page .discovery-hero .meta b{color:#fff;font-size:12px}
+.page .discovery-hero .meta i{width:7px;height:7px;border-radius:50%;background:#32c58a}
+.page .discovery-progress{margin:0 0 10px}
+.page .discovery-progress>.card-header{background:var(--wl-card-header-bg,#15232e)!important;color:#fff!important}
+.page .discovery-progress>.card-header h3,
+.page .discovery-progress>.card-header p,
+.page .discovery-progress>.card-header .eyebrow{color:#fff!important}
+.page .discovery-progress .card-body{padding:16px}
+@media(max-width:720px){.page .discovery-hero{padding:16px}.page .discovery-hero .meta{gap:6px}}
