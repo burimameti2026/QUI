@@ -136,6 +136,10 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   get canStart(): boolean {
+    // A container cannot be restarted when its parent campaign is terminal,
+    // even if the container itself still reports Stopped or Failed.
+    const campaignStatus = this.statusText(this.campaign?.status);
+    if (campaignStatus === 'Completed' || campaignStatus === 'Stopped') return false;
     const status = this.effectiveStatusText();
     return ['Draft', 'Pending', 'Paused', 'Stopped', 'Failed'].includes(status);
   }
