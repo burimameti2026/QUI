@@ -5,7 +5,7 @@
 .page-icp .form-grid textarea{min-height:92px;resize:vertical}
 .page-icp .form-grid .full{grid-column:1/-1}
 .page-icp .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:14px}
-.page-icp .card{min-width:0;overflow:hidden;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-surface);box-shadow:var(--wl-shadow)}
+.page-icp .card{min-width:0;overflow:hidden;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-surface);box-shadow:var(--wl-card-shadow)}
 .page-icp .card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .page-icp .card-header h2{margin:0;font-size:15px}
 .page-icp .card-body{padding:16px}
