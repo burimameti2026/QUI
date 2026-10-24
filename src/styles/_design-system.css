@@ -25,7 +25,7 @@ input,select,textarea{width:100%;min-height:var(--wl-control-height);padding:8px
 .shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}.brand{height:58px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--wl-border)}.brand-link{display:flex;align-items:center;gap:8px;min-width:0;text-decoration:none}.brand-logo{display:grid;place-items:center;width:28px;height:28px;background:var(--wl-accent);color:#fff;font-weight:800}.brand-copy{font-size:14px;font-weight:750;white-space:nowrap}.brand-copy span{color:var(--wl-accent)}.reference-menu{flex:1;overflow:auto;padding:6px 6px 12px}.menu-group{margin-bottom:8px}.group-heading{padding:7px 9px;color:var(--wl-muted);font-size:9px;font-weight:800;letter-spacing:.09em}.group-items{display:grid;gap:1px}.menu-item,.child-item{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 8px;text-decoration:none;font-weight:650;color:var(--wl-text);border-left:3px solid transparent}.menu-item:hover,.child-item:hover{background:#243b4d;color:#fff}.menu-item.active,.child-item.active{background:var(--wl-accent);color:#fff;font-weight:750;border-left-color:#000}.nav-icon{width:24px;text-align:center;flex:0 0 24px;font-size:18px;line-height:1}.nav-label{min-width:0;flex:1;font-size:12px}.nav-chevron{font-size:11px}.child-items{display:grid;margin:1px 0 3px 18px}.child-item{min-height:30px;font-size:11px}.child-item .child-dot{width:6px;height:6px}.child-dot{width:5px;height:5px;background:currentColor;flex:0 0 5px}.app-main{min-width:0}.header-search-wrap{min-height:40px;display:flex;align-items:center;gap:8px}.global-search{display:flex;align-items:center;gap:8px;min-height:38px;flex:1;max-width:680px;padding:0 10px;border:1px solid var(--wl-border);background:#fff;color:var(--wl-muted)}.global-search input{border:0;min-height:36px;padding:0;outline:0}.global-search kbd{padding:2px 5px;border:1px solid var(--wl-border);background:#fafafa;font-size:9px;white-space:nowrap}.header-tools{display:flex;align-items:center;gap:5px;margin-left:auto}.header-icon,.header-help,.admin-account{width:38px;height:38px;min-height:38px;padding:0;border:1px solid var(--wl-border);background:#fff;color:var(--wl-text);display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.notification{position:relative}.notification-dot{position:absolute;top:7px;right:7px;width:5px;height:5px;background:var(--wl-accent)}.admin-menu{position:relative}.admin-account{width:auto;padding:0 7px;gap:7px}.admin-avatar{display:grid;place-items:center;width:26px;height:26px;background:#000;color:#fff;font-size:10px;font-weight:750}.admin-chevron{font-size:10px}.admin-dropdown{position:absolute;right:0;top:43px;z-index:20;min-width:220px;background:#fff;border:0;box-shadow:var(--wl-card-shadow)}.admin-menu-item{width:100%;min-height:40px;justify-content:flex-start;border:0;background:#fff;padding:0 10px;text-align:left}.admin-menu-item:hover{background:#000;color:#fff}.admin-menu-divider{height:1px;background:var(--wl-border)}
 @media(max-width:1200px){.metric-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}.content-grid,.hero{grid-template-columns:1fr}.pipeline-board{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}.hero{padding:14px}.card-header{align-items:flex-start;flex-direction:column}.card-header .actions,.page-actions{width:100%;justify-content:flex-start}.steps{grid-template-columns:1fr}.toolbar{align-items:stretch}.toolbar .search{max-width:none;width:100%}.toolbar .filter-group{width:100%}.toolbar .filter-group select,.toolbar>select{flex:1;min-width:0}.toolbar .actions{width:auto}}
-@media(max-width:480px){.metric-grid{grid-template-columns:1fr}.page{padding-left:6px;padding-right:6px}.hero,.card-body,.form{padding:12px}}
+@media(max-width:480px){.metric-grid{grid-template-columns:1fr}.page{padding-left:var(--wl-page-padding);padding-right:var(--wl-page-padding)}.hero,.card-body,.form{padding:12px}}
 @media(max-width:800px){.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;max-height:60vh}.reference-menu{max-height:calc(60vh - 58px)}.header-search-wrap{flex-wrap:wrap}.global-search{max-width:none}.header-tools{margin-left:0}}
 
 /* Platform management pages — shared with the public visual language, kept in the canonical system. */
@@ -453,48 +453,44 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 
 
 
-/* UI CONSOLIDATION HOTFIX — restore canonical navy/blue surfaces.
-   Keep shared page gutters and spacing consistent; do not introduce brown/earth-tone headers. */
-:root {
-  --wl-page-padding: 10px;
-  --wl-card-header-bg: linear-gradient(115deg, #15232e 0%, #2b455e 100%);
-  --wl-card-header-border: var(--wl-accent);
-}
-.page {
-  width: 100%;
-  min-width: 0;
-  padding: 10px var(--wl-page-padding) 18px;
-}
-.card-header,
-.panel-header,
+/* Canonical section-title surfaces. These are intentionally explicit component
+   classes; generic .panel-header selectors are avoided to prevent cross-page bleed. */
 .section-title-bar,
 .section-heading-bar,
 .qualification-model-header,
 .qualification-header {
-  background: var(--wl-card-header-bg) !important;
-  color: #fff !important;
+  background: var(--wl-card-header-bg);
+  color: #fff;
   border-color: transparent;
 }
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header h4,
-.card-header strong,
-.panel-header h1,
-.panel-header h2,
-.panel-header h3,
-.panel-header h4,
 .section-title-bar h1,
 .section-title-bar h2,
 .section-title-bar h3,
+.section-title-bar h4,
 .section-heading-bar h1,
 .section-heading-bar h2,
 .section-heading-bar h3,
+.section-heading-bar h4,
 .qualification-model-header h1,
 .qualification-model-header h2,
 .qualification-model-header h3,
+.qualification-model-header h4,
 .qualification-header h1,
 .qualification-header h2,
-.qualification-header h3 {
-  color: #fff !important;
+.qualification-header h3,
+.qualification-header h4 {
+  color: #fff;
+}
+.section-title-bar .eyebrow,
+.section-heading-bar .eyebrow,
+.qualification-model-header .eyebrow,
+.qualification-header .eyebrow {
+  color: rgba(255,255,255,.72);
+}
+
+/* Shared spacing contract: page gutters must not change at mobile breakpoints. */
+.page {
+  box-sizing: border-box;
+  padding-left: var(--wl-page-padding);
+  padding-right: var(--wl-page-padding);
 }
