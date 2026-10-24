@@ -39,3 +39,14 @@
 @media(max-width:620px){.page-workflows .steps{grid-template-columns:1fr}.page-workflows .steps>div{border-right:0}.page-workflows .content-grid{grid-template-columns:minmax(0,1fr)}}
 
 .page-workflows .error-text{color:var(--wl-danger,var(--wl-danger));font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+
+/* Workflow directory hero: consistent with Dashboard and other acquisition pages. */
+.page-workflows>ng-container .card>.card-header{background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff}
+.page-workflows>ng-container .card>.card-header h2,
+.page-workflows>ng-container .card>.card-header p,
+.page-workflows>ng-container .card>.card-header .eyebrow{color:#fff}
+.page-workflows>ng-container .card>.card-header .eyebrow{color:#ff9a6b}
+.page-workflows .card-header{border-radius:12px 12px 0 0}
+.page-workflows .card-header h2{font-size:clamp(20px,2vw,27px);line-height:1.2;letter-spacing:-.025em}
+.page-workflows .card-header p{max-width:760px;font-size:12px;line-height:1.65;opacity:.78}
+.page-workflows .card-header .meta{color:rgba(255,255,255,.8)}
