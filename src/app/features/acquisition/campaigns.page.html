@@ -13,12 +13,6 @@
       <span class="search-icon" aria-hidden="true">⌕</span>
       <input [(ngModel)]="search" placeholder="Search campaigns, industry, objective…" />
     </label>
-    <div class="campaign-count">
-      <span class="eyebrow">CAMPAIGNS</span>
-      <strong>{{ filteredRows.length }} containers</strong>
-      <span class="count-separator">·</span>
-      <small>{{ running }} running</small>
-    </div>
   </section> 
   <div class="create-backdrop" *ngIf="aiCreateOpen" (click)="closeAiCreate()">
     <section class="ai-create-dialog" (click)="$event.stopPropagation()">
