@@ -13,7 +13,7 @@
   </qai-page-header>
 
   <ng-template #workflowList>
-    <section class="card">
+    <section class="card workflow-directory">
       <header class="card-header"><div><span class="eyebrow">PROCESS AUTOMATION</span><h2>Workflow directory</h2><p>Create, review and launch every automated business process.</p></div><span class="meta">{{visibleFlows.length}} shown</span></header>
       <div class="toolbar"><label class="search"><span>⌕</span><input [(ngModel)]="workflowQuery" placeholder="Search workflows" /></label><select [(ngModel)]="workflowStatus"><option value="">All statuses</option><option value="active">Active</option><option value="draft">Draft</option></select></div>
       <div class="table" *ngIf="visibleFlows.length; else noWorkflows"><table><thead><tr><th>Workflow</th><th>Business outcome</th><th>Status</th><th>Created</th><th>Action</th></tr></thead><tbody><tr *ngFor="let flow of visibleFlows" (click)="openFlow(flow)"><td><div class="identity"><span class="avatar">⌁</span><span class="stack"><b>{{flow.name}}</b><small>Configurable rules, actions and approvals</small></span></div></td><td>{{flowSummary(flow)}}</td><td><span class="status" [class.draft]="flow.active === false">{{flow.active === false ? 'Draft' : 'Active'}}</span></td><td>{{flow.createdAtUtc ? (flow.createdAtUtc | date:'mediumDate') : 'Ready to configure'}}</td><td><button class="button-quiet" type="button" (click)="$event.stopPropagation(); openFlow(flow)">Open designer →</button></td></tr></tbody></table></div>
