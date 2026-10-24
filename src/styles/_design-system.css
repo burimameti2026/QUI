@@ -444,4 +444,10 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 .status.queued,.status.pending,.status.requested,.status.waiting,.status.warning,.status.paused{color:#9a4a12;background:#fff7f0;border-color:#f3c9b6}
 .status.failed,.status.error,.status.rejected,.status.danger{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
 .status.cancelled,.status.canceled,.status.stopped,.status.info,.status.draft{color:var(--wl-muted);background:#f5f6f8;border-color:var(--wl-border-strong)}
+/* Legacy hyphenated status modifiers map to the same semantic palette. */
+.status-completed,.status-success,.status-processed,.status-done{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
+.status-running,.status-starting{color:#136f70;background:#edf8f8;border-color:#b7dfdf}
+.status-queued,.status-pending,.status-requested,.status-waiting,.status-warning{color:#9a4a12;background:#fff7f0;border-color:#f3c9b6}
+.status-failed,.status-error,.status-rejected{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
+.status-paused,.status-info,.status-stopped,.status-cancelled,.status-canceled{color:var(--wl-muted);background:#f5f6f8;border-color:var(--wl-border-strong)}
 
