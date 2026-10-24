@@ -1,1 +1,9 @@
 /* Deprecated: visual styling is centralized in src/styles/_design-system.css. Page-specific CSS is intentionally empty. */
+
+
+/* Header help popover: an actual response to the help control. */
+.header-tools{position:relative}
+.help-popover{position:absolute;z-index:100;top:calc(100% + 10px);right:0;width:min(320px,calc(100vw - 32px));padding:16px;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-surface);color:var(--wl-text);box-shadow:var(--wl-card-shadow)}
+.help-popover strong{display:block;font-size:13px}
+.help-popover p{margin:7px 0 12px;color:var(--wl-muted);font-size:12px;line-height:1.5}
+.help-popover .help-close{min-height:30px;padding:5px 10px;border:1px solid var(--wl-border);border-radius:var(--wl-button-radius);background:var(--wl-surface);color:var(--wl-text);cursor:pointer}
