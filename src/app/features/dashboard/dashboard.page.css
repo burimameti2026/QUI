@@ -31,10 +31,10 @@
 .page-dashboard .alert,
 .page-dashboard .toolbar,
 .page-dashboard .section {
-  border-radius: 14px !important;
+  border-radius: var(--wl-card-radius) !important;
 }
 .page-dashboard > .hero {
-  background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
+  background: var(--wl-navy-gradient) !important;
   color: #fff !important;
 }
 .page-dashboard > .hero .eyebrow,
@@ -48,7 +48,7 @@
   background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
   color: #fff !important;
   border: 0 !important;
-  border-radius: 14px 14px 0 0 !important;
+  border-radius: var(--wl-card-radius) var(--wl-card-radius) 0 0 !important;
 }
 .page-dashboard .card > .card-header *,
 .page-dashboard .card-header *,
@@ -58,5 +58,5 @@
 }
 .page-dashboard .card > .card-header::after,
 .page-dashboard .card-header::after {
-  background: #f5500b !important;
+  background: var(--wl-accent) !important;
 }
