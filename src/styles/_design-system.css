@@ -424,3 +424,16 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
     transition-duration:.01ms!important;
   }
 }
+
+/* CRM directory toolbars: shared sizing for Companies, Contacts and related lists. */
+.directory-search{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.directory-search>.search{flex:1 1 320px;width:auto;min-width:min(100%,240px);max-width:560px}
+.directory-search>select{flex:0 1 220px;width:auto;min-width:160px;max-width:100%}
+.directory-search>.status{margin-left:auto;white-space:nowrap}
+@media(max-width:620px){
+  .directory-search{align-items:stretch}
+  .directory-search>.search{flex:1 1 100%;max-width:none;min-width:0}
+  .directory-search>select{flex:1 1 100%;width:100%;min-width:0}
+  .directory-search>.status{margin-left:0;align-self:flex-start}
+}
+
