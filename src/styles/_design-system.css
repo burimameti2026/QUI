@@ -312,14 +312,6 @@ qai-modal{display:contents}
 .card-body p,.card-body small{color:var(--wl-muted);overflow-wrap:anywhere}
 .card-header h1,.card-header h2,.card-header h3,.card-header h4,.card-header strong{color:var(--wl-card-title,#fff)}
 .card-header .status{margin-left:0}
-.status{border:1px solid var(--wl-border);box-shadow:none;background:#fff;color:var(--wl-text);justify-content:flex-start;align-self:flex-start;margin-left:0}
-.status.success,.status.processed,.status.done,.status.active{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
-.status.warning,.status.pending,.status.queued,.status.in-progress{color:var(--wl-accent);background:#fff7f2;border-color:#f3c9b6}
-.status.error,.status.failed,.status.rejected,.status.danger{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
-.status.info,.status.new,.status.draft{color:#475467;background:#f5f6f8;border-color:var(--wl-border-strong)}
-.status-dot.success,.status-dot.done{background:var(--wl-success)}
-.status-dot.error,.status-dot.failed{background:var(--wl-danger)}
-.status-dot.warning,.status-dot.pending,.status-dot.queued{background:var(--wl-accent)}
 .badge,.tag,.pill{display:inline-flex;align-items:center;min-height:22px;padding:4px 8px;border:1px solid var(--wl-border);background:#f5f6f8;color:var(--wl-text);font-size:10px;font-weight:700;line-height:1;white-space:nowrap}
 .badge-accent,.tag-accent,.pill-accent{background:#fff7f2;border-color:#f3c9b6;color:var(--wl-accent)}
 .badge-success,.tag-success,.pill-success{background:#f2faf6;border-color:#b9ddca;color:var(--wl-success)}
@@ -439,9 +431,9 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 
 /* Canonical semantic status pills shared across acquisition and CRM. */
 .status{border:1px solid var(--wl-border);box-shadow:none;background:var(--wl-surface);color:var(--wl-text)}
-.status.completed,.status.success,.status.processed,.status.done{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
+.status.completed,.status.success,.status.processed,.status.done,.status.active,.status.enabled{color:var(--wl-success);background:#f2faf6;border-color:#b9ddca}
 .status.running{color:#136f70;background:#edf8f8;border-color:#b7dfdf}
-.status.queued,.status.pending,.status.requested,.status.waiting,.status.warning,.status.paused{color:#9a4a12;background:#fff7f0;border-color:#f3c9b6}
+.status.queued,.status.pending,.status.requested,.status.waiting,.status.warning,.status.paused,.status.in-progress{color:#9a4a12;background:#fff7f0;border-color:#f3c9b6}
 .status.failed,.status.error,.status.rejected,.status.danger{color:var(--wl-danger);background:#fff5f4;border-color:#e4b8b3}
 .status.cancelled,.status.canceled,.status.stopped,.status.info,.status.draft{color:var(--wl-muted);background:#f5f6f8;border-color:var(--wl-border-strong)}
 /* Legacy hyphenated status modifiers map to the same semantic palette. */
