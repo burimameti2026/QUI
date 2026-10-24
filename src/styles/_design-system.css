@@ -734,7 +734,7 @@ button,.btn,.page-actions a,.page-actions button{
   [class*="Panel"],[class*="tile"],[class*="Tile"],[class*="metric"],[class*="Metric"],
   [class*="summary"],[class*="Summary"],[class*="widget"],[class*="Widget"]
 ){
-  border-radius:var(--wl-card-radius);
+  border-radius:var(--wl-card-radius)!important;
 }
 /* One shared header treatment; do not recolor semantic status badges or action buttons. */
 :where(.page,.app-content,main,[class*="page-"]) :is(
@@ -747,7 +747,7 @@ button,.btn,.page-actions a,.page-actions button{
   background:var(--wl-navy-gradient)!important;
   color:#fff!important;
   border-color:transparent;
-  border-radius:var(--wl-card-radius) var(--wl-card-radius) 0 0;
+  border-radius:var(--wl-card-radius) var(--wl-card-radius) 0 0!important;
 }
 :where(.page,.app-content,main,[class*="page-"]) :is(
   .card-header,.section-header,.panel-header,.section-title-bar,.section-heading-bar,
