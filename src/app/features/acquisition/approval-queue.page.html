@@ -1,9 +1,7 @@
 <main class="page page-approval-queue">
 <qai-page-header title="Acquisition Approval Queue" subtitle="Review AI-prepared outreach before it can leave the tenant. Approval releases the queued message to the campaign delivery worker.">
-  <div class="page-actions">
-    <button type="button" class="button-quiet" (click)="load()" [disabled]="loading || busyMessageIds.size > 0">{{ loading ? 'Loading…' : '↻ Refresh' }}</button>
-    <a class="button-secondary" href="/campaigns">Back to Campaign Containers →</a>
-  </div>
+  <button type="button" class="button-quiet" (click)="load()" [disabled]="loading || busyMessageIds.size > 0">{{ loading ? 'Loading…' : '↻ Refresh' }}</button>
+  <a class="button-secondary" href="/campaigns">Back to Campaign Containers →</a>
 </qai-page-header>
 
 <section class="hero">
