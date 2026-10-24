@@ -642,7 +642,14 @@ export class CampaignDesignerPage implements OnInit, OnDestroy {
   }
 
   statusText(value: any): string {
-    return ['Draft', 'Scheduled', 'Running', 'Paused', 'Completed', 'Stopped'][Number(value)] || String(value ?? 'Unknown');
+    const statuses = ['Draft', 'Scheduled', 'Running', 'Paused', 'Completed', 'Stopped'];
+    if (typeof value === 'number' || (typeof value === 'string' && /^\\d+$/.test(value.trim()))) {
+      return statuses[Number(value)] || 'Unknown';
+    }
+    const normalized = String(value ?? '').trim().toLowerCase();
+    if (!normalized) return 'Unknown';
+    return statuses.find(status => status.toLowerCase() === normalized)
+      || normalized.charAt(0).toUpperCase() + normalized.slice(1);
   }
 
   nodeStatus(node: FlowNode): string {
