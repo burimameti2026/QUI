@@ -571,3 +571,89 @@ button:disabled:focus-visible{outline-color:var(--wl-border-strong)}
 .sidebar .active::before,.sidebar [aria-current="page"]::before{background:var(--wl-accent)}
 .app-header{background:#fff!important;color:var(--wl-text)!important}
 @media(max-width:800px){:root{--wl-card-gap:14px}}
+
+
+/* Final cross-route normalization: component CSS must not reintroduce one-off card shapes or low-contrast headings. */
+:root{
+  --wl-card-radius:14px;
+  --wl-button-radius:8px;
+  --wl-input-radius:8px;
+  --wl-card-shadow:0 5px 18px rgba(21,35,46,.08);
+  --wl-card-header-bg:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  --wl-text:#17212b;
+  --wl-muted:#586675;
+  --wl-border:#dbe2e9;
+  --wl-app-bg:#f4f7fa;
+  --wl-surface:#fff;
+}
+/* Consistent rounded geometry across every route, including component-local CSS. */
+.card,.section,.metric,.summary,.table,.form,.empty,.notice,.alert,
+.hero,.content-panel,.panel,.filter-panel,.history-filters,.designer-shell,
+.palette-item,.flow-node,.inspector-section,.toolbar,.toolbar-actions,
+input,select,textarea,.form-control,.search-input,.filter-control,
+button,.btn,.page-actions a,.page-actions button{
+  border-radius:var(--wl-card-radius)!important;
+}
+input,select,textarea,.form-control,.search-input,.filter-control{
+  border-radius:var(--wl-input-radius)!important;
+}
+button,.btn,.page-actions a,.page-actions button{
+  border-radius:var(--wl-button-radius)!important;
+}
+.card,.section,.metric,.summary,.table,.form,.empty,.notice,.alert{
+  color:var(--wl-text)!important;
+  background:var(--wl-surface)!important;
+  border:1px solid var(--wl-border)!important;
+  box-shadow:var(--wl-card-shadow)!important;
+}
+.card-header,.section-header,.section-title-bar,.section-heading-bar,
+.qualification-model-header,.qualification-header{
+  color:#fff!important;
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%)!important;
+  border-color:transparent!important;
+}
+.card-header :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow),
+.section-header :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow),
+.section-title-bar :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow),
+.section-heading-bar :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow),
+.qualification-model-header :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow),
+.qualification-header :is(h1,h2,h3,h4,h5,h6,p,strong,span,small,label,.eyebrow){
+  color:#fff!important;
+}
+.card-header .eyebrow,.section-header .eyebrow,.section-title-bar .eyebrow,
+.section-heading-bar .eyebrow,.qualification-model-header .eyebrow,
+.qualification-header .eyebrow{color:#ffd0ba!important}
+.card-body,.section-body,.panel-body,.card-content{
+  color:var(--wl-text);
+}
+.sidebar,.reference-menu,.reference-menu .menu-group{
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%)!important;
+  color:#fff!important;
+}
+.sidebar a,.sidebar button,.sidebar nav a,.reference-menu a,
+.reference-menu button,.reference-menu .menu-label{
+  color:rgba(255,255,255,.9)!important;
+}
+.sidebar a:hover,.sidebar button:hover,.sidebar a.active,
+.sidebar [aria-current="page"],.reference-menu a:hover,
+.reference-menu a.active,.reference-menu [aria-current="page"]{
+  background:rgba(255,255,255,.14)!important;
+  color:#fff!important;
+}
+.page,.app-content{color:var(--wl-text)}
+.page :is(h1,h2,h3,h4,h5,h6){color:var(--wl-text)}
+.page .hero :is(h1,h2,h3,h4,h5,h6,.eyebrow,p,strong,span){
+  color:#fff;
+}
+.page .hero{
+  background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);
+  color:#fff;
+  border-radius:var(--wl-card-radius)!important;
+}
+.page .hero .eyebrow{color:#ffd0ba}
+:where(.page) :is(.warning,.status-warning,.badge-warning,.notice-warning){
+  border-radius:10px!important;
+}
+/* Responsive spacing remains shared rather than drifting by route. */
+.content-grid{gap:18px}
+@media(max-width:800px){.content-grid{gap:14px}}
