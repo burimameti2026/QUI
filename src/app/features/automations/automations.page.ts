@@ -17,7 +17,7 @@ import { AutomationsService } from "./automations.service";
       <button class="button-primary" (click)="open()">+ New automation</button>
     </qai-page-header>
 
-    <section class="hero">
+    <section class="hero automation-event-flow">
       <div>
         <span class="eyebrow">AUTOMATION EVENT FLOW</span>
         <h2>What starts a rule and where it runs</h2>
