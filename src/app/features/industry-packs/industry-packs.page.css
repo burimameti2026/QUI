@@ -130,3 +130,27 @@
   .page-industry-packs .content-grid>.card>.card-header h2{font-size:14px}
   .page-industry-packs .content-grid>.card>.card-header>.status{max-width:42%;font-size:9px}
 }
+
+
+/* Give Industry Pack cards more room: two broad columns on desktop, one on narrow screens. */
+.page-industry-packs .content-grid{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));
+  gap:16px;
+  align-items:stretch;
+}
+@media(min-width:1200px){
+  .page-industry-packs .content-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(min-width:1600px){
+  .page-industry-packs .content-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:20px;
+  }
+}
+@media(max-width:620px){
+  .page-industry-packs .content-grid{
+    grid-template-columns:minmax(0,1fr);
+  }
+}
