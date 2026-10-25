@@ -266,3 +266,29 @@
   .node-state{grid-column:2;justify-self:start}
   .flow-connector{height:24px}
 }
+
+
+/* Designer correction: taller, narrower workflow cards; the canvas stays readable. */
+.flow-column{width:min(100%,420px);max-width:420px;margin:0 auto}
+.flow-node{
+  min-height:104px;
+  padding:17px 16px;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  gap:13px;
+  border-radius:20px!important;
+  align-items:center;
+}
+.node-icon{width:40px;height:40px;border-radius:14px}
+.node-content{gap:5px}
+.node-content small{font-size:9px}
+.node-content strong{font-size:13px;line-height:1.4}
+.node-content em{font-size:10px;line-height:1.45;white-space:normal}
+.node-state{font-size:9px;padding:6px 9px}
+.flow-connector{height:30px}
+.flow-connector span{width:24px;height:24px;border-radius:50%}
+@media(max-width:680px){
+ .flow-column{width:100%;max-width:420px}
+ .flow-node{min-height:100px;padding:14px;grid-template-columns:36px minmax(0,1fr);gap:10px;border-radius:18px!important}
+ .node-icon{width:34px;height:34px;border-radius:12px}
+ .node-state{grid-column:2;justify-self:start}
+}
