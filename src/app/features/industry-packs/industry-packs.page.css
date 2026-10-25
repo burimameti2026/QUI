@@ -154,3 +154,14 @@
     grid-template-columns:minmax(0,1fr);
   }
 }
+
+
+/* Final layout adjustment: use the full content width for each Industry Pack card. */
+.page-industry-packs .content-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:18px;
+}
+.page-industry-packs .content-grid>.card{
+  width:100%;
+  max-width:none;
+}
