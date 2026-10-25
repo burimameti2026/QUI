@@ -165,3 +165,37 @@
   width:100%;
   max-width:none;
 }
+
+
+/* Keep action buttons identical across cards, including cards with an extra campaign action. */
+.page-industry-packs .content-grid>.card>.card-footer{
+  display:flex;
+  align-items:stretch;
+  flex-wrap:nowrap;
+  gap:8px;
+  padding:12px 16px 16px;
+}
+.page-industry-packs .content-grid>.card>.card-footer>button{
+  box-sizing:border-box;
+  flex:1 1 0;
+  min-width:0;
+  min-height:36px;
+  height:36px;
+  padding:0 12px!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  font-size:11px!important;
+  line-height:1;
+  font-weight:650;
+  border-radius:10px!important;
+}
+@media(max-width:700px){
+  .page-industry-packs .content-grid>.card>.card-footer{
+    flex-wrap:wrap;
+  }
+  .page-industry-packs .content-grid>.card>.card-footer>button{
+    flex:1 1 145px;
+  }
+}
