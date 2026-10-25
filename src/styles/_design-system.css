@@ -810,3 +810,33 @@ button,.btn,.page-actions a,.page-actions button{
 :is(.page,.app-content,main,[class*="page-"]) :is(.metric,.kpi,.kpi-card,[class*="kpi"],[class*="Kpi"],[class*="KPI"]) .metric-icon{
   border-radius:12px!important;
 }
+
+
+/* UI shape consolidation — one radius scale for cards, sections, controls and actions. */
+:root{
+  --wl-radius-control:12px;
+  --wl-radius-surface:18px;
+  --wl-radius-pill:999px;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  button,.btn,.button,a[role="button"],input[type="button"],input[type="submit"],
+  input[type="reset"],select,.form-control,.form-select,.toolbar-button,
+  .icon-button,[class*="action-button"],[class*="ActionButton"]
+){
+  border-radius:var(--wl-radius-control)!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  section,article,.section,.section-container,.workspace,.workspace-section,
+  .designer-toolbar,.runtime-summary,.filter-panel,.history-filters,
+  .empty-state,.empty-state-container,.table-container,.table-wrapper,
+  .list-container,.content-section,[class*="section-card"],[class*="SectionCard"],
+  [class*="workspace-card"],[class*="WorkspaceCard"]
+){
+  border-radius:var(--wl-radius-surface)!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  .badge,.pill,.status-badge,.status-pill,.chip,.tag,[class*="status-badge"],
+  [class*="StatusBadge"],[class*="status-pill"],[class*="StatusPill"]
+){
+  border-radius:var(--wl-radius-pill)!important;
+}
