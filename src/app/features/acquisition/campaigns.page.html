@@ -88,7 +88,7 @@
   <p class="notice success" *ngIf="message">{{ message }}</p><p class="notice alert-error" *ngIf="error">{{ error }}</p><p class="notice" *ngIf="loading">Loading campaign containers…</p>
 
   <section class="campaign-grid" *ngIf="filteredRows.length; else emptyCampaigns">
-    <article class="campaign-tile" *ngFor="let campaign of filteredRows" [ngClass]="'campaign-'+visualStatus(campaign)" (click)="openDesigner(campaign)" (keydown.enter)="openDesigner(campaign)" tabindex="0" aria-label="Open campaign designer for {{ campaign.name }}">
+    <article class="campaign-tile" *ngFor="let campaign of filteredRows" [ngClass]="'campaign-'+visualStatus(campaign)" (click)="openDesigner(campaign)">
       <div class="tile-top">
         <div class="campaign-mark">◎</div>
         <div class="campaign-title"><span class="eyebrow">CAMPAIGN</span><h3>{{ campaign.name }}</h3><small>{{ campaign.packageCode || 'Custom' }}</small></div>
