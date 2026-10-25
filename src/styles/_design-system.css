@@ -886,3 +886,54 @@ button,.btn,.page-actions a,.page-actions button{
 ){
   border-radius:18px!important;
 }
+
+
+/* Route consolidation follow-up: fix page-level overrides that bypass shared tokens. */
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card,.panel,.section-card,.content-card,.data-card,.metric-card,.summary-card,.pack-card,.industry-pack-card,.prospect-card,.discovery-card){
+  border-radius:16px!important;
+  overflow:hidden;
+}
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card-header,.panel-header,.section-header,.card-title,.panel-title,.section-title,.pack-header,.industry-pack-header,.prospect-card-header){
+  background:var(--wl-navy-gradient,linear-gradient(115deg,#15232e 0%,#2b455e 100%))!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  border-radius:16px 16px 0 0!important;
+}
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card-header,.panel-header,.section-header,.card-title,.panel-title,.section-title,.pack-header,.industry-pack-header,.prospect-card-header)
+:is(h1,h2,h3,h4,h5,h6,p,span,strong,small,label){
+  color:#fff!important;
+}
+/* Compact in-card actions and secondary text: avoid oversized controls. */
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card,.panel,.section-card,.content-card,.data-card,.metric-card,.summary-card,.pack-card,.industry-pack-card,.prospect-card)
+:is(button,.btn,.button,a[role="button"],.toolbar-button){
+  min-height:30px!important;
+  height:auto;
+  padding:6px 10px!important;
+  font-size:12px!important;
+  line-height:1.25!important;
+  border-radius:10px!important;
+}
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card,.panel,.section-card,.content-card,.data-card,.metric-card,.summary-card,.pack-card,.industry-pack-card,.prospect-card){
+  font-size:13px;
+}
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.card,.panel,.section-card,.content-card,.data-card,.metric-card,.summary-card,.pack-card,.industry-pack-card,.prospect-card) :is(p,small,.muted,.subtitle,.description,.meta){
+  font-size:12px!important;
+  line-height:1.45;
+}
+/* Statuses retain meaning and must not inherit white header/card backgrounds. */
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.status,.status-badge,.status-pill,.badge,.pill,[class*="status-"],[class*="Status"]){
+  border-radius:999px!important;
+}
+:is(.page-dashboard,.page-prospects,.page-prospect,.page-discover,.page-discovery,.page-industry-packs,.page-industrypacks,.industry-packs-page,.discovery-page,.prospects-page)
+:is(.status,.status-badge,.status-pill,.badge,.pill){
+  font-size:11px!important;
+  line-height:1.2;
+  padding:4px 8px!important;
+}
