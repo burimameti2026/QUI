@@ -776,3 +776,17 @@ button,.btn,.page-actions a,.page-actions button{
   border-radius:var(--wl-card-radius)!important;
   overflow:hidden;
 }
+
+/* Interaction contrast fix: light/white card-action hover states must never retain white text.
+   Primary/brand and danger actions keep their intentional high-contrast foreground. */
+:where(.card,.panel,.section,.content-card,.data-card,.metric-card,.summary-card,
+  .table-card,.form-card,.filter-panel,.history-filters,.designer-shell,.page)
+  :is(button,a[role="button"],.btn,.button,.toolbar-button):hover:not(.button-primary):not(.btn-primary):not(.primary):not(.button-danger):not(.danger):not([class*="primary"]):not([class*="Primary"]):not([class*="danger"]):not([class*="Danger"]){
+  color:var(--wl-text,#172b3a)!important;
+}
+:where(.card,.panel,.section,.content-card,.data-card,.metric-card,.summary-card,
+  .table-card,.form-card,.filter-panel,.history-filters,.designer-shell,.page)
+  :is(button,a[role="button"],.btn,.button,.toolbar-button):hover:not(.button-primary):not(.btn-primary):not(.primary):not(.button-danger):not(.danger):not([class*="primary"]):not([class*="Primary"]):not([class*="danger"]):not([class*="Danger"]) svg{
+  color:currentColor;
+  stroke:currentColor;
+}
