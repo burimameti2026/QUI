@@ -216,3 +216,53 @@
   .node-state{grid-column:2;justify-self:start}
   .flow-connector{height:32px}
 }
+
+
+/* Compact workflow nodes with rounded inner surfaces and a simple arrow between steps. */
+.flow-node{
+  min-height:0;
+  padding:9px 11px;
+  grid-template-columns:32px minmax(0,1fr) auto;
+  gap:9px;
+  border-radius:15px;
+  border:1px solid #d8e2e9;
+  border-left:1px solid #d8e2e9;
+  box-shadow:0 2px 7px rgba(25,48,66,.035);
+}
+.node-icon{width:30px;height:30px;border-radius:11px}
+.node-content{gap:2px}
+.node-content small{font-size:8px;line-height:1.2}
+.node-content strong{font-size:12px;line-height:1.25}
+.node-content em{font-size:9px;line-height:1.3;margin-top:2px}
+.node-state{padding:4px 7px;border-radius:999px;font-size:8px;line-height:1.2}
+.flow-node.selected{border-color:#278783;border-left-color:#278783}
+.flow-node.completed{border-left-color:#259365}
+.flow-node.running{border-left-color:#2687c5}
+.flow-node.failed{border-left-color:#d64545}
+.flow-node.waiting{border-left-color:#d19a24}
+.flow-node.attention{border-left-color:#d18b18}
+.flow-connector{
+  height:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#688391;
+  font-size:18px;
+  font-weight:700;
+}
+.flow-connector span{
+  width:22px;height:22px;
+  display:grid;place-items:center;
+  margin:0;
+  border:1px solid #d8e3e9;
+  border-radius:50%;
+  background:#f8fbfd;
+  color:#3d7f85;
+  font-size:17px;
+  line-height:1;
+}
+@media(max-width:680px){
+  .flow-node{grid-template-columns:30px minmax(0,1fr);min-height:0;padding:9px 10px;border-radius:14px}
+  .node-state{grid-column:2;justify-self:start}
+  .flow-connector{height:24px}
+}
