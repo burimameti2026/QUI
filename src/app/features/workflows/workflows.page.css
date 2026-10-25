@@ -61,3 +61,57 @@
 .page-workflows .workflow-directory>.card-header .eyebrow{color:#fff}
 .page-workflows .workflow-directory>.card-header .eyebrow{color:rgba(255,255,255,.72)}
 .page-workflows .workflow-directory>.card-header .meta{color:rgba(255,255,255,.8)}
+
+
+/* Refined workflow page header and process timeline */
+.page-workflows qai-page-header{display:block;margin-bottom:18px}
+.page-workflows .hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  grid-template-columns:minmax(0,1fr) minmax(240px,300px);
+  gap:28px;margin:18px 0 16px;padding:25px 26px;
+  border:1px solid rgba(255,255,255,.13);border-radius:18px;
+  background:linear-gradient(118deg,#15232e 0%,#21394b 55%,#2b455e 100%);
+  box-shadow:0 12px 30px rgba(21,35,46,.12)
+}
+.page-workflows .hero:after{content:"";position:absolute;z-index:-1;width:260px;height:260px;right:18%;top:-180px;border-radius:50%;border:1px solid rgba(255,255,255,.09);box-shadow:0 0 0 28px rgba(255,255,255,.025),0 0 0 56px rgba(255,255,255,.02)}
+.page-workflows .hero h2{font-size:clamp(22px,2.4vw,30px);font-weight:750;letter-spacing:-.035em}
+.page-workflows .hero p{margin:8px 0 0;font-size:12px}
+.page-workflows .progress{position:relative;z-index:1;padding:15px 16px;border-radius:13px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px)}
+.page-workflows .progress>i{position:relative;overflow:hidden;background:rgba(255,255,255,.18)}
+.page-workflows .progress>i:after{content:"";display:block;height:100%;width:100%;border-radius:inherit;background:linear-gradient(90deg,#ff8b52,#f5500b)}
+.page-workflows .steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:0 0 18px;border-radius:14px;box-shadow:0 4px 14px rgba(21,35,46,.035)}
+.page-workflows .steps>div{display:flex;align-items:center;gap:10px;padding:13px 12px}
+.page-workflows .steps>div>b{flex-shrink:0;width:30px;height:30px;border-radius:10px;font-size:12px}
+.page-workflows .steps>div span{display:flex;flex-direction:column;gap:3px}
+.page-workflows .steps>div strong{font-size:12px;font-weight:700}
+.page-workflows .steps>div small{font-size:10px;line-height:1.3}
+.page-workflows .content-grid{gap:18px}
+.page-workflows .content-grid>.stack,.page-workflows .content-grid>aside{gap:16px}
+.page-workflows .card{overflow:hidden;border:1px solid var(--wl-border);border-radius:16px;background:#fff}
+.page-workflows .card>.card-header{padding:17px 19px;background:linear-gradient(115deg,#15232e 0%,#2b455e 100%);color:#fff}
+.page-workflows .card>.card-header h2,.page-workflows .card>.card-header h3,
+.page-workflows .card>.card-header p,.page-workflows .card>.card-header .eyebrow{color:#fff}
+.page-workflows .card>.card-header .eyebrow{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.68)}
+.page-workflows .card>.card-header h2,.page-workflows .card>.card-header h3{margin:5px 0 0;font-size:16px;line-height:1.3;font-weight:720;letter-spacing:-.015em}
+.page-workflows .card>.card-header p{margin:6px 0 0;font-size:11px;line-height:1.55;color:rgba(255,255,255,.72)}
+.page-workflows .card>.card-header .status{flex-shrink:0;padding:5px 9px;font-size:10px}
+.page-workflows .workflow-timeline{position:relative;display:flex;flex-direction:column;gap:0;margin:0;padding:15px 18px 17px;list-style:none}
+.page-workflows .workflow-timeline:before{content:"";position:absolute;left:39px;top:35px;bottom:35px;width:2px;border-radius:2px;background:linear-gradient(180deg,#f5500b 0%,#dce4e9 75%)}
+.page-workflows .workflow-timeline .timeline-item{position:relative;z-index:1;display:flex;align-items:center;gap:13px;min-height:72px;margin:0;padding:12px 10px;border:1px solid transparent;border-radius:12px;background:#fff;cursor:pointer;transition:background .16s ease,border-color .16s ease,box-shadow .16s ease}
+.page-workflows .workflow-timeline .timeline-item+.timeline-item{margin-top:5px}
+.page-workflows .workflow-timeline .timeline-item:hover{border-color:#e4eaf0;background:#f8fafb}
+.page-workflows .workflow-timeline .timeline-item.active{border-color:rgba(245,80,11,.25);background:#fff7f2;box-shadow:0 3px 12px rgba(245,80,11,.06)}
+.page-workflows .workflow-timeline .timeline-marker{position:relative;z-index:2;display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border:3px solid #fff;border-radius:50%;background:#e8edf1;color:#425363;font-size:11px;font-weight:750;box-shadow:0 0 0 1px #dce4e9}
+.page-workflows .workflow-timeline .timeline-item.active .timeline-marker{background:#f5500b;color:#fff;box-shadow:0 0 0 1px #f5500b}
+.page-workflows .workflow-timeline .stack{gap:4px;min-width:0}
+.page-workflows .workflow-timeline .stack>small{font-size:9px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:#718191}
+.page-workflows .workflow-timeline .stack>strong{font-size:12px;line-height:1.4;color:#233444}
+.page-workflows .workflow-timeline .stack>span{font-size:11px;line-height:1.45;color:#718191}
+.page-workflows .workflow-timeline .actions{margin-left:auto;flex-shrink:0;gap:5px}
+.page-workflows .workflow-timeline .actions button{width:29px;min-width:29px;height:29px;min-height:29px;padding:0;border-radius:8px;font-size:12px}
+.page-workflows .workflow-directory>.card-header{padding:20px 22px}
+.page-workflows .workflow-directory>.card-header h2{font-size:21px}
+.page-workflows .workflow-directory .toolbar{padding:14px 18px}
+.page-workflows .status{font-size:10px;font-weight:700}
+@media(max-width:900px){.page-workflows .steps{grid-template-columns:repeat(3,minmax(0,1fr))}.page-workflows .steps>div{border-bottom:1px solid var(--wl-border)}}
+@media(max-width:620px){.page-workflows .hero{grid-template-columns:minmax(0,1fr);padding:19px}.page-workflows .steps{grid-template-columns:repeat(2,minmax(0,1fr))}.page-workflows .steps>div{padding:10px 8px}.page-workflows .workflow-timeline{padding:10px}.page-workflows .workflow-timeline:before{left:31px}.page-workflows .workflow-timeline .timeline-item{gap:10px;padding:10px 6px}.page-workflows .workflow-timeline .stack>span{overflow-wrap:anywhere}}
