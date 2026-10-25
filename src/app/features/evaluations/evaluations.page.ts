@@ -15,17 +15,17 @@ import { EvaluationsService } from './evaluations.service';
     <button class="button-primary" [disabled]="!selected || !cases.length || !selectedAgentId || running" (click)="runSelected()">{{running ? 'Running…' : '▶ Run evaluation'}}</button>
   </qai-page-header>
 
-  <section class="hero">
+  <section class="hero conversion-guide evaluation-lifecycle">
     <div>
-      <span class="eyebrow">WHAT AN EVALUATION MEANS</span>
+      <span class="eyebrow">EVALUATION LIFECYCLE</span>
       <h2>Dataset alone is not a score</h2>
       <p>A dataset is a named regression suite. Add realistic test cases, select the assistant version, then compare each response against the expected business outcome. Results are stored so changes can be checked before release.</p>
     </div>
-    <ol class="steps">
-      <li><b>1</b><span>Dataset</span></li>
-      <li><b>2</b><span>Test cases</span></li>
-      <li><b>3</b><span>Assistant</span></li>
-      <li><b>4</b><span>Evidence</span></li>
+    <ol class="lifecycle" aria-label="Evaluation lifecycle">
+      <li class="lifecycle-item"><b>1</b><span><strong>Dataset</strong><small>Regression suite</small></span></li>
+      <li class="lifecycle-item"><b>2</b><span><strong>Test cases</strong><small>Expected outcomes</small></span></li>
+      <li class="lifecycle-item"><b>3</b><span><strong>Assistant</strong><small>Choose version</small></span></li>
+      <li class="lifecycle-item"><b>4</b><span><strong>Evidence</strong><small>Score and results</small></span></li>
     </ol>
   </section>
 
