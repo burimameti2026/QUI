@@ -115,3 +115,84 @@
 .page-workflows .status{font-size:10px;font-weight:700}
 @media(max-width:900px){.page-workflows .steps{grid-template-columns:repeat(3,minmax(0,1fr))}.page-workflows .steps>div{border-bottom:1px solid var(--wl-border)}}
 @media(max-width:620px){.page-workflows .hero{grid-template-columns:minmax(0,1fr);padding:19px}.page-workflows .steps{grid-template-columns:repeat(2,minmax(0,1fr))}.page-workflows .steps>div{padding:10px 8px}.page-workflows .workflow-timeline{padding:10px}.page-workflows .workflow-timeline:before{left:31px}.page-workflows .workflow-timeline .timeline-item{gap:10px;padding:10px 6px}.page-workflows .workflow-timeline .stack>span{overflow-wrap:anywhere}}
+
+
+/* Final alignment with the existing LeadsAI page contract (Dashboard / Discovery). */
+.page.page-workflows{
+  width:100%;max-width:none;margin:0;padding-bottom:18px;color:var(--wl-text,#243746)
+}
+.page.page-workflows>.hero{
+  display:grid!important;grid-template-columns:minmax(0,1fr) minmax(210px,280px)!important;
+  gap:18px!important;margin:10px 0 14px!important;padding:20px!important;
+  border:1px solid rgba(255,255,255,.12)!important;border-radius:16px!important;
+  background:var(--wl-navy-gradient,linear-gradient(115deg,#15232e 0%,#2b455e 100%))!important;
+  color:#fff!important;box-shadow:0 8px 24px rgba(21,35,46,.09)!important
+}
+.page.page-workflows>.hero h2{font-size:clamp(20px,2.3vw,29px)!important;margin:8px 0!important}
+.page.page-workflows>.hero p{font-size:12px!important;line-height:1.6!important;color:rgba(255,255,255,.78)!important}
+.page.page-workflows .card{
+  min-width:0!important;overflow:hidden;border:1px solid var(--wl-border,#dbe2e9)!important;
+  border-radius:16px!important;background:var(--wl-surface,#fff)!important;
+  box-shadow:var(--wl-card-shadow,0 5px 18px rgba(21,35,46,.05))!important
+}
+.page.page-workflows .card>.card-header{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:16px 18px!important;border:0!important;border-radius:0!important;
+  background:var(--wl-navy-gradient,linear-gradient(115deg,#15232e 0%,#2b455e 100%))!important;color:#fff!important
+}
+.page.page-workflows .card>.card-header h2,
+.page.page-workflows .card>.card-header h3,
+.page.page-workflows .card>.card-header p,
+.page.page-workflows .card>.card-header .eyebrow{color:#fff!important}
+.page.page-workflows .card>.card-header h2,
+.page.page-workflows .card>.card-header h3{margin:4px 0 0!important;font-size:15px!important;line-height:1.35!important;font-weight:720!important}
+.page.page-workflows .card>.card-header p{margin:5px 0 0!important;font-size:11px!important;line-height:1.55!important;color:rgba(255,255,255,.74)!important}
+.page.page-workflows .card>.card-header .eyebrow{font-size:9px!important;letter-spacing:.12em!important;color:rgba(255,255,255,.7)!important}
+.page.page-workflows .workflow-directory>.card-header h2{font-size:21px!important}
+.page.page-workflows .workflow-directory .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--wl-border,#dbe2e9)}
+.page.page-workflows .workflow-directory .toolbar .search{flex:1 1 240px;min-width:0}
+.page.page-workflows .workflow-directory .toolbar input,
+.page.page-workflows .workflow-directory .toolbar select{min-height:36px;border:1px solid var(--wl-border-strong,#cbd5df);border-radius:9px;padding:8px 10px;font-size:12px}
+.page.page-workflows .workflow-directory .table{overflow-x:auto}
+.page.page-workflows .workflow-directory table{width:100%;border-collapse:collapse}
+.page.page-workflows .workflow-directory th{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--wl-muted,#718191);background:#f7f9fb}
+.page.page-workflows .workflow-directory td{font-size:12px;vertical-align:middle}
+.page.page-workflows .workflow-directory th,.page.page-workflows .workflow-directory td{padding:12px 14px;border-bottom:1px solid var(--wl-border,#e3e9ee)}
+.page.page-workflows .status{display:inline-flex;align-items:center;justify-content:center;min-height:23px;padding:4px 9px;border:1px solid #d9e2e8;border-radius:999px;background:#edf2f5;color:#344b5b;font-size:10px;font-weight:750;line-height:1.2;white-space:nowrap}
+.page.page-workflows .status:not(.draft){background:#e8f8ef;border-color:#bce8cd;color:#167447}
+.page.page-workflows .status.draft{background:#fff5e8;border-color:#f5d9ad;color:#92520b}
+.page.page-workflows .steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0 0 16px;overflow:hidden;border:1px solid var(--wl-border,#dbe2e9);border-radius:14px;background:#fff}
+.page.page-workflows .steps>div{display:flex;align-items:center;gap:9px;min-width:0;padding:12px 10px;border-right:1px solid var(--wl-border,#dbe2e9)}
+.page.page-workflows .steps>div:last-child{border-right:0}
+.page.page-workflows .steps>div>b{display:grid;place-items:center;flex:0 0 29px;width:29px;height:29px;border-radius:9px;background:#edf2f5;color:#586b79;font-size:11px}
+.page.page-workflows .steps>div.active{background:#fff6f1}
+.page.page-workflows .steps>div.active>b{background:#f5500b;color:#fff}
+.page.page-workflows .steps>div strong{font-size:11px;color:#243746}
+.page.page-workflows .steps>div small{font-size:10px;color:#718191;line-height:1.35}
+.page.page-workflows .workflow-timeline{padding:12px 14px 16px}
+.page.page-workflows .workflow-timeline:before{left:35px}
+.page.page-workflows .workflow-timeline .timeline-item{min-height:66px}
+.page.page-workflows .workflow-timeline .timeline-marker{flex-basis:29px;width:29px;height:29px}
+.page.page-workflows .content-grid{gap:14px!important;align-items:start}
+.page.page-workflows .content-grid>.stack,.page.page-workflows .content-grid>aside{gap:14px}
+.page.page-workflows .card-body{padding:15px 17px}
+.page.page-workflows .card-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--wl-border,#dbe2e9)}
+.page.page-workflows .card-footer .actions{display:flex;gap:8px;flex-wrap:wrap}
+.page.page-workflows button.button-primary,
+.page.page-workflows button.button-secondary,
+.page.page-workflows button.button-quiet,
+.page.page-workflows button.button-danger{min-height:34px;padding:7px 12px;border-radius:9px;font-size:11px;line-height:1.2}
+.page.page-workflows .notice,.page.page-workflows .alert,.page.page-workflows .empty{border-radius:12px}
+@media(max-width:850px){
+ .page.page-workflows>.hero{grid-template-columns:minmax(0,1fr)!important}
+ .page.page-workflows .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .page.page-workflows .steps>div{border-bottom:1px solid var(--wl-border,#dbe2e9)}
+}
+@media(max-width:620px){
+ .page.page-workflows .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .page.page-workflows .steps>div:nth-child(2n){border-right:0}
+ .page.page-workflows .content-grid{grid-template-columns:minmax(0,1fr)!important}
+ .page.page-workflows .workflow-timeline{padding:8px}
+ .page.page-workflows .workflow-timeline:before{left:29px}
+ .page.page-workflows .workflow-timeline .timeline-item{gap:9px;padding:9px 5px}
+}
