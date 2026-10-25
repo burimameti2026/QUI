@@ -78,3 +78,152 @@
   border-color: #d94308 !important;
   color: #fff !important;
 }
+
+/* Dashboard-specific correction: explicit selectors for the actual template markup.
+   Keep these scoped here so shared legacy overrides on other routes cannot change it. */
+.page.page-dashboard > section.hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 280px) !important;
+  gap: 18px !important;
+  margin: 10px 0 14px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
+  color: #fff !important;
+}
+.page.page-dashboard > section.hero h2,
+.page.page-dashboard > section.hero p,
+.page.page-dashboard > section.hero .eyebrow,
+.page.page-dashboard > section.hero .stack,
+.page.page-dashboard > section.hero .stack span {
+  color: #fff !important;
+}
+.page.page-dashboard > section.hero p {
+  max-width: 850px;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  color: rgba(255,255,255,.78) !important;
+}
+.page.page-dashboard > section.content-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 0 0 14px !important;
+  align-items: stretch !important;
+}
+.page.page-dashboard > section.content-grid > article.card {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  border: 1px solid #dbe2e9 !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 18px rgba(21,35,46,.08) !important;
+}
+.page.page-dashboard > section.content-grid > article.card > header.card-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 62px !important;
+  margin: 0 !important;
+  padding: 12px 15px !important;
+  border: 0 !important;
+  border-radius: 15px 15px 0 0 !important;
+  background: linear-gradient(115deg, #15232e 0%, #2b455e 100%) !important;
+  color: #fff !important;
+}
+.page.page-dashboard > section.content-grid > article.card > header.card-header h3,
+.page.page-dashboard > section.content-grid > article.card > header.card-header .eyebrow {
+  color: #fff !important;
+}
+.page.page-dashboard > section.content-grid > article.card > header.card-header h3 {
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+  margin: 3px 0 0 !important;
+}
+.page.page-dashboard > section.content-grid > article.card > header.card-header .eyebrow {
+  display: block;
+  font-size: 9px !important;
+  line-height: 1.3 !important;
+  letter-spacing: .07em;
+  opacity: .82;
+}
+.page.page-dashboard > section.content-grid > article.card > header.card-header > button {
+  min-height: 30px !important;
+  padding: 6px 10px !important;
+  border: 1px solid #f5500b !important;
+  border-radius: 8px !important;
+  background: #f5500b !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+}
+.page.page-dashboard > section.content-grid > article.card > .card-body,
+.page.page-dashboard > section.content-grid > article.card > .list,
+.page.page-dashboard > section.content-grid > article.card > .stack {
+  min-width: 0;
+}
+.page.page-dashboard > section.content-grid > article.card .list-item {
+  min-width: 0;
+  gap: 10px !important;
+  padding: 10px 14px !important;
+  font-size: 12px !important;
+}
+.page.page-dashboard > section.content-grid > article.card .list-item small,
+.page.page-dashboard > section.content-grid > article.card .list-item .meta,
+.page.page-dashboard > section.content-grid > article.card .list-item .stack > span {
+  color: #586675;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
+.page.page-dashboard > section.content-grid > article.card .list-item strong {
+  color: #17212b;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+.page.page-dashboard > section.content-grid > article.card .list-item .icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px !important;
+  background: #edf2f5;
+  color: #2b455e;
+}
+.page.page-dashboard > section.content-grid > article.card .card-footer {
+  padding: 10px 14px !important;
+  border-top: 1px solid #e8edf1;
+  font-size: 11px !important;
+}
+.page.page-dashboard > section.content-grid > article.card .status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 8px !important;
+  border: 1px solid #d6e9df;
+  border-radius: 999px !important;
+  background: #eaf7ef;
+  color: #087443;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  font-weight: 700;
+}
+.page.page-dashboard .table-head {
+  background: #f4f7fa;
+  color: #586675;
+  font-size: 10px !important;
+  font-weight: 700;
+}
+@media (max-width: 800px) {
+  .page.page-dashboard > section.hero,
+  .page.page-dashboard > section.content-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .page.page-dashboard > section.hero { padding: 16px !important; }
+}
+
