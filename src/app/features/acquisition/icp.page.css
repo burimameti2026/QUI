@@ -15,3 +15,57 @@
 .page-icp .list-item span:last-child{text-align:right;overflow-wrap:anywhere}
 .page-icp button:disabled{opacity:.65;cursor:wait}
 @media(max-width:700px){.page-icp .form-grid{grid-template-columns:1fr}.page-icp .form-grid .full{grid-column:auto}.page-icp .list-item{flex-direction:column;gap:3px}.page-icp .list-item span:last-child{text-align:left}}
+
+
+/* ICP cards: statuses are labels, not action buttons. Keep them distinct from controls. */
+.page.page-icp .card-header .status,
+.page.page-icp .card-body .status,
+.page.page-icp .status{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+  max-width:100%;
+  min-height:23px;
+  padding:4px 9px!important;
+  border:1px solid #d6e0e7!important;
+  border-radius:999px!important;
+  background:#edf2f6!important;
+  color:#344b5b!important;
+  box-shadow:none!important;
+  font-size:10px!important;
+  font-weight:750!important;
+  line-height:1.2!important;
+  letter-spacing:.01em;
+  white-space:nowrap;
+  cursor:default;
+  text-decoration:none;
+}
+.page.page-icp .status.active,
+.page.page-icp .status.success,
+.page.page-icp .status.ready,
+.page.page-icp .status.provisioned,
+.page.page-icp .status.status-active{
+  background:#e8f7ee!important;
+  border-color:#b8e4ca!important;
+  color:#176b43!important;
+}
+.page.page-icp .status.draft,
+.page.page-icp .status.inactive,
+.page.page-icp .status.pending,
+.page.page-icp .status.reusable{
+  background:#fff5e6!important;
+  border-color:#f1d6a7!important;
+  color:#8b570d!important;
+}
+.page.page-icp .status.error,
+.page.page-icp .status.failed,
+.page.page-icp .status.rejected{
+  background:#fff0ef!important;
+  border-color:#f0c1bd!important;
+  color:#a52e28!important;
+}
+.page.page-icp .status:not(.active):not(.success):not(.ready):not(.provisioned):not(.status-active):not(.draft):not(.inactive):not(.pending):not(.reusable):not(.error):not(.failed):not(.rejected){
+  background:#edf2f6!important;color:#344b5b!important;border-color:#d6e0e7!important;
+}
+.page.page-icp .card-header .status{flex-shrink:0}
