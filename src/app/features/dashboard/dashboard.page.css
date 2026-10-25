@@ -60,3 +60,21 @@
 .page-dashboard .card-header::after {
   background: var(--wl-accent) !important;
 }
+
+
+/* Dashboard card actions use the LeadsAI orange accent for clear visibility. */
+.page-dashboard .card-header > button,
+.page-dashboard .card-header .button-quiet,
+.page-dashboard .card-header .button-secondary {
+  background: #f5500b !important;
+  border: 1px solid #f5500b !important;
+  color: #fff !important;
+  border-radius: var(--wl-button-radius, 8px);
+}
+.page-dashboard .card-header > button:hover,
+.page-dashboard .card-header .button-quiet:hover,
+.page-dashboard .card-header .button-secondary:hover {
+  background: #d94308 !important;
+  border-color: #d94308 !important;
+  color: #fff !important;
+}
