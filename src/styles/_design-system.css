@@ -840,3 +840,49 @@ button,.btn,.page-actions a,.page-actions button{
 ){
   border-radius:var(--wl-radius-pill)!important;
 }
+
+
+/* Complete shared surface treatment: rounded card shells AND their headers. */
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  .card,.panel,.content-card,.data-card,.stat-card,.metric-card,.summary-card,
+  .section-card,.surface-card,.info-card,.form-card,.table-card,.list-card,
+  .detail-card,.settings-card,.campaign-tile,.prospect-card,.lead-card,
+  .company-card,.contact-card,.opportunity-card,.designer-shell,.workspace,
+  .workspace-section,.section-container,[class*="card"],[class*="Card"],
+  [class*="panel"],[class*="Panel"],[class*="tile"],[class*="Tile"],
+  [class*="widget"],[class*="Widget"]
+){
+  border-radius:18px!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  .card-header,.panel-header,.section-header,.content-card-header,
+  .table-header,.list-header,.toolbar-header,.designer-header,
+  [class*="card-header"],[class*="CardHeader"],[class*="panel-header"],
+  [class*="PanelHeader"],[class*="section-header"],[class*="SectionHeader"],
+  [class*="table-header"],[class*="TableHeader"],[class*="header-bar"],
+  [class*="HeaderBar"],[class*="title-bar"],[class*="TitleBar"]
+){
+  border-radius:18px 18px 0 0!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  button,.btn,.button,a[role="button"],input[type="button"],input[type="submit"],
+  input[type="reset"],select,.form-control,.form-select,.toolbar-button,
+  .icon-button,[class*="action-button"],[class*="ActionButton"]
+){
+  border-radius:12px!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  .badge,.pill,.status-badge,.status-pill,.chip,.tag,[class*="status-badge"],
+  [class*="StatusBadge"],[class*="status-pill"],[class*="StatusPill"]
+){
+  border-radius:999px!important;
+}
+:is(.page,.app-content,main,[class*="page-"]) :is(
+  .section,.section-container,.workspace,.workspace-section,.content-section,
+  .designer-toolbar,.runtime-summary,.filter-panel,.history-filters,
+  .empty-state,.empty-state-container,.table-container,.table-wrapper,
+  .list-container,[class*="section-card"],[class*="SectionCard"],
+  [class*="workspace-card"],[class*="WorkspaceCard"]
+){
+  border-radius:18px!important;
+}
