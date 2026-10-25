@@ -68,7 +68,7 @@
                 <span class="node-content"><small>STEP {{ i + 1 }} · {{ node.type }}</small><strong>{{ node.name }}</strong><em *ngIf="nodeStatus(node)==='failed'">{{ errorDetails(node) }}</em><em *ngIf="nodeStatus(node)==='attention'">{{ attentionDetails(node) }}</em><em *ngIf="nodeStatus(node)==='running'">Running now…</em><em *ngIf="nodeStatus(node)==='completed'">Completed {{ formatDate(node.completedAtUtc) }}</em><em *ngIf="nodeStatus(node)==='waiting'">Waiting for approval</em></span>
                 <span class="node-state">{{ nodeStatus(node) === 'attention' ? 'Needs setup' : nodeStatus(node) }}</span>
               </button>
-              <div class="flow-connector" *ngIf="!last" aria-label="Connection to the next workflow step"><span class="connector-from">FROM · STEP {{ i + 1 }}</span><span class="connector-line" aria-hidden="true"></span><span class="connector-arrow" aria-hidden="true">▼</span><span class="connector-to">TO · STEP {{ i + 2 }}</span></div>
+              <div class="flow-connector" *ngIf="!last" aria-hidden="true"><span>↓</span></div>
             </ng-container>
           </div>
         </div>
