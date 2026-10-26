@@ -85,3 +85,5 @@
 }
 @media(max-width:900px){.page.page-security .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.page.page-security .metric-grid{grid-template-columns:minmax(0,1fr)}}
+/* This template places the shared header immediately before .page; avoid stacking page top padding on the header gap. */
+qai-page-header + .page.page-security{padding-top:0}
