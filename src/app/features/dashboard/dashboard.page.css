@@ -85,7 +85,8 @@
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) minmax(210px, 280px) !important;
   gap: 18px !important;
-  margin: 10px 0 14px !important;
+  /* The shared qai-page-header owns the gap above page content. */
+  margin: 0 0 14px !important;
   padding: 20px !important;
   border: 1px solid rgba(255,255,255,.12) !important;
   border-radius: 16px !important;
