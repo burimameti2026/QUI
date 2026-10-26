@@ -267,3 +267,28 @@
   .page-automations .automation-event::before{left:-21px;top:19px}
   .page-automations .automation-event .event-actions{justify-content:flex-start}
 }
+
+
+/* Keep automation execution history legible if shared card/header styles cascade into timeline content. */
+.page-automations .card .automation-timeline,
+.page-automations .card .automation-timeline .automation-event{
+  color:#15232e;
+  background-color:#fff;
+}
+.page-automations .card .automation-timeline .automation-event time,
+.page-automations .card .automation-timeline .automation-event small{
+  color:#526579;
+}
+.page-automations .card .automation-timeline .automation-event strong{
+  color:#15232e;
+}
+.page-automations .card .automation-timeline .automation-event .event-actions .status{
+  color:#087443;
+}
+.page-automations .card .automation-timeline .automation-event .event-actions .status.status-error{
+  color:#b42318;
+}
+.page-automations .card .automation-timeline .automation-event .event-actions button{
+  color:#244765;
+  background:#fff;
+}
