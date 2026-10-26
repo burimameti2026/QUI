@@ -937,3 +937,23 @@ button,.btn,.page-actions a,.page-actions button{
   line-height:1.2;
   padding:4px 8px!important;
 }
+
+
+/* Consistent spacing between every page title/subtitle and the page content. */
+:root{--wl-page-header-bottom-gap:18px}
+qai-page-header{display:block;min-width:0;margin:0 0 var(--wl-page-header-bottom-gap)}
+.page-header{display:block;box-sizing:border-box;padding:0 0 4px;margin:0;background:transparent;border:0;color:var(--wl-text)}
+.page-header-main{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:0;padding:8px 0 0}
+.page-header-title{min-width:0}
+.page-header-title h1{margin:0;font-size:20px;font-weight:750;letter-spacing:-.02em;line-height:1.25}
+.page-header-title p{margin:6px 0 0;color:var(--wl-muted);font-size:12px;line-height:1.55;max-width:900px}
+.page-header p,qai-page-header p{margin:6px 0 0;color:var(--wl-muted);line-height:1.55}
+.page-header+.hero,.page-header+.card,.page-header+.section,.page-header+.metric-grid,.page-header+.toolbar,
+qai-page-header+.hero,qai-page-header+.card,qai-page-header+.section,qai-page-header+.metric-grid,qai-page-header+.toolbar{margin-top:0}
+.page>.hero:first-child,.page>.card:first-child,.page>.section:first-child,.page>.metric-grid:first-child,.page>.toolbar:first-child{margin-top:0}
+@media(max-width:700px){
+ :root{--wl-page-header-bottom-gap:14px}
+ .page-header-main{align-items:flex-start;flex-direction:column;gap:10px}
+ .page-actions{margin-left:0;justify-content:flex-start;flex-wrap:wrap}
+ .page-header-title p{max-width:100%}
+}
