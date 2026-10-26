@@ -2,7 +2,7 @@
 
 /* Workflow directory and designer — shared LeadsAI visual language */
 .page-workflows{width:100%;max-width:none;margin:0;padding-bottom:18px}
-.page-workflows>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.35fr);align-items:center;gap:24px;margin:14px 0;padding:20px 22px;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-card-header-bg,linear-gradient(115deg,#15232e 0%,#2b455e 100%));color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09)}
+.page-workflows>.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.35fr);align-items:center;gap:24px;margin:0 0 14px;padding:20px 22px;border:1px solid var(--wl-border);border-radius:var(--wl-card-radius);background:var(--wl-card-header-bg,linear-gradient(115deg,#15232e 0%,#2b455e 100%));color:#fff;box-shadow:0 8px 24px rgba(21,35,46,.09)}
 .page-workflows>.hero .eyebrow{color:rgba(255,255,255,.78)}
 .page-workflows>.hero h2{margin:6px 0;font-size:clamp(20px,2.2vw,28px);line-height:1.2;letter-spacing:-.025em}
 .page-workflows>.hero p{color:rgba(255,255,255,.72);font-size:13px;line-height:1.55}
