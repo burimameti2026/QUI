@@ -1017,3 +1017,105 @@ qai-page-header+.hero,qai-page-header+.card,qai-page-header+.section,qai-page-he
  .global-search-container{flex-basis:100%;max-width:none}
  .header-tools{margin-left:auto}
 }
+
+
+/* Main application header — refined enterprise utility bar. */
+.app-header{
+  display:flex;
+  align-items:center;
+  min-height:68px;
+  padding:12px 26px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid #e8ecf1!important;
+  box-shadow:0 2px 10px rgba(16,24,40,.025)!important;
+  backdrop-filter:blur(12px);
+}
+.header-search-wrap{
+  width:100%;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.global-search-container{
+  flex:1 1 560px;
+  width:min(100%,640px);
+  max-width:640px;
+}
+.global-search{
+  min-height:42px;
+  padding:0 13px;
+  gap:10px;
+  border:1px solid #e4e8ee;
+  border-radius:12px;
+  background:#f8fafc;
+  color:#7a8493;
+}
+.global-search>span{font-size:19px;color:#7b8795;line-height:1}
+.global-search input{font-size:12px;color:#172b3a}
+.global-search input::placeholder{color:#8993a1}
+.global-search kbd{
+  padding:3px 6px;
+  border:1px solid #e2e7ed;
+  border-radius:6px;
+  background:#fff;
+  color:#7b8491;
+  font-size:10px;
+  box-shadow:0 1px 1px rgba(16,24,40,.04);
+}
+.header-tools{gap:8px;margin-left:auto}
+.header-icon,.header-help,.admin-account{
+  width:40px;
+  height:40px;
+  min-height:40px;
+  border:1px solid #e6eaf0;
+  border-radius:11px;
+  background:#fff;
+  color:#536273;
+}
+.header-icon{font-size:19px}
+.header-icon:hover,.header-help:hover,.admin-account:hover,.admin-account.open{
+  background:#f7f8fa;
+  border-color:#d8dee7;
+  color:#182d3c;
+}
+.header-help{font-size:14px;font-weight:700}
+.admin-menu{margin-left:2px;padding-left:12px;border-left:1px solid #edf0f4}
+.admin-account{width:auto;min-width:48px;padding:0 8px;gap:8px;border-color:transparent;background:transparent}
+.admin-avatar{
+  width:30px;
+  height:30px;
+  border:1px solid #dce5ec;
+  border-radius:9px;
+  background:#eaf0f5;
+  color:#263f52;
+  font-size:11px;
+}
+.admin-chevron{font-size:11px;color:#7b8795}
+.admin-dropdown{
+  min-width:218px;
+  margin-top:10px;
+  padding:6px;
+  border:1px solid #e6eaf0;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 18px 42px rgba(16,24,40,.13);
+}
+.admin-menu-item{width:100%;justify-content:flex-start;gap:10px;min-height:40px;padding:0 10px;border:0;border-radius:8px;background:transparent;font-size:12px;text-align:left}
+.admin-menu-divider{height:1px;margin:5px 2px;background:#edf0f4}
+.logout-menu-item{color:#b42318}
+.help-popover{border-color:#e6eaf0;border-radius:13px;box-shadow:0 18px 42px rgba(16,24,40,.13)}
+@media(max-width:900px){
+  .app-header{padding:10px 16px!important}
+  .header-search-wrap{gap:10px}
+  .global-search-container{max-width:none}
+}
+@media(max-width:600px){
+  .app-header{min-height:0;padding:9px 10px!important}
+  .header-search-wrap{gap:8px;flex-wrap:wrap}
+  .global-search-container{flex:1 1 100%;width:100%;max-width:none;order:0}
+  .header-tools{gap:6px;order:1}
+  .admin-menu{margin-left:auto;padding-left:8px}
+  .header-icon,.header-help{width:36px;height:36px;min-height:36px}
+  .admin-account{height:36px;min-height:36px}
+}
