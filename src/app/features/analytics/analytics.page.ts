@@ -7,8 +7,8 @@ import { AnalyticsService } from './analytics.service';
   standalone: true,
   imports: [CommonModule, PageHeader],
   template: `<main class="page page-analytics">
-    <qai-page-header title="Analytics & ROI" subtitle="Measure support efficiency, pipeline creation and Automation-influenced revenue.">
-      <div class="page-actions"><button class="button-quiet" type="button" (click)="load()">↻ Refresh</button></div>
+    <qai-page-header title="Analytics & ROI" subtitle="Measure support efficiency, pipeline creation and automation-influenced revenue.">
+      <button class="button-quiet" type="button" (click)="load()">↻ Refresh</button>
     </qai-page-header>
     <section class="metric-grid">
       <article class="metric"><span class="metric-label">Qualified leads</span><strong>{{d.qualified||0}}</strong><small>{{d.hot||0}} hot</small></article>
